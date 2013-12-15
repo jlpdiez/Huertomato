@@ -48,7 +48,7 @@
 #include <UTouch.h>
 #include <EEPROMEx.h>
 #include <SD.h>
-#include "Sensors.h"
+#include "sensors.h"
 #include "rgbLED.h"
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
 #include <MemoryFree.h>
