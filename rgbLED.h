@@ -1,95 +1,61 @@
 // #############################################################################
-// #
-// # Scriptname : rgbLed.h
-// # Author     : Juan L. Pérez Diez <ender.vs.melkor at gmail>
-// # Date       : 30.07.2012
 // 
-// # Description: Library for controlling an RGB LED
-// # Constructor needs red, green and blue pins as argument
+// # Name       : rgbLed
+// # Version    : 1.5
+
+// # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
+// # Date       : 11.03.2013
 // 
-// # Based on http://amkimian.blogspot.com.es/2009/07/trivial-led-class.html
+// # Description: Library for controlling an RGB LED, 
+// # Allows to set colour, change brightness and do some effects.
+// # Constructor needs red, green and blue pins as argument.
+// # Keep in mind delays are used in effects functions.
+// 
+// #  This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
 //
-// # Version    : 1.2
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 // #############################################################################
 
 #ifndef __RGBLED_H
 #define __RGBLED_H
 
+#include <Arduino.h>
+
 enum color { RED, GREEN, BLUE, WHITE };
+
 class rgbLED {
   public:
      rgbLED(uint8_t, uint8_t, uint8_t);
-     void setColor(color);
      void setOn();
      void setOff();
-     // Turn the led on for a given amount of time (relies on a call to check() in the main loop())
-     void setOnForTime(int millis, color);
-     void check();
+     void setColour(color);
+     void setColour(uint8_t, uint8_t, uint8_t);
+     void moreBrightness();
+     void lessBrightness();
+     //Effects - They use delays!
+     void strobe();
+     void rgbStrobe();
+     void smooth();
+     //void fade();
+
   private:
      uint8_t _redPin;
      uint8_t _greenPin;
      uint8_t _bluePin;
-     color _actualColor;
-     long _turnOffTime;
+     uint8_t _red;
+     uint8_t _green;
+     uint8_t _blue;
+     //long _fadeTime;
 };
 
-//Constructor
-rgbLED::rgbLED(uint8_t r, uint8_t g, uint8_t b) : 
-      _redPin(r), _greenPin(g), _bluePin(b), _turnOffTime(0) { 
-    pinMode(_redPin, OUTPUT);
-    pinMode(_greenPin, OUTPUT);
-    pinMode(_bluePin, OUTPUT);
-    _actualColor = WHITE;
-}
-
-//Drives led coloring
-void rgbLED::setColor(color c) {
-   switch(c) {
-      case RED:    
-        analogWrite(_redPin,255);
-        analogWrite(_greenPin,0);
-        analogWrite(_bluePin,0);
-        break;
-      case GREEN:   
-        analogWrite(_redPin,0);
-        analogWrite(_greenPin,255);
-        analogWrite(_bluePin,0);
-        break;
-      case BLUE:  
-        analogWrite(_redPin,0);
-        analogWrite(_greenPin,0);
-        analogWrite(_bluePin,255);
-        break;
-      case WHITE:  
-        analogWrite(_bluePin,255);
-        analogWrite(_redPin,255);
-        analogWrite(_greenPin,255);
-        break;
-      default: break;
-   } 
-   _actualColor = c;
-}
-
-
-void rgbLED::setOn() {
-   rgbLED::setColor(_actualColor);
-}
-
-void rgbLED::setOff() {
-   digitalWrite(_redPin, LOW);
-   digitalWrite(_greenPin, LOW);
-   digitalWrite(_bluePin, LOW);
-}
-
-void rgbLED::setOnForTime(int p_millis, color c) {
-   _turnOffTime = millis() + p_millis;
-   setColor(c);
-}
-
-void rgbLED::check() {
-   if (_turnOffTime != 0 && (millis() > _turnOffTime)) {
-     _turnOffTime = 0;
-     setOff();
-   }
-}
 #endif

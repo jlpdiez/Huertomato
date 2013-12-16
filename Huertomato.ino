@@ -104,64 +104,10 @@ Sensors sensors;
 
 UTFT LCD(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
+GUI gui(&LCD,&Touch);
 
 extern uint8_t BigFont[];
 extern uint8_t SmallFont[];
-
-/**************************** SETTINGS MENU BUTTONS COORDS *****************************/
-const int tAndD[] = {10, 29, 195, 59};       //time & date
-const int wTime[] = {10, 69, 195, 99};       //watering times
-const int phWarn[] = {10, 109, 195, 139};    //ph warnings
-const int ecWarn[] = {10, 149, 195, 179};    //ec warnings
-const int watWarn[] = {205, 29, 390, 59};    //water warning
-const int mPump[] = {205, 69, 390, 99};      //manual pump control
-const int about[] = {205, 109, 390, 139};    //about
-//const int eighth[]= {205, 149, 390, 179};
-/**************************** TIME AND DATE SCREEN BUTTONS COORDS ***************************/
-const int houU[] = {140, 22, 165, 47};       //hour up
-const int minU[] = {210, 22, 235, 47};       //min up
-const int secU[] = {280, 22, 305, 47};       //sec up
-const int houD[] = {140, 73, 165, 96};       //hour down
-const int minD[] = {210, 73, 235, 96};       //min down
-const int secD[] = {280, 73, 305, 96};      //sec down
-const int dayU[] = {140, 112, 165, 137};     //day up
-const int monU[] = {210, 112, 235, 137};     //month up
-const int yeaU[] = {280, 112, 305, 137};     //year up
-const int dayD[] = {140, 162, 165, 187};     //day down
-const int monD[] = {210, 162, 235, 187};     //month down
-const int yeaD[] = {280, 162, 305, 187};     //year down
-/**************************** WATERING TIMERS BUTTONS COORDS ***************************/
-const int wHourU[] = {140, 22, 165, 47};     //hour up
-const int wHourD[] = {140, 73, 165, 96};     //hour down 
-const int wMinU[] = {210, 22, 235, 47};      //minute up
-const int wMinD[] = {210, 73, 235, 96};      //minute down
-const int floodU[] = {90, 112, 115, 137};   //flooding min up
-const int floodD[] = {90, 162, 115, 187};   //flooding min down
-const int night[] = {340,140,365,165};       //night only button
-/**************************** PH WARNINGS BUTTON COORDS ***************************/
-const int phUpperU[] = {333, 48, 358, 73};    //upper section + 
-const int phUpperD[] = {225, 48, 250, 73};    //upper section -
-const int phLowerU[] = {333, 138, 358, 163};  //lower section +
-const int phLowerD[] = {225, 138, 250, 163};  //lower section -
-/**************************** EC WARNINGS BUTTON COORDS ***************************/
-const int ecUpperU[] = {333, 48, 358, 73};    //same as above
-const int ecUpperD[] = {225, 48, 250, 73};
-const int ecLowerU[] = {333, 138, 358, 163};
-const int ecLowerD[] = {225, 138, 250, 163};
-/**************************** WATER WARNING BUTTON COORDS ***************************/
-const int wattU[] = {225,96,250,121};
-const int wattD[] = {333,96,358,121};
-/**************************** MANUAL PUMPS CONTROL BUTTON COORDS ***************************/
-const int manIN[] = {225, 35, 325, 85};      //water in toggle
-const int manOUT[] = {225, 125, 325, 175};   //water out toggle
-/***************************** MISCELLANEOUS BUTTONS COORDS *********************************/
-const int back[] = {10, 205, 115, 230};      //BACK
-const int save[] = {150, 205, 250, 230};     //SAVE
-const int canc[] = {290, 205, 390, 230};     //CANCEL
-
-uint8_t dispScreen = 0;                //0-Main Screen, 1-Options, 2-Clock Setup, 3-Watering Times, 
-                                       //4-PH Warnings, 5-EC Warnings, 6-Water Warnings
-                                       //7-Manual Pump Control, 8-About
 
 //Time next watering will occurr
 uint8_t nextWhour;
@@ -240,7 +186,7 @@ void setup() {
   initMusic();
   
   Alarm.delay(2500);
-  drawMain();
+  gui.drawMainScreen();
 }
 
 //Initiates system time from RTC
@@ -339,16 +285,18 @@ void initMusic() {
 // *********************************************
 void loop() {
   if (alarmTriggered) {
-    led.setColor(RED);
+    led.setColour(RED);
     //Sound alarm in main screen only
     if (dispScreen == 0)
       tone(buzzPin, 880.00, 250);
   } else
-    led.setColor(GREEN);
+    led.setColour(GREEN);
     
   processTouch();
   if (dispScreen == 0)
     updateMain();
+    
+    //gui.processTouch(); 
   
   //TODO: Will warn when initiating as values = 0
   //Initiate arrays to be lowerLimit < vars < upperLimit
@@ -464,7 +412,7 @@ void adjustECtemp() {
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
-  led.setColor(BLUE);
+  led.setColour(BLUE);
   wateringPlants = true;
 
   //Informs through LCD & serial if needed
