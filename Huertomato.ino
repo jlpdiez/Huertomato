@@ -48,7 +48,7 @@
 #include <UTouch.h>
 #include <EEPROMEx.h>
 #include <SD.h>
-#include "sensors.h"
+#include "Sensors.h"
 #include "rgbLED.h"
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
 #include <MemoryFree.h>
@@ -339,12 +339,12 @@ void initMusic() {
 // *********************************************
 void loop() {
   if (alarmTriggered) {
-    led.setColor(RED);
+    led.setColour(RED);
     //Sound alarm in main screen only
     if (dispScreen == 0)
       tone(buzzPin, 880.00, 250);
   } else
-    led.setColor(GREEN);
+    led.setColour(GREEN);
     
   processTouch();
   if (dispScreen == 0)
@@ -464,7 +464,7 @@ void adjustECtemp() {
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
-  led.setColor(BLUE);
+  led.setColour(BLUE);
   wateringPlants = true;
 
   //Informs through LCD & serial if needed
