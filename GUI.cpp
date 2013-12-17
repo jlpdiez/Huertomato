@@ -5,15 +5,8 @@
 #include "Buttons.h"
 
 GUI::GUI(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touch) {
-  //_lcd = lcd;
-  //_touch = touch;
-    
   _actScreen = 0;
-//  _lcd->InitLCD();
-//  _lcd->clrScr();
-//  _lcd->fillScr(VGA_WHITE);
-//  _touch->InitTouch();
-//  _touch->setPrecision(PREC_MEDIUM);
+
   _buttons.setTextFont(hallfetica_normal);
   _buttons.setSymbolFont(various_symbols);
   _buttons.setButtonColors(lightGreen, darkGreen, white, grey, white);
@@ -117,56 +110,6 @@ void GUI::processTouch() {
   
   }
 }
-
-//All print functions should be private
-//From outside drawX should be used and updateX for refreshing window
-
-//Prints a rounded button on given coords with given text
-void GUI::printButtonBig(char* text, int x1, int y1, int x2, int y2) {
-  int stl = strlen(text);
-  int fx, fy;
-  
-  //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  //_lcd->fillRect (x1, y1, x2, y2);
-  _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-  _lcd->drawRect (x1, y1, x2, y2);
- 
-  _lcd->setFont(hallfetica_normal);
-  _lcd->setColor(grey[0], grey[1], grey[2]);
-  _lcd->setBackColor(VGA_WHITE);
-  fx = x1+(((x2 - x1)-(stl*16))/2);
-  fy = y1+(((y2 - y1-1)-16)/2);
-  _lcd->print(text, fx, fy);
-}
-
-//void printButtonSmall(char* text, int x1, int y1, int x2, int y2) {
-//  int stl = strlen(text);
-//  int fx, fy;
-//  
-//  _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-//  //_lcd->fillRect (x1, y1, x2, y2);
-//  //_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-//  _lcd->drawRoundRect (x1, y1, x2, y2);
-// 
-//  _lcd->setFont(Sinclair_S);
-//  _lcd->setColor(grey[0], grey[1], grey[2]);
-//  //_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-//  _lcd->setBackColor(VGA_WHITE);
-//  fx = x1+(((x2 - x1)-(stl*8))/2);
-//  fy = y1+(((y2 - y1-1)-8)/2);
-//  _lcd->print(text, fx, fy);
-//}
-
-//// Draws a red frame while a button is touched and prevents multi-presses
-//void waitForIt(int x1, int y1, int x2, int y2) {
-//  _lcd->setColor(150, 0, 0);
-//  _lcd->drawRoundRect (x1, y1, x2, y2);
-//  while (Touch.dataAvailable()) {
-//    Touch.read(); 
-//  }
-//  _lcd->setColor(grey[0], grey[1], grey[2]);
-//  _lcd->drawRoundRect (x1, y1, x2, y2);
-//}
 
 //private
 void GUI::printHeader() {
@@ -276,55 +219,56 @@ void GUI::updateSensorInfo() {
 void GUI::printIconAndStatus() {
   //Change Y coord.
   
-  //IF everything normal
-  _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, plant126); 
+  //If theres an alarm
+  if (settings.getAlarmTriggered()) {
+    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, alarm126);    
+    _lcd->setColor(red[0],red[1],red[2]);
+    _lcd->setBackColor(VGA_WHITE);
+    _lcd->setFont(various_symbols);
+    _lcd->print("T",10,200);
+    _lcd->setFont(hallfetica_normal);
+    _lcd->print("Alarm - Check Solution",10+_lcd->getFontXsize()*2,200);
   
-  _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-  _lcd->setBackColor(VGA_WHITE);
-  _lcd->setFont(various_symbols);
-  _lcd->print("T",10,200);
-  _lcd->setFont(hallfetica_normal);
-  _lcd->print("Next Watering @ 17:56",10+_lcd->getFontXsize()*2,200);
+  //watering and not in continuous mode
+  } else if (settings.getWaterTimed() && settings.getWateringPlants()) {  
+    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, logo126);     
+    _lcd->setColor(blue[0],blue[1],blue[2]);
+    _lcd->setBackColor(VGA_WHITE);
+    _lcd->setFont(various_symbols);
+    _lcd->print("T",10,200);
+    _lcd->setFont(hallfetica_normal);
+    _lcd->print("Huertomato Watering",10+_lcd->getFontXsize()*2,200); 
   
-  //If Alarm
-//  _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, alarm126); 
-//  
-//  _lcd->setColor(red[0],red[1],red[2]);
-//  _lcd->setBackColor(VGA_WHITE);
-//  _lcd->setFont(various_symbols);
-//  _lcd->print("T",10,200);
-//  _lcd->setFont(hallfetica_normal);
-//  _lcd->print("Alarm - Check Solution",10+_lcd->getFontXsize()*2,200);
+  //water stopped because its night  
+  } else if (settings.getNightWateringStopped()) {
+      _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, moon126);   
+      _lcd->setColor(grey[0],grey[1],grey[2]);
+      _lcd->setBackColor(VGA_WHITE);
+      _lcd->setFont(various_symbols);
+      _lcd->print("T",10,200);
+      _lcd->setFont(hallfetica_normal);
+      _lcd->print("No Watering @ Night",10+_lcd->getFontXsize()*2,200);
   
-  //if (wateringPlants) && (noContinuousWater) {
-//  _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, logo126); 
-//  
-//  _lcd->setColor(blue[0],blue[1],blue[2]);
-//  _lcd->setBackColor(VGA_WHITE);
-//  _lcd->setFont(various_symbols);
-//  _lcd->print("T",10,200);
-//  _lcd->setFont(hallfetica_normal);
-//  _lcd->print("Huertomato Watering",10+_lcd->getFontXsize()*2,200); 
+  //water pump in manual mode    
+  } else if (settings.getManualPump()) {
+      _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, hand126); 
+      _lcd->setColor(red[0],red[1],red[2]);
+      _lcd->setBackColor(VGA_WHITE);
+      _lcd->setFont(various_symbols);
+      _lcd->print("T",10,200);
+      _lcd->setFont(hallfetica_normal);
+      _lcd->print("Pump Manually Enabled",10+_lcd->getFontXsize()*2,200);  
 
-    //if (nightWateringStopped)
-//    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, moon126); 
-//  
-//    _lcd->setColor(grey[0],grey[1],grey[2]);
-//    _lcd->setBackColor(VGA_WHITE);
-//    _lcd->setFont(various_symbols);
-//    _lcd->print("T",10,200);
-//    _lcd->setFont(hallfetica_normal);
-//    _lcd->print("No Watering @ Night",10+_lcd->getFontXsize()*2,200);
-  
-    //else if (inputValve) {
-//    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, mano126); 
-//  
-//    _lcd->setColor(red[0],red[1],red[2]);
-//    _lcd->setBackColor(VGA_WHITE);
-//    _lcd->setFont(various_symbols);
-//    _lcd->print("T",10,200);
-//    _lcd->setFont(hallfetica_normal);
-//    _lcd->print("Pump Manually Enabled",10+_lcd->getFontXsize()*2,200);  
+  //Normal operation    
+  } else {
+    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, plant126);  
+    _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
+    _lcd->setBackColor(VGA_WHITE);
+    _lcd->setFont(various_symbols);
+    _lcd->print("T",10,200);
+    _lcd->setFont(hallfetica_normal);
+    _lcd->print("Next Watering @ 17:56",10+_lcd->getFontXsize()*2,200);
+  }
 }
 
 void GUI::updateIconAndStatus() {

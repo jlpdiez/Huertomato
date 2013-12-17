@@ -97,18 +97,18 @@ const int SDCardSS = 53;
 // *********************************************
 // OBJECT DECLARATIONS AND GLOBAL VARIABLES
 // *********************************************
-//rgbLED led(redPin, greenPin, bluePin);
+rgbLED led(redPin, greenPin, bluePin);
 
-//dht11 DHT11;
-//// Setup a oneWire instance to communicate with DS18B20 temp sensor
-//OneWire oneWire(tempIn);
-//DallasTemperature temperature(&oneWire);
+dht11 DHT11;
+// Setup a oneWire instance to communicate with DS18B20 temp sensor
+OneWire oneWire(tempIn);
+DallasTemperature temperature(&oneWire);
 
 UTFT LCD(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 GUI gui(&LCD,&Touch);
 
-//Settings settings;
+Settings settings;
 //Sensors sensors;
 
 ////Variables for all settings and their temporary for display and editing

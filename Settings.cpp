@@ -2,9 +2,17 @@
 
 Settings::Settings() {
 //  _lightThreshold = 10;
-  //_manualPump = false;
-  //_alarmTriggered = false;
   
+  //Status variables - Not read from EEPROM
+  _nextWhour = 0;
+  _nextWminute = 0;
+  _manualPump = false;
+  _nightWateringStopped = false;
+  _manualPump = false;
+  _wateringPlants = false;
+  _alarmTriggered = false;
+  
+  //System Settings
   _waterTimed = true;
   _waterHour = 2 ;
   _waterMinute = 30;
@@ -17,6 +25,7 @@ Settings::Settings() {
   _nightWatering = true;
   _manualPump = false;
   
+  //Controller Settings
   _sensorMinute = 0;
   _sensorSecond = 5;  
   _sdActive = true;
@@ -72,6 +81,7 @@ void Settings::readEEPROMvars() {
 }
 
 //Setters
+//System Settings
 void Settings::setWaterTimed(boolean w) {
   _waterTimed = w;
 }
@@ -112,11 +122,7 @@ void Settings::setNightWatering(boolean n) {
   _nightWatering = n;
 }
 
-void Settings::setManualPump(boolean m) {
-  _manualPump = m;
-}
-
-
+//Controller Settings
 void Settings::setSensorMinute(uint8_t s) {
   _sensorMinute = s;
 }
@@ -125,8 +131,6 @@ void Settings::setSensorSecond(uint8_t s) {
   _sensorSecond = s;
 }
 
-//void Settings::setNextWhour(uint8_t);
-//void Settings::setNextWminute(uint8_t);
 void Settings::setSDactive(boolean s) {
   _sdActive = s;
 }
@@ -147,8 +151,33 @@ void Settings::setSerialDebug(boolean s) {
   _serialDebug = s;
 }
 
+//Status vars
+void Settings::setNextWhour(uint8_t n) {
+  _nextWhour = n;
+}
+
+void Settings::setNextWminute(uint8_t n) {
+  _nextWminute = n;
+}
+
+void Settings::setManualPump(boolean m) {
+  _manualPump = m;
+}
+
+void Settings::setNightWateringStopped(boolean n) {
+  _nightWateringStopped = n;
+}
+
+void Settings::setWateringPlants(boolean w) {
+  _wateringPlants = w;
+}
+
+void Settings::setAlarmTriggered(boolean a) {
+  _alarmTriggered = a;
+}
 
 //Getters
+//System Settings
 boolean Settings::getWaterTimed() {
   return _waterTimed;
 }
@@ -189,11 +218,7 @@ boolean Settings::getNightWatering() {
   return _nightWatering;
 }
 
-boolean Settings::getManualPump() {
-  return _manualPump;
-}
-
-
+//Controller Settings
 uint8_t Settings::getSensorMinute() {
   return _sensorMinute;
 }
@@ -202,8 +227,6 @@ uint8_t Settings::getSensorSecond() {
   return _sensorSecond;
 }
 
-//uint8_t Settings::getNextWhour();
-//uint8_t Settings::getNextWminute();
 boolean Settings::getSDactive() {
   return _sdActive;
 }
@@ -223,4 +246,30 @@ boolean Settings::getSound() {
 boolean Settings::getSerialDebug() {
   return _serialDebug;
 }
+
+//Status vars
+uint8_t Settings::getNextWhour() {
+  return _nextWhour;
+}
+
+uint8_t Settings::getNextWminute() {
+  return _nextWminute;
+}
+
+boolean Settings::getManualPump() {
+  return _manualPump;
+}
+
+boolean Settings::getNightWateringStopped() {
+  return _nightWateringStopped;
+}
+
+boolean Settings::getWateringPlants() {
+  return _wateringPlants;
+}
+
+boolean Settings::getAlarmTriggered() {
+  return _alarmTriggered;
+}
+
 

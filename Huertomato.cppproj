@@ -1,0 +1,616 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.1</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
+    <ProjectGuid>{07b459b4-8d76-4638-bc6d-a459ba2d616b}</ProjectGuid>
+    <avrdevice>atmega2560</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AssemblyName>Huertomato</AssemblyName>
+    <Name>Huertomato</Name>
+    <RootNamespace>Huertomato</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <CacheFlash>true</CacheFlash>
+    <UncachedRange />
+    <BootSegment>0</BootSegment>
+    <AsfFrameworkConfig>
+      <framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.3.0" />
+  </dependencies>
+</framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+  <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>__AVR_ATmega2560__</Value>
+      <Value>ARDUINO=101</Value>
+      <Value>ARDUINO_MAIN</Value>
+      <Value>F_CPU=16000000L</Value>
+      <Value>__AVR__</Value>
+      <Value>__cplusplus</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Esplora</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Esplora\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Firmata</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Firmata\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\GSM</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\GSM\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Stepper</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Stepper\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TFT</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TFT\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\WiFi\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -include=arduino.h</avrgcc.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>__AVR_ATmega2560__</Value>
+      <Value>ARDUINO=101</Value>
+      <Value>ARDUINO_MAIN</Value>
+      <Value>F_CPU=16000000L</Value>
+      <Value>__AVR__</Value>
+      <Value>__cplusplus</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Esplora</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Esplora\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Firmata</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Firmata\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\GSM</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\GSM\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Stepper</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Stepper\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TFT</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TFT\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\WiFi\utility</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+      <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+      <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.h</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
+  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+</AvrGccCpp>
+    </ToolchainSettings>
+    <VisualMicroSettings>
+      <VisualMicroSettings>
+        <arduino.board.name>mega2560</arduino.board.name>
+        <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
+        <arduino.board.property_bag>name=Arduino Mega 2560 or Mega ADK
+upload.protocol=wiring
+upload.maximum_size=258048
+upload.speed=115200
+bootloader.low_fuses=0xFF
+bootloader.high_fuses=0xD8
+bootloader.extended_fuses=0xFD
+bootloader.path=stk500v2
+bootloader.file=stk500boot_v2_mega2560.hex
+bootloader.unlock_bits=0x3F
+bootloader.lock_bits=0x0F
+build.mcu=atmega2560
+build.f_cpu=16000000L
+build.core=arduino
+build.variant=mega
+runtime.ide.path=C:\Program Files (x86)\Arduino
+build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system
+runtime.ide.version=105
+originalid=mega2560
+vm.core.include=arduino.h
+vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
+ide.hint=Arduino 0023 and 1.0.x Ide
+ide.location.key=Arduino
+ide.location.ide.winreg=Arduino 1.0.x Application
+ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook
+ide.location.sketchbook.preferences=sketchbook.path
+ide.location.sketchbook.default=%MYDOCUMENTS%\arduino
+ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt
+ide.default.package=arduino
+ide.default.platform=avr
+ide.multiplatform=true
+ide.includes=arduino.h
+ide.platformswithoutpackage=true
+ide.sketchfolder.platforms.exclude=avr
+ide.includes.fallback=wprogram.h
+ide.extension=ino
+ide.extension.fallback=pde
+ide.versionLTEQ=149
+ide.exe=arduino.exe
+ide.hosts=atmel
+ide.url=http://arduino.cc/en/Main/Software
+vm.debug=true
+software=ARDUINO
+ide.appid=arduino10x
+location.sketchbook=C:\Users\eNDeR\Documents\Arduino
+</arduino.board.property_bag>
+        <arduino.build.mcu>atmega2560</arduino.build.mcu>
+        <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
+        <arduino.build.core>arduino</arduino.build.core>
+        <arduino.upload.protocol>wiring</arduino.upload.protocol>
+        <arduino.upload.speed>115200</arduino.upload.speed>
+        <arduino.upload.maximum_size>258048</arduino.upload.maximum_size>
+        <visualmicro.application.name>arduino10x</visualmicro.application.name>
+        <visualmicro.package.name>arduino</visualmicro.package.name>
+        <visualmicro.platform.name>avr</visualmicro.platform.name>
+        <arduino.upload.port>COM3</arduino.upload.port>
+      </VisualMicroSettings>
+    </VisualMicroSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
+        <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>__AVR_ATmega2560__</Value>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>F_CPU=16000000L</Value>
+            <Value>__AVR__</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Esplora</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Esplora\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Firmata</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Firmata\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\GSM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\GSM\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Stepper</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Stepper\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\WiFi\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -include=arduino.h</avrgcc.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>__AVR_ATmega2560__</Value>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>F_CPU=16000000L</Value>
+            <Value>__AVR__</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Esplora</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Esplora\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Ethernet\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Firmata</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Firmata\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\GSM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\GSM\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Control\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Robot_Motor\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Stepper</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Stepper\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\WiFi\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>
+            </Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.h</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
+        <avrgcccpp.assembler.general.AssemblerFlags>-relax</avrgcccpp.assembler.general.AssemblerFlags>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
+    </ToolchainSettings>
+    <VisualMicroSettings>
+      <VisualMicroSettings>
+        <arduino.board.name>mega2560</arduino.board.name>
+        <arduino.board.desc>Arduino Mega 2560 or Mega ADK</arduino.board.desc>
+        <arduino.board.property_bag>name=Arduino Mega 2560 or Mega ADK
+upload.protocol=wiring
+upload.maximum_size=258048
+upload.speed=115200
+bootloader.low_fuses=0xFF
+bootloader.high_fuses=0xD8
+bootloader.extended_fuses=0xFD
+bootloader.path=stk500v2
+bootloader.file=stk500boot_v2_mega2560.hex
+bootloader.unlock_bits=0x3F
+bootloader.lock_bits=0x0F
+build.mcu=atmega2560
+build.f_cpu=16000000L
+build.core=arduino
+build.variant=mega
+runtime.ide.path=C:\Program Files (x86)\Arduino
+build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system
+runtime.ide.version=105
+originalid=mega2560
+vm.core.include=arduino.h
+vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
+ide.hint=Arduino 0023 and 1.0.x Ide
+ide.location.key=Arduino
+ide.location.ide.winreg=Arduino 1.0.x Application
+ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook
+ide.location.sketchbook.preferences=sketchbook.path
+ide.location.sketchbook.default=%MYDOCUMENTS%\arduino
+ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt
+ide.default.package=arduino
+ide.default.platform=avr
+ide.multiplatform=true
+ide.includes=arduino.h
+ide.platformswithoutpackage=true
+ide.sketchfolder.platforms.exclude=avr
+ide.includes.fallback=wprogram.h
+ide.extension=ino
+ide.extension.fallback=pde
+ide.versionLTEQ=149
+ide.exe=arduino.exe
+ide.hosts=atmel
+ide.url=http://arduino.cc/en/Main/Software
+vm.debug=true
+software=ARDUINO
+ide.appid=arduino10x
+location.sketchbook=C:\Users\eNDeR\Documents\Arduino
+</arduino.board.property_bag>
+        <arduino.build.mcu>atmega2560</arduino.build.mcu>
+        <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
+        <arduino.build.core>arduino</arduino.build.core>
+        <arduino.upload.protocol>wiring</arduino.upload.protocol>
+        <arduino.upload.speed>115200</arduino.upload.speed>
+        <arduino.upload.maximum_size>258048</arduino.upload.maximum_size>
+        <visualmicro.application.name>arduino10x</visualmicro.application.name>
+        <visualmicro.package.name>arduino</visualmicro.package.name>
+        <visualmicro.platform.name>avr</visualmicro.platform.name>
+        <arduino.upload.port>COM3</arduino.upload.port>
+      </VisualMicroSettings>
+    </VisualMicroSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Huertomato.ino">
+      <SubType>compile</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Visual Micro\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="alarm126.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Buttons.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Buttons.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fonts.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GUI.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GUI.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hand126.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="logo126.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="moon126.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="plant126.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="plant64.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="plantDark64.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rgbLED.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rgbLED.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Sensors.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Sensors.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Settings.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Settings.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="settings64.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="settingsDark64.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Visual Micro\.Huertomato.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

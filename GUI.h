@@ -31,11 +31,11 @@
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-//#include "Settings.h"
+#include "Settings.h"
 //#include "Sensors.h"
 #include "Buttons.h"
 
-//extern Settings settings;
+extern Settings settings;
 //extern Sensors sensors;
 //TODO: Make coords of everything that can be touched                    
 

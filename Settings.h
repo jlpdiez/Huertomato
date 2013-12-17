@@ -16,6 +16,7 @@ class Settings {
     Settings();
     
     //Setters
+    //System Settings
     void setWaterTimed(boolean);
     void setWaterHour(uint8_t);
     void setWaterMinute(uint8_t);
@@ -26,8 +27,8 @@ class Settings {
     void setECalarmDown(uint32_t);
     void setWaterAlarm(uint8_t);
     void setNightWatering(boolean);
-    void setManualPump(boolean);
     
+    //Controller Settings
     void setSensorMinute(uint8_t);
     void setSensorSecond(uint8_t);
     //void setNextWhour(uint8_t);
@@ -38,7 +39,16 @@ class Settings {
     void setSound(boolean);
     void setSerialDebug(boolean);
     
+    //Status vars
+    void setNextWhour(uint8_t);
+    void setNextWminute(uint8_t);
+    void setManualPump(boolean);
+    void setNightWateringStopped(boolean);
+    void setWateringPlants(boolean);
+    void setAlarmTriggered(boolean);
+    
     //Getters
+    //System Settings
     boolean getWaterTimed();
     uint8_t getWaterHour();
     uint8_t getWaterMinute();
@@ -49,8 +59,8 @@ class Settings {
     uint32_t getECalarmDown();
     uint8_t getWaterAlarm();
     boolean getNightWatering();
-    boolean getManualPump();
     
+    //Controller Settings
     uint8_t getSensorMinute();
     uint8_t getSensorSecond();
     //uint8_t getNextWhour();
@@ -61,6 +71,14 @@ class Settings {
     boolean getSound();
     boolean getSerialDebug();
     
+    //Status vars
+    uint8_t getNextWhour();
+    uint8_t getNextWminute();
+    boolean getManualPump();
+    boolean getNightWateringStopped();
+    boolean getWateringPlants();
+    boolean getAlarmTriggered();
+       
   private:
     void readEEPROMvars();
     //System Settings
@@ -80,17 +98,13 @@ class Settings {
     //int _lightThreshold;
     //Water at night - Informs the system that watering timers are stopped for the night
     boolean _nightWatering;
-    //Manual Water Pump - Keeps the pump status when manually controling them. Not read from EEPROM
-    boolean _manualPump;
+
     
     //Controller settings
     //Time & Date - Handled outside (RTC Lib)
     //Sensor Polling
     uint8_t _sensorMinute;
     uint8_t _sensorSecond;  
-    //Time next watering will occurr. Not read from EEPROM
-    //uint8_t _nextWhour;
-    //uint8_t _nextWminute;
     //SD Card
     boolean _sdActive;
     uint8_t _sdHour;
@@ -100,10 +114,19 @@ class Settings {
     //Serial Debugging
     boolean _serialDebug;
     
+    //Status variables - Not read from EEPROM
+    //Time next watering will occurr
+    uint8_t _nextWhour;
+    uint8_t _nextWminute;
+    //Manual Water Pump - Keeps the pump status when manually controling them.
+    boolean _manualPump;
+    //Informs the system that watering timers are stopped for the night
+    boolean _nightWateringStopped;
+    //Turned on when plants are beign watered
+    boolean _wateringPlants;
+    //Informs if theres an alarm triggered
+    boolean _alarmTriggered;
     
-    //Keeps track of other situations
-    //boolean wateringPlants = false;
-    //boolean _alarmTriggered;
 
     
 //    uint8_t _wHourTMP;
@@ -119,16 +142,6 @@ class Settings {
 //    int yearTMP;
     
     //EEPROM addresses for all settings
-//    int _addressWhour;
-//    int _addressWminute;
-//    int _addressFloodM;
-//    int _addressOnlyDay;
-//    int _addressPHalarmU;
-//    int _addressPHalarmD;
-//    int _addressECalarmU;
-//    int _addressECalarmD;
-//    int _addressWaterAlarm;
-
     int _adressWaterTimed;
     int _adressWaterHour;
     int _adresswaterMinute;
@@ -140,12 +153,9 @@ class Settings {
     int _adressWaterAlarm;
     int _adresssSerialDebug;
     int _adressActivateSD;
-    int _adressNightWatering;
-//    int _adressManualPump;    
+    int _adressNightWatering;  
     int _adressSensorMinute;
     int _adressSensorSecond;  
-//    int _adressNextWhour;
-//    int _adressNextWminute;
     int _adressSDactive;
     int _adressSDhour;
     int _adressSDminute;
