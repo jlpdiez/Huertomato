@@ -26,8 +26,8 @@
 //
 // #############################################################################
 
-#ifndef __RGBLED_H
-#define __RGBLED_H
+#ifndef RGBLED_H
+#define RGBLED_H
 
 #include <Arduino.h>
 

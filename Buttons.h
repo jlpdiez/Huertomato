@@ -1,5 +1,5 @@
-#ifndef __BUTTONS_H
-#define __BUTTONS_H
+#ifndef BORDERLESS_BUTTONS_H
+#define BORDERLESS_BUTTONS_H
 
 #include <Arduino.h>
 #include <UTFT_Buttons.h>

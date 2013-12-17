@@ -1,7 +1,7 @@
 #include "Sensors.h"
 
 //Constructor
-Sensors::Sensors() {                 
+Sensors::Sensors() {     
     pinMode(lightIn, INPUT);
     pinMode(humidIn, INPUT);
     pinMode(waterTrigger, OUTPUT);

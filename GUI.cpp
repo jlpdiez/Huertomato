@@ -4,9 +4,9 @@
 #include <UTFT_Buttons.h>
 #include "Buttons.h"
 
-GUI::GUI(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touch){
-  _lcd = lcd;
-  _touch = touch;
+GUI::GUI(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touch) {
+  //_lcd = lcd;
+  //_touch = touch;
     
   _actScreen = 0;
 //  _lcd->InitLCD();
@@ -481,8 +481,8 @@ void GUI::printSystemSettings() {
    _lcd->setFont(hallfetica_normal);
   //if (waterAtNight)
   _lcd->print("ON",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(systemButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
-  //if !(manualWaterPump)
-  _lcd->print("OFF",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(systemButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
+  //if (!inputValve)
+    _lcd->print("OFF",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(systemButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
 
   //7 buttons
   // _lcd->print("T",xSpacer,ySpacer+_lcd->getFontXsize()*1.5*i);
