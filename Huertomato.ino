@@ -52,7 +52,7 @@
 #include <SD.h>
 #include "Sensors.h"
 #include "Settings.h"
-#include "rgbLED.h"
+#include "RGBled.h"
 #include "Buttons.h"
 #include "GUI.h"
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
@@ -97,7 +97,7 @@ const int SDCardSS = 53;
 // *********************************************
 // OBJECT DECLARATIONS AND GLOBAL VARIABLES
 // *********************************************
-rgbLED led(redPin, greenPin, bluePin);
+RGBled led(redPin, greenPin, bluePin);
 
 dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
@@ -106,10 +106,11 @@ DallasTemperature temperature(&oneWire);
 
 UTFT LCD(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
-GUI gui(&LCD,&Touch);
 
 Settings settings;
-//Sensors sensors;
+Sensors sensors;
+
+GUI gui(&LCD,&Touch,&sensors,&settings);
 
 ////Variables for all settings and their temporary for display and editing
 //uint8_t wHourTMP;
@@ -132,22 +133,9 @@ Settings settings;
 // *********************************************
 // SETUP
 // *********************************************
-void setup() {
-  Serial.begin(115200);
-  Serial.print("OK1: ");
-  Serial.println(freeMemory());
-  LCD.InitLCD();
-  LCD.clrScr();
-  LCD.fillScr(VGA_WHITE);
-  Touch.InitTouch();
-  Touch.setPrecision(PREC_MEDIUM);
-  Serial.print("OK2: ");
-  Serial.println(freeMemory());
-  gui.drawMainScreen();
-}
-
-//void setup() {  
-//  led.setOn();
+void setup() {  
+	//SetOn!
+	led.setOff();
 //
 //  //Actuators
 //  pinMode(buzzPin, OUTPUT);
@@ -160,32 +148,33 @@ void setup() {
 //    Serial << "By: Juan L. Perez Diez" << endl << endl;
 //  }
 //  
-//  setupRTC();
+	setupRTC();
 //  setupSD();
 //  
-//  LCD.InitLCD();
-//  LCD.clrScr();
-//  LCD.fillScr(VGA_WHITE);
-//  Touch.InitTouch();
-//  Touch.setPrecision(PREC_MEDIUM);
+	LCD.InitLCD();
+	LCD.clrScr();
+	LCD.fillScr(VGA_WHITE);
+	Touch.InitTouch();
+	Touch.setPrecision(PREC_MEDIUM);
 //  
 //  readEEPROMvars();
 //  setupAlarms();
 //  initMusic();
 //  
 //  Alarm.delay(2500);
-//  gui.drawMainScreen();
-//}
+	gui.drawMainScreen();
+}
+
 
 //Initiates system time from RTC
-//void setupRTC() {
-//  setSyncProvider(RTC.get); 
-//  if(timeStatus() != timeSet) {
-//     if (activateSerial) 
-//       Serial.println("RTC Missing!!"); 
-//       //TODO: Warn in init screen??
-//  } 
-//}
+void setupRTC() {
+  setSyncProvider(RTC.get); 
+  if(timeStatus() != timeSet) {
+     if (settings.getSerialDebug()) 
+       Serial.println("RTC Missing!!"); 
+       //TODO: Warn in init screen??
+  } 
+}
 
 //Inits SD card if needed
 //void setupSD() {
@@ -271,11 +260,8 @@ void setup() {
 // *********************************************
 // LOOP
 // *********************************************
+
 void loop() {
-    gui.processTouch();        
-    //updateMainScreen();
-}
-//void loop() {
 //  if (alarmTriggered) {
 //    led.setColour(RED);
 //    //Sound alarm in main screen only
@@ -313,8 +299,8 @@ void loop() {
 //  }
 //  //Delays are needed for alarms to work
 //  Alarm.delay(10);
-//    gui.processTouch();
-//}
+    gui.processTouch();
+}
 
 // *********************************************
 // TEXT OUTPUTS

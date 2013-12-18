@@ -33,9 +33,15 @@
 
 enum color { RED, GREEN, BLUE, WHITE };
 
-class rgbLED {
+class RGBled {
   public:
-     rgbLED(uint8_t, uint8_t, uint8_t);
+	 //Constructors
+     RGBled(uint8_t, uint8_t, uint8_t);
+	 RGBled(const RGBled &other);
+	 RGBled& operator=(const RGBled &other);
+	 //Destructor
+	 ~RGBled();
+	 
      void setOn();
      void setOff();
      void setColour(color);

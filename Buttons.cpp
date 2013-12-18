@@ -2,9 +2,38 @@
 //#include <UTFT_Buttons.h>
 #include "Buttons.h"
 
+//Constructors
+Borderless_Buttons::Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch) 
+	: UTFT_Buttons(ptrUTFT,ptrUTouch) {}
+		
+//TODO: Not very sure these work correctly
+Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other)
+	: UTFT_Buttons(other._UTFT,other._UTouch) {
+		
+	for (int i = 0; i < 3; i++) {
+		_color_text[i] = other._color_text[i];
+		_color_text_inactive[i] = other._color_text_inactive[i];
+		_color_background[i] = other._color_background[i];
+		_color_border[i] = other._color_border[i];
+		_color_hilite[i] = other._color_hilite[i];
+	}
+}
 
+Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &other) {
+	_UTFT = other._UTFT;
+	_UTouch = other._UTouch;
+	for (int i = 0; i < 3; i++) {
+		_color_text[i] = other._color_text[i];
+		_color_text_inactive[i] = other._color_text_inactive[i];
+		_color_background[i] = other._color_background[i];
+		_color_border[i] = other._color_border[i];
+		_color_hilite[i] = other._color_hilite[i];
+	}		
+	
+	return *this;	
+}
 
-Borderless_Buttons::Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch) : UTFT_Buttons(ptrUTFT,ptrUTouch) {}
+Borderless_Buttons::~Borderless_Buttons() {}
 
 void Borderless_Buttons::drawButtons() {
   for (int i = 0; i < MAX_BUTTONS; i++) {

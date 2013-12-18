@@ -1,10 +1,11 @@
 #include "GUI.h"
-#include <UTFT.h>
+/*#include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-#include "Buttons.h"
+#include "Buttons.h"*/
 
-GUI::GUI(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touch) {
+GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+	: _lcd(lcd), _touch(touch), _buttons(lcd,touch), _sensors(sensors), _settings(settings) {
   _actScreen = 0;
 
   _buttons.setTextFont(hallfetica_normal);
@@ -12,6 +13,31 @@ GUI::GUI(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touc
   _buttons.setButtonColors(lightGreen, darkGreen, white, grey, white);
 }
 
+GUI::GUI(const GUI &other) : _buttons(other._buttons) {
+	_lcd = other._lcd;
+	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	
+	_actScreen = 0;
+
+	_buttons.setTextFont(hallfetica_normal);
+	_buttons.setSymbolFont(various_symbols);
+	_buttons.setButtonColors(lightGreen, darkGreen, white, grey, white);
+}
+
+GUI& GUI::operator=(const GUI &other) {
+	_lcd = other._lcd;
+	_touch = other._touch;
+	_buttons = other._buttons;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	
+	return *this;
+}
+
+GUI::~GUI() {}
+	
 //GUI::GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ) :
 //  _lcd(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST), _touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ), _buttons(&_lcd, &_touch){
 //    
@@ -220,8 +246,8 @@ void GUI::printIconAndStatus() {
   //Change Y coord.
   
   //If theres an alarm
-  if (settings.getAlarmTriggered()) {
-    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, alarm126);    
+  if (_settings->getAlarmTriggered()) {
+    //_lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, alarm126);    
     _lcd->setColor(red[0],red[1],red[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
@@ -230,8 +256,8 @@ void GUI::printIconAndStatus() {
     _lcd->print("Alarm - Check Solution",10+_lcd->getFontXsize()*2,200);
   
   //watering and not in continuous mode
-  } else if (settings.getWaterTimed() && settings.getWateringPlants()) {  
-    _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, logo126);     
+  } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {  
+    //_lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, logo126);     
     _lcd->setColor(blue[0],blue[1],blue[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
@@ -240,24 +266,24 @@ void GUI::printIconAndStatus() {
     _lcd->print("Huertomato Watering",10+_lcd->getFontXsize()*2,200); 
   
   //water stopped because its night  
-  } else if (settings.getNightWateringStopped()) {
-      _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, moon126);   
-      _lcd->setColor(grey[0],grey[1],grey[2]);
-      _lcd->setBackColor(VGA_WHITE);
-      _lcd->setFont(various_symbols);
-      _lcd->print("T",10,200);
-      _lcd->setFont(hallfetica_normal);
-      _lcd->print("No Watering @ Night",10+_lcd->getFontXsize()*2,200);
-  
+  } else if (_settings->getNightWateringStopped()) {
+    //_lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, moon126);
+    _lcd->setColor(grey[0],grey[1],grey[2]);
+    _lcd->setBackColor(VGA_WHITE);
+    _lcd->setFont(various_symbols);
+    _lcd->print("T",10,200);
+    _lcd->setFont(hallfetica_normal);
+    _lcd->print("No Watering @ Night",10+_lcd->getFontXsize()*2,200);
+    
   //water pump in manual mode    
-  } else if (settings.getManualPump()) {
-      _lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, hand126); 
-      _lcd->setColor(red[0],red[1],red[2]);
-      _lcd->setBackColor(VGA_WHITE);
-      _lcd->setFont(various_symbols);
-      _lcd->print("T",10,200);
-      _lcd->setFont(hallfetica_normal);
-      _lcd->print("Pump Manually Enabled",10+_lcd->getFontXsize()*2,200);  
+  } else if (_settings->getManualPump()) {
+	//_lcd->drawBitmap (15, 25+_lcd->getFontXsize(), 126, 126, hand126); 
+	_lcd->setColor(red[0],red[1],red[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	_lcd->setFont(various_symbols);
+	_lcd->print("T",10,200);
+	_lcd->setFont(hallfetica_normal);
+	_lcd->print("Pump Manually Enabled",10+_lcd->getFontXsize()*2,200);  
 
   //Normal operation    
   } else {
@@ -377,7 +403,7 @@ void GUI::drawMainMenu() {
   _buttons.drawButtons();
 }
 
-//Processes touch for main menu screen
+// Processes touch for main menu screen
 void GUI::processTouchMainMenu(int x, int y) {
   int buttonIndex = _buttons.checkButtons(x,y);
   //Exit
@@ -401,7 +427,6 @@ void GUI::processTouchMainMenu(int x, int y) {
   }
 }
 
-//Merge with printControllerSettings?
 //Prepares window for drawing
 void GUI::printSystemSettings() {
   const int xSpacer = 15;
@@ -418,15 +443,23 @@ void GUI::printSystemSettings() {
   }  
   
   //Make menu buttons
-  //-3 becaus back/save/exit are already added at this stage
+  //-3 because back/save/exit are already added at this stage
   for (int i = 0; i < nSystemButtons - 3; i++) {
     systemButtons[i + 3] = _buttons.addButton(xSpacer+_lcd->getFontXsize()*2,ySpacer+_lcd->getFontXsize()*2*i,systemButtonText[i]);
   } 
    _lcd->setFont(hallfetica_normal);
-  //if (waterAtNight)
-  _lcd->print("ON",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(systemButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
-  //if (!inputValve)
-    _lcd->print("OFF",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(systemButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
+  
+  //Watering at night ON/OFF 
+  if (_settings->getNightWatering())
+	_lcd->print("ON",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(systemButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
+  else
+	_lcd->print("OFF",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(systemButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
+  
+  //Manual Pump ON/OFF	
+  if (_settings->getManualPump())
+    _lcd->print("ON",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(systemButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
+  else
+	_lcd->print("OFF",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(systemButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
 
   //7 buttons
   // _lcd->print("T",xSpacer,ySpacer+_lcd->getFontXsize()*1.5*i);
@@ -506,10 +539,17 @@ void GUI::printControllerSettings() {
   }
   
   _lcd->setFont(hallfetica_normal); 
-  //if (soundIsOn)
-  _lcd->print("ON",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(controllerButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
-  //if !(serialDebugging)
-  _lcd->print("OFF",xSpacer+_lcd->getFontXsize()*3+_lcd->getFontXsize()*strlen(controllerButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
+  
+  //Sound ON/OFF
+  if (_settings->getSound())
+    _lcd->print("ON",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(controllerButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
+  else
+	_lcd->print("OFF",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(controllerButtonText[3]),ySpacer+_lcd->getFontXsize()*2*3);
+  //Serial Debug ON/OFF
+  if (_settings->getSerialDebug())
+    _lcd->print("ON",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(controllerButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
+  else
+	_lcd->print("OFF",xSpacer+_lcd->getFontXsize()*2+_lcd->getFontXsize()*strlen(controllerButtonText[4]),ySpacer+_lcd->getFontXsize()*2*4);
   
   //This goes to waitForControllerSettings or Buttons.h
 //  _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
@@ -586,14 +626,14 @@ void GUI::printTimeSettings() {
   const int monD[] = {220, yDate+22};       //month down
   const int yeaD[] = {290, yDate+22};       //year down
 
-  //Get actual time - Should be requested to huertomato main
-  //time_t t = now();
-  int hourTMP = 18;
-  int minTMP = 23;
-  int secTMP = 52;
-  int dayTMP = 02;
-  int monthTMP = 12;
-  int yearTMP = 2013;
+  //Get actual time
+  time_t t = now();
+  int hourTMP = hour(t);
+  int minTMP = minute(t);
+  int secTMP = second(t);
+  int dayTMP = day(t);
+  int monthTMP = month(t);
+  int yearTMP = year(t);
 
   _lcd->setColor(grey[0],grey[1],grey[2]);  
   _lcd->setBackColor(VGA_WHITE);
@@ -689,10 +729,8 @@ void GUI::printSensorPolling() {
   const int minD[] = {xSpacer2+8, ySecondLine+22};       //min down
   const int secD[] = {xSpacer2+8+9*_lcd->getFontXsize(), ySecondLine+22};       //sec down
   
-  //Get actual time - Should be requested to huertomato main
-  //time_t t = now();
-  int minTMP = 05;
-  int secTMP = 30;
+  int minTMP = _settings->getSensorMinute();
+  int secTMP = _settings->getSensorSecond();
   
   _lcd->setColor(grey[0],grey[1],grey[2]);  
   _lcd->setBackColor(VGA_WHITE);
@@ -763,10 +801,8 @@ void GUI::printSDcard() {
   const int houD[] = {217, ySecondLine+22};       //hour down
   const int minD[] = {280, ySecondLine+22};       //min down
   
-  //Get actual time - Should be requested to huertomato main
-  //time_t t = now();
-  int houTMP = 0;
-  int minTMP = 30;
+  int houTMP = _settings->getSDhour();
+  int minTMP = _settings->getSDminute();
   
   //Triangle symbol
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -775,9 +811,12 @@ void GUI::printSDcard() {
   _lcd->print("T",xSpacer,yFirstLine);
   //First line button
   sdCardButtons[3] = _buttons.addButton(xSpacer+2*_lcd->getFontXsize(),yFirstLine,sdCardButtonsText[0]);
-  //On - off symbol - if (SDcardActive)
+  //On - off symbol - 
   _lcd->setFont(hallfetica_normal);
-  _lcd->print("ON",xSpacer+((3+strlen(sdCardButtonsText[0]))*_lcd->getFontXsize()),yFirstLine);
+  if (_settings->getSDactive())
+	_lcd->print("ON",xSpacer+((3+strlen(sdCardButtonsText[0]))*_lcd->getFontXsize()),yFirstLine);
+  else
+	_lcd->print("OFF",xSpacer+((3+strlen(sdCardButtonsText[0]))*_lcd->getFontXsize()),yFirstLine);
   
   //Second line
   _lcd->setColor(grey[0],grey[1],grey[2]);  
@@ -851,9 +890,9 @@ void GUI::printWaterCycle() {
   const int fMinU[] = {225, yThirdLine-22};       //active for min
   const int fMinD[] = {225, yThirdLine+22};       //active for min
   
-  int wHour = 2;
-  int wMin = 30;
-  int fMin = 15;
+  int wHour = _settings->getWaterHour();
+  int wMin = _settings->getWaterMinute();
+  int fMin = _settings->getFloodMinute();
   
   //First Line - Triangle
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -865,9 +904,11 @@ void GUI::printWaterCycle() {
   waterCycleButtons[4] = _buttons.addButton(x,yFirstLine,waterCycleButtonsText[0]);
   //Continuous/timed text
   x += (1+strlen(waterCycleButtonsText[0]))*_lcd->getFontXsize();
-  //if (continuous)
-  _lcd->print("Continuous",x,yFirstLine);
-  
+  if (_settings->getWaterTimed())
+	_lcd->print("Timed",x,yFirstLine);
+  else
+	_lcd->print("Continuous",x,yFirstLine);
+	
   //Second Line
   _lcd->setColor(grey[0],grey[1],grey[2]);
   x = xSpacer;
@@ -997,8 +1038,8 @@ void GUI::printPHalarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  float phUlimit = 7.35;
-  float phDlimit = 6.05;
+  float phUlimit = _settings->getPHalarmUp();
+  float phDlimit = _settings->getPHalarmDown();
   
   char* uLimit = "Upper Limit:";
   char* dLimit = "Lower Limit:";
@@ -1052,8 +1093,8 @@ void GUI::printECalarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  uint32_t ecUlimit = 3457;
-  uint32_t ecDlimit = 1670;
+  uint32_t ecUlimit = _settings->getECalarmUp();
+  uint32_t ecDlimit = _settings->getECalarmDown();
   
   char* uLimit = "Upper Limit:";
   char* dLimit = "Lower Limit:";
@@ -1110,7 +1151,7 @@ void GUI::printWaterAlarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  int wLimit = 33;
+  int wLimit = _settings->getWaterAlarm();
   
   char* wLimitS = "Lower Limit:";
   _lcd->setColor(grey[0],grey[1],grey[2]);

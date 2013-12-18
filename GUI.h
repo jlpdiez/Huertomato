@@ -1,6 +1,6 @@
 // #############################################################################
 // 
-// # Name       : rGUI
+// # Name       : GUI
 // # Version    : 1.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
@@ -32,10 +32,11 @@
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
 #include "Settings.h"
-//#include "Sensors.h"
+#include "Sensors.h"
 #include "Buttons.h"
+#include <Time.h>
 
-extern Settings settings;
+//extern Settings settings;
 //extern Sensors sensors;
 //TODO: Make coords of everything that can be touched                    
 
@@ -231,8 +232,13 @@ static int lightCalibrationButtons[nLightCalibrationButtons];
 //Once initialised you call drawMainScreen() and then just processTouch() on the main loop
 class GUI {
   public:
+	//Constructors
     //GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ);
-    GUI(UTFT *lcd, UTouch *touch);
+    GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+	GUI(const GUI &other);
+	GUI& operator=(const GUI &other);
+	//Destructor
+	~GUI();
     //updates sensors in main screen
     //void update();
     void processTouch();
@@ -250,6 +256,8 @@ class GUI {
 
     UTFT *_lcd;
     UTouch *_touch;
+	Sensors *_sensors;
+	Settings *_settings;
     Borderless_Buttons _buttons;
     
     //Private functions

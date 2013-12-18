@@ -1,6 +1,6 @@
 #include "Sensors.h"
 
-//Constructor
+//Constructors
 Sensors::Sensors() {     
     pinMode(lightIn, INPUT);
     pinMode(humidIn, INPUT);
@@ -29,6 +29,46 @@ Sensors::Sensors() {
       _waterLevels[i] = 0;
     }
 }
+
+Sensors::Sensors(const Sensors &other) {
+	_iSample = other._iSample;
+	for (int i = 0; i < numSamples; i++) {
+		_temps[i] = other._temps[i];
+		_lights[i] = other._lights[i];
+		_humidities[i] = other._humidities[i];
+		_ecs[i] = other._ecs[i];
+		_phs[i] = other._phs[i];
+		_waterLevels[i] = other._waterLevels[i];
+	}
+	_temp = other._temp;
+	_light = other._light;
+	_humidity = other._humidity;
+	_ec = other._ec;
+	_ph = other._ph;
+	_waterLevel = other._waterLevel;	
+}
+
+Sensors& Sensors::operator=(const Sensors &other) {
+	_iSample = other._iSample;
+	for (int i = 0; i < numSamples; i++) {
+		_temps[i] = other._temps[i];
+		_lights[i] = other._lights[i];
+		_humidities[i] = other._humidities[i];
+		_ecs[i] = other._ecs[i];
+		_phs[i] = other._phs[i];
+		_waterLevels[i] = other._waterLevels[i];
+	}
+	_temp = other._temp;
+	_light = other._light;
+	_humidity = other._humidity;
+	_ec = other._ec;
+	_ph = other._ph;
+	_waterLevel = other._waterLevel;
+	
+	return *this;	
+}
+
+Sensors::~Sensors() {}
 
 //Getters
 float Sensors::getTemp() {

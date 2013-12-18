@@ -13,71 +13,72 @@ extern EEPROMClassEx EEPROM;
 //TODO: Add light Threshold
 class Settings {
   public:
+	//Constructors
     Settings();
+	Settings(const Settings &other);
+	Settings& operator=(const Settings &other);
+	//Destructor
+	~Settings();
     
     //Setters
     //System Settings
-    void setWaterTimed(boolean);
-    void setWaterHour(uint8_t);
-    void setWaterMinute(uint8_t);
-    void setFloodMinute(uint8_t);
-    void setPHalarmUp(float);
-    void setPHalarmDown(float);
-    void setECalarmUp(uint32_t);
-    void setECalarmDown(uint32_t);
-    void setWaterAlarm(uint8_t);
-    void setNightWatering(boolean);
+    void setWaterTimed(const boolean);
+    void setWaterHour(const uint8_t);
+    void setWaterMinute(const uint8_t);
+    void setFloodMinute(const uint8_t);
+    void setPHalarmUp(const float);
+    void setPHalarmDown(const float);
+    void setECalarmUp(const uint32_t);
+    void setECalarmDown(const uint32_t);
+    void setWaterAlarm(const uint8_t);
+    void setNightWatering(const boolean);
     
     //Controller Settings
-    void setSensorMinute(uint8_t);
-    void setSensorSecond(uint8_t);
-    //void setNextWhour(uint8_t);
-    //void setNextWminute(uint8_t);
-    void setSDactive(boolean);
-    void setSDhour(uint8_t);
-    void setSDminute(uint8_t);
-    void setSound(boolean);
-    void setSerialDebug(boolean);
+    void setSensorMinute(const uint8_t);
+    void setSensorSecond(const uint8_t);
+    void setSDactive(const boolean);
+    void setSDhour(const uint8_t);
+    void setSDminute(const uint8_t);
+    void setSound(const boolean);
+    void setSerialDebug(const boolean);
     
     //Status vars
-    void setNextWhour(uint8_t);
-    void setNextWminute(uint8_t);
-    void setManualPump(boolean);
-    void setNightWateringStopped(boolean);
-    void setWateringPlants(boolean);
-    void setAlarmTriggered(boolean);
+    void setNextWhour(const uint8_t);
+    void setNextWminute(const uint8_t);
+    void setManualPump(const boolean);
+    void setNightWateringStopped(const boolean);
+    void setWateringPlants(const boolean);
+    void setAlarmTriggered(const boolean);
     
     //Getters
     //System Settings
-    boolean getWaterTimed();
-    uint8_t getWaterHour();
-    uint8_t getWaterMinute();
-    uint8_t getFloodMinute();
-    float getPHalarmUp();
-    float getPHalarmDown();
-    uint32_t getECalarmUp();
-    uint32_t getECalarmDown();
-    uint8_t getWaterAlarm();
-    boolean getNightWatering();
+    boolean getWaterTimed() const;
+    uint8_t getWaterHour() const;
+    uint8_t getWaterMinute() const;
+    uint8_t getFloodMinute() const;
+    float getPHalarmUp() const;
+    float getPHalarmDown() const;
+    uint32_t getECalarmUp() const;
+    uint32_t getECalarmDown() const;
+    uint8_t getWaterAlarm() const;
+    boolean getNightWatering() const;
     
     //Controller Settings
-    uint8_t getSensorMinute();
-    uint8_t getSensorSecond();
-    //uint8_t getNextWhour();
-    //uint8_t getNextWminute();
-    boolean getSDactive();
-    uint8_t getSDhour();
-    uint8_t getSDminute();
-    boolean getSound();
-    boolean getSerialDebug();
+    uint8_t getSensorMinute() const;
+    uint8_t getSensorSecond() const;
+    boolean getSDactive() const;
+    uint8_t getSDhour() const;
+    uint8_t getSDminute() const;
+    boolean getSound() const;
+    boolean getSerialDebug() const;
     
     //Status vars
-    uint8_t getNextWhour();
-    uint8_t getNextWminute();
-    boolean getManualPump();
-    boolean getNightWateringStopped();
-    boolean getWateringPlants();
-    boolean getAlarmTriggered();
+    uint8_t getNextWhour() const;
+    uint8_t getNextWminute() const;
+    boolean getManualPump() const;
+    boolean getNightWateringStopped() const;
+    boolean getWateringPlants() const;
+    boolean getAlarmTriggered() const;
        
   private:
     void readEEPROMvars();

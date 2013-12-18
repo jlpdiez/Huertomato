@@ -1,5 +1,8 @@
 #include "Settings.h"
 
+//TODO: How to initialize nextWtimes?
+
+//Constructors
 Settings::Settings() {
 //  _lightThreshold = 10;
   
@@ -23,7 +26,6 @@ Settings::Settings() {
   _ecAlarmDown = 1200;
   _waterAlarm = 33;
   _nightWatering = true;
-  _manualPump = false;
   
   //Controller Settings
   _sensorMinute = 0;
@@ -32,7 +34,7 @@ Settings::Settings() {
   _sdHour = 0;
   _sdMinute = 5;
   _sound = true;
-  _serialDebug = true;;
+  _serialDebug = true;
   
 //  _adressWaterTimed = EEPROM.getAddress(sizeof(byte));
 //  _adressWaterHour = EEPROM.getAddress(sizeof(byte));
@@ -58,6 +60,74 @@ Settings::Settings() {
 //  readEEPROMvars();
 }
 
+Settings::Settings(const Settings &other) {
+	  //Status variables - Not read from EEPROM
+	  _nextWhour = 0;
+	  _nextWminute = 0;
+	  _manualPump = false;
+	  _nightWateringStopped = false;
+	  _manualPump = false;
+	  _wateringPlants = false;
+	  _alarmTriggered = false;
+	  
+	  //System Settings
+	  _waterTimed = other._waterTimed;
+	  _waterHour = other._waterHour;
+	  _waterMinute = other._waterMinute;
+	  _floodMinute = other._floodMinute;
+	  _phAlarmUp = other._phAlarmUp;
+	  _phAlarmDown = other._phAlarmDown;
+	  _ecAlarmUp = other._ecAlarmUp;
+	  _ecAlarmDown = other._ecAlarmDown;
+	  _waterAlarm = other._waterAlarm;
+	  _nightWatering = other._nightWatering;
+	  
+	  //Controller Settings
+	  _sensorMinute = other._sensorMinute;
+	  _sensorSecond = other._sensorSecond;
+	  _sdActive = other._sdActive;
+	  _sdHour = other._sdHour;
+	  _sdMinute = other._sdMinute;
+	  _sound = other._sound;
+	  _serialDebug = other._serialDebug;
+}
+
+Settings& Settings::operator=(const Settings &other) {
+	//Status variables - Not read from EEPROM
+	_nextWhour = 0;
+	_nextWminute = 0;
+	_manualPump = false;
+	_nightWateringStopped = false;
+	_manualPump = false;
+	_wateringPlants = false;
+	_alarmTriggered = false;
+		  
+	//System Settings
+	_waterTimed = other._waterTimed;
+	_waterHour = other._waterHour;
+	_waterMinute = other._waterMinute;
+	_floodMinute = other._floodMinute;
+	_phAlarmUp = other._phAlarmUp;
+	_phAlarmDown = other._phAlarmDown;
+	_ecAlarmUp = other._ecAlarmUp;
+	_ecAlarmDown = other._ecAlarmDown;
+	_waterAlarm = other._waterAlarm;
+	_nightWatering = other._nightWatering;
+		  
+	//Controller Settings
+	_sensorMinute = other._sensorMinute;
+	_sensorSecond = other._sensorSecond;
+	_sdActive = other._sdActive;
+	_sdHour = other._sdHour;
+	_sdMinute = other._sdMinute;
+	_sound = other._sound;
+	_serialDebug = other._serialDebug;
+	
+	return *this;
+}
+
+Settings::~Settings() {}
+
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
   _waterTimed = EEPROM.readByte(_adressWaterTimed);
@@ -82,193 +152,193 @@ void Settings::readEEPROMvars() {
 
 //Setters
 //System Settings
-void Settings::setWaterTimed(boolean w) {
+void Settings::setWaterTimed(const boolean w) {
   _waterTimed = w;
 }
 
-void Settings::setWaterHour(uint8_t w) {
+void Settings::setWaterHour(const uint8_t w) {
   _waterHour = w;
 }
 
-void Settings::setWaterMinute(uint8_t w) {
+void Settings::setWaterMinute(const uint8_t w) {
   _waterMinute = w;
 }
 
-void Settings::setFloodMinute(uint8_t f) {
+void Settings::setFloodMinute(const uint8_t f) {
   _floodMinute = f;
 }
 
-void Settings::setPHalarmUp(float p) {
+void Settings::setPHalarmUp(const float p) {
   _phAlarmUp = p;
 }
 
-void Settings::setPHalarmDown(float p) {
+void Settings::setPHalarmDown(const float p) {
   _phAlarmDown = p;
 }
 
-void Settings::setECalarmUp(uint32_t e) {
+void Settings::setECalarmUp(const uint32_t e) {
   _ecAlarmUp = e;
 }
 
-void Settings::setECalarmDown(uint32_t e) {
+void Settings::setECalarmDown(const uint32_t e) {
   _ecAlarmDown = e;
 }
 
-void Settings::setWaterAlarm(uint8_t w) {
+void Settings::setWaterAlarm(const uint8_t w) {
   _waterAlarm = w;
 }
 
-void Settings::setNightWatering(boolean n) {
+void Settings::setNightWatering(const boolean n) {
   _nightWatering = n;
 }
 
 //Controller Settings
-void Settings::setSensorMinute(uint8_t s) {
+void Settings::setSensorMinute(const uint8_t s) {
   _sensorMinute = s;
 }
 
-void Settings::setSensorSecond(uint8_t s) {
+void Settings::setSensorSecond(const uint8_t s) {
   _sensorSecond = s;
 }
 
-void Settings::setSDactive(boolean s) {
+void Settings::setSDactive(const boolean s) {
   _sdActive = s;
 }
 
-void Settings::setSDhour(uint8_t s) {
+void Settings::setSDhour(const uint8_t s) {
   _sdHour = s;
 }
 
-void Settings::setSDminute(uint8_t s) {
+void Settings::setSDminute(const uint8_t s) {
   _sdMinute = s;
 }
 
-void Settings::setSound(boolean s) {
+void Settings::setSound(const boolean s) {
   _sound = s;
 }
 
-void Settings::setSerialDebug(boolean s) {
+void Settings::setSerialDebug(const boolean s) {
   _serialDebug = s;
 }
 
 //Status vars
-void Settings::setNextWhour(uint8_t n) {
+void Settings::setNextWhour(const uint8_t n) {
   _nextWhour = n;
 }
 
-void Settings::setNextWminute(uint8_t n) {
+void Settings::setNextWminute(const uint8_t n) {
   _nextWminute = n;
 }
 
-void Settings::setManualPump(boolean m) {
+void Settings::setManualPump(const boolean m) {
   _manualPump = m;
 }
 
-void Settings::setNightWateringStopped(boolean n) {
+void Settings::setNightWateringStopped(const boolean n) {
   _nightWateringStopped = n;
 }
 
-void Settings::setWateringPlants(boolean w) {
+void Settings::setWateringPlants(const boolean w) {
   _wateringPlants = w;
 }
 
-void Settings::setAlarmTriggered(boolean a) {
+void Settings::setAlarmTriggered(const boolean a) {
   _alarmTriggered = a;
 }
 
 //Getters
 //System Settings
-boolean Settings::getWaterTimed() {
+boolean Settings::getWaterTimed() const {
   return _waterTimed;
 }
 
-uint8_t Settings::getWaterHour() {
+uint8_t Settings::getWaterHour() const {
   return _waterHour;
 }
 
-uint8_t Settings::getWaterMinute() {
+uint8_t Settings::getWaterMinute() const {
   return _waterMinute;
 }
 
-uint8_t Settings::getFloodMinute() {
+uint8_t Settings::getFloodMinute() const {
   return _floodMinute;
 }
 
-float Settings::getPHalarmUp() {
+float Settings::getPHalarmUp() const {
   return _phAlarmUp;
 }
 
-float Settings::getPHalarmDown() {
+float Settings::getPHalarmDown() const {
   return _phAlarmDown;
 }
 
-uint32_t Settings::getECalarmUp() {
+uint32_t Settings::getECalarmUp() const {
   return _ecAlarmUp;
 }
 
-uint32_t Settings::getECalarmDown() {
+uint32_t Settings::getECalarmDown() const {
   return _ecAlarmDown;
 }
 
-uint8_t Settings::getWaterAlarm() {
+uint8_t Settings::getWaterAlarm() const {
   return _waterAlarm;
 }
 
-boolean Settings::getNightWatering() {
+boolean Settings::getNightWatering() const {
   return _nightWatering;
 }
 
 //Controller Settings
-uint8_t Settings::getSensorMinute() {
+uint8_t Settings::getSensorMinute() const {
   return _sensorMinute;
 }
 
-uint8_t Settings::getSensorSecond() {
+uint8_t Settings::getSensorSecond() const {
   return _sensorSecond;
 }
 
-boolean Settings::getSDactive() {
+boolean Settings::getSDactive() const {
   return _sdActive;
 }
 
-uint8_t Settings::getSDhour() {
+uint8_t Settings::getSDhour() const {
   return _sdHour;
 }
 
-uint8_t Settings::getSDminute() {
+uint8_t Settings::getSDminute() const {
   return _sdMinute;
 }
 
-boolean Settings::getSound() {
+boolean Settings::getSound() const {
   return _sound;
 }
 
-boolean Settings::getSerialDebug() {
+boolean Settings::getSerialDebug() const {
   return _serialDebug;
 }
 
 //Status vars
-uint8_t Settings::getNextWhour() {
+uint8_t Settings::getNextWhour() const {
   return _nextWhour;
 }
 
-uint8_t Settings::getNextWminute() {
+uint8_t Settings::getNextWminute() const {
   return _nextWminute;
 }
 
-boolean Settings::getManualPump() {
+boolean Settings::getManualPump() const {
   return _manualPump;
 }
 
-boolean Settings::getNightWateringStopped() {
+boolean Settings::getNightWateringStopped() const {
   return _nightWateringStopped;
 }
 
-boolean Settings::getWateringPlants() {
+boolean Settings::getWateringPlants() const {
   return _wateringPlants;
 }
 
-boolean Settings::getAlarmTriggered() {
+boolean Settings::getAlarmTriggered() const {
   return _alarmTriggered;
 }
 

@@ -58,8 +58,12 @@ extern dht11 DHT11;
 //Class that handles sensor reading & smoothing
 class Sensors {
   public:
-    //Constructor
+    //Constructors
     Sensors();
+	Sensors(const Sensors &other);
+	Sensors& operator=(const Sensors &other);
+	//Destructor
+	~Sensors();
   
     //Getters
     float getTemp();

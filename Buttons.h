@@ -22,9 +22,14 @@
 
 class Borderless_Buttons : public UTFT_Buttons {
   public:
-    //Borderless_Buttons();
+    //Constructors
+	//Borderless_Buttons();
     Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch);
-    
+	Borderless_Buttons(const Borderless_Buttons &other);
+	Borderless_Buttons& operator=(const Borderless_Buttons &other);
+	//Destructor
+	~Borderless_Buttons();
+	    
     int	addButton(uint16_t x, uint16_t y, char *label, uint16_t flags=0);
     int addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);
     void drawButtons();
