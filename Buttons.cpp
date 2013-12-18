@@ -6,9 +6,8 @@
 Borderless_Buttons::Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch) 
 	: UTFT_Buttons(ptrUTFT,ptrUTouch) {}
 		
-//TODO: Not very sure these work correctly
 Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other)
-	: UTFT_Buttons(other._UTFT,other._UTouch) {
+	: UTFT_Buttons(other) {
 		
 	for (int i = 0; i < 3; i++) {
 		_color_text[i] = other._color_text[i];
@@ -19,7 +18,9 @@ Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other)
 	}
 }
 
+//Not sure if it works correctly
 Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &other) {
+	//Should call operator= of the superclass but its not available
 	_UTFT = other._UTFT;
 	_UTouch = other._UTouch;
 	for (int i = 0; i < 3; i++) {

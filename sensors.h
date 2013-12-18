@@ -37,7 +37,7 @@
 // Used for smoothing sensor data.  The higher the number,
 // the more the readings will be smoothed, but the slower the variables will
 // respond to the input.
-const uint8_t numSamples = 10;
+//const uint8_t numSamples = 10;
 //These should be read from EEPROM and should be mutable    
 const int maxWaterLevel = 16;
 const int minWaterLevel = 50;
@@ -89,7 +89,9 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint32_t ec();
-  
+	
+	//Define a const for array size  
+	enum { numSamples = 10 };
     //Smoothing counter
     uint8_t _iSample;
     //Contain sensor data pre-smoothing

@@ -638,6 +638,7 @@ void GUI::printTimeSettings() {
   _lcd->setColor(grey[0],grey[1],grey[2]);  
   _lcd->setBackColor(VGA_WHITE);
   
+  
   //Make +/- buttons
   timeButtons[3] = _buttons.addButton(houU[0],houU[1],timeButtonText[0],BUTTON_SYMBOL);
   timeButtons[4] = _buttons.addButton(minU[0],minU[1],timeButtonText[1],BUTTON_SYMBOL);

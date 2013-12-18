@@ -58,6 +58,8 @@
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
 #include <MemoryFree.h>
 
+#include "Window.h"
+
 
 // *********************************************
 // PINOUT ASSIGN
@@ -163,6 +165,8 @@ void setup() {
 //  
 //  Alarm.delay(2500);
 	gui.drawMainScreen();
+	
+	//int *test = new int();
 }
 
 

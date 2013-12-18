@@ -34,11 +34,7 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"
-#include <Time.h>
-
-//extern Settings settings;
-//extern Sensors sensors;
-//TODO: Make coords of everything that can be touched                    
+#include <Time.h>              
 
 //Main Screen Icons                          
 extern prog_uint16_t plant126[0x3E04];
@@ -73,6 +69,9 @@ const int ySize = 239;
 
 //Here lies the button info for each window
 //We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
+//static in this context means vars will only be accesible in this file
+//http://www.cprogramming.com/tutorial/statickeyword.html
+
 const int nMainMenuButtons = 5;
 static char* mainMenuButtonText[nMainMenuButtons] = {
   "System Settings",
@@ -225,8 +224,20 @@ static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
-//extern Settings settings;
-//extern Sensors sensors;
+//These are temp variables used for displaying data
+//They are read from _settings in print(). Changed in processTouch()
+//and saved to eeprom when button save is pressed
+/*uint8_t wHourTMP;
+uint8_t wMinuteTMP;
+uint8_t floodMtmp;
+boolean onlyDayTMP;
+float phAlarmUtmp;
+float phAlarmDtmp;
+uint32_t ecAlarmUtmp;
+uint32_t ecAlarmDtmp;
+uint8_t waterAlarmTMP;
+uint8_t hourTMP, minTMP, secTMP, dayTMP, monthTMP;
+int yearTMP;*/
   
 //Handless all the gui.
 //Once initialised you call drawMainScreen() and then just processTouch() on the main loop

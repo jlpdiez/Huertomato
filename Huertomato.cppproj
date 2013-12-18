@@ -599,12 +599,6 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
     <Compile Include="hand126.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Huerto.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Huerto.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="logo126.c">
       <SubType>compile</SubType>
     </Compile>
