@@ -4,7 +4,7 @@
 // # Version    : 1.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 16.12.2013
+// # Date       : 19.12.2013
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition
@@ -66,6 +66,8 @@ const uint8_t white[3] = {255,255,255};
 
 const int xSize = 399;
 const int ySize = 239;
+const int bigFontSize = 16;
+const int smallFontSize = 8;
 
 //Here lies the button info for each window
 //We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
@@ -225,8 +227,8 @@ static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
 //These are temp variables used for displaying data
-//They are read from _settings in print(). Changed in processTouch()
-//and saved to eeprom when button save is pressed
+//They are read from _settings in print() funcs. Changed in processTouch()
+//displayed again with update() and saved to eeprom when button save is pressed
 /*uint8_t wHourTMP;
 uint8_t wMinuteTMP;
 uint8_t floodMtmp;
@@ -235,9 +237,30 @@ float phAlarmUtmp;
 float phAlarmDtmp;
 uint32_t ecAlarmUtmp;
 uint32_t ecAlarmDtmp;
-uint8_t waterAlarmTMP;
-uint8_t hourTMP, minTMP, secTMP, dayTMP, monthTMP;
-int yearTMP;*/
+uint8_t waterAlarmTMP;*/
+//System Settings
+//Watering cycle
+//ph Alarms
+//ec Alarms
+//Water alarms
+//Night Toggle
+static boolean nightWater;
+//Water pump toggle
+static boolean waterPumpState;
+//Controller Settings
+//Time & Date
+static uint8_t sysHour, sysMin, sysSec, sysDay, sysMonth;
+static int sysYear;
+//Sensor Polling
+static uint8_t pollMin, pollSec;
+//SD Card
+static boolean sdActive;
+static uint8_t sdHour, sdMin;
+//Sound toggle
+static boolean soundActive;
+//Serial toggle
+static boolean serialActive;
+
   
 //Handless all the gui.
 //Once initialised you call drawMainScreen() and then just processTouch() on the main loop
@@ -250,6 +273,8 @@ class GUI {
 	GUI& operator=(const GUI &other);
 	//Destructor
 	~GUI();
+	//Getters
+	int getActScreen() const;
     //updates sensors in main screen
     //void update();
     void processTouch();
@@ -293,28 +318,29 @@ class GUI {
     
     void printSystemSettings();
     void drawSystemSettings();
+	void updateSystemSettings();
     void processTouchSystem(int x, int y);
     
     void printControllerSettings();
     void drawControllerSettings();
+	void updateControllerSettings();
     void processTouchController(int x,int y);
     
     //Controller menu
     void printTimeSettings();
     void drawTimeSettings();
+	void updateTimeSettings();
     void processTouchTime(int x, int y);
     
     void printSensorPolling();
     void drawSensorPolling();
+	void updateSensorPolling();
     void processTouchSensorPolling(int x, int y);
     
     void printSDcard();
     void drawSDcard();
+	void updateSDcard();
     void processTouchSDcard(int x, int y);
-    
-    void processTouchSound(int x, int y);
-    
-    void processTouchSerial(int x, int y);
     
     //System Menu
     void printWaterCycle();
@@ -359,11 +385,7 @@ class GUI {
     
     void printLightCalibration();
     void drawLightCalibration();
-    void processTouchLightCalibration(int x, int y);
-
-    void processTouchWaterAtNight(int x, int y);
-
-    void processTouchManualPump(int x, int y);    
+    void processTouchLightCalibration(int x, int y);  
     
 //    void printLightHours();
 //    void drawLightHours();

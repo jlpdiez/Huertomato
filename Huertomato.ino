@@ -3,7 +3,7 @@
 // # Name       : Huertomato
 // # Version    : 1.0.2
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 16.12.2013
+// # Date       : 19.12.2013
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -36,8 +36,13 @@
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
 // # UTFT & UTouch http://www.henningkarlsen.com/electronics/library.php
 
+#include "Sensors.h"
+#include "Settings.h"
+#include "RGBled.h"
+#include "Buttons.h"
+#include "GUI.h"
 #include <avr/pgmspace.h>
-#include <Streaming.h>
+//#include <Streaming.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
 #include <DHT11.h>
@@ -50,15 +55,8 @@
 #include <UTFT_Buttons.h>
 #include <EEPROMex.h>
 #include <SD.h>
-#include "Sensors.h"
-#include "Settings.h"
-#include "RGBled.h"
-#include "Buttons.h"
-#include "GUI.h"
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
 #include <MemoryFree.h>
-
-#include "Window.h"
 
 
 // *********************************************
@@ -73,7 +71,7 @@
 const int redPin = 12;
 const int greenPin = 11;
 const int bluePin = 13;
-//SENSORS - These should be changed in sensors.h
+//SENSORS
 const int humidIn = A13;
 const int lightIn = A15;
 const int tempIn = 42;
@@ -97,7 +95,7 @@ const int lcdIRQ = 2;
 const int SDCardSS = 53;
 
 // *********************************************
-// OBJECT DECLARATIONS AND GLOBAL VARIABLES
+// OBJECT DECLARATIONS
 // *********************************************
 RGBled led(redPin, greenPin, bluePin);
 
@@ -113,24 +111,6 @@ Settings settings;
 Sensors sensors;
 
 GUI gui(&LCD,&Touch,&sensors,&settings);
-
-////Variables for all settings and their temporary for display and editing
-//uint8_t wHourTMP;
-//uint8_t wMinuteTMP;
-//uint8_t floodMtmp;
-//boolean onlyDayTMP;
-//float phAlarmUtmp;
-//float phAlarmDtmp; 
-//uint32_t ecAlarmUtmp;
-//uint32_t ecAlarmDtmp;
-//uint8_t waterAlarmTMP;
-//
-////Temp variables used when manually changing time
-//uint8_t hourTMP, minTMP, secTMP, dayTMP, monthTMP;
-//int yearTMP;
-//
-
-
 
 // *********************************************
 // SETUP
@@ -266,20 +246,18 @@ void setupRTC() {
 // *********************************************
 
 void loop() {
-//  if (alarmTriggered) {
-//    led.setColour(RED);
-//    //Sound alarm in main screen only
-//   // if (dispScreen == 0)
-//      //tone(buzzPin, 880.00, 250);
-//  } else
-//    led.setColour(GREEN);
-//    
-//  processTouch();
-//  //if (dispScreen == 0)
-//    //updateMain();
-//    
-//    //gui.processTouch(); 
-//  
+	if (settings.getAlarmTriggered()) {
+		led.setColour(RED);
+	//Sound alarm in main screen only
+	if (gui.getActScreen() == 0)
+      tone(buzzPin, 880.00, 250);
+	} else
+		led.setColour(GREEN);
+    
+    gui.processTouch();
+    if (gui.getActScreen() == 0)
+     //updateMain();
+   
 //  //TODO: Will warn when initiating as values = 0
 //  //Initiate arrays to be lowerLimit < vars < upperLimit
 //  //Or activate alarms when X minutes have passed 
@@ -302,8 +280,7 @@ void loop() {
 //    waterPlants(); 
 //  }
 //  //Delays are needed for alarms to work
-//  Alarm.delay(10);
-    gui.processTouch();
+	Alarm.delay(10);
 }
 
 // *********************************************
