@@ -141,7 +141,7 @@ static char* sdCardButtonsText[nSDcardButtons] = {
 };
 static int sdCardButtons[nSDcardButtons];
 
-const int nWaterCycleButtons = 11;
+const int nWaterCycleButtons = 10;
 static char* waterCycleButtonsText[nWaterCycleButtons] = {
   "Mode:",
   "=",
@@ -229,20 +229,16 @@ static int lightCalibrationButtons[nLightCalibrationButtons];
 //These are temp variables used for displaying data
 //They are read from _settings in print() funcs. Changed in processTouch()
 //displayed again with update() and saved to eeprom when button save is pressed
-/*uint8_t wHourTMP;
-uint8_t wMinuteTMP;
-uint8_t floodMtmp;
-boolean onlyDayTMP;
-float phAlarmUtmp;
-float phAlarmDtmp;
-uint32_t ecAlarmUtmp;
-uint32_t ecAlarmDtmp;
-uint8_t waterAlarmTMP;*/
 //System Settings
 //Watering cycle
+static boolean waterTimed;
+static uint8_t waterHour, waterMin, floodMin;
 //ph Alarms
+static float phAlarmMax, phAlarmMin;
 //ec Alarms
+static uint32_t ecAlarmU, ecAlarmD;
 //Water alarms
+static uint8_t waterAlarm;
 //Night Toggle
 static boolean nightWater;
 //Water pump toggle
@@ -345,6 +341,7 @@ class GUI {
     //System Menu
     void printWaterCycle();
     void drawWaterCycle();
+	void updateWaterCycle();
     void processTouchWaterCycle(int x, int y);
 
     void printSensorAlarms();
@@ -353,14 +350,17 @@ class GUI {
     
     void printPHalarms();
     void drawPHalarms();
+	void updatePHalarms();
     void processTouchPHalarms(int x, int y);
     
     void printECalarms();
     void drawECalarms();
+	void updateECalarms();
     void processTouchECalarms(int x,int y);
     
     void printWaterAlarms();
     void drawWaterAlarms();
+	void updateWaterAlarms();
     void processTouchWaterAlarms(int x,int y);
     
     void printAutoConfig();

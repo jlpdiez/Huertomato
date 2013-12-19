@@ -1107,9 +1107,10 @@ void GUI::printWaterCycle() {
   const int fMinU[] = {225, yThirdLine-22};       //active for min
   const int fMinD[] = {225, yThirdLine+22};       //active for min
   
-  int wHour = _settings->getWaterHour();
-  int wMin = _settings->getWaterMinute();
-  int fMin = _settings->getFloodMinute();
+  waterTimed = _settings->getWaterTimed();
+  waterHour = _settings->getWaterHour();
+  waterMin = _settings->getWaterMinute();
+  floodMin = _settings->getFloodMinute();
   
   //First Line - Triangle
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -1118,10 +1119,10 @@ void GUI::printWaterCycle() {
   //Water mode button
   _lcd->setFont(hallfetica_normal);
   int x = xSpacer + 2*bigFontSize;
-  waterCycleButtons[4] = _buttons.addButton(x,yFirstLine,waterCycleButtonsText[0]);
+  waterCycleButtons[3] = _buttons.addButton(x,yFirstLine,waterCycleButtonsText[0]);
   //Continuous/timed text
   x += (1+strlen(waterCycleButtonsText[0]))*bigFontSize;
-  if (_settings->getWaterTimed())
+  if (waterTimed)
 	_lcd->print("Timed",x,yFirstLine);
   else
 	_lcd->print("Continuous",x,yFirstLine);
@@ -1131,27 +1132,27 @@ void GUI::printWaterCycle() {
   x = xSpacer;
   _lcd->print("Water every:",x,ySecondLine);
   x += 13*bigFontSize;
-  _lcd->printNumI(wHour,x,ySecondLine,2,'0');
+  _lcd->printNumI(waterHour,x,ySecondLine,2,'0');
   x += 2*bigFontSize;
   _lcd->print("h",x,ySecondLine);
   x += 2*bigFontSize;
-  _lcd->printNumI(wMin,x,ySecondLine,2,'0'); 
+  _lcd->printNumI(waterMin,x,ySecondLine,2,'0'); 
   x += 2*bigFontSize;  
   _lcd->print("m",x,ySecondLine);
-  waterCycleButtons[5] = _buttons.addButton(houU[0],houU[1],waterCycleButtonsText[1],BUTTON_SYMBOL);
-  waterCycleButtons[6] = _buttons.addButton(houD[0],houD[1],waterCycleButtonsText[2],BUTTON_SYMBOL);
-  waterCycleButtons[7] = _buttons.addButton(minU[0],minU[1],waterCycleButtonsText[3],BUTTON_SYMBOL);
-  waterCycleButtons[8] = _buttons.addButton(minD[0],minD[1],waterCycleButtonsText[4],BUTTON_SYMBOL);
+  waterCycleButtons[4] = _buttons.addButton(houU[0],houU[1],waterCycleButtonsText[1],BUTTON_SYMBOL);
+  waterCycleButtons[5] = _buttons.addButton(houD[0],houD[1],waterCycleButtonsText[2],BUTTON_SYMBOL);
+  waterCycleButtons[6] = _buttons.addButton(minU[0],minU[1],waterCycleButtonsText[3],BUTTON_SYMBOL);
+  waterCycleButtons[7] = _buttons.addButton(minD[0],minD[1],waterCycleButtonsText[4],BUTTON_SYMBOL);
   
   //Third line
   x = xSpacer;
   _lcd->print("Active for:",x,yThirdLine);
   x += 12*bigFontSize;
-  _lcd->printNumI(fMin,x,yThirdLine,2,'0'); 
+  _lcd->printNumI(floodMin,x,yThirdLine,2,'0'); 
   x += 3*bigFontSize;
   _lcd->print("minutes",x,yThirdLine);
-  waterCycleButtons[9] = _buttons.addButton(fMinU[0],fMinU[1],waterCycleButtonsText[5],BUTTON_SYMBOL);
-  waterCycleButtons[10] = _buttons.addButton(fMinD[0],fMinD[1],waterCycleButtonsText[6],BUTTON_SYMBOL);
+  waterCycleButtons[8] = _buttons.addButton(fMinU[0],fMinU[1],waterCycleButtonsText[5],BUTTON_SYMBOL);
+  waterCycleButtons[9] = _buttons.addButton(fMinD[0],fMinD[1],waterCycleButtonsText[6],BUTTON_SYMBOL);
 
 }
 
@@ -1162,6 +1163,39 @@ void GUI::drawWaterCycle() {
   printWaterCycle();  
   _buttons.drawButtons();
 }
+
+//Redraws only water cycle numbers & text from inner temp vars
+//Used when +- signs are pressed
+void GUI::updateWaterCycle() {
+	const int yFirstLine = 50;
+	const int ySecondLine = 100;
+	const int yThirdLine = 160;
+	const int xSpacer = 25;
+	
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	
+	//Continuous/timed text
+	int x = xSpacer + 2*bigFontSize;;
+	x += (1+strlen(waterCycleButtonsText[0]))*bigFontSize;
+	if (waterTimed)
+		_lcd->print("Timed     ",x,yFirstLine);
+	else
+		_lcd->print("Continuous",x,yFirstLine);
+	
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	//Water every
+	x = xSpacer;
+	x += 13*bigFontSize;
+	_lcd->printNumI(waterHour,x,ySecondLine,2,'0');
+	x += 2*bigFontSize;
+	x += 2*bigFontSize;
+	_lcd->printNumI(waterMin,x,ySecondLine,2,'0');
+	//Flood time
+	x = xSpacer;
+	x += 12*bigFontSize;
+	_lcd->printNumI(floodMin,x,yThirdLine,2,'0');
+}	
 
 void GUI::processTouchWaterCycle(int x, int y) {
   int buttonIndex = _buttons.checkButtons(x,y);
@@ -1180,7 +1214,40 @@ void GUI::processTouchWaterCycle(int x, int y) {
     _actScreen = 0;
     _lcd->fillScr(VGA_WHITE);
     drawMainScreen();
-  } 
+  
+  //Water mode
+  } else if (buttonIndex == waterCycleButtons[3]) {
+	  waterTimed = !waterTimed;
+	  updateWaterCycle();
+  //Hour up  
+  } else if (buttonIndex == waterCycleButtons[4]) {
+	  waterHour++;
+	  (waterHour > 23) ? waterHour=0 : 0;
+	  updateWaterCycle();
+  //Hour down
+  } else if (buttonIndex == waterCycleButtons[5]) {
+	  (waterHour <= 0) ? waterHour=23 : waterHour--;
+	  updateWaterCycle();
+  //Minute up
+  } else if (buttonIndex == waterCycleButtons[6]) {
+	  waterMin++;
+	  (waterMin > 59) ? waterMin=0 : 0;
+	  updateWaterCycle();
+  //Minute down
+  } else if (buttonIndex == waterCycleButtons[7]) {
+	  (waterMin <= 0) ? waterMin=59 : waterMin--;
+	  updateWaterCycle();
+  //Flood minute up
+  } else if (buttonIndex == waterCycleButtons[8]) {
+	  floodMin++;
+	  (floodMin > 59) ? floodMin=0 : 0;
+	  updateWaterCycle();
+  //Flood minute down
+  } else if (buttonIndex == waterCycleButtons[9]) {
+	  (floodMin <= 0) ? floodMin=59 : floodMin--;
+	  updateWaterCycle();
+  
+  }
 }
 
 void GUI::printSensorAlarms() {
@@ -1255,8 +1322,8 @@ void GUI::printPHalarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  float phUlimit = _settings->getPHalarmUp();
-  float phDlimit = _settings->getPHalarmDown();
+  phAlarmMax = _settings->getPHalarmUp();
+  phAlarmMin = _settings->getPHalarmDown();
   
   char* uLimit = "Upper Limit:";
   char* dLimit = "Lower Limit:";
@@ -1266,14 +1333,14 @@ void GUI::printPHalarms() {
   _lcd->print(dLimit,xSpacer,ySecondLine);
   //Numbers
   int x = (4+strlen(uLimit))*bigFontSize;
-  _lcd->printNumF(phUlimit,2,x,yFirstLine,'.',4);
-  _lcd->printNumF(phDlimit,2,x,ySecondLine,'.',4);
+  _lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',4);
+  _lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',4);
   //Buttons
   x += 1.5*bigFontSize;
-  phAlarmsButtons[4] = _buttons.addButton(x,yFirstLine-signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
-  phAlarmsButtons[5] = _buttons.addButton(x,yFirstLine+signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
-  phAlarmsButtons[6] = _buttons.addButton(x,ySecondLine-signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
-  phAlarmsButtons[7] = _buttons.addButton(x,ySecondLine+signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
+  phAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
+  phAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
+  phAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
+  phAlarmsButtons[6] = _buttons.addButton(x,ySecondLine+signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
 }
 
 void GUI::drawPHalarms() {
@@ -1282,6 +1349,17 @@ void GUI::drawPHalarms() {
   printFlowButtons(true,true,true,phAlarmsButtons);
   printPHalarms();  
   _buttons.drawButtons();
+}
+
+void GUI::updatePHalarms() {
+	const int yFirstLine = 65;
+	const int ySecondLine = 140;
+	char* uLimit = "Upper Limit:";
+	
+	_lcd->setFont(hallfetica_normal);
+	int x = (4+strlen(uLimit))*bigFontSize;
+	_lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',4);
+	_lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',4);	
 }
 
 void GUI::processTouchPHalarms(int x, int y) {
@@ -1301,6 +1379,27 @@ void GUI::processTouchPHalarms(int x, int y) {
     _actScreen = 0;
     _lcd->fillScr(VGA_WHITE);
     drawMainScreen();
+	
+  //Max up
+  } else if(buttonIndex = phAlarmsButtons[3]) {
+	  phAlarmMax += 0.05;
+	  (phAlarmMax > 14) ? phAlarmMax=0 : 0;
+	  updatePHalarms();
+  //Max down	  
+  } else if(buttonIndex = phAlarmsButtons[4]) {
+	  phAlarmMax -= 0.05;
+	  (phAlarmMax < 0) ? phAlarmMax=14 : 0;
+	  updatePHalarms();
+  //Min up
+  } else if(buttonIndex = phAlarmsButtons[5]) {
+	  phAlarmMin += 0.05;
+	  (phAlarmMin > 14) ? phAlarmMin=0 : 0;
+	  updatePHalarms();
+  //Min down
+  } else if(buttonIndex = phAlarmsButtons[6]) {
+	  phAlarmMin -= 0.05;
+	  (phAlarmMin < 0) ? phAlarmMin=14 : 0;
+	  updatePHalarms();
   }   
 }
 
@@ -1310,8 +1409,8 @@ void GUI::printECalarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  uint32_t ecUlimit = _settings->getECalarmUp();
-  uint32_t ecDlimit = _settings->getECalarmDown();
+  ecAlarmMax = _settings->getECalarmUp();
+  ecAlarmMin = _settings->getECalarmDown();
   
   char* uLimit = "Upper Limit:";
   char* dLimit = "Lower Limit:";
@@ -1321,14 +1420,14 @@ void GUI::printECalarms() {
   _lcd->print(dLimit,xSpacer,ySecondLine);
   //Numbers
   int x = (4+strlen(uLimit))*bigFontSize;
-  _lcd->printNumI(ecUlimit,x,yFirstLine,4);
-  _lcd->printNumI(ecDlimit,x,ySecondLine,4);
+  _lcd->printNumI(ecAlarmMax,x,yFirstLine,4);
+  _lcd->printNumI(ecAlarmMin,x,ySecondLine,4);
   //Buttons
   x += 1.5*bigFontSize;
-  ecAlarmsButtons[4] = _buttons.addButton(x,yFirstLine-signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
-  ecAlarmsButtons[5] = _buttons.addButton(x,yFirstLine+signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
-  ecAlarmsButtons[6] = _buttons.addButton(x,ySecondLine-signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
-  ecAlarmsButtons[7] = _buttons.addButton(x,ySecondLine+signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
+  ecAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
+  ecAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
+  ecAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
+  ecAlarmsButtons[6] = _buttons.addButton(x,ySecondLine+signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
   //uS Text
   x += 3.5*bigFontSize;
   _lcd->print("uS",x,yFirstLine);
@@ -1341,6 +1440,17 @@ void GUI::drawECalarms() {
   printFlowButtons(true,true,true,ecAlarmsButtons);
   printECalarms();  
   _buttons.drawButtons();
+}
+
+void GUI::updateECalarms() {
+	const int yFirstLine = 65;
+	const int ySecondLine = 140;
+	char* uLimit = "Upper Limit:";
+	
+	_lcd->setFont(hallfetica_normal); 
+	int x = (4+strlen(uLimit))*bigFontSize;
+	_lcd->printNumI(ecAlarmMax,x,yFirstLine,4);
+	_lcd->printNumI(ecAlarmMin,x,ySecondLine,4);
 }
 
 void GUI::processTouchECalarms(int x,int y) {
@@ -1368,7 +1478,7 @@ void GUI::printWaterAlarms() {
   const int xSpacer = 25;
   const int signSpacer = 22; 
   
-  int wLimit = _settings->getWaterAlarm();
+  waterAlarmMin = _settings->getWaterAlarm();
   
   char* wLimitS = "Lower Limit:";
   _lcd->setColor(grey[0],grey[1],grey[2]);
@@ -1376,11 +1486,11 @@ void GUI::printWaterAlarms() {
   _lcd->print(wLimitS,xSpacer,yFirstLine);
   //Numbers
   int x = (4+strlen(wLimitS))*bigFontSize;
-  _lcd->printNumI(wLimit,x,yFirstLine);
+  _lcd->printNumI(waterAlarmMin,x,yFirstLine);
   //Buttons
   x += 0.5*bigFontSize;
-  waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
-  waterAlarmsButtons[5] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+  waterAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
+  waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
   //percent sign
   x += 2.5*bigFontSize;
   _lcd->print("%",x,yFirstLine);
@@ -1392,6 +1502,15 @@ void GUI::drawWaterAlarms() {
   printFlowButtons(true,true,true,waterAlarmsButtons);
   printWaterAlarms();  
   _buttons.drawButtons(); 
+}
+
+void GUI::updateWaterAlarms() {
+	const int yFirstLine = 100;
+	char* wLimitS = "Lower Limit:";
+	
+	_lcd->setFont(hallfetica_normal);
+	int x = (4+strlen(wLimitS))*bigFontSize;
+	_lcd->printNumI(waterAlarmMin,x,yFirstLine);
 }
 
 void GUI::processTouchWaterAlarms(int x,int y) {

@@ -42,6 +42,7 @@
 const int maxWaterLevel = 16;
 const int minWaterLevel = 50;
 //Consts can be declared inside objects by using static const bla
+//see http://stackoverflow.com/questions/2043493/where-to-declare-define-class-scope-constants-in-c
 
 //Pin numbers
 // 16 & 17 are Serial2 Tx,Rx used for EC circuit
@@ -91,7 +92,7 @@ class Sensors {
     uint32_t ec();
 	
 	//Define a const for array size  
-	enum { numSamples = 10 };
+	static const int numSamples = 10;
     //Smoothing counter
     uint8_t _iSample;
     //Contain sensor data pre-smoothing
