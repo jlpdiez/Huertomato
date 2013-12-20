@@ -70,7 +70,7 @@ class Sensors {
     float getTemp();
     uint8_t getLight();
     uint8_t getHumidity();
-    uint32_t getEC();
+    uint16_t getEC();
     float getPH();
     uint8_t getWaterLevel();
   
@@ -89,7 +89,7 @@ class Sensors {
     uint8_t humidity();
     uint8_t waterLevel();
     float ph();
-    uint32_t ec();
+    uint16_t ec();
 	
 	//Define a const for array size  
 	static const int numSamples = 10;
@@ -99,7 +99,7 @@ class Sensors {
     float _temps[numSamples];
     uint8_t _lights[numSamples]; 
     uint8_t _humidities[numSamples];
-    uint32_t _ecs[numSamples];
+    uint16_t _ecs[numSamples];
     float _phs[numSamples];
     uint8_t _waterLevels[numSamples];
   
@@ -107,7 +107,7 @@ class Sensors {
     float _temp;
     uint8_t _light;
     uint8_t _humidity;
-    uint32_t _ec;
+    uint16_t _ec;
     float _ph;
     uint8_t _waterLevel;
 };

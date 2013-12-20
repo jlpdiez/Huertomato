@@ -23,7 +23,6 @@
 class Borderless_Buttons : public UTFT_Buttons {
   public:
     //Constructors
-	//Borderless_Buttons();
     Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch);
 	Borderless_Buttons(const Borderless_Buttons &other);
 	Borderless_Buttons& operator=(const Borderless_Buttons &other);

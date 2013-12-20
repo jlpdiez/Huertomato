@@ -34,8 +34,10 @@ Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &othe
 	return *this;	
 }
 
+//Destructor
 Borderless_Buttons::~Borderless_Buttons() {}
 
+//Iterates through button list and draws them into screen
 void Borderless_Buttons::drawButtons() {
   for (int i = 0; i < MAX_BUTTONS; i++) {
     if ((buttons[i].flags & BUTTON_UNUSED) == 0)
@@ -43,6 +45,7 @@ void Borderless_Buttons::drawButtons() {
   }
 }
 
+//Add button to list. In this version width and height are auto-calculated
 int Borderless_Buttons::addButton(uint16_t x, uint16_t y, char *label, uint16_t flags) {
   int btcnt = 0;
   
@@ -64,6 +67,7 @@ int Borderless_Buttons::addButton(uint16_t x, uint16_t y, char *label, uint16_t 
   }
 }
 
+//Adds button
 int Borderless_Buttons::addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags) {
   int btcnt = 0;
   
@@ -86,6 +90,7 @@ int Borderless_Buttons::addButton(uint16_t x, uint16_t y, uint16_t width, uint16
   }
 }
 
+//Draws a button with its ID. Its called from drawButtons()
 void Borderless_Buttons::drawButton(int buttonID) {
   uint8_t *_font_current = _UTFT->getFont();
   word _current_color = _UTFT->getColor();
@@ -119,6 +124,7 @@ void Borderless_Buttons::drawButton(int buttonID) {
   _UTFT->setBackColor(_current_back);
 }
 
+//Enables button
 void Borderless_Buttons::enableButton(int buttonID, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
     buttons[buttonID].flags = buttons[buttonID].flags & ~BUTTON_DISABLED;
@@ -127,6 +133,7 @@ void Borderless_Buttons::enableButton(int buttonID, boolean redraw) {
   }
 }
 
+//Disables button
 void Borderless_Buttons::disableButton(int buttonID, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
     buttons[buttonID].flags = buttons[buttonID].flags | BUTTON_DISABLED;
@@ -135,6 +142,7 @@ void Borderless_Buttons::disableButton(int buttonID, boolean redraw) {
   }
 }
 
+//Relabels a button
 void Borderless_Buttons::relabelButton(int buttonID, char *label, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
     buttons[buttonID].label = label;
@@ -143,6 +151,7 @@ void Borderless_Buttons::relabelButton(int buttonID, char *label, boolean redraw
   }
 }
 
+//Given x,y coords of a touch, returns ID of which button is pressed
 int Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
 //  if (_UTouch->dataAvailable() == true) {
 //    _UTouch->read();
@@ -168,6 +177,7 @@ int Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
         _UTFT->print(buttons[result].label, buttons[result].pos_x, buttons[result].pos_y);
     }
     
+	//The following line prevents multi-presses
     while (_UTouch->dataAvailable() == true) {};
     if (result != -1) {
       _UTFT->setColor(_color_text[0],_color_text[1],_color_text[2]);
@@ -185,6 +195,7 @@ int Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
 //    return -1;
 }
 
+//Sets colours for buttons
 void Borderless_Buttons::setButtonColors(const uint8_t atxt[3], const uint8_t iatxt[3], const uint8_t brd[3], const uint8_t brdhi[3], const uint8_t back[3]) {
   for (int i = 0; i < 3; i++) {	
     _color_text[i] = atxt[i];
@@ -193,8 +204,5 @@ void Borderless_Buttons::setButtonColors(const uint8_t atxt[3], const uint8_t ia
     _color_hilite[i] = brdhi[i];
     _color_background[i] = back[i];
   }
-//  _color_text[0] = atxt[0];
-//  _color_text[1] = atxt[1];
-//  _color_text[2] = atxt[2];
 }
 

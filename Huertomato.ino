@@ -42,7 +42,7 @@
 #include "Buttons.h"
 #include "GUI.h"
 #include <avr/pgmspace.h>
-//#include <Streaming.h>
+#include <Streaming.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
 #include <DHT11.h>
@@ -116,37 +116,37 @@ GUI gui(&LCD,&Touch,&sensors,&settings);
 // SETUP
 // *********************************************
 void setup() {  
-	//SetOn!
-	led.setOff();
-//
-//  //Actuators
-//  pinMode(buzzPin, OUTPUT);
-//  pinMode(waterPump, OUTPUT);
-//  pinMode(flushValve, OUTPUT);
-//
-//  if (activateSerial) {
-//    Serial.begin(115200);
-//    Serial << endl << ".::[ Huertomato ]::." << endl;
-//    Serial << "By: Juan L. Perez Diez" << endl << endl;
-//  }
-//  
+	led.setOn();
+	//TODO:Here goes splash Screen 
+	
+	//Actuators
+	pinMode(buzzPin, OUTPUT);
+	pinMode(waterPump, OUTPUT);
+	pinMode(flushValve, OUTPUT);
+
+	if (settings.getSerialDebug()) {
+		Serial.begin(115200);
+		Serial << endl << ".::[ Huertomato ]::." << endl;
+		Serial << "By: Juan L. Perez Diez" << endl << endl;
+	}
+  
 	setupRTC();
-//  setupSD();
-//  
+	//setupSD();
+	  
 	LCD.InitLCD();
 	LCD.clrScr();
 	LCD.fillScr(VGA_WHITE);
 	Touch.InitTouch();
 	Touch.setPrecision(PREC_MEDIUM);
-//  
-//  readEEPROMvars();
-//  setupAlarms();
-//  initMusic();
-//  
-//  Alarm.delay(2500);
-	gui.drawMainScreen();
 	
-	//int *test = new int();
+	//This goes to settings constructor  
+	//readEEPROMvars();
+	setupAlarms();
+	//initMusic();
+	 
+	//Alarm.delay(2500);
+	
+	gui.drawMainScreen();
 }
 
 
@@ -194,24 +194,24 @@ void setupRTC() {
 //  ecAlarmDtmp = ecAlarmD;
 //  waterAlarmTMP = waterAlarm;
 //}
-//
+
 ////Initiates alarms and timers
-//void setupAlarms() { 
-//  //Every 5 secs we poll sensors and smooth the reading
-//  Alarm.timerRepeat(5, updateSensors);
-//  //Every 5mins we adjust EC circuit readings to temperature
-//  Alarm.timerRepeat(0, 5, 0, adjustECtemp);
-//  //Every 10mins we log sensor data to SD if needed
-//  if (activateSD)
-//    Alarm.timerRepeat(0, 10, 0,logStats);
-//  //Every 5secs we send sensor status to Serial if needed
-//  if (activateSerial) 
-//    Alarm.timerRepeat(5, showStatsSerial);   
-//    
-//  //Timer for plant watering. Will be set again in waterPlants() in case timers change
-//  Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
-//  updateNextWateringTime();
-//}
+void setupAlarms() { 
+  //Every 5 secs we poll sensors and smooth the reading
+  Alarm.timerRepeat(5, updateSensors);
+  //Every 5mins we adjust EC circuit readings to temperature
+  //Alarm.timerRepeat(0, 5, 0, adjustECtemp);
+  //Every 10mins we log sensor data to SD if needed
+  //if (activateSD)
+    //Alarm.timerRepeat(0, 10, 0,logStats);
+  //Every 5secs we send sensor status to Serial if needed
+  //if (activateSerial) 
+    //Alarm.timerRepeat(5, showStatsSerial);   
+    
+  //Timer for plant watering. Will be set again in waterPlants() in case timers change
+  //Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
+  //updateNextWateringTime();
+}
 //
 ////Updates variables used for displaying next watering time
 //void updateNextWateringTime() {
@@ -244,35 +244,41 @@ void setupRTC() {
 // *********************************************
 // LOOP
 // *********************************************
-
+//TODO: Make prettier
 void loop() {
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 	//Sound alarm in main screen only
-	if (gui.getActScreen() == 0)
-      tone(buzzPin, 880.00, 250);
+	if (gui.getActScreen() == 0) {}
+      //tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
     
     gui.processTouch();
+	
     if (gui.getActScreen() == 0)
-     //updateMain();
+     gui.updateMainScreen();
    
 //  //TODO: Will warn when initiating as values = 0
 //  //Initiate arrays to be lowerLimit < vars < upperLimit
 //  //Or activate alarms when X minutes have passed 
-//  
-//  //Checks if any alarm should be triggered
-//  if ((sensors.getWaterLevel() < waterAlarm) || (sensors.getPH() < phAlarmD) || (sensors.getPH() > phAlarmU) ||
-//         (sensors.getEC() < ecAlarmD) || (sensors.getEC() > ecAlarmU)) {   
-//    alarmTriggered = true;
-//    if (activateSerial)
-//      Serial << "Alarm triggered! System needs human intervention." << endl;
-//  }
-//  else if ((sensors.getWaterLevel() >= waterAlarm) && (sensors.getPH() >= phAlarmD) && (sensors.getPH() <= phAlarmU) &&
-//         (sensors.getEC() >= ecAlarmD) && (sensors.getEC() <= ecAlarmU)) {   
-//    alarmTriggered = false;         
-//  }
+	
+	//TODO: make funtion with ifs!
+	//Checks if any alarm should be triggered
+	if ((sensors.getPH() < settings.getPHalarmDown()) || (sensors.getPH() > settings.getPHalarmUp()) 
+		|| (sensors.getEC() < settings.getECalarmDown()) || (sensors.getEC() > settings.getECalarmUp()) 
+		|| (sensors.getWaterLevel() < settings.getWaterAlarm())) { 
+			  
+			settings.setAlarmTriggered(true);			
+			if (settings.getSerialDebug())
+				Serial << "Alarm triggered! System needs human intervention." << endl;
+
+	} else if ((sensors.getPH() >= settings.getPHalarmDown()) && (sensors.getPH() <= settings.getPHalarmUp()) 
+		&& (sensors.getEC() >= settings.getECalarmDown()) && (sensors.getEC() <= settings.getECalarmUp()) 
+		&& (sensors.getWaterLevel() >= settings.getWaterAlarm())) {   
+			
+			settings.setAlarmTriggered(false);         
+	}
 //  
 //  //If watering has been stopped for the night and day has come, we start water cycle again
 //  if ((nightWateringStopped) && (sensors.getLight() > lightThreshold)) {
@@ -360,9 +366,9 @@ void loop() {
 // OTHER
 // *********************************************
 
-//void updateSensors() {
-//  sensors.update();
-//}
+void updateSensors() {
+	sensors.update();
+}
 
 //void adjustECtemp() {
 //  sensors.adjustECtemp(); 
@@ -414,21 +420,9 @@ void loop() {
   return (uint32_t)((((hour(t) * 60) + minute(t)) * 60) + second(t)) * 1000;
 }*/
 
-// Dew point temp
-// delta max = 0.6544 wrt dewPoint()
-// reference: http://en.wikipedia.org/wiki/Dew_point
-/*double dewPointFast(double celsius, double humidity) {
-  double a = 17.271;
-  double b = 237.7;
-  double temp = (a * celsius) / (b + celsius) + log(humidity/100);
-  double Td = (b * temp) / (a - temp);
-  return Td;
-}*/
-
 // *********************************************
 // LCD DISPLAY AND TOUCH HANDLING
 // *********************************************
-
 
 //Revert back temp vars to the value they had before
 //Used when cancel or back buttons are pressed
@@ -498,445 +492,4 @@ void loop() {
 //     //Store water warning threshold in EEPROM
 //     EEPROM.updateByte(addressWaterAlarm, waterAlarm);
 //   }
-//}
-
-//Processes pending touch actions
-//dispScreen == 0-Main Screen, 1-Options, 2-Clock Setup, 
-//3-Watering Times, 4-PH Warnings, 5-EC Warnings,
-//6-Water Warnings, 7-Manual Pump Control, 8-About
-//void processTouch() {
-// if (Touch.dataAvailable()) {
-//   Touch.read();
-//   int x = Touch.getX();
-//   int y = Touch.getY();
-//   //--------------------- CANCEL BUTTON ------------------------------------
-//   if ((x >= canc[0]) && (x <= canc[2]) && (y >= canc[1]) && (y <= canc[3]) && (dispScreen != 0)) {
-//     waitForIt(canc[0], canc[1], canc[2], canc[3]);
-//     resetTempVars();
-//     dispScreen = 0;
-//     LCD.clrScr();
-//     drawMain();     
-//   //--------------------- BACK BUTTON ------------------------------------
-//   } else if ((x>=back[0]) && (x<=back[2]) && (y>=back[1]) && (y<=back[3]) && (dispScreen != 0)) {
-//     waitForIt(back[0], back[1], back[2], back[3]);
-//     resetTempVars();
-//     dispScreen = 1;
-//     LCD.clrScr();
-//     drawSettings();     
-//   //--------------------- SAVE BUTTON ------------------------------------
-//   } else if ((x>=save[0]) && (x<=save[2]) && (y>=save[1]) && (y<=save[3]) && (dispScreen != 0)) {
-//     waitForIt(save[0], save[1], save[2], save[3]);
-//     saveTempVars();
-//     //Warn the user changing save button
-//     LCD.setFont(BigFont);
-//     LCD.setColor(150,0,0);
-//     LCD.setBackColor(0,115,0);
-//     LCD.print("SAVED", save[0]+12, save[1]+5);
-//     
-//   //--------------------- OTHER BUTTONS ------------------------------------  
-//   } else {
-//     switch(dispScreen) {
-//       //--------------------- MAIN SCREEN ----------------------
-//       case 0:     
-//         dispScreen = 1;
-//         LCD.clrScr();
-//         drawSettings();
-//         break;
-//       //--------------------- OPTIONS --------------------------  
-//       case 1:     
-//         processTouchOptions(x,y);
-//         break;
-//       //--------------------- TIME & DATE ----------------------
-//       case 2:     
-//         processTouchTimeAndDate(x,y);
-//         break;
-//       //------------------- WATERING TIMES ---------------------
-//       case 3:     
-//         processTouchWateringTimes(x,y);
-//         break;
-//       //--------------------- PH WARNINGS ----------------------
-//       case 4:     
-//         processTouchPHwarnings(x,y);
-//         break;
-//       //--------------------- EC WARNINGS ----------------------
-//       case 5:     
-//         processTouchECwarnings(x,y);
-//         break;
-//       //-------------------- WATER WARNING --------------------
-//       case 6:      
-//         processTouchWaterWarning(x,y);
-//         break;
-//       //--------------------- MANUAL PUMPS ---------------------
-//       case 7:     
-//         processTouchManualPumps(x,y);
-//         break;
-//       //------------------------- ABOUT ------------------------
-//       case 8:     
-//       default:
-//         break;
-//     }
-//   }
-// }
-//}
-
-//Process touch in options screen
-//void processTouchOptions(int x, int y) {
-//  //First column
-//   if ((x >= tAndD[0]) && (x <= tAndD[2])) {
-//     //Pressed Time and Date
-//     if ((y >= tAndD[1]) && (y <= tAndD[3])) {
-//       waitForIt(tAndD[0], tAndD[1], tAndD[2], tAndD[3]);
-//       dispScreen = 2;
-//       LCD.clrScr();
-//       drawTime();
-//     }
-//     //Pressed Watering Times
-//     else if ((y >= wTime[1]) && (y <= wTime[3])) {
-//       waitForIt(wTime[0], wTime[1], wTime[2], wTime[3]);
-//       dispScreen = 3;
-//       LCD.clrScr();
-//       drawWaterTimes();
-//     }
-//     //Pressed PH Warnings
-//     else if ((y >= phWarn[1]) && (y <= phWarn[3])) {
-//       waitForIt(phWarn[0], phWarn[1], phWarn[2], phWarn[3]);
-//       dispScreen = 4;
-//       LCD.clrScr();
-//       drawPHWarns();
-//     }
-//     //Pressed EC Warnings
-//     else if ((y >= ecWarn[1]) && (y <= ecWarn[3])) {
-//       waitForIt(ecWarn[0], ecWarn[1], ecWarn[2], ecWarn[3]);
-//       dispScreen = 5;
-//       LCD.clrScr();
-//       drawECWarns();
-//     }          
-//   } 
-//   //Second column
-//   else if ((x >= watWarn[0]) && (x <= watWarn[2])) {
-//     //Pressed Water Level Warnings
-//     if ((y >= watWarn[1]) && (y <= watWarn[3])) {
-//       waitForIt(watWarn[0], watWarn[1], watWarn[2], watWarn[3]);
-//       dispScreen = 6;
-//       LCD.clrScr();
-//       drawWatWarns();
-//     }
-//     //Pressed Manual Pump Controls
-//     else if ((y >= mPump[1]) && (y <= mPump[3])) {
-//       waitForIt(mPump[0], mPump[1], mPump[2], mPump[3]);
-//       dispScreen = 7;
-//       LCD.clrScr();
-//       drawManualPump();
-//     }
-//     //Pressed About
-//     else if ((y >= about[1]) && (y <= about[3])) {
-//       waitForIt(about[0], about[1], about[2], about[3]);
-//       dispScreen = 8;
-//       LCD.clrScr();
-//       drawAbout();
-//     }
-//   }
-//}
-//
-////Process touch in time & date settings screen
-//void processTouchTimeAndDate(int x, int y) {
-//  //Pressed plus sign -> hour, min or sec
-//   if ((y >= houU[1]) && (y <= houU[3])) {
-//     //+ hour
-//     if ((x >= houU[0]) && (x <= houU[2])) {
-//       //waitForIt(houU[0], houU[1], houU[2], houU[3]);
-//       hourTMP++;
-//       (hourTMP > 23) ? hourTMP=0 : 0;
-//       updateTime();
-//     }
-//     //+ minute
-//     else if ((x >= minU[0]) && (x <= minU[2])) {
-//       //waitForIt(minU[0], minU[1], minU[2], minU[3]);
-//       minTMP++;
-//       (minTMP > 59) ? minTMP=0 : 0;
-//       updateTime();
-//     }
-//     //+ secs
-//     else if ((x >= secU[0]) && (x <= secU[2])) {
-//       //waitForIt(secU[0], secU[1], secU[2], secU[3]);
-//       secTMP++;
-//       (secTMP > 59) ? secTMP=0 : 0;
-//       updateTime();
-//     }
-//   }
-//   //Pressed minus sign -> hour, min or sec
-//   else if ((y >= houD[1]) && (y <= houD[3])) {
-//     //- hour
-//     if ((x >= houD[0]) && (x <= houD[2])) {
-//       //waitForIt(houD[0], houD[1], houD[2], houD[3]);  
-//       //We cant just -- and compare with <0 as it overflows to 255
-//       (hourTMP <= 0) ? hourTMP=23 : hourTMP--;
-//       updateTime();
-//     }
-//     //- minute
-//     else if ((x >= minD[0]) && (x <= minD[2])) {
-//       //waitForIt(minD[0], minD[1], minD[2], minD[3]);
-//       (minTMP <= 0) ? minTMP=59 : minTMP--;
-//       updateTime();
-//     }
-//     //- secs
-//     else if ((x >= secD[0]) && (x <= secD[2])) {
-//       //waitForIt(secD[0], secD[1], secD[2], secD[3]);
-//       (secTMP <= 0) ? secTMP=59 : secTMP--;
-//       updateTime();
-//     }
-//   }
-//   //Pressed plus sign -> day, month or year
-//   else if ((y >= dayU[1]) && (y <= dayU[3])) {
-//     //+ day
-//     if ((x >= dayU[0]) && (x <= dayU[2])) {
-//       //waitForIt(dayU[0], dayU[1], dayU[2], dayU[3]);
-//       dayTMP++;
-//       (dayTMP > 31) ? dayTMP=1 : 0;
-//       updateTime();
-//     }
-//     //+ month
-//     else if ((x >= monU[0]) && (x <= monU[2])) {
-//       //waitForIt(monU[0], monU[1], monU[2], monU[3]);
-//       monthTMP++;
-//       (monthTMP > 12) ? monthTMP=1 : 0;
-//       updateTime();
-//     }
-//     //+ year
-//     else if ((x >= yeaU[0]) && (x <= yeaU[2])) {
-//       //waitForIt(yeaU[0], yeaU[1], yeaU[2], yeaU[3]);
-//       yearTMP++;
-//       (yearTMP > 2100) ? yearTMP=1970 : 0;
-//       updateTime();
-//     }
-//   }
-//   //Pressed minus sign -> day, month or year
-//   else if ((y >= dayD[1]) && (y <= dayD[3])) {
-//     //- day
-//     if ((x >= dayD[0]) && (x <= dayD[2])) {
-//       //waitForIt(dayD[0], dayD[1], dayD[2], dayD[3]);
-//       dayTMP--;
-//       (dayTMP < 1) ? dayTMP=31 : 0;
-//       updateTime();
-//     }
-//     //- month
-//     else if ((x >= monD[0]) && (x <= monD[2])) {
-//       //waitForIt(monD[0], monD[1], monD[2], monD[3]);
-//       monthTMP--;
-//       (monthTMP < 1) ? monthTMP=12 : 0;
-//       updateTime();
-//     }
-//     //- year
-//     else if ((x >= yeaD[0]) && (x <= yeaD[2])) {
-//       //waitForIt(yeaD[0], yeaD[1], yeaD[2], yeaD[3]);
-//       yearTMP--;
-//       (yearTMP < 1970) ? yearTMP=2100 : 0;
-//       updateTime();
-//     }
-//   }
-//}
-//
-////Process touch in watering timers settings screen
-//void processTouchWateringTimes(int x, int y) {
-//  //watering hour
-//   if ((x >= wHourU[0]) && (x <= wHourU[2])) {
-//     //+ sign
-//     if ((y >= wHourU[1]) && (y <= wHourU[3])) {
-//       //waitForIt(wHourU[0], wHourU[1], wHourU[2], wHourU[3]);
-//       wHourTMP++;
-//       (wHourTMP > 23) ? wHourTMP=0 : 0;
-//       updateWaterTimes();
-//     }
-//     //- sign
-//     else if ((y >= wHourD[1]) && (y <= wHourD[3])) {
-//       //waitForIt(wHourD[0], wHourD[1], wHourD[2], wHourD[3]);
-//       (wHourTMP <= 0) ? wHourTMP=23 : wHourTMP--;
-//       updateWaterTimes();
-//     }             
-//   } 
-//   //watering minute
-//   else if ((x >= wMinU[0]) && (x <= wMinU[2])) {
-//     //+ sign
-//     if ((y >= wMinU[1]) && (y <= wMinU[3])) {
-//       //waitForIt(wMinU[0], wMinU[1], wMinU[2], wMinU[3]);
-//       wMinuteTMP++;
-//       (wMinuteTMP > 59) ? wMinuteTMP=0 : 0;
-//       updateWaterTimes();
-//     }
-//     //- sign
-//     else if ((y >= wMinD[1]) && (y <= wMinD[3])) {
-//       //waitForIt(wMinD[0], wMinD[1], wMinD[2], wMinD[3]);
-//       (wMinuteTMP <= 0) ? wMinuteTMP=59 : wMinuteTMP--;
-//       updateWaterTimes();
-//     }     
-//   }
-//   //flooding minute
-//   else if ((x >= floodU[0]) && (x <= floodU[2])) {
-//     //+ sign
-//     if ((y >= floodU[1]) && (y <= floodU[3])) {
-//       //waitForIt(floodU[0], floodU[1], floodU[2], floodU[3]);
-//       floodMtmp++;
-//       (floodMtmp > 59) ? floodMtmp=0 : 0;
-//       updateWaterTimes();
-//     }
-//     //- sign
-//     else if ((y >= floodD[1]) && (y <= floodD[3])) {
-//       //waitForIt(floodD[0], floodD[1], floodD[2], floodD[3]);
-//       (floodMtmp <= 0) ? floodMtmp=59 : floodMtmp--;
-//       updateWaterTimes();
-//     }
-//   }
-//   //night only button
-//   else if ((x >= night[0]) && (x <= night[2]) && (y >= night[1]) && (y <= night[3])) {
-//     waitForIt(night[0], night[1], night[2], night[3]);  
-//     onlyDayTMP = !onlyDayTMP;
-//     updateWaterTimes();     
-//   }  
-//}
-//
-////Process touch in ph warnings settings screen
-//void processTouchPHwarnings(int x, int y) {
-//  //Pressing a plus button
-//   if ((x >= phUpperU[0]) && (x <= phUpperU[2])) {    
-//     //Pressed upper plus sign
-//     if ((y >= phUpperU[1]) && (y <= phUpperU[3])) {
-//       //waitForIt(phUpperU[0], phUpperU[1], phUpperU[2], phUpperU[3]);
-//       phAlarmUtmp += 0.05;
-//       (phAlarmUtmp > 14) ? phAlarmUtmp=0 : 0;
-//       updatePHWarns();
-//     }
-//     //Pressed lower plus sign
-//     else if ((y >= phLowerU[1]) && (y <= phLowerU[3])) {
-//       //waitForIt(phLowerU[0], phLowerU[1], phLowerU[2], phLowerU[3]);
-//       phAlarmDtmp += 0.05;
-//       (phAlarmDtmp > 14) ? phAlarmDtmp=0 : 0;
-//       updatePHWarns();
-//     }
-//   } 
-//   //Pressing a minus button
-//   else if ((x >= phUpperD[0]) && (x <= phUpperD[2])) { 
-//     //Pressed upper minus sign
-//     if ((y >= phUpperD[1]) && (y <= phUpperD[3])) {
-//       //waitForIt(phUpperD[0], phUpperD[1], phUpperD[2], phUpperD[3]);
-//       phAlarmUtmp -= 0.05;
-//       (phAlarmUtmp < 0) ? phAlarmUtmp=14 : 0;
-//       updatePHWarns();
-//     }
-//     //Pressed lower minus sign
-//     else if ((y >= phLowerD[1]) && (y <= phLowerD[3])) {
-//       //waitForIt(phLowerD[0], phLowerD[1], phLowerD[2], phLowerD[3]);
-//       phAlarmDtmp -= 0.05;
-//       (phAlarmDtmp < 0) ? phAlarmDtmp=14 : 0;
-//       updatePHWarns();
-//     }
-//   }
-//}
-//
-////Process touch in ec warnings settings screen
-//void processTouchECwarnings(int x, int y) {
-//  //Pressing a plus button
-//   if ((x >= ecUpperU[0]) && (x <= ecUpperU[2])) {    
-//     //Pressed upper plus sign
-//     if ((y >= ecUpperU[1]) && (y <= ecUpperU[3])) {
-//       //waitForIt(ecUpperU[0], ecUpperU[1], ecUpperU[2], ecUpperU[3]);
-//       ecAlarmUtmp += 10;
-//       (ecAlarmUtmp > 9999) ? ecAlarmUtmp=1300 : 0;
-//       updateECWarns();
-//     }
-//     //Pressed lower plus sign
-//     else if ((y >= ecLowerU[1]) && (y <= ecLowerU[3])) {
-//       //waitForIt(ecLowerU[0], ecLowerU[1], ecLowerU[2], ecLowerU[3]);
-//       ecAlarmDtmp += 10;
-//       (ecAlarmDtmp > 9999) ? ecAlarmDtmp=1300 : 0;
-//       updateECWarns();
-//     }
-//   } 
-//   //Pressing a minus button
-//   else if ((x >= ecUpperD[0]) && (x <= ecUpperD[2])) { 
-//     //Pressed upper minus sign
-//     if ((y >= ecUpperD[1]) && (y <= ecUpperD[3])) {
-//       //waitForIt(ecUpperD[0], ecUpperD[1], ecUpperD[2], ecUpperD[3]);
-//       ecAlarmUtmp -= 10;
-//       (ecAlarmUtmp < 1300) ? ecAlarmUtmp=9999 : 0;
-//       updateECWarns();
-//     }
-//     //Pressed lower minus sign
-//     else if ((y >= ecLowerD[1]) && (y <= ecLowerD[3])) {
-//       //waitForIt(ecLowerD[0], ecLowerD[1], ecLowerD[2], ecLowerD[3]);
-//       ecAlarmDtmp -= 10;
-//       (ecAlarmDtmp < 1300) ? ecAlarmDtmp=9999 : 0;
-//       updateECWarns();
-//     }
-//   }  
-//}
-//
-////Process touch in water level warning settings screen
-//void processTouchWaterWarning(int x, int y) {
-//  if ((y >= wattU[1]) && (y <= wattU[3])) {
-//     //Plus sign
-//     if ((x >= wattU[0]) && (x <= wattU[2])) {
-//       //waitForIt(wattU[0], wattU[1], wattU[2], wattU[3]);
-//       waterAlarmTMP += 1;
-//       (waterAlarmTMP > 100) ? waterAlarmTMP=0 : 0;
-//       updateWatWarns();
-//     } 
-//     //Minus sign
-//     else if ((x >= wattD[0]) && (x <= wattD[2])) {
-//       //waitForIt(wattD[0], wattD[1], wattD[2], wattD[3]);
-//       (waterAlarmTMP <= 0) ? waterAlarmTMP=100 : waterAlarmTMP--;
-//       updateWatWarns();
-//     }
-//   }  
-//}
-//
-////Process touch in manual pump control screen
-//void processTouchManualPumps(int x, int y) {
-//  if ((x >= manIN[0]) && (x <= manIN[2])) {
-//     //Toggle input valve
-//     if ((y >= manIN[1]) && (y <= manIN[3])) {
-//         waitForIt(manIN[0], manIN[1], manIN[2], manIN[3]);
-//         toggleInputValve();
-//     }
-//     //Toggle output valve
-//     else if ((y >= manOUT[1]) && (y <= manOUT[3])) {
-//         waitForIt(manOUT[0], manOUT[1], manOUT[2], manOUT[3]);
-//         toggleOutputValve();
-//     }
-//   }
-//}
-//
-////Toggles input of water into circuit
-////Used for manual control
-//void toggleInputValve() {
-//  inputValve = !inputValve;
-//  LCD.setFont(BigFont);
-//  if (inputValve) {
-//    printButton("ON  ",manIN[0],manIN[1],manIN[2],manIN[3]);
-//    digitalWrite(waterPump, HIGH);
-//  } else {
-//    LCD.setColor(64,64,64);
-//    LCD.fillRoundRect(manIN[0],manIN[1],manIN[2],manIN[3]);
-//    LCD.setColor(255, 255, 255);
-//    LCD.drawRoundRect(manIN[0],manIN[1],manIN[2],manIN[3]);
-//    digitalWrite(waterPump, LOW);
-//  }
-//  LCD.setFont(SmallFont);
-//}
-//
-////Toggles output of water from circuit
-////Used for manual control
-//void toggleOutputValve() {
-//  outputValve = !outputValve;
-//  LCD.setFont(BigFont);
-//  if (outputValve) {
-//    printButton("ON  ",manOUT[0],manOUT[1],manOUT[2],manOUT[3]);
-//    digitalWrite(flushValve, HIGH);
-//  } else {
-//    LCD.setColor(64,64,64);
-//    LCD.fillRoundRect(manOUT[0],manOUT[1],manOUT[2],manOUT[3]);
-//    LCD.setColor(255, 255, 255);
-//    LCD.drawRoundRect(manOUT[0],manOUT[1],manOUT[2],manOUT[3]);
-//    digitalWrite(flushValve, LOW);
-//  }
-//  LCD.setFont(SmallFont);
 //}

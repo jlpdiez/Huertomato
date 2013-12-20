@@ -1,13 +1,13 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 1.0
+// # Version    : 2.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 19.12.2013
 // 
 // # Description: Library for controlling Huertomato's GUI
-// # Contains all windows and manages its transition
+// # Contains all windows and manages its transition and button presses
 // 
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -68,6 +68,17 @@ const int xSize = 399;
 const int ySize = 239;
 const int bigFontSize = 16;
 const int smallFontSize = 8;
+
+//Holds text strings for each sensor
+const int nSensorText = 6;
+static char* sensorText[nSensorText] = {
+	"Humidity:",
+	"Temp:",
+	"Light:",
+	"pH:",
+	"EC:",
+	"Deposit:"
+};
 
 //Here lies the button info for each window
 //We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
@@ -236,9 +247,9 @@ static uint8_t waterHour, waterMin, floodMin;
 //ph Alarms
 static float phAlarmMax, phAlarmMin;
 //ec Alarms
-static uint32_t ecAlarmU, ecAlarmD;
+static uint16_t ecAlarmMax, ecAlarmMin;
 //Water alarms
-static uint8_t waterAlarm;
+static uint8_t waterAlarmMin;
 //Night Toggle
 static boolean nightWater;
 //Water pump toggle
@@ -276,6 +287,7 @@ class GUI {
     void processTouch();
     //draw();
     void drawMainScreen();
+	void updateMainScreen();
     
   private:
     //0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings, 
@@ -294,7 +306,7 @@ class GUI {
     
     //Private functions
     void printButtonBig(char* text, int x1, int y1, int x2, int y2);
-    void printHeader();
+    void printHeaderBackground();
     void printMainHeader();
     void updateMainHeader();
     void printMenuHeader(char* c);
@@ -305,7 +317,7 @@ class GUI {
     void printIconAndStatus();
     void updateIconAndStatus();
     //void drawMainScreen();
-    void updateMainScreen();
+    //void updateMainScreen();
     
     //To each its own class?
     void printMainMenu();

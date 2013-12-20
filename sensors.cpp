@@ -83,7 +83,7 @@ uint8_t Sensors::getHumidity() {
   return _humidity;
 }
 
-uint32_t Sensors::getEC() {
+uint16_t Sensors::getEC() {
   return _ec;
 }
 
@@ -118,7 +118,7 @@ void Sensors::smoothSensorReadings() {
   for (int i = 0; i < numSamples; i++) { resF += _temps[i]; }
   _temp = (float)(resF / numSamples);
   //Light
-  uint32_t res = 0;
+  uint16_t res = 0;
   for (int i = 0; i < numSamples; i++) { res += _lights[i]; }
   _light = (uint8_t)(res / numSamples);
   //Humidity
@@ -128,7 +128,7 @@ void Sensors::smoothSensorReadings() {
   //Electroconductivity
   res = 0;
   for (int i = 0; i < numSamples; i++) {  res += _ecs[i]; }
-  _ec = (uint32_t)(res / numSamples);
+  _ec = (uint16_t)(res / numSamples);
   //PH
   resF = 0;
   for (int i = 0; i < numSamples; i++) { resF += _phs[i]; }
@@ -214,7 +214,7 @@ float Sensors::ph() {
 
 //TODO: Error checking should be better implemented
 //Returns EC in uSiemens
-uint32_t Sensors::ec() {
+uint16_t Sensors::ec() {
   //As EC readings are continuous we can get two types of errors when reading from arduino
   //We can have a string with more than 2 commas and we can have a number too large to be valid data 
   if (Serial2.available() > 0) {
@@ -251,7 +251,7 @@ uint32_t Sensors::ec() {
       char uSiemensArray[uSiemens.length() + 1];
       uSiemens.toCharArray(uSiemensArray, sizeof(uSiemensArray));      
       //Serial << "EC in uS: " << atol(uSiemensArray) << endl;
-      uint32_t uS = atol(uSiemensArray);
+      uint16_t uS = atol(uSiemensArray);
       //we dont accept readings that are clearly off charts
       if (uS > 10000) {
         //Serial << "Number too big: " << sensors.ec << endl;

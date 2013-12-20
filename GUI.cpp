@@ -57,6 +57,7 @@ int GUI::getActScreen() const {
 	return _actScreen;
 }
 
+//Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {
   if (_touch->dataAvailable()) {
     _touch->read();
@@ -143,8 +144,8 @@ void GUI::processTouch() {
   }
 }
 
-//private
-void GUI::printHeader() {
+//Prints header background and separator line
+void GUI::printHeaderBackground() {
   const int headerHeight = 20; 
   //Header background
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -154,97 +155,186 @@ void GUI::printHeader() {
   _lcd->drawLine(0, headerHeight, xSize, headerHeight);  
 }
 
-void GUI::printMainHeader() {
-  printHeader(); 
-  //Left
-  //_lcd->print("20:55:33",2,2);
-  //Center
-  //_lcd->print("20:55:33",xSize/2-bigFontSize*4,2);
-  //RIGHT
-  //max X - 16px per letter X 8 letters - 2px spacing
-  //_lcd->print("20:57:23",xSize-(bigFontSize*8)-2, 2);
-  
-  //Spacing is 4px between imgs (so its orig x + 16 + 4)
-  //if (alarm)
-//  _lcd->drawBitmap(2, 2, 16, 16, alarm16);
-//  //if (manual control)
-//  _lcd->drawBitmap(22, 2, 16, 16, water16);
-//  //if (watering plants)
-//  _lcd->drawBitmap(42, 2, 16, 16, mano16); 
+//Prints main header text and clock
+void GUI::printMainHeader() {    
+  //Get actual time
+  time_t t = now();
+  uint8_t hou = hour(t);
+  uint8_t min = minute(t);
+  //uint8_t sec = second(t);
+
+  printHeaderBackground(); 
   //Small TextS
   _lcd->setFont(Sinclair_S);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
   _lcd->print("Huertomato 1.2",10,6); 
-  //Change below too
-  //max X - 8px per letter X 5 letters - 6px spacing
-  _lcd->print("16:57:05",xSize-(8*smallFontSize)-2, 6); 
+
+  //Clock display
+  //X is calculated from the end of size
+  _lcd->printNumI(hou,xSize-(5*smallFontSize)-2,6,2,'0');
+  _lcd->print(":",xSize-(3*smallFontSize)-2,6);
+  _lcd->printNumI(min,xSize-(2*smallFontSize)-2,6,2,'0');
+  //_lcd->print(":",xSize-(3*smallFontSize)-2,6);
+  //_lcd->printNumI(sec,xSize-(2*smallFontSize)-2,6,2,'0');
+  
+    //Left
+    //_lcd->print("20:55:33",2,2);
+    //Center
+    //_lcd->print("20:55:33",xSize/2-bigFontSize*4,2);
+    //RIGHT
+    //max X - 16px per letter X 8 letters - 2px spacing
+    //_lcd->print("20:57:23",xSize-(bigFontSize*8)-2, 2);
+    
+    //Spacing is 4px between imgs (so its orig x + 16 + 4)
+    //if (alarm)
+    //  _lcd->drawBitmap(2, 2, 16, 16, alarm16);
+    //  //if (manual control)
+    //  _lcd->drawBitmap(22, 2, 16, 16, water16);
+    //  //if (watering plants)
+    //  _lcd->drawBitmap(42, 2, 16, 16, mano16);
 }
 
+//Updates main header's clock
 void GUI::updateMainHeader() {
+  //Get actual time
+  time_t t = now();
+  uint8_t hou = hour(t);
+  uint8_t min = minute(t);
+  //uint8_t sec = second(t);
+  
   _lcd->setFont(Sinclair_S);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  //max X - 8px per letter X 5 letters - 6px spacing
-  //Change above too
-  _lcd->print("16:57:05",xSize-(8*smallFontSize)-2, 6); 
+  //Clock display
+  //X is calculated from the end of size
+  _lcd->printNumI(hou,xSize-(5*smallFontSize)-2,6,2,'0');
+  _lcd->print(":",xSize-(3*smallFontSize)-2,6);
+  _lcd->printNumI(min,xSize-(2*smallFontSize)-2,6,2,'0');
+  //_lcd->print(":",xSize-(3*smallFontSize)-2,6);
+  //_lcd->printNumI(sec,xSize-(2*smallFontSize)-2,6,2,'0');
 }
 
+//Prints header with centered text
 void GUI::printMenuHeader(char* c) {
-  printHeader();
+  printHeaderBackground();
   _lcd->setFont(hallfetica_normal);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]); 
+  //Print title centered
   _lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
 }
 
-//Print sensor info on main screen. Data will tyurn red if theres an alarm triggered
+//Print sensor info on main screen. Data will turn red if theres an alarm triggered
 void GUI::printSensorInfo() {
+  const int xSpacer = xSize - 25;
+  const int ySpacer = 35;
+  	
   _lcd->setFont(hallfetica_normal);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(VGA_WHITE);
 
-  //For x coord we take maxSize and extract letterSize*letters plus 25 arbitrary spacing
-  char* humid = "Humidity: 34%";
-  _lcd->print(humid,xSize-25-(bigFontSize*strlen(humid)),35);
-  //_lcd->printNumF(sensors.getTemp(),2,114,64,'.',4);
-  //_lcd->print("23.42C",xSize-25-bigFontSize*6,35);
-  //_lcd->print("C",154,64);
+  //For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
+  //Humidity
+  int x = xSpacer-(bigFontSize*(strlen(sensorText[0])+4));
+  _lcd->print(sensorText[0],x,ySpacer);
+  _lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' '); 
+  _lcd->print("%",xSpacer-bigFontSize,ySpacer);
   
+  //Temp
+  x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
+  int y = ySpacer+(bigFontSize+8);
+  _lcd->print(sensorText[1],x,y);
+  _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*5,y,'.',4);
+  _lcd->print("C",xSpacer-bigFontSize,y);
   
-  char* temp = "Temp: 23.42C"; 
-  _lcd->print(temp,xSize-25-(bigFontSize*strlen(temp)),35+(bigFontSize+8));
-  //_lcd->printNumI(sensors.getHumidity(),90,82,2);
-  //_lcd->print("34%",106,82);
+  //Light
+  x = xSpacer-(bigFontSize*(strlen(sensorText[2])+4));
+  y = ySpacer+(bigFontSize+8)*2;
+  _lcd->print(sensorText[2],x,y);
+  _lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);
+  _lcd->print("%",xSpacer-bigFontSize,y);
   
-  char* light = "Light: 51%";
-  _lcd->print(light,xSize-25-(bigFontSize*strlen(light)),35+(bigFontSize+8)*2);
-  //_lcd->printNumI(sensors.getLight(),66,100,2);
-  //_lcd->print("51%",82,100);
-  
-  //((sensors.ph > phAlarmU) || (sensors.ph < phAlarmD)) ? _lcd->setColor(red[0],red[1],red[2]) : _lcd->setColor(grey[0], grey[1], grey[2]);
-  //_lcd->setColor(red[0],red[1],red[2]);
-  char* ph = "pH: 6.3";
-  _lcd->print(ph,xSize-25-(bigFontSize*strlen(ph)),35+(bigFontSize+8)*3);
-  //_lcd->printNumF(sensors.getPH(),2,42,118,'.',4);
- 
-  //((sensors.ec > ecAlarmU || (sensors.ec < ecAlarmD))) ? _lcd->setColor(red[0],red[1],red[2]) : _lcd->setColor(grey[0], grey[1], grey[2]);
-  char* ec = "EC: 1315uS";
-  _lcd->print(ec,xSize-25-(bigFontSize*strlen(ec)),35+(bigFontSize+8)*4);
-  //_lcd->printNumI(sensors.getEC(),42,136,4);
-  //_lcd->print("uS",74,136);
-  
+  //pH
+  x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
+  y = ySpacer+(bigFontSize+8)*3;
+  float ph = _sensors->getPH();
+  if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
+    _lcd->setColor(red[0],red[1],red[2]);
+  else
+    _lcd->setColor(grey[0], grey[1], grey[2]);
 
-  //(sensors.waterLevel < waterAlarm) ? _lcd->setColor(red[0],red[1],red[2]) : _lcd->setColor(grey[0], grey[1], grey[2]);
-  char* lvl = "Deposit: 100%";
-  _lcd->print(lvl,xSize-25-(bigFontSize*strlen(lvl)),35+(bigFontSize+8)*5);
-  //_lcd->printNumI(sensors.getWaterLevel(),130,154,3);
-  //_lcd->print("%",154,154);
+  _lcd->print(sensorText[3],x,y);
+  _lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
+  
+  //EC
+  x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
+  y = ySpacer+(bigFontSize+8)*4;
+  uint16_t ec = _sensors->getEC();
+  if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
+    _lcd->setColor(red[0],red[1],red[2]);
+  else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	
+  _lcd->print(sensorText[4],x,y);
+  _lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
+  _lcd->print("uS",xSpacer-bigFontSize*2,y);
+  
+  //Deposit level
+  x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
+  y = ySpacer+(bigFontSize+8)*5;
+  uint8_t lvl = _sensors->getWaterLevel();
+  if (lvl < _settings->getWaterAlarm())
+    _lcd->setColor(red[0],red[1],red[2]);
+  else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	
+  _lcd->print(sensorText[5],x,y);
+  _lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
+  _lcd->print("%",xSpacer-bigFontSize,y);
 }
 
+//Redraws only sensor numbers. Changes colour if needed (alarm triggered)
 void GUI::updateSensorInfo() {
-  //Same as above but should only change numbers
-  //Unless theres an alarm triggered in which case turns entire text red
+    const int xSpacer = xSize - 25;
+    const int ySpacer = 35;
+    
+    _lcd->setFont(hallfetica_normal);
+    _lcd->setColor(grey[0], grey[1], grey[2]);
+    _lcd->setBackColor(VGA_WHITE);
+
+    //Humidity
+    _lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' ');    
+    //Temp
+    int y = ySpacer+(bigFontSize+8);
+    _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*5,y,'.',4);   
+    //Light
+    y = ySpacer+(bigFontSize+8)*2;
+    _lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);    
+    //pH
+    y = ySpacer+(bigFontSize+8)*3;
+    float ph = _sensors->getPH();
+    if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
+      _lcd->setColor(red[0],red[1],red[2]);
+    else
+      _lcd->setColor(grey[0], grey[1], grey[2]);
+    _lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);   
+    //EC
+    y = ySpacer+(bigFontSize+8)*4;
+    uint16_t ec = _sensors->getEC();
+    if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
+      _lcd->setColor(red[0],red[1],red[2]);
+    else
+      _lcd->setColor(grey[0], grey[1], grey[2]);
+    _lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);   
+    //Deposit level
+    y = ySpacer+(bigFontSize+8)*5;
+    uint8_t lvl = _sensors->getWaterLevel();
+    if (lvl < _settings->getWaterAlarm())
+      _lcd->setColor(red[0],red[1],red[2]);
+    else
+      _lcd->setColor(grey[0], grey[1], grey[2]);    
+    _lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
 }
 
 //Load img from SD: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
@@ -315,10 +405,12 @@ void GUI::drawMainScreen() {
   printIconAndStatus();
 }
 
+//Redraws only values that change over time
+//Used for refreshing from main sketch
 void GUI::updateMainScreen() {
   updateMainHeader();
   //Should be changed to updateSensorInfo
-  printSensorInfo(); 
+  updateSensorInfo(); 
   //Change to updateIconAndStatus();
   printIconAndStatus();
 }
@@ -1333,10 +1425,10 @@ void GUI::printPHalarms() {
   _lcd->print(dLimit,xSpacer,ySecondLine);
   //Numbers
   int x = (4+strlen(uLimit))*bigFontSize;
-  _lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',4);
-  _lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',4);
+  _lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',5);
+  _lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',5);
   //Buttons
-  x += 1.5*bigFontSize;
+  x += 2*bigFontSize;
   phAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
   phAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
   phAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
@@ -1358,8 +1450,8 @@ void GUI::updatePHalarms() {
 	
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(uLimit))*bigFontSize;
-	_lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',4);
-	_lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',4);	
+	_lcd->printNumF(phAlarmMax,2,x,yFirstLine,'.',5);
+	_lcd->printNumF(phAlarmMin,2,x,ySecondLine,'.',5);	
 }
 
 void GUI::processTouchPHalarms(int x, int y) {
@@ -1381,22 +1473,22 @@ void GUI::processTouchPHalarms(int x, int y) {
     drawMainScreen();
 	
   //Max up
-  } else if(buttonIndex = phAlarmsButtons[3]) {
+  } else if(buttonIndex == phAlarmsButtons[3]) {
 	  phAlarmMax += 0.05;
 	  (phAlarmMax > 14) ? phAlarmMax=0 : 0;
 	  updatePHalarms();
   //Max down	  
-  } else if(buttonIndex = phAlarmsButtons[4]) {
+  } else if(buttonIndex == phAlarmsButtons[4]) {
 	  phAlarmMax -= 0.05;
 	  (phAlarmMax < 0) ? phAlarmMax=14 : 0;
 	  updatePHalarms();
   //Min up
-  } else if(buttonIndex = phAlarmsButtons[5]) {
+  } else if(buttonIndex == phAlarmsButtons[5]) {
 	  phAlarmMin += 0.05;
 	  (phAlarmMin > 14) ? phAlarmMin=0 : 0;
 	  updatePHalarms();
   //Min down
-  } else if(buttonIndex = phAlarmsButtons[6]) {
+  } else if(buttonIndex == phAlarmsButtons[6]) {
 	  phAlarmMin -= 0.05;
 	  (phAlarmMin < 0) ? phAlarmMin=14 : 0;
 	  updatePHalarms();
@@ -1470,7 +1562,28 @@ void GUI::processTouchECalarms(int x,int y) {
     _actScreen = 0;
     _lcd->fillScr(VGA_WHITE);
     drawMainScreen();
-  }    
+	
+  //Max up	
+  } else if(buttonIndex == ecAlarmsButtons[3]) {
+	ecAlarmMax += 10;
+	(ecAlarmMax > 9999) ? ecAlarmMax=1000 : 0;
+	updateECalarms();
+  //Max down
+  } else if(buttonIndex == ecAlarmsButtons[4]) {
+	ecAlarmMax -= 10;
+	(ecAlarmMax < 1000) ? ecAlarmMax=9999 : 0;
+	updateECalarms();
+  //Min up
+  } else if(buttonIndex == ecAlarmsButtons[5]) {
+	ecAlarmMin += 10;
+	(ecAlarmMin > 9999) ? ecAlarmMin=1000 : 0;
+	updateECalarms();
+  //Min down
+  } else if(buttonIndex == ecAlarmsButtons[6]) {
+	ecAlarmMin -= 10;
+	(ecAlarmMin < 1000) ? ecAlarmMin=9999 : 0;
+	updateECalarms();
+  }
 }
 
 void GUI::printWaterAlarms() {
@@ -1530,11 +1643,21 @@ void GUI::processTouchWaterAlarms(int x,int y) {
     _actScreen = 0;
     _lcd->fillScr(VGA_WHITE);
     drawMainScreen();
-  }    
+  
+  //Up
+  } else if (buttonIndex == waterAlarmsButtons[3]) {
+	waterAlarmMin++;
+	(waterAlarmMin > 100) ? waterAlarmMin=0 : 0;
+	updateWaterAlarms();
+  //Down  
+  } else if (buttonIndex == waterAlarmsButtons[4]) {
+	(waterAlarmMin <= 0) ? waterAlarmMin=100 : waterAlarmMin--;
+	updateWaterAlarms();
+  } 
 }
 
 void GUI::printAutoConfig() {
- 
+  //TODO
 }
 
 void GUI::drawAutoConfig() {
@@ -1632,7 +1755,7 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 }
 
 void GUI::printWaterCalibration() {
-  
+  //TODO
 }
 
 void GUI::drawWaterCalibration() {
@@ -1664,7 +1787,7 @@ void GUI::processTouchWaterCalibration(int x,int y) {
 }
 
 void GUI::printPHcalibration() {
-    
+  //TODO
 }
 
 void GUI::drawPHcalibration() {
@@ -1696,7 +1819,7 @@ void GUI::processTouchPHcalibration(int x,int y) {
 }
 
 void GUI::printECcalibration() {
-  
+  //TODO
 }
 
 void GUI::drawECcalibration() {
@@ -1728,7 +1851,7 @@ void GUI::processTouchECcalibration(int x,int y) {
 }
 
 void GUI::printLightCalibration() {
-  
+  //TODO
 }
 
 void GUI::drawLightCalibration() {

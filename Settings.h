@@ -28,8 +28,8 @@ class Settings {
     void setFloodMinute(const uint8_t);
     void setPHalarmUp(const float);
     void setPHalarmDown(const float);
-    void setECalarmUp(const uint32_t);
-    void setECalarmDown(const uint32_t);
+    void setECalarmUp(const uint16_t);
+    void setECalarmDown(const uint16_t);
     void setWaterAlarm(const uint8_t);
     void setNightWatering(const boolean);
     
@@ -58,8 +58,8 @@ class Settings {
     uint8_t getFloodMinute() const;
     float getPHalarmUp() const;
     float getPHalarmDown() const;
-    uint32_t getECalarmUp() const;
-    uint32_t getECalarmDown() const;
+    uint16_t getECalarmUp() const;
+    uint16_t getECalarmDown() const;
     uint8_t getWaterAlarm() const;
     boolean getNightWatering() const;
     
@@ -91,8 +91,8 @@ class Settings {
     //Sensor Alarms
     float _phAlarmUp;
     float _phAlarmDown;
-    uint32_t _ecAlarmUp;
-    uint32_t _ecAlarmDown;
+    uint16_t _ecAlarmUp;
+    uint16_t _ecAlarmDown;
     uint8_t _waterAlarm;
     //TODO: Sensor Calibration
     //If light < threshold we assume its night time
@@ -128,20 +128,6 @@ class Settings {
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
     
-
-    
-//    uint8_t _wHourTMP;
-//    uint8_t _wMinuteTMP;
-//    boolean _onlyDayTMP;
-//    float _phAlarmUtmp;
-//    float _phAlarmDtmp;
-//    uint32_t _ecAlarmUtmp;
-//    uint32_t _ecAlarmDtmp;
-//    uint8_t _waterAlarmTMP;
-//    //Temp variables used when manually changing time
-//    uint8_t hourTMP, minTMP, secTMP, dayTMP, monthTMP;
-//    int yearTMP;
-    
     //EEPROM addresses for all settings
     int _adressWaterTimed;
     int _adressWaterHour;
@@ -165,6 +151,15 @@ class Settings {
   
 };
 
-
-
 #endif
+
+// Dew point temp
+// delta max = 0.6544 wrt dewPoint()
+// reference: http://en.wikipedia.org/wiki/Dew_point
+/*double dewPointFast(double celsius, double humidity) {
+  double a = 17.271;
+  double b = 237.7;
+  double temp = (a * celsius) / (b + celsius) + log(humidity/100);
+  double Td = (b * temp) / (a - temp);
+  return Td;
+}*/

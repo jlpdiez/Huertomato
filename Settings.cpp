@@ -126,6 +126,7 @@ Settings& Settings::operator=(const Settings &other) {
 	return *this;
 }
 
+//Destructor
 Settings::~Settings() {}
 
 //Reads settings from EEPROM non-volatile memory and loads vars
@@ -152,194 +153,102 @@ void Settings::readEEPROMvars() {
 
 //Setters
 //System Settings
-void Settings::setWaterTimed(const boolean w) {
-  _waterTimed = w;
-}
+void Settings::setWaterTimed(const boolean w) { _waterTimed = w; }
 
-void Settings::setWaterHour(const uint8_t w) {
-  _waterHour = w;
-}
+void Settings::setWaterHour(const uint8_t w) { _waterHour = w; }
 
-void Settings::setWaterMinute(const uint8_t w) {
-  _waterMinute = w;
-}
+void Settings::setWaterMinute(const uint8_t w) { _waterMinute = w; }
 
-void Settings::setFloodMinute(const uint8_t f) {
-  _floodMinute = f;
-}
+void Settings::setFloodMinute(const uint8_t f) { _floodMinute = f; }
 
-void Settings::setPHalarmUp(const float p) {
-  _phAlarmUp = p;
-}
+void Settings::setPHalarmUp(const float p) { _phAlarmUp = p; }
 
-void Settings::setPHalarmDown(const float p) {
-  _phAlarmDown = p;
-}
+void Settings::setPHalarmDown(const float p) { _phAlarmDown = p; }
 
-void Settings::setECalarmUp(const uint32_t e) {
-  _ecAlarmUp = e;
-}
+void Settings::setECalarmUp(const uint16_t e) { _ecAlarmUp = e; }
 
-void Settings::setECalarmDown(const uint32_t e) {
-  _ecAlarmDown = e;
-}
+void Settings::setECalarmDown(const uint16_t e) { _ecAlarmDown = e; }
 
-void Settings::setWaterAlarm(const uint8_t w) {
-  _waterAlarm = w;
-}
+void Settings::setWaterAlarm(const uint8_t w) { _waterAlarm = w; }
 
-void Settings::setNightWatering(const boolean n) {
-  _nightWatering = n;
-}
+void Settings::setNightWatering(const boolean n) { _nightWatering = n; }
 
 //Controller Settings
-void Settings::setSensorMinute(const uint8_t s) {
-  _sensorMinute = s;
-}
+void Settings::setSensorMinute(const uint8_t s) { _sensorMinute = s; }
 
-void Settings::setSensorSecond(const uint8_t s) {
-  _sensorSecond = s;
-}
+void Settings::setSensorSecond(const uint8_t s) { _sensorSecond = s; }
 
-void Settings::setSDactive(const boolean s) {
-  _sdActive = s;
-}
+void Settings::setSDactive(const boolean s) { _sdActive = s; }
 
-void Settings::setSDhour(const uint8_t s) {
-  _sdHour = s;
-}
+void Settings::setSDhour(const uint8_t s) { _sdHour = s; }
 
-void Settings::setSDminute(const uint8_t s) {
-  _sdMinute = s;
-}
+void Settings::setSDminute(const uint8_t s) { _sdMinute = s; }
 
-void Settings::setSound(const boolean s) {
-  _sound = s;
-}
+void Settings::setSound(const boolean s) { _sound = s; }
 
-void Settings::setSerialDebug(const boolean s) {
-  _serialDebug = s;
-}
+void Settings::setSerialDebug(const boolean s) { _serialDebug = s; }
 
 //Status vars
-void Settings::setNextWhour(const uint8_t n) {
-  _nextWhour = n;
-}
+void Settings::setNextWhour(const uint8_t n) { _nextWhour = n; }
 
-void Settings::setNextWminute(const uint8_t n) {
-  _nextWminute = n;
-}
+void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 
-void Settings::setManualPump(const boolean m) {
-  _manualPump = m;
-}
+void Settings::setManualPump(const boolean m) { _manualPump = m; }
 
-void Settings::setNightWateringStopped(const boolean n) {
-  _nightWateringStopped = n;
-}
+void Settings::setNightWateringStopped(const boolean n) { _nightWateringStopped = n; }
 
-void Settings::setWateringPlants(const boolean w) {
-  _wateringPlants = w;
-}
+void Settings::setWateringPlants(const boolean w) { _wateringPlants = w; }
 
-void Settings::setAlarmTriggered(const boolean a) {
-  _alarmTriggered = a;
-}
+void Settings::setAlarmTriggered(const boolean a) { _alarmTriggered = a; }
 
 //Getters
 //System Settings
-boolean Settings::getWaterTimed() const {
-  return _waterTimed;
-}
+boolean Settings::getWaterTimed() const { return _waterTimed; }
 
-uint8_t Settings::getWaterHour() const {
-  return _waterHour;
-}
+uint8_t Settings::getWaterHour() const { return _waterHour; }
 
-uint8_t Settings::getWaterMinute() const {
-  return _waterMinute;
-}
+uint8_t Settings::getWaterMinute() const { return _waterMinute; }
 
-uint8_t Settings::getFloodMinute() const {
-  return _floodMinute;
-}
+uint8_t Settings::getFloodMinute() const { return _floodMinute; }
 
-float Settings::getPHalarmUp() const {
-  return _phAlarmUp;
-}
+float Settings::getPHalarmUp() const { return _phAlarmUp; }
 
-float Settings::getPHalarmDown() const {
-  return _phAlarmDown;
-}
+float Settings::getPHalarmDown() const { return _phAlarmDown; }
 
-uint32_t Settings::getECalarmUp() const {
-  return _ecAlarmUp;
-}
+uint16_t Settings::getECalarmUp() const { return _ecAlarmUp; }
 
-uint32_t Settings::getECalarmDown() const {
-  return _ecAlarmDown;
-}
+uint16_t Settings::getECalarmDown() const { return _ecAlarmDown; }
 
-uint8_t Settings::getWaterAlarm() const {
-  return _waterAlarm;
-}
+uint8_t Settings::getWaterAlarm() const { return _waterAlarm; }
 
-boolean Settings::getNightWatering() const {
-  return _nightWatering;
-}
+boolean Settings::getNightWatering() const { return _nightWatering; }
 
 //Controller Settings
-uint8_t Settings::getSensorMinute() const {
-  return _sensorMinute;
-}
+uint8_t Settings::getSensorMinute() const { return _sensorMinute; }
 
-uint8_t Settings::getSensorSecond() const {
-  return _sensorSecond;
-}
+uint8_t Settings::getSensorSecond() const { return _sensorSecond; }
 
-boolean Settings::getSDactive() const {
-  return _sdActive;
-}
+boolean Settings::getSDactive() const { return _sdActive; }
 
-uint8_t Settings::getSDhour() const {
-  return _sdHour;
-}
+uint8_t Settings::getSDhour() const { return _sdHour; }
 
-uint8_t Settings::getSDminute() const {
-  return _sdMinute;
-}
+uint8_t Settings::getSDminute() const { return _sdMinute; }
 
-boolean Settings::getSound() const {
-  return _sound;
-}
+boolean Settings::getSound() const { return _sound; }
 
-boolean Settings::getSerialDebug() const {
-  return _serialDebug;
-}
+boolean Settings::getSerialDebug() const { return _serialDebug; }
 
 //Status vars
-uint8_t Settings::getNextWhour() const {
-  return _nextWhour;
-}
+uint8_t Settings::getNextWhour() const { return _nextWhour; }
 
-uint8_t Settings::getNextWminute() const {
-  return _nextWminute;
-}
+uint8_t Settings::getNextWminute() const { return _nextWminute; }
 
-boolean Settings::getManualPump() const {
-  return _manualPump;
-}
+boolean Settings::getManualPump() const { return _manualPump; }
 
-boolean Settings::getNightWateringStopped() const {
-  return _nightWateringStopped;
-}
+boolean Settings::getNightWateringStopped() const { return _nightWateringStopped; }
 
-boolean Settings::getWateringPlants() const {
-  return _wateringPlants;
-}
+boolean Settings::getWateringPlants() const { return _wateringPlants; }
 
-boolean Settings::getAlarmTriggered() const {
-  return _alarmTriggered;
-}
+boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
 
 
