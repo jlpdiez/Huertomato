@@ -198,7 +198,7 @@ void setupRTC() {
 ////Initiates alarms and timers
 void setupAlarms() { 
   //Every 5 secs we poll sensors and smooth the reading
-  Alarm.timerRepeat(5, updateSensors);
+  //Alarm.timerRepeat(5, updateSensors);
   //Every 5mins we adjust EC circuit readings to temperature
   //Alarm.timerRepeat(0, 5, 0, adjustECtemp);
   //Every 10mins we log sensor data to SD if needed
