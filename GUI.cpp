@@ -11,6 +11,7 @@ GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
   _buttons.setTextFont(hallfetica_normal);
   _buttons.setSymbolFont(various_symbols);
   _buttons.setButtonColors(lightGreen, grey, white, grey, white);
+  
 }
 
 GUI::GUI(const GUI &other) : _buttons(other._buttons) {
@@ -162,6 +163,7 @@ void GUI::printMainHeader() {
   time_t t = now();
   uint8_t hou = hour(t);
   uint8_t min = minute(t);
+  uint8_t sec = second(t);
 
   printHeaderBackground(); 
   
@@ -173,10 +175,15 @@ void GUI::printMainHeader() {
 
   //Clock display  
   //X is calculated from the end of size
-  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+  /*_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
   _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');*/
 	
+	_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 
     //Left
     //_lcd->print("20:55:33",2,2);
@@ -203,15 +210,18 @@ void GUI::updateMainHeader() {
   time_t t = now();
   uint8_t hou = hour(t);
   uint8_t min = minute(t);
+  uint8_t sec = second(t);
   
   _lcd->setFont(hallfetica_normal);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
   //Clock display
   //X is calculated from the end of size
-  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 }
 
 //Prints header with centered text
@@ -352,17 +362,19 @@ void GUI::updateSensorInfo() {
 //Load img from SD: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 //Shows system status in main screen
 void GUI::printIconAndStatus() {
-  //Change Y coord.
+  const int xSpacer = 10;
+  const int ySpacer = 200;
   
   //If theres an alarm
   if (_settings->getAlarmTriggered()) {
-    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, alarm126);    
+    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, alarm126);   
+	//statusPic = alarm126; 
     _lcd->setColor(red[0],red[1],red[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
-    _lcd->print("T",10,200);
+    _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("Alarm - Check Solution",10+bigFontSize*2,200);
+    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
   
   //watering and not in continuous mode
   } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {  
@@ -370,9 +382,9 @@ void GUI::printIconAndStatus() {
     _lcd->setColor(blue[0],blue[1],blue[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
-    _lcd->print("T",10,200);
+    _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("Huertomato Watering",10+bigFontSize*2,200); 
+    _lcd->print("Huertomato Watering",xSpacer+bigFontSize*2,ySpacer); 
   
   //water stopped because its night  
   } else if (_settings->getNightWateringStopped()) {
@@ -380,9 +392,9 @@ void GUI::printIconAndStatus() {
     _lcd->setColor(grey[0],grey[1],grey[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
-    _lcd->print("T",10,200);
+    _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("No Watering @ Night",10+bigFontSize*2,200);
+    _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
     
   //water pump in manual mode    
   } else if (_settings->getManualPump()) {
@@ -390,20 +402,31 @@ void GUI::printIconAndStatus() {
 	_lcd->setColor(red[0],red[1],red[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(various_symbols);
-	_lcd->print("T",10,200);
+	_lcd->print("T",xSpacer,ySpacer);
 	_lcd->setFont(hallfetica_normal);
-	_lcd->print("Pump Manually Enabled",10+bigFontSize*2,200);  
+	_lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer);  
 
   //Normal operation    
   } else {
+	int wHour = _settings->getNextWhour();
+	int wMin = _settings->getNextWminute();
     _lcd->drawBitmap (15, 25+bigFontSize, 126, 126, plant126);  
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
-    _lcd->print("T",10,200);
+    _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("Next Watering @ 17:56",10+bigFontSize*2,200);
+	int x = xSpacer + bigFontSize*2;
+	char* nWater = "Next Watering @";
+    _lcd->print(nWater,x,ySpacer);
+	x += bigFontSize*(strlen(nWater)+1);
+	_lcd->printNumI(wHour,x,ySpacer,2,'0');
+	x += bigFontSize*2;
+	_lcd->print(":",x,ySpacer);
+	x += bigFontSize;
+	_lcd->printNumI(wMin,x,ySpacer,2,'0');
   }
+  //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, statusPic);
 }
 
 void GUI::updateIconAndStatus() {
@@ -438,7 +461,7 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     const int backX = 15;
     const int backY = 215;
     char* backText = " Back ";
-    _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);   
+    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);   
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(backX-1,backY-5,backX+bigFontSize*strlen(backText),backY-5);
     buttonArray[0] = _buttons.addButton(backX, backY, backText);
@@ -454,7 +477,7 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     char* saveText = " Save ";
     const int saveX = xSize/2 - bigFontSize*strlen(saveText)/2;
     const int saveY = 215;
-    _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(saveX-1,saveY-5,saveX+bigFontSize*strlen(saveText),saveY-5);
     buttonArray[1] = _buttons.addButton(saveX, saveY, saveText);
@@ -466,7 +489,7 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     char* cancelText = " Exit ";
     const int cancelX = xSize - 15 - bigFontSize*strlen(cancelText);
     const int cancelY = 215;  
-    _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(cancelX-1,cancelY-5,cancelX+bigFontSize*strlen(cancelText),cancelY-5);
     buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);
@@ -475,9 +498,18 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     buttonArray[2] = -1; 
 }
 
+//Overlays "Saved" text over save button
+//Used when button is pressed to inform the user values have been stored
+void GUI::printSavedButton() {
+	char* savedText = " Saved ";
+	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
+	const int saveY = 215;
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->print(savedText,saveX,saveY);
+}
+
 //Makes window decoration and buttons
-void GUI::printMainMenu() {
-  
+void GUI::printMainMenu() {  
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
   _lcd->setBackColor(VGA_WHITE);
   
@@ -642,12 +674,12 @@ void GUI::processTouchSystem(int x, int y) {
     //Water at night Toggle 
   } else if (buttonIndex == systemButtons[6]) {
 	nightWater = !nightWater;
-	//TODO: Save variables to EEPROM!?
+	_settings->setNightWatering(nightWater);
     updateSystemSettings();
     //Manual pump toggle
   } else if (buttonIndex == systemButtons[7]) {
 	waterPumpState = !waterPumpState;
-	//TODO: Save variables to EEPROM!?
+	_settings->setManualPump(waterPumpState);
 	//TODO: Go to main menu?
 	updateSystemSettings();
   }
@@ -762,11 +794,12 @@ void GUI::processTouchController(int x, int y) {
   //Sound toggle
   } else if (buttonIndex == controllerButtons[6]) {
     soundActive = !soundActive;
-	//TODO: Save variables to EEPROM!?
+	_settings->setSound(soundActive);
 	updateControllerSettings();
   //Serial debugging toggle
   } else if (buttonIndex == controllerButtons[7]) {
     serialActive = !serialActive;
+	_settings->setSerialDebug(serialActive);
 	//TODO: Save variables to EEPROM!?
 	updateControllerSettings();
   }
@@ -894,8 +927,9 @@ void GUI::processTouchTime(int x, int y) {
     _lcd->fillScr(VGA_WHITE);
     drawControllerSettings();
   //Save
-  } else if (buttonIndex == timeButtons[1]) {
-    //TODO: Do something!
+  } else if (buttonIndex == timeButtons[1]) {	
+	setRTCtime(sysHour, sysMin, sysSec, sysDay, sysMonth, sysYear);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == timeButtons[2]) {
     //Go to main screen
@@ -1042,7 +1076,9 @@ void GUI::processTouchSensorPolling(int x, int y) {
     drawControllerSettings();
   //Save
   } else if (buttonIndex == sensorPollingButtons[1]) {
-    //TODO: Do something!
+	_settings->setSensorMinute(pollMin);
+	_settings->setSensorSecond(pollSec);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == sensorPollingButtons[2]) {
     //Go to main screen
@@ -1184,7 +1220,10 @@ void GUI::processTouchSDcard(int x, int y) {
     drawControllerSettings();
   //Save
   } else if (buttonIndex == sdCardButtons[1]) {
-    //TODO: Do something!
+	_settings->setSDactive(sdActive);
+	_settings->setSDhour(sdHour);
+	_settings->setSDminute(sdMin);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == sdCardButtons[2]) {
     //Go to main screen
@@ -1351,7 +1390,11 @@ void GUI::processTouchWaterCycle(int x, int y) {
     drawSystemSettings();
   //Save
   } else if (buttonIndex == waterCycleButtons[1]) {
-    //TODO: Do something!
+    _settings->setWaterTimed(waterTimed);
+	_settings->setWaterHour(waterHour);
+	_settings->setWaterMinute(waterMin);
+	_settings->setFloodMinute(floodMin);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == waterCycleButtons[2]) {
     //Go to main screen
@@ -1520,7 +1563,9 @@ void GUI::processTouchPHalarms(int x, int y) {
     drawSensorAlarms();
   //Save
   } else if (buttonIndex == phAlarmsButtons[1]) {
-    //TODO: Do something!
+    _settings->setPHalarmUp(phAlarmMax);
+	_settings->setPHalarmDown(phAlarmMin);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == phAlarmsButtons[2]) {
     //Go to main screen
@@ -1613,7 +1658,9 @@ void GUI::processTouchECalarms(int x,int y) {
     drawSensorAlarms();
   //Save
   } else if (buttonIndex == ecAlarmsButtons[1]) {
-    //TODO: Do something!
+    _settings->setECalarmUp(ecAlarmMax);
+	_settings->setECalarmDown(ecAlarmMin);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == ecAlarmsButtons[2]) {
     //Go to main screen
@@ -1696,7 +1743,8 @@ void GUI::processTouchWaterAlarms(int x,int y) {
     drawSensorAlarms();
   //Save
   } else if (buttonIndex == waterAlarmsButtons[1]) {
-    //TODO: Do something!
+    _settings->setWaterAlarm(waterAlarmMin);
+	printSavedButton();
   //Exit
   } else if (buttonIndex == waterAlarmsButtons[2]) {
     //Go to main screen
@@ -1741,6 +1789,7 @@ void GUI::processTouchAutoConfig(int x,int y) {
   //Save
   } else if (buttonIndex == autoConfigButtons[1]) {
     //TODO: Do something!
+	printSavedButton();
   //Exit
   } else if (buttonIndex == autoConfigButtons[2]) {
     //Go to main screen
@@ -1843,6 +1892,7 @@ void GUI::processTouchWaterCalibration(int x,int y) {
   //Save
   } else if (buttonIndex == waterLevelButtons[1]) {
     //TODO: Do something!
+	printSavedButton();
   //Exit
   } else if (buttonIndex == waterLevelButtons[2]) {
     //Go to main screen
@@ -1877,6 +1927,7 @@ void GUI::processTouchPHcalibration(int x,int y) {
   //Save
   } else if (buttonIndex == phCalibrationButtons[1]) {
     //TODO: Do something!
+	printSavedButton();
   //Exit
   } else if (buttonIndex == phCalibrationButtons[2]) {
     //Go to main screen
@@ -1911,6 +1962,7 @@ void GUI::processTouchECcalibration(int x,int y) {
   //Save
   } else if (buttonIndex == ecCalibrationButtons[1]) {
     //TODO: Do something!
+	printSavedButton();
   //Exit
   } else if (buttonIndex == ecCalibrationButtons[2]) {
     //Go to main screen
@@ -1945,6 +1997,7 @@ void GUI::processTouchLightCalibration(int x, int y) {
   //Save
   } else if (buttonIndex == lightCalibrationButtons[1]) {
     //TODO: Do something!
+	printSavedButton();
   //Exit
   } else if (buttonIndex == lightCalibrationButtons[2]) {
     //Go to main screen

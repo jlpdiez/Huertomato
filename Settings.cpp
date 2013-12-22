@@ -7,8 +7,8 @@ Settings::Settings() {
 //  _lightThreshold = 10;
   
   //Status variables - Not read from EEPROM
-  _nextWhour = 0;
-  _nextWminute = 0;
+  _nextWhour = 20;
+  _nextWminute = 5;
   _manualPump = false;
   _nightWateringStopped = false;
   _manualPump = false;
@@ -36,26 +36,26 @@ Settings::Settings() {
   _sound = true;
   _serialDebug = true;
   
-//  _adressWaterTimed = EEPROM.getAddress(sizeof(byte));
-//  _adressWaterHour = EEPROM.getAddress(sizeof(byte));
-//  _adresswaterMinute = EEPROM.getAddress(sizeof(byte));
-//  _adressFloodMinute = EEPROM.getAddress(sizeof(byte));
-//  _adressPHalarmUp = EEPROM.getAddress(sizeof(float));
-//  _adressPHalarmDown = EEPROM.getAddress(sizeof(float));
-//  _adressECalarmUp = EEPROM.getAddress(sizeof(long));
-//  _adressECalarmDown = EEPROM.getAddress(sizeof(long));
-//  _adressWaterAlarm = EEPROM.getAddress(sizeof(byte));
-//  _adresssSerialDebug = EEPROM.getAddress(sizeof(byte));
-//  _adressActivateSD = EEPROM.getAddress(sizeof(byte));
-//  _adressNightWatering = EEPROM.getAddress(sizeof(byte));
-//  
-//  _adressSensorMinute = EEPROM.getAddress(sizeof(byte));
-//  _adressSensorSecond = EEPROM.getAddress(sizeof(byte));  
-//  _adressSDactive = EEPROM.getAddress(sizeof(byte));
-//  _adressSDhour = EEPROM.getAddress(sizeof(byte));
-//  _adressSDminute = EEPROM.getAddress(sizeof(byte));
-//  _adressSound = EEPROM.getAddress(sizeof(byte));
-//  _adressSerialDebug = EEPROM.getAddress(sizeof(byte));
+  _adressWaterTimed = EEPROM.getAddress(sizeof(byte));
+  _adressWaterHour = EEPROM.getAddress(sizeof(byte));
+  _adresswaterMinute = EEPROM.getAddress(sizeof(byte));
+  _adressFloodMinute = EEPROM.getAddress(sizeof(byte));
+  _adressPHalarmUp = EEPROM.getAddress(sizeof(float));
+  _adressPHalarmDown = EEPROM.getAddress(sizeof(float));
+  _adressECalarmUp = EEPROM.getAddress(sizeof(long));
+  _adressECalarmDown = EEPROM.getAddress(sizeof(long));
+  _adressWaterAlarm = EEPROM.getAddress(sizeof(byte));
+  _adresssSerialDebug = EEPROM.getAddress(sizeof(byte));
+  _adressActivateSD = EEPROM.getAddress(sizeof(byte));
+  _adressNightWatering = EEPROM.getAddress(sizeof(byte));
+  
+  _adressSensorMinute = EEPROM.getAddress(sizeof(byte));
+  _adressSensorSecond = EEPROM.getAddress(sizeof(byte));  
+  _adressSDactive = EEPROM.getAddress(sizeof(byte));
+  _adressSDhour = EEPROM.getAddress(sizeof(byte));
+  _adressSDminute = EEPROM.getAddress(sizeof(byte));
+  _adressSound = EEPROM.getAddress(sizeof(byte));
+  _adressSerialDebug = EEPROM.getAddress(sizeof(byte));
 //  
 //  readEEPROMvars();
 }
@@ -153,6 +153,7 @@ void Settings::readEEPROMvars() {
 
 //Setters
 //System Settings
+//TODO: Store data on EEPROM
 void Settings::setWaterTimed(const boolean w) { _waterTimed = w; }
 
 void Settings::setWaterHour(const uint8_t w) { _waterHour = w; }

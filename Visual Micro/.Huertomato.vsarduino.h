@@ -6,6 +6,7 @@
 */
 
 #define __AVR_ATmega2560__
+#define _VMDEBUG 1
 #define ARDUINO 101
 #define ARDUINO_MAIN
 #define F_CPU 16000000L
@@ -17,7 +18,6 @@ extern "C" void __cxa_pure_virtual() {;}
 void setupRTC();
 void setupAlarms();
 //
-void updateSensors();
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
@@ -26,10 +26,8 @@ void updateSensors();
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\GUI.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\GUI.h"
-#include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.cpp"
-#include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.h"
-#include "C:\Users\eNDeR\Desktop\Huertomato\Sensors.cpp"
-#include "C:\Users\eNDeR\Desktop\Huertomato\Sensors.h"
+#include "C:\Users\eNDeR\Desktop\Huertomato\Other.cpp"
+#include "C:\Users\eNDeR\Desktop\Huertomato\Other.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Settings.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Settings.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\alarm126.c"
@@ -40,5 +38,9 @@ void updateSensors();
 #include "C:\Users\eNDeR\Desktop\Huertomato\plant126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\plant64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\plantDark64.c"
+#include "C:\Users\eNDeR\Desktop\Huertomato\rgbLED.cpp"
+#include "C:\Users\eNDeR\Desktop\Huertomato\rgbLED.h"
+#include "C:\Users\eNDeR\Desktop\Huertomato\sensors.cpp"
+#include "C:\Users\eNDeR\Desktop\Huertomato\sensors.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\settings64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\settingsDark64.c"

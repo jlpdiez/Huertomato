@@ -36,6 +36,7 @@
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
 // # UTFT & UTouch http://www.henningkarlsen.com/electronics/library.php
 
+//#include "Other.h"
 #include "Sensors.h"
 #include "Settings.h"
 #include "RGBled.h"
@@ -116,6 +117,7 @@ GUI gui(&LCD,&Touch,&sensors,&settings);
 // SETUP
 // *********************************************
 void setup() {  
+	Serial << "Available memory: " << freeMemory();
 	led.setOn();
 	//TODO:Here goes splash Screen 
 	
@@ -141,11 +143,10 @@ void setup() {
 	
 	//This goes to settings constructor  
 	//readEEPROMvars();
-	setupAlarms();
+	//setupAlarms();
 	//initMusic();
 	 
 	//Alarm.delay(2500);
-	
 	gui.drawMainScreen();
 }
 
@@ -246,16 +247,18 @@ void setupAlarms() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
+	//Alarm
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
-	//Sound alarm in main screen only
-	if (gui.getActScreen() == 0) {}
-      //tone(buzzPin, 880.00, 250);
+		//Sound alarm in main screen only
+		if (gui.getActScreen() == 0) {}
+		//tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
     
     gui.processTouch();
 	
+	//Refresh main screen
     if (gui.getActScreen() == 0)
      gui.updateMainScreen();
    
@@ -366,13 +369,14 @@ void loop() {
 // OTHER
 // *********************************************
 
-void updateSensors() {
-	sensors.update();
-}
+//void updateSensors() {
+	//sensors.update();
+//}
 
 //void adjustECtemp() {
 //  sensors.adjustECtemp(); 
 //}
+
 //WATER EBB+FLOW ROUTINE
 //Leaves flush valve opened in case it rains so plants wont flood but reservoir might be affected
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.

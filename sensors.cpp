@@ -71,29 +71,17 @@ Sensors& Sensors::operator=(const Sensors &other) {
 Sensors::~Sensors() {}
 
 //Getters
-float Sensors::getTemp() {
-  return _temp;
-}
+float Sensors::getTemp() { return _temp; }
 
-uint8_t Sensors::getLight() {
-  return _light;
-}
+uint8_t Sensors::getLight() { return _light; }
 
-uint8_t Sensors::getHumidity() {
-  return _humidity;
-}
+uint8_t Sensors::getHumidity() { return _humidity; }
 
-uint16_t Sensors::getEC() {
-  return _ec;
-}
+uint16_t Sensors::getEC() { return _ec; }
 
-float Sensors::getPH() {
-  return _ph;
-}
+float Sensors::getPH() { return _ph; }
 
-uint8_t Sensors::getWaterLevel() {
-  return _waterLevel;
-}
+uint8_t Sensors::getWaterLevel() { return _waterLevel; }
 
 //Updates sample arrays with readings from sensors and performs smoothing
 void Sensors::update() {

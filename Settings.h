@@ -152,14 +152,3 @@ class Settings {
 };
 
 #endif
-
-// Dew point temp
-// delta max = 0.6544 wrt dewPoint()
-// reference: http://en.wikipedia.org/wiki/Dew_point
-/*double dewPointFast(double celsius, double humidity) {
-  double a = 17.271;
-  double b = 237.7;
-  double temp = (a * celsius) / (b + celsius) + log(humidity/100);
-  double Td = (b * temp) / (a - temp);
-  return Td;
-}*/

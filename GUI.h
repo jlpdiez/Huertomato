@@ -34,7 +34,13 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"
-#include <Time.h>              
+//#include <DS1307RTC.h>
+#include <Time.h>  
+#include "Other.h"      
+
+//TODO: initiate all vars that are the same with ','   
+
+//extern DS1307RTC RTC;
 
 //Main Screen Icons                          
 extern prog_uint16_t plant126[0x3E04];
@@ -42,7 +48,8 @@ extern prog_uint16_t alarm126[0x3E04];
 extern prog_uint16_t logo126[0x3E04];
 extern prog_uint16_t hand126[0x3E04];
 extern prog_uint16_t moon126[0x3E04];
-extern prog_uint16_t luna126[0x3E04];
+
+//extern prog_uint16_t *statusPic;
 
 //Menu Icons
 extern prog_uint16_t plant64[0x1000];
@@ -311,6 +318,7 @@ class GUI {
     void updateMainHeader();
     void printMenuHeader(char* c);
     void printFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
+	void printSavedButton();
     
     void printSensorInfo();
     void updateSensorInfo();

@@ -108,16 +108,10 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -198,16 +192,10 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -381,16 +369,10 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -471,16 +453,10 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_tinyFAT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
