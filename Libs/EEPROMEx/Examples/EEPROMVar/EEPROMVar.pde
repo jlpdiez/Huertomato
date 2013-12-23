@@ -31,7 +31,11 @@ void readAndWriteVar(EEPROMVar<float> &floatVar) {
     floatVar.restore();  // restore EEPROMVar to EEPROM
     
     Serial.print("adress: ");
+<<<<<<< HEAD
     Serial.println(floatVar.getAdress());
+=======
+    Serial.println(floatVar.getAddress());
+>>>>>>> origin/newUI
     Serial.print("input: ");
     Serial.println(input);
     Serial.print("output: ");
@@ -42,6 +46,13 @@ void readAndWriteVar(EEPROMVar<float> &floatVar) {
 void setup()
 {
   Serial.begin(9600); 
+<<<<<<< HEAD
+=======
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
+  }
+
+>>>>>>> origin/newUI
   delay(100);
   Serial.println();  
   

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 #include "rgbLED.h"
 
 //Constructor
 rgbLED::rgbLED(uint8_t r, uint8_t g, uint8_t b) : 
+=======
+#include "RGBled.h"
+
+//Constructors
+RGBled::RGBled(uint8_t r, uint8_t g, uint8_t b) : 
+>>>>>>> origin/newUI
       _redPin(r), _greenPin(g), _bluePin(b) { 
     pinMode(_redPin, OUTPUT);
     pinMode(_greenPin, OUTPUT);
@@ -11,20 +18,54 @@ rgbLED::rgbLED(uint8_t r, uint8_t g, uint8_t b) :
     _blue = 255;
 }
 
+<<<<<<< HEAD
 void rgbLED::setOn() {
+=======
+RGBled::RGBled(const RGBled &other) {
+	_redPin = other._redPin;
+	_greenPin = other._greenPin;
+	_bluePin = other._bluePin;
+	_red = other._red;
+	_green = other._green;
+	_blue = other._blue;
+}
+
+RGBled& RGBled::operator=(const RGBled &other) {
+	_redPin = other._redPin;
+	_greenPin = other._greenPin;
+	_bluePin = other._bluePin;
+	_red = other._red;
+	_green = other._green;
+	_blue = other._blue;
+	
+	return *this;
+}
+
+RGBled::~RGBled() {}
+
+void RGBled::setOn() {
+>>>>>>> origin/newUI
     analogWrite(_redPin,_red);
     analogWrite(_greenPin,_green);
     analogWrite(_bluePin,_blue);
 }
 
+<<<<<<< HEAD
 void rgbLED::setOff() {
+=======
+void RGBled::setOff() {
+>>>>>>> origin/newUI
     digitalWrite(_redPin, LOW);
     digitalWrite(_greenPin, LOW);
     digitalWrite(_bluePin, LOW);
 }
 
 //Drives led coloring
+<<<<<<< HEAD
 void rgbLED::setColour(color c) {
+=======
+void RGBled::setColour(color c) {
+>>>>>>> origin/newUI
    switch(c) {
       case RED:    
         _red = 255;
@@ -52,7 +93,11 @@ void rgbLED::setColour(color c) {
 }
 
 //Colors the strip (each color [0..255])
+<<<<<<< HEAD
 void rgbLED::setColour(uint8_t red, uint8_t green, uint8_t blue) {
+=======
+void RGBled::setColour(uint8_t red, uint8_t green, uint8_t blue) {
+>>>>>>> origin/newUI
     _red = red;
     _green = green;
     _blue = blue;
@@ -60,7 +105,11 @@ void rgbLED::setColour(uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 //Steps brightness up
+<<<<<<< HEAD
 void rgbLED::moreBrightness() {
+=======
+void RGBled::moreBrightness() {
+>>>>>>> origin/newUI
     const int inc = 25; 
     uint8_t red = _red;
     uint8_t green = _green;
@@ -83,7 +132,11 @@ void rgbLED::moreBrightness() {
 }
 
 //Steps brightness down
+<<<<<<< HEAD
 void rgbLED::lessBrightness() {
+=======
+void RGBled::lessBrightness() {
+>>>>>>> origin/newUI
     const int inc = 25; 
     uint8_t red = _red;
     uint8_t green = _green;
@@ -106,7 +159,11 @@ void rgbLED::lessBrightness() {
 }
 
 //Turns led on-off
+<<<<<<< HEAD
 void rgbLED::strobe() {
+=======
+void RGBled::strobe() {
+>>>>>>> origin/newUI
     setOff();
     delay(500);
     setOn();
@@ -114,7 +171,11 @@ void rgbLED::strobe() {
 }
   
 //Cycles rapidly through full Red-Green-Blue
+<<<<<<< HEAD
 void rgbLED::rgbStrobe() {
+=======
+void RGBled::rgbStrobe() {
+>>>>>>> origin/newUI
     setColour(RED);
     delay(250);
     setColour(GREEN);
@@ -125,7 +186,11 @@ void rgbLED::rgbStrobe() {
 
 //Cycles through every colour possible.
 //Heavy use of delays so program will become unresponsive for a long time!
+<<<<<<< HEAD
 void rgbLED::smooth() {
+=======
+void RGBled::smooth() {
+>>>>>>> origin/newUI
   //Reduce to make faster
   const int FADESPEED = 5;
   uint8_t r,g,b;

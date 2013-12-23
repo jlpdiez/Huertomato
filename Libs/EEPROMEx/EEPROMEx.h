@@ -20,8 +20,11 @@
 #ifndef EEPROMEX_h
 #define EEPROMEX_h
 
+<<<<<<< HEAD
 #include <EEPROM.h>
 
+=======
+>>>>>>> origin/newUI
 #if ARDUINO >= 100
 #include <Arduino.h> 
 #else
@@ -37,6 +40,12 @@
 #define EEPROMSizeATmega168   512     
 #define EEPROMSizeATmega328   1024     
 #define EEPROMSizeATmega1280  4096     
+<<<<<<< HEAD
+=======
+#define EEPROMSizeATmega32u4  1024
+#define EEPROMSizeAT90USB1286 4096
+#define EEPROMSizeMK20DX128   2048
+>>>>>>> origin/newUI
 
 #define EEPROMSizeUno         EEPROMSizeATmega328     
 #define EEPROMSizeUnoSMD      EEPROMSizeATmega328
@@ -45,6 +54,15 @@
 #define EEPROMSizeMega        EEPROMSizeATmega1280
 #define EEPROMSizeDiecimila   EEPROMSizeATmega168
 #define EEPROMSizeNano        EEPROMSizeATmega168
+<<<<<<< HEAD
+=======
+#define EEPROMSizeTeensy2     EEPROMSizeATmega32u4
+#define EEPROMSizeLeonardo    EEPROMSizeATmega32u4
+#define EEPROMSizeMicro       EEPROMSizeATmega32u4
+#define EEPROMSizeYun         EEPROMSizeATmega32u4
+#define EEPROMSizeTeensy2pp   EEPROMSizeAT90USB1286
+#define EEPROMSizeTeensy3     EEPROMSizeMK20DX128
+>>>>>>> origin/newUI
 
 class EEPROMClassEx
 {
@@ -89,7 +107,11 @@ class EEPROMClassEx
 	{
 		if (!isWriteOk(address+items*sizeof(T))) return 0;
 		unsigned int i;
+<<<<<<< HEAD
 		for (i = 0; i < items; i++) 
+=======
+		for (i = 0; i < (unsigned int)items; i++)
+>>>>>>> origin/newUI
 			readBlock<T>(address+(i*sizeof(T)),value[i]);
 		return i;
 	}
@@ -104,7 +126,11 @@ class EEPROMClassEx
 	{	
 		if (!isWriteOk(address+items*sizeof(T))) return 0;
 		unsigned int i;
+<<<<<<< HEAD
 		for (i = 0; i < items; i++) 
+=======
+		for (i = 0; i < (unsigned int)items; i++)
+>>>>>>> origin/newUI
 			  writeBlock<T>(address+(i*sizeof(T)),value[i]);
 		return i;
 	}
@@ -121,7 +147,11 @@ class EEPROMClassEx
 		int writeCount=0;
 		if (!isWriteOk(address+items*sizeof(T))) return 0;
 		unsigned int i;
+<<<<<<< HEAD
 		for (i = 0; i < items; i++) 
+=======
+		for (i = 0; i < (unsigned int)items; i++)
+>>>>>>> origin/newUI
 			  writeCount+= updateBlock<T>(address+(i*sizeof(T)),value[i]);
 		return writeCount;
 	}
@@ -131,13 +161,21 @@ class EEPROMClassEx
 		int writeCount=0;
 		if (!isWriteOk(address+sizeof(value))) return 0;
 		const byte* bytePointer = (const byte*)(const void*)&value;
+<<<<<<< HEAD
 		for (unsigned int i = 0; i < sizeof(value); i++) {
+=======
+		for (unsigned int i = 0; i < (unsigned int)sizeof(value); i++) {
+>>>>>>> origin/newUI
 			if (read(address)!=*bytePointer) {
 				write(address, *bytePointer);
 				writeCount++;		
 			}
 			address++;
+<<<<<<< HEAD
 			*bytePointer++;
+=======
+			bytePointer++;
+>>>>>>> origin/newUI
 		}
 		return writeCount;
 	}
