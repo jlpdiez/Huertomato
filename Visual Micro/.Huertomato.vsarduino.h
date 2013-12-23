@@ -19,7 +19,6 @@ void setupAlarms();
 void initMusic();
 //
 void updateSensors();
-HEAD void waterPlants();
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
@@ -30,6 +29,10 @@ HEAD void waterPlants();
 #include "C:\Users\eNDeR\Desktop\Huertomato\GUI.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Other.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Other.h"
+#include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.cpp"
+#include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.h"
+#include "C:\Users\eNDeR\Desktop\Huertomato\Sensors.cpp"
+#include "C:\Users\eNDeR\Desktop\Huertomato\Sensors.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Settings.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Settings.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\alarm126.c"
@@ -38,7 +41,3 @@ HEAD void waterPlants();
 #include "C:\Users\eNDeR\Desktop\Huertomato\logos64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\moon126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\plant126.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\rgbLED.cpp"
-#include "C:\Users\eNDeR\Desktop\Huertomato\rgbLED.h"
-#include "C:\Users\eNDeR\Desktop\Huertomato\sensors.cpp"
-#include "C:\Users\eNDeR\Desktop\Huertomato\sensors.h"

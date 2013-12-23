@@ -222,15 +222,6 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
-<<<<<<< HEAD
-  if (alarmTriggered) {
-    led.setColour(RED);
-    //Sound alarm in main screen only
-    if (dispScreen == 0)
-      tone(buzzPin, 880.00, 250);
-  } else
-    led.setColour(GREEN);
-=======
 	//Alarm
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
@@ -239,7 +230,6 @@ void loop() {
 			tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
->>>>>>> origin/newUI
     
     gui.processTouch();
 	
@@ -366,46 +356,6 @@ void updateSensors() {
 //Leaves flush valve opened in case it rains so plants wont flood but reservoir might be affected
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
-<<<<<<< HEAD
-void waterPlants() {
-  led.setColour(BLUE);
-  wateringPlants = true;
-
-  //Informs through LCD & serial if needed
-  dispScreen = 0;
-  LCD.clrScr();
-  drawMain();
-  
-  if (activateSerial) {
-    Serial << "Watering plants" << endl << endl;
-  }
-
-  /*
-  //Flood circuit
-  //TODO: Cerrar valvula de salida si la hay
-  //Waits for the time set in floodM through watering settings
-  //Alarm.delay(floodM * 60000);
-  
-  //Flush circuit
-  //digitalWrite(flushValve, HIGH);
-  //Leaves flushValve On in case it rains
-  //Sets manual pump variables to off
-  inputValve = false;
-  outputValve = false;
-  */
-  //TODO: Remove - only for testing purposes
-  Alarm.delay(5000); 
-  
-  //Set next watering alarm and update LCD notification
-  if (onlyDay && (sensors.getLight() < lightThreshold))
-    nightWateringStopped = true;
-  else {
-    Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
-    updateNextWateringTime();
-  }
-  wateringPlants = false;
-}
-=======
 //void waterPlants() {
 //  led.setColour(BLUE);
 //  wateringPlants = true;
@@ -444,7 +394,6 @@ void waterPlants() {
 //  }
 //  wateringPlants = false;
 //}
->>>>>>> origin/newUI
 
 /*uint32_t toMs(time_t t) {
   return (uint32_t)((((hour(t) * 60) + minute(t)) * 60) + second(t)) * 1000;

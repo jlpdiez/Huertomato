@@ -605,6 +605,12 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
     <Compile Include="moon126.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Other.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Other.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="plant126.c">
       <SubType>compile</SubType>
     </Compile>

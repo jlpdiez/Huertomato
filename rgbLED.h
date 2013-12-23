@@ -31,15 +31,8 @@
 
 #include <Arduino.h>
 
-#include <Arduino.h>
-
 enum color { RED, GREEN, BLUE, WHITE };
 
-<<<<<<< HEAD
-class rgbLED {
-  public:
-     rgbLED(uint8_t, uint8_t, uint8_t);
-=======
 class RGBled {
   public:
 	 //Constructors
@@ -49,7 +42,6 @@ class RGBled {
 	 //Destructor
 	 ~RGBled();
 	 
->>>>>>> origin/newUI
      void setOn();
      void setOff();
      void setColour(color);

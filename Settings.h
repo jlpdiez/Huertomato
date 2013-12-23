@@ -43,7 +43,7 @@ class Settings {
 	//Destructor
 	~Settings();
     
-    //Setters
+    //Setters - These store settings to EEPROM too
     //System Settings
     void setWaterTimed(const boolean);
     void setWaterHour(const uint8_t);
@@ -154,15 +154,13 @@ class Settings {
     //EEPROM addresses for all settings
     int _adressWaterTimed;
     int _adressWaterHour;
-    int _adresswaterMinute;
+    int _adressWaterMinute;
     int _adressFloodMinute;
     int _adressPHalarmUp;
     int _adressPHalarmDown;
     int _adressECalarmUp;
     int _adressECalarmDown;
     int _adressWaterAlarm;
-    int _adresssSerialDebug;
-    int _adressActivateSD;
     int _adressNightWatering;  
     int _adressSensorMinute;
     int _adressSensorSecond;  

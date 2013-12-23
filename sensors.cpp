@@ -1,12 +1,7 @@
 #include "Sensors.h"
 
-<<<<<<< HEAD
-//Constructor
-Sensors::Sensors() {                 
-=======
 //Constructors
 Sensors::Sensors() {     
->>>>>>> origin/newUI
     pinMode(lightIn, INPUT);
     pinMode(humidIn, INPUT);
     pinMode(waterTrigger, OUTPUT);
@@ -35,32 +30,6 @@ Sensors::Sensors() {
     }
 }
 
-<<<<<<< HEAD
-//Getters
-float Sensors::getTemp() {
-  return _temp;
-}
-
-uint8_t Sensors::getLight() {
-  return _light;
-}
-
-uint8_t Sensors::getHumidity() {
-  return _humidity;
-}
-
-uint32_t Sensors::getEC() {
-  return _ec;
-}
-
-float Sensors::getPH() {
-  return _ph;
-}
-
-uint8_t Sensors::getWaterLevel() {
-  return _waterLevel;
-}
-=======
 Sensors::Sensors(const Sensors &other) {
 	_iSample = other._iSample;
 	for (int i = 0; i < numSamples; i++) {
@@ -113,7 +82,6 @@ uint16_t Sensors::getEC() { return _ec; }
 float Sensors::getPH() { return _ph; }
 
 uint8_t Sensors::getWaterLevel() { return _waterLevel; }
->>>>>>> origin/newUI
 
 //Updates sample arrays with readings from sensors and performs smoothing
 void Sensors::update() {
@@ -138,11 +106,7 @@ void Sensors::smoothSensorReadings() {
   for (int i = 0; i < numSamples; i++) { resF += _temps[i]; }
   _temp = (float)(resF / numSamples);
   //Light
-<<<<<<< HEAD
-  uint32_t res = 0;
-=======
   uint16_t res = 0;
->>>>>>> origin/newUI
   for (int i = 0; i < numSamples; i++) { res += _lights[i]; }
   _light = (uint8_t)(res / numSamples);
   //Humidity
@@ -152,11 +116,7 @@ void Sensors::smoothSensorReadings() {
   //Electroconductivity
   res = 0;
   for (int i = 0; i < numSamples; i++) {  res += _ecs[i]; }
-<<<<<<< HEAD
-  _ec = (uint32_t)(res / numSamples);
-=======
   _ec = (uint16_t)(res / numSamples);
->>>>>>> origin/newUI
   //PH
   resF = 0;
   for (int i = 0; i < numSamples; i++) { resF += _phs[i]; }
@@ -242,11 +202,7 @@ float Sensors::ph() {
 
 //TODO: Error checking should be better implemented
 //Returns EC in uSiemens
-<<<<<<< HEAD
-uint32_t Sensors::ec() {
-=======
 uint16_t Sensors::ec() {
->>>>>>> origin/newUI
   //As EC readings are continuous we can get two types of errors when reading from arduino
   //We can have a string with more than 2 commas and we can have a number too large to be valid data 
   if (Serial2.available() > 0) {
@@ -283,11 +239,7 @@ uint16_t Sensors::ec() {
       char uSiemensArray[uSiemens.length() + 1];
       uSiemens.toCharArray(uSiemensArray, sizeof(uSiemensArray));      
       //Serial << "EC in uS: " << atol(uSiemensArray) << endl;
-<<<<<<< HEAD
-      uint32_t uS = atol(uSiemensArray);
-=======
       uint16_t uS = atol(uSiemensArray);
->>>>>>> origin/newUI
       //we dont accept readings that are clearly off charts
       if (uS > 10000) {
         //Serial << "Number too big: " << sensors.ec << endl;

@@ -1,11 +1,12 @@
 #include "Settings.h"
 
-//TODO: How to initialize nextWtimes?
+//TODO: Only load if there is data:
+//http://playground.arduino.cc/Code/EEPROMLoadAndSaveSettings
 
 //Constructors
 Settings::Settings() {
-//  _lightThreshold = 10;
-  
+	//TODO: How to initialize?
+//  _lightThreshold = 10;  
   //Status variables - Not read from EEPROM
   _nextWhour = 20;
   _nextWminute = 5;
@@ -15,8 +16,8 @@ Settings::Settings() {
   _wateringPlants = false;
   _alarmTriggered = false;
   
-  //System Settings
-  _waterTimed = true;
+  //Init config - Maybe useful to program new hardwares?
+  /*_waterTimed = true;
   _waterHour = 2 ;
   _waterMinute = 30;
   _floodMinute = 15;
@@ -34,21 +35,19 @@ Settings::Settings() {
   _sdHour = 0;
   _sdMinute = 5;
   _sound = false;
-  _serialDebug = true;
+  _serialDebug = true;*/
   
+  //Set addresses for every value stored in EEPROM
   _adressWaterTimed = EEPROM.getAddress(sizeof(byte));
   _adressWaterHour = EEPROM.getAddress(sizeof(byte));
-  _adresswaterMinute = EEPROM.getAddress(sizeof(byte));
+  _adressWaterMinute = EEPROM.getAddress(sizeof(byte));
   _adressFloodMinute = EEPROM.getAddress(sizeof(byte));
   _adressPHalarmUp = EEPROM.getAddress(sizeof(float));
   _adressPHalarmDown = EEPROM.getAddress(sizeof(float));
-  _adressECalarmUp = EEPROM.getAddress(sizeof(long));
-  _adressECalarmDown = EEPROM.getAddress(sizeof(long));
+  _adressECalarmUp = EEPROM.getAddress(sizeof(int));
+  _adressECalarmDown = EEPROM.getAddress(sizeof(int));
   _adressWaterAlarm = EEPROM.getAddress(sizeof(byte));
-  _adresssSerialDebug = EEPROM.getAddress(sizeof(byte));
-  _adressActivateSD = EEPROM.getAddress(sizeof(byte));
-  _adressNightWatering = EEPROM.getAddress(sizeof(byte));
-  
+  _adressNightWatering = EEPROM.getAddress(sizeof(byte)); 
   _adressSensorMinute = EEPROM.getAddress(sizeof(byte));
   _adressSensorSecond = EEPROM.getAddress(sizeof(byte));  
   _adressSDactive = EEPROM.getAddress(sizeof(byte));
@@ -56,13 +55,14 @@ Settings::Settings() {
   _adressSDminute = EEPROM.getAddress(sizeof(byte));
   _adressSound = EEPROM.getAddress(sizeof(byte));
   _adressSerialDebug = EEPROM.getAddress(sizeof(byte));
-//  
-//  readEEPROMvars();
+  
+  readEEPROMvars();
 }
 
+//TODO: How to initialize these?
 Settings::Settings(const Settings &other) {
 	  //Status variables - Not read from EEPROM
-	  _nextWhour = 0;
+	  /*_nextWhour = 0;
 	  _nextWminute = 0;
 	  _manualPump = false;
 	  _nightWateringStopped = false;
@@ -71,7 +71,7 @@ Settings::Settings(const Settings &other) {
 	  _alarmTriggered = false;
 	  
 	  //System Settings
-	  _waterTimed = other._waterTimed;
+	  //_waterTimed = other._waterTimed;
 	  _waterHour = other._waterHour;
 	  _waterMinute = other._waterMinute;
 	  _floodMinute = other._floodMinute;
@@ -89,12 +89,12 @@ Settings::Settings(const Settings &other) {
 	  _sdHour = other._sdHour;
 	  _sdMinute = other._sdMinute;
 	  _sound = other._sound;
-	  _serialDebug = other._serialDebug;
+	  _serialDebug = other._serialDebug;*/
 }
 
 Settings& Settings::operator=(const Settings &other) {
 	//Status variables - Not read from EEPROM
-	_nextWhour = 0;
+	/*_nextWhour = 0;
 	_nextWminute = 0;
 	_manualPump = false;
 	_nightWateringStopped = false;
@@ -103,7 +103,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_alarmTriggered = false;
 		  
 	//System Settings
-	_waterTimed = other._waterTimed;
+	//_waterTimed = other._waterTimed;
 	_waterHour = other._waterHour;
 	_waterMinute = other._waterMinute;
 	_floodMinute = other._floodMinute;
@@ -121,7 +121,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
-	_serialDebug = other._serialDebug;
+	_serialDebug = other._serialDebug;*/
 	
 	return *this;
 }
@@ -133,15 +133,14 @@ Settings::~Settings() {}
 void Settings::readEEPROMvars() {
   _waterTimed = EEPROM.readByte(_adressWaterTimed);
   _waterHour = EEPROM.readByte(_adressWaterHour);
-  _waterMinute = EEPROM.readByte(_adresswaterMinute);
+  _waterMinute = EEPROM.readByte(_adressWaterMinute);
   _floodMinute = EEPROM.readByte(_adressFloodMinute);
   _phAlarmUp = EEPROM.readFloat(_adressPHalarmUp);
   _phAlarmDown = EEPROM.readFloat(_adressPHalarmDown);
-  _ecAlarmUp = EEPROM.readLong(_adressECalarmUp);
-  _ecAlarmDown = EEPROM.readLong(_adressECalarmDown);
+  _ecAlarmUp = EEPROM.readInt(_adressECalarmUp);
+  _ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
   _waterAlarm = EEPROM.readByte(_adressWaterAlarm);
-  _nightWatering = EEPROM.readByte(_adressNightWatering);
-  
+  _nightWatering = EEPROM.readByte(_adressNightWatering);  
   _sensorMinute = EEPROM.readByte(_adressSensorMinute);
   _sensorSecond = EEPROM.readByte(_adressSensorSecond);  
   _sdActive = EEPROM.readByte(_adressSDactive);
@@ -151,50 +150,100 @@ void Settings::readEEPROMvars() {
   _serialDebug = EEPROM.readByte(_adressSerialDebug);
 }
 
-//Setters
+//Setters - These store their value on EEPROM too
 //System Settings
-//TODO: Store data on EEPROM
-void Settings::setWaterTimed(const boolean w) { _waterTimed = w; }
+void Settings::setWaterTimed(const boolean w) { 
+	_waterTimed = w; 
+	EEPROM.updateByte(_adressWaterTimed,w);
+}
 
-void Settings::setWaterHour(const uint8_t w) { _waterHour = w; }
+void Settings::setWaterHour(const uint8_t w) { 
+	_waterHour = w; 
+	EEPROM.updateByte(_adressWaterHour,w);	
+}
 
-void Settings::setWaterMinute(const uint8_t w) { _waterMinute = w; }
+void Settings::setWaterMinute(const uint8_t w) { 
+	_waterMinute = w; 
+	EEPROM.updateByte(_adressWaterMinute,w);
+}
 
-void Settings::setFloodMinute(const uint8_t f) { _floodMinute = f; }
+void Settings::setFloodMinute(const uint8_t f) { 
+	_floodMinute = f; 
+	EEPROM.updateByte(_adressFloodMinute,f);
+}
 
-void Settings::setPHalarmUp(const float p) { _phAlarmUp = p; }
+void Settings::setPHalarmUp(const float p) { 
+	_phAlarmUp = p; 
+	EEPROM.updateFloat(_adressPHalarmUp,p);
+}
 
-void Settings::setPHalarmDown(const float p) { _phAlarmDown = p; }
+void Settings::setPHalarmDown(const float p) { 
+	_phAlarmDown = p; 
+	EEPROM.updateFloat(_adressPHalarmDown,p);
+}
 
-void Settings::setECalarmUp(const uint16_t e) { _ecAlarmUp = e; }
+void Settings::setECalarmUp(const uint16_t e) { 
+	_ecAlarmUp = e; 
+	EEPROM.updateInt(_adressECalarmUp,e);
+}
 
-void Settings::setECalarmDown(const uint16_t e) { _ecAlarmDown = e; }
+void Settings::setECalarmDown(const uint16_t e) { 
+	_ecAlarmDown = e; 
+	EEPROM.updateInt(_adressECalarmDown,e);
+}
 
-void Settings::setWaterAlarm(const uint8_t w) { _waterAlarm = w; }
+void Settings::setWaterAlarm(const uint8_t w) { 
+	_waterAlarm = w; 
+	EEPROM.updateByte(_adressWaterAlarm,w);
+}
 
-void Settings::setNightWatering(const boolean n) { _nightWatering = n; }
+void Settings::setNightWatering(const boolean n) { 
+	_nightWatering = n; 
+	EEPROM.updateByte(_adressNightWatering,n);
+}
 
 //Controller Settings
-void Settings::setSensorMinute(const uint8_t s) { _sensorMinute = s; }
+void Settings::setSensorMinute(const uint8_t s) { 
+	_sensorMinute = s; 
+	EEPROM.updateByte(_adressSensorMinute,s);
+}
 
-void Settings::setSensorSecond(const uint8_t s) { _sensorSecond = s; }
+void Settings::setSensorSecond(const uint8_t s) { 
+	_sensorSecond = s; 
+	EEPROM.updateByte(_adressSensorSecond,s);
+}
 
-void Settings::setSDactive(const boolean s) { _sdActive = s; }
+void Settings::setSDactive(const boolean s) { 
+	_sdActive = s; 
+	EEPROM.updateByte(_adressSDactive,s);
+}
 
-void Settings::setSDhour(const uint8_t s) { _sdHour = s; }
+void Settings::setSDhour(const uint8_t s) { 
+	_sdHour = s; 
+	EEPROM.updateByte(_adressSDhour,s);
+}
 
-void Settings::setSDminute(const uint8_t s) { _sdMinute = s; }
+void Settings::setSDminute(const uint8_t s) { 
+	_sdMinute = s; 
+	EEPROM.updateByte(_adressSDminute,s);
+}
 
-void Settings::setSound(const boolean s) { _sound = s; }
+void Settings::setSound(const boolean s) { 
+	_sound = s; 
+	EEPROM.updateByte(_adressSound,s);
+}
 
-void Settings::setSerialDebug(const boolean s) { _serialDebug = s; }
+void Settings::setSerialDebug(const boolean s) { 
+	_serialDebug = s; 
+	EEPROM.updateByte(_adressSerialDebug,s);
+}
 
-//Status vars
+//Status vars - These are not stored in EEPROM
 void Settings::setNextWhour(const uint8_t n) { _nextWhour = n; }
 
 void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 
-void Settings::setManualPump(const boolean m) { _manualPump = m; }
+void Settings::setManualPump(const boolean m) {	_manualPump = m; }
 
 void Settings::setNightWateringStopped(const boolean n) { _nightWateringStopped = n; }
 

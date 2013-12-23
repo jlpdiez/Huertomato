@@ -568,7 +568,7 @@ void GUI::processTouchMainMenu(int x, int y) {
 void GUI::printSystemSettings() {
   const int xSpacer = 15;
   const int ySpacer = 35;
-  
+ 
   nightWater = _settings->getNightWatering();
   waterPumpState = _settings->getManualPump();
 
