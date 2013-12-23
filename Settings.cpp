@@ -33,7 +33,7 @@ Settings::Settings() {
   _sdActive = true;
   _sdHour = 0;
   _sdMinute = 5;
-  _sound = true;
+  _sound = false;
   _serialDebug = true;
   
   _adressWaterTimed = EEPROM.getAddress(sizeof(byte));

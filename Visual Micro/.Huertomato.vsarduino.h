@@ -16,6 +16,7 @@ extern "C" void __cxa_pure_virtual() {;}
 //
 void setupRTC();
 void setupAlarms();
+void initMusic();
 //
 void updateSensors();
 
@@ -37,10 +38,6 @@ void updateSensors();
 #include "C:\Users\eNDeR\Desktop\Huertomato\alarm126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\fonts.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\hand126.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\logo126.c"
+#include "C:\Users\eNDeR\Desktop\Huertomato\logos64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\moon126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\plant126.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\plant64.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\plantDark64.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\settings64.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\settingsDark64.c"

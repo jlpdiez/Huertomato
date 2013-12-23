@@ -4,7 +4,7 @@
 // # Version    : 2.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.12.2013
+// # Date       : 23.12.2013
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition and button presses
@@ -34,13 +34,10 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"
-//#include <DS1307RTC.h>
 #include <Time.h>  
 #include "Other.h"      
 
 //TODO: initiate all vars that are the same with ','   
-
-//extern DS1307RTC RTC;
 
 //Main Screen Icons                          
 extern prog_uint16_t plant126[0x3E04];

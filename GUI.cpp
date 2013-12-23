@@ -173,17 +173,18 @@ void GUI::printMainHeader() {
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
   _lcd->print("Huertomato 1.2",10,ySpacer); 
 
-  //Clock display  
+  //Clock display HH:MM
   //X is calculated from the end of size
-  /*_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
   _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');*/
+  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 	
-	_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+  //Display HH:MM:SS Big 
+  /*_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
+  _lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+  _lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');*/
 
     //Left
     //_lcd->print("20:55:33",2,2);
@@ -215,13 +216,11 @@ void GUI::updateMainHeader() {
   _lcd->setFont(hallfetica_normal);
   _lcd->setColor(grey[0], grey[1], grey[2]);
   _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  //Clock display
+  //Clock display HH:MM
   //X is calculated from the end of size
-	_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 }
 
 //Prints header with centered text
@@ -522,9 +521,8 @@ void GUI::printMainMenu() {
   //Rehacer alineacion X para iconos
   _lcd->setFont(hallfetica_normal);
   
-  //TODO: MAke into check the dark version
+  //Logos
   _lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-  //Change to light version
   _lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
   
   //Make menu buttons. System and Controller settings

@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.0.2
+// # Version    : 1.2.0
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.12.2013
+// # Date       : 23.12.2013
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -117,7 +117,6 @@ GUI gui(&LCD,&Touch,&sensors,&settings);
 // SETUP
 // *********************************************
 void setup() {  
-	Serial << "Available memory: " << freeMemory();
 	led.setOn();
 	//TODO:Here goes splash Screen 
 	
@@ -126,11 +125,9 @@ void setup() {
 	pinMode(waterPump, OUTPUT);
 	pinMode(flushValve, OUTPUT);
 
-	if (settings.getSerialDebug()) {
-		Serial.begin(115200);
-		Serial << endl << ".::[ Huertomato ]::." << endl;
-		Serial << "By: Juan L. Perez Diez" << endl << endl;
-	}
+	Serial.begin(115200);
+	Serial << endl << ".::[ Huertomato ]::." << endl;
+	Serial << "By: Juan L. Perez Diez" << endl << endl;
   
 	setupRTC();
 	//setupSD();
@@ -141,12 +138,10 @@ void setup() {
 	Touch.InitTouch();
 	Touch.setPrecision(PREC_MEDIUM);
 	
-	//This goes to settings constructor  
-	//readEEPROMvars();
 	setupAlarms();
-	//initMusic();
+	initMusic();
 	 
-	//Alarm.delay(2500);
+	Alarm.delay(1000);
 	gui.drawMainScreen();
 }
 
@@ -173,28 +168,6 @@ void setupRTC() {
 //  }
 //}
 
-//Reads settings from EEPROM non-volatile memory and loads temp vars
-//void readEEPROMvars() {
-//  wHour = EEPROM.readByte(addressWhour);
-//  wMinute = EEPROM.readByte(addressWminute);
-//  floodM = EEPROM.readByte(addressFloodM);
-//  onlyDay = EEPROM.readByte(addressOnlyDay);
-//  phAlarmU = EEPROM.readFloat(addressPHalarmU);
-//  phAlarmD = EEPROM.readFloat(addressPHalarmD);
-//  ecAlarmU = EEPROM.readLong(addressECalarmU);
-//  ecAlarmD = EEPROM.readLong(addressECalarmD);
-//  waterAlarm = EEPROM.readByte(addressWaterAlarm);
-//  
-//  wHourTMP = wHour;
-//  wMinuteTMP = wMinute;
-//  floodMtmp = floodM;
-//  onlyDayTMP = onlyDay;
-//  phAlarmUtmp = phAlarmU;
-//  phAlarmDtmp = phAlarmD; 
-//  ecAlarmUtmp = ecAlarmU;
-//  ecAlarmDtmp = ecAlarmD;
-//  waterAlarmTMP = waterAlarm;
-//}
 
 ////Initiates alarms and timers
 void setupAlarms() { 
@@ -228,19 +201,21 @@ void setupAlarms() {
 //}
 //
 ////Plays Close Encounters of the Third Kind theme music
-//void initMusic() {
-//  tone(buzzPin, 783.99);
-//  Alarm.delay(750);
-//  tone(buzzPin, 880.00);
-//  Alarm.delay(750);
-//  tone(buzzPin, 698.46);
-//  Alarm.delay(750);
-//  tone(buzzPin, 349.23);
-//  Alarm.delay(750);
-//  tone(buzzPin, 523.25);
-//  Alarm.delay(1000);
-//  noTone(buzzPin);
-//}
+void initMusic() {
+	if (settings.getSound()) {
+		tone(buzzPin, 783.99);
+		Alarm.delay(750);
+		tone(buzzPin, 880.00);
+		Alarm.delay(750);
+		tone(buzzPin, 698.46);
+		Alarm.delay(750);
+		tone(buzzPin, 349.23);
+		Alarm.delay(750);
+		tone(buzzPin, 523.25);
+		Alarm.delay(1000);
+		noTone(buzzPin);
+	}
+}
 
 // *********************************************
 // LOOP
@@ -251,8 +226,8 @@ void loop() {
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
-		if (gui.getActScreen() == 0) {}
-		//tone(buzzPin, 880.00, 250);
+		if (gui.getActScreen() == 0 && settings.getSound()) 
+			tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
     
@@ -423,77 +398,3 @@ void updateSensors() {
 /*uint32_t toMs(time_t t) {
   return (uint32_t)((((hour(t) * 60) + minute(t)) * 60) + second(t)) * 1000;
 }*/
-
-// *********************************************
-// LCD DISPLAY AND TOUCH HANDLING
-// *********************************************
-
-//Revert back temp vars to the value they had before
-//Used when cancel or back buttons are pressed
-//void resetTempVars() {
-//  if (dispScreen == 3) {
-//    wHourTMP = wHour;
-//    wMinuteTMP = wMinute;
-//    floodMtmp = floodM;
-//    onlyDayTMP = onlyDay;
-//       
-//  } else if (dispScreen == 4) {
-//     phAlarmUtmp = phAlarmU;
-//     phAlarmDtmp = phAlarmD;
-//     
-//   } else if (dispScreen == 5) {
-//     ecAlarmUtmp = ecAlarmU;
-//     ecAlarmDtmp = ecAlarmD;   
-//     
-//   } else if (dispScreen == 6) {
-//     waterAlarmTMP = waterAlarm;
-//   }
-//}
-
-//Save temp vars to global vars and store in EEPROM
-//Used when a save button is pressed
-//void saveTempVars() {
-//   if (dispScreen == 2) {
-//     tmElements_t t;
-//     t.Hour = hourTMP;
-//     t.Minute = minTMP;
-//     t.Second = secTMP;
-//     t.Day = dayTMP;
-//     t.Month = monthTMP;
-//     //year argument is offset from 1970
-//     t.Year = yearTMP - 1970;
-//     time_t time = makeTime(t);
-//     setTime(time);
-//     RTC.set(time);
-//     
-//   } else if (dispScreen == 3) {     
-//      wHour = wHourTMP;
-//      wMinute = wMinuteTMP;
-//      floodM = floodMtmp;
-//      onlyDay = onlyDayTMP;
-//      //Store Watering timers in EEPROM
-//      EEPROM.updateByte(addressWhour, wHour);
-//      EEPROM.updateByte(addressWminute, wMinute);
-//      EEPROM.updateByte(addressFloodM, floodM);
-//      EEPROM.updateByte(addressOnlyDay, onlyDay);
-//      
-//   } else if (dispScreen == 4) {
-//     phAlarmU = phAlarmUtmp;
-//     phAlarmD = phAlarmDtmp;
-//     //Store PH warnings in EEPROM
-//     EEPROM.updateFloat(addressPHalarmU, phAlarmU);
-//     EEPROM.updateFloat(addressPHalarmD, phAlarmD);
-//     
-//   } else if (dispScreen == 5) {
-//     ecAlarmU = ecAlarmUtmp;
-//     ecAlarmD = ecAlarmDtmp;
-//     //Store EC warnings in EEPROM
-//     EEPROM.updateLong(addressECalarmU, ecAlarmU);
-//     EEPROM.updateLong(addressECalarmD, ecAlarmD);
-//  
-//   } else if (dispScreen == 6) {
-//     waterAlarm = waterAlarmTMP;
-//     //Store water warning threshold in EEPROM
-//     EEPROM.updateByte(addressWaterAlarm, waterAlarm);
-//   }
-//}
