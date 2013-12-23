@@ -374,7 +374,7 @@ void GUI::printIconAndStatus() {
     _lcd->setFont(various_symbols);
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
+    _lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
   
   //watering and not in continuous mode
   } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {  
@@ -417,14 +417,17 @@ void GUI::printIconAndStatus() {
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
 	int x = xSpacer + bigFontSize*2;
-	char* nWater = "Next Watering @";
+	//Space char added after @ and last number to white out line 
+	char* nWater = "Next Watering @ ";
     _lcd->print(nWater,x,ySpacer);
-	x += bigFontSize*(strlen(nWater)+1);
+	x += bigFontSize*(strlen(nWater));
 	_lcd->printNumI(wHour,x,ySpacer,2,'0');
 	x += bigFontSize*2;
 	_lcd->print(":",x,ySpacer);
 	x += bigFontSize;
 	_lcd->printNumI(wMin,x,ySpacer,2,'0');
+	x += 2*bigFontSize;
+	_lcd->print(" ",x,ySpacer);
   }
   //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, statusPic);
 }

@@ -51,6 +51,7 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -112,6 +113,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -135,6 +138,7 @@
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -196,6 +200,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -312,6 +318,7 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -373,6 +380,8 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
@@ -396,6 +405,7 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -457,6 +467,8 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Geometry\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\WiFi</Value>
