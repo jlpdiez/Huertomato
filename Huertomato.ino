@@ -36,7 +36,7 @@
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
 // # UTFT & UTouch http://www.henningkarlsen.com/electronics/library.php
 
-//#include "Other.h"
+#include "Other.h"
 #include "Sensors.h"
 #include "Settings.h"
 #include "RGBled.h"
@@ -124,13 +124,10 @@ void setup() {
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
 	pinMode(flushValve, OUTPUT);
-
-	Serial.begin(115200);
-	Serial << endl << ".::[ Huertomato ]::." << endl;
-	Serial << "By: Juan L. Perez Diez" << endl << endl;
-  
+	
+	setupSerial();
 	setupRTC();
-	//setupSD();
+	setupSD();
 	  
 	LCD.InitLCD();
 	LCD.clrScr();
@@ -145,42 +142,53 @@ void setup() {
 	gui.drawMainScreen();
 }
 
+//Initiates serial communication
+void setupSerial() {
+	Serial.begin(115200);
+	Serial << endl << ".::[ Huertomato ]::." << endl;
+	Serial << "By: Juan L. Perez Diez" << endl << endl;
+}
+
 
 //Initiates system time from RTC
 void setupRTC() {
-  setSyncProvider(RTC.get); 
-  if(timeStatus() != timeSet) {
-     if (settings.getSerialDebug()) 
-       Serial.println("RTC Missing!!"); 
-       //TODO: Warn in init screen??
-  } 
+	setSyncProvider(RTC.get); 
+	if(timeStatus() != timeSet) {
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "RTC problem!!" << endl;
+		}
+		//TODO: Warn in init screen
+	} 
 }
 
-//Inits SD card if needed
-//void setupSD() {
-//  pinMode(SDCardSS, OUTPUT);
-//  if (activateSD) {
-//    if (!SD.begin(SDCardSS)) {
-//      if (activateSerial)
-//        Serial << "SD missing!! Please insert one into the system." << endl; 
-//        //TODO: Warn init screen
-//    }
-//  }
-//}
+//Inits SD card 
+void setupSD() {
+	pinMode(SDCardSS, OUTPUT);
+	if (!SD.begin(SDCardSS)) {
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "SD missing!!" << endl; 
+		}
+		//TODO: Warn init screen
+	}
+}
 
 
-////Initiates alarms and timers
+//Initiates alarms and timers
+//timerOnce is used and then another one is configured inside the called functions
+//This approach takes care of changes in settings mid sketch
 void setupAlarms() { 
-  //Every 5 secs we poll sensors and smooth the reading
-  Alarm.timerRepeat(5, updateSensors);
+  //Sensor polling and smoothing
+  Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
   //Every 5mins we adjust EC circuit readings to temperature
   //Alarm.timerRepeat(0, 5, 0, adjustECtemp);
-  //Every 10mins we log sensor data to SD if needed
-  //if (activateSD)
-    //Alarm.timerRepeat(0, 10, 0,logStats);
+  //Log sensor data to SD Card
+  if (settings.getSDactive())
+    Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
   //Every 5secs we send sensor status to Serial if needed
   //if (activateSerial) 
-    //Alarm.timerRepeat(5, showStatsSerial);   
+    //Alarm.timerRepeat(0,0,5, showStatsSerial);   
     
   //Timer for plant watering. Will be set again in waterPlants() in case timers change
   //Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
@@ -199,8 +207,8 @@ void setupAlarms() {
 //  if (nextWhour >= 24) 
 //    nextWhour -= 24;
 //}
-//
-////Plays Close Encounters of the Third Kind theme music
+
+//Plays Close Encounters of the Third Kind theme music
 void initMusic() {
 	if (settings.getSound()) {
 		tone(buzzPin, 783.99);
@@ -247,9 +255,12 @@ void loop() {
 		|| (sensors.getEC() < settings.getECalarmDown()) || (sensors.getEC() > settings.getECalarmUp()) 
 		|| (sensors.getWaterLevel() < settings.getWaterAlarm())) { 
 			  
-			settings.setAlarmTriggered(true);			
-			if (settings.getSerialDebug())
-				Serial << "Alarm triggered! System needs human intervention." << endl;
+			settings.setAlarmTriggered(true);		
+			//TODO: Do not SPAM console!	
+			if (settings.getSerialDebug()) {
+				//writeSerialTimestamp();
+				//Serial << "Alarm triggered! System needs human intervention." << endl;
+			}
 
 	} else if ((sensors.getPH() >= settings.getPHalarmDown()) && (sensors.getPH() <= settings.getPHalarmUp()) 
 		&& (sensors.getEC() >= settings.getECalarmDown()) && (sensors.getEC() <= settings.getECalarmUp()) 
@@ -263,13 +274,26 @@ void loop() {
 //    nightWateringStopped = false;
 //    waterPlants(); 
 //  }
-//  //Delays are needed for alarms to work
+
+  //Delays are needed for alarms to work
 	Alarm.delay(10);
 }
 
 // *********************************************
 // TEXT OUTPUTS
 // *********************************************
+
+//Writes "HH:MM:SS - " to serial console
+void writeSerialTimestamp() {
+	time_t t = now();
+	int h = hour(t);
+	int m = minute(t);
+	int s = second(t);
+	
+	Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
+	Serial << ":" << ((s<10)?"0":"") << s << " - ";
+}
+
 //Write input string to file and endl
 //Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << endl;
 /*void writeLog(char* t) {
@@ -284,40 +308,45 @@ void loop() {
     stateLog.close();
 }*/
 
-//Log data to SDCard
+//Log data to SDCard and set next timer
 //File name is : YYYMMDD.txt
 //Format is: Date,Time,Temp,Humidity,Light,EC,PH,WaterLevel
-//void logStats() {
-//  time_t t = now();
-//  int d = day(t);
-//  int mo = month(t);
-//  int y = year(t);
-//  int h = hour(t);
-//  int m = minute(t);
-//  int s = second(t);
-//  
-//  //Filename must be at MAX 8chars + "." + 3chars
-//  //We choose it to be YYYY+MM+DD.txt
-//  String fileName = ""; 
-//  fileName.reserve(12);
-//  fileName = (String)y + (String)mo + (String)d + ".txt";
-//  char fileNameArray[fileName.length() + 1];
-//  fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
-//  File sensorLog = SD.open(fileNameArray, FILE_WRITE); 
-//   
-//  if (sensorLog) {
-//    sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
-//    sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
-//    sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
-//    sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
-//    sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
-//    sensorLog.close();
-//  } else {
-//    if (activateSerial)
-//      Serial << "Error opening SD file" << endl;   
-//      //TODO: Warn in any other place?
-//  }
-//}
+void logSensorReadings() {
+	time_t t = now();
+	int d = day(t);
+	int mo = month(t);
+	int y = year(t);
+	int h = hour(t);
+	int m = minute(t);
+	int s = second(t);
+  
+	//Filename must be at MAX 8chars + "." + 3chars
+	//We choose it to be YYYY+MM+DD.txt
+	String fileName = ""; 
+	fileName.reserve(12);
+	fileName = (String)y + (String)mo + (String)d + ".txt";
+	char fileNameArray[fileName.length() + 1];
+	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
+	File sensorLog = SD.open(fileNameArray, FILE_WRITE); 
+   
+	if (sensorLog) {
+		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
+		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
+		sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
+		sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
+		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
+		sensorLog.close();
+	} else {
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "Error opening SD file, can't log sensor readings." << endl;   
+		}
+		//TODO: Warn in any other place?
+	}
+	//Set next timer
+	if (settings.getSDactive())
+		Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
+}
 
 //Sends sensor data through serial
 //void showStatsSerial() { 
@@ -344,8 +373,14 @@ void loop() {
 // OTHER
 // *********************************************
 
+//Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.update();
+	if (settings.getSerialDebug()) {
+		writeSerialTimestamp();
+		Serial << "Sensors read, data updated." << endl;
+	}
+	Alarm.timerOnce(0,0,settings.getSensorSecond(), updateSensors);
 }
 
 //void adjustECtemp() {
@@ -366,6 +401,7 @@ void updateSensors() {
 //  gui.drawMainScreen();
 //  
 //  if (activateSerial) {
+	//writeSerialTimestamp();
 //    Serial << "Watering plants" << endl << endl;
 //  }
 //

@@ -65,7 +65,7 @@ class Settings {
     void setSound(const boolean);
     void setSerialDebug(const boolean);
     
-    //Status vars
+    //Status vars - These are not written to EEPROM
     void setNextWhour(const uint8_t);
     void setNextWminute(const uint8_t);
     void setManualPump(const boolean);

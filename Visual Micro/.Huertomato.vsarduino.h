@@ -6,6 +6,7 @@
 */
 
 #define __AVR_ATmega2560__
+#define _VMDEBUG 1
 #define ARDUINO 101
 #define ARDUINO_MAIN
 #define F_CPU 16000000L
@@ -14,10 +15,14 @@
 extern "C" void __cxa_pure_virtual() {;}
 
 //
+void setupSerial();
 void setupRTC();
+void setupSD();
 void setupAlarms();
 void initMusic();
 //
+void writeSerialTimestamp();
+void logSensorReadings();
 void updateSensors();
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 

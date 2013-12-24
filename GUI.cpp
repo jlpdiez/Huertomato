@@ -979,7 +979,8 @@ void GUI::processTouchTime(int x, int y) {
   //Year up
   } else if (buttonIndex == timeButtons[11]) {
 	sysYear++;
-	(sysYear > 2100) ? sysYear=1970 : 0;
+	//TimeAlarms can only handle 1971-2037
+	(sysYear > 2037) ? sysYear=1971 : 0;
 	updateTimeSettings();
   //Day down
   } else if (buttonIndex == timeButtons[12]) {
@@ -994,7 +995,7 @@ void GUI::processTouchTime(int x, int y) {
   //Year down
   } else if (buttonIndex == timeButtons[14]) {
 	sysYear--;
-	(sysYear < 1970) ? sysYear=2100 : 0;
+	(sysYear < 1971) ? sysYear=2037 : 0;
 	updateTimeSettings();
   }
 }

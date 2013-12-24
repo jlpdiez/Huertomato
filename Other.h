@@ -5,6 +5,8 @@
  *  Author: eNDeR
  */ 
 
+//TODO: Send to GUI Class?
+
 
 #ifndef OTHER_H_
 #define OTHER_H_
