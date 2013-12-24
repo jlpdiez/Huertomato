@@ -5,16 +5,17 @@
 
 //Constructors
 Settings::Settings() {
-	//TODO: How to initialize?
+	//TODO: add lightThreshold and waterMin/waterMax to settings and menus
 //  _lightThreshold = 10;  
   //Status variables - Not read from EEPROM
-  _nextWhour = 20;
-  _nextWminute = 5;
   _manualPump = false;
   _nightWateringStopped = false;
   _manualPump = false;
   _wateringPlants = false;
   _alarmTriggered = false;
+  //These two are set in the main setup()
+  //_nextWhour = 20;
+  //_nextWminute = 5;
   
   //Init config - Maybe useful to program new hardwares?
   /*_waterTimed = true;

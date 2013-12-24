@@ -9,24 +9,24 @@
       <VCCodeMacros />
     </VCCodeModel>
     <BreakPoints>
-      <BreakPoint Index="1" Name="Huertomato.ino, line 232 character 1" Id="e47719fc-15b8-48a4-854d-01b70dfd05cf" Enabled="1" Message="{millis()}" MessageTextType="2" PreProcessedMessage="{0}" Condition="millis()&gt;0 || millis()&gt;1" ConditionType="1" CurrentHits="0" File="c:\users\ender\desktop\huertomato\huertomato.ino" FileLine="232" FileColumn="1" FunctionName="" FunctionLineOffset="1" FunctionColumnOffset="1" HitCountTarget="250" HitCountType="4" Language="AVR GCC" LocationType="3" Tag="&lt;vmbp Id='9d54cac7-1b34-490a-b8f0-a3ddc34736fc'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
-        <Source>225		}
-226	}
-227	
-228	// *********************************************
-229	// LOOP
-230	// *********************************************
-231	//TODO: Make prettier
---&gt;232	void loop() {
-233		//Alarm
-234		if (settings.getAlarmTriggered()) {
-235			led.setColour(RED);
-236			//Sound alarm in main screen only
-237			if (gui.getActScreen() == 0 &amp;&amp; settings.getSound()) 
-238				tone(buzzPin, 880.00, 250);
-239		} else
-240			led.setColour(GREEN);
-241	    
+      <BreakPoint Index="1" Name="Huertomato.ino, line 242 character 1" Id="9d54cac7-1b34-490a-b8f0-a3ddc34736fc" Enabled="1" Message="{millis()}" MessageTextType="2" PreProcessedMessage="{0}" Condition="millis()&gt;0 || millis()&gt;1" ConditionType="1" CurrentHits="0" File="c:\users\ender\desktop\huertomato\huertomato.ino" FileLine="242" FileColumn="1" FunctionName="" FunctionLineOffset="1" FunctionColumnOffset="1" HitCountTarget="250" HitCountType="4" Language="AVR GCC" LocationType="3" Tag="&lt;vmbp Id='9d54cac7-1b34-490a-b8f0-a3ddc34736fc'/&gt;" Type="1" ToString="System.__ComObject" BreakWhenHit="1">
+        <Source>235		}
+236	}
+237	
+238	// *********************************************
+239	// LOOP
+240	// *********************************************
+241	//TODO: Make prettier
+--&gt;242	void loop() {
+243		//Alarm
+244		if (settings.getAlarmTriggered()) {
+245			led.setColour(RED);
+246			//Sound alarm in main screen only
+247			if (gui.getActScreen() == 0 &amp;&amp; settings.getSound()) 
+248				tone(buzzPin, 880.00, 250);
+249		} else
+250			led.setColour(GREEN);
+251	    
 </Source>
         <MessageVariables>
           <MessageVariable Name="millis()" Index="1" />

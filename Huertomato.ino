@@ -113,12 +113,16 @@ Sensors sensors;
 
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
+//TODO: Move to settings object
+uint8_t lightThreshold = 10;
+
 // *********************************************
 // SETUP
 // *********************************************
 void setup() {  
 	led.setOn();
 	//TODO:Here goes splash Screen 
+	//Something like: Huertomato is loading + logo + status message
 	
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
@@ -149,16 +153,15 @@ void setupSerial() {
 	Serial << "By: Juan L. Perez Diez" << endl << endl;
 }
 
-
 //Initiates system time from RTC
 void setupRTC() {
 	setSyncProvider(RTC.get); 
 	if(timeStatus() != timeSet) {
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "RTC problem!!" << endl;
+			Serial << "RTC init problem!!" << endl;
 		}
-		//TODO: Warn in init screen
+		//TODO: Warn in init screen LCD
 	} 
 }
 
@@ -168,45 +171,52 @@ void setupSD() {
 	if (!SD.begin(SDCardSS)) {
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "SD missing!!" << endl; 
+			Serial << "SD init problem!! Make sure it's correctly inserted" << endl; 
 		}
-		//TODO: Warn init screen
+		//TODO: Warn init screen LCD
 	}
 }
 
 
-//Initiates alarms and timers
-//timerOnce is used and then another one is configured inside the called functions
+//Initiates system alarms and timers
+//timerOnce is used and then another timer is configured inside the called functions
 //This approach takes care of changes in settings mid sketch
 void setupAlarms() { 
-  //Sensor polling and smoothing
-  Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
-  //Every 5mins we adjust EC circuit readings to temperature
-  //Alarm.timerRepeat(0, 5, 0, adjustECtemp);
-  //Log sensor data to SD Card
-  if (settings.getSDactive())
-    Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
-  //Every 5secs we send sensor status to Serial if needed
-  //if (activateSerial) 
-    //Alarm.timerRepeat(0,0,5, showStatsSerial);   
+	//Sensor polling and smoothing
+	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
+	//Every 5mins we adjust EC circuit readings to temperature
+	Alarm.timerRepeat(0, 5, 0, adjustECtemp);
+	//Log sensor data to SD Card
+	if (settings.getSDactive())
+		Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
+		
+	//Every 5secs we send sensor status to Serial if needed
+	//if (activateSerial) 
+	//Alarm.timerRepeat(0,0,5, showStatsSerial);   
     
-  //Timer for plant watering. Will be set again in waterPlants() in case timers change
-  //Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
-  //updateNextWateringTime();
+    //Set watering timer
+    //if (settings.getWaterTimed()) {
+	Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+    updateNextWateringTime();
+    //}
 }
-//
-////Updates variables used for displaying next watering time
-//void updateNextWateringTime() {
-//  time_t t = now();
-//  nextWhour = hour(t) + wHour;
-//  nextWminute = minute(t) + wMinute;
-//  if (nextWminute >= 60) {
-//    nextWminute -= 60;
-//    nextWhour += 1;
-//  }
-//  if (nextWhour >= 24) 
-//    nextWhour -= 24;
-//}
+
+//Updates variables used for displaying next watering time
+void updateNextWateringTime() {
+	time_t t = now();
+	uint8_t min = minute(t) + settings.getWaterMinute();
+	uint8_t hou = hour(t) + settings.getWaterHour();
+	//Adjust values for real time
+	if (min >= 60) {
+		min -= 60;
+		hou++;
+	}
+	if (hou >= 24)
+		hou -= 24; 
+	//Write values to settings class
+	settings.setNextWhour(hou);
+	settings.setNextWminute(min);
+}
 
 //Plays Close Encounters of the Third Kind theme music
 void initMusic() {
@@ -268,14 +278,14 @@ void loop() {
 			
 			settings.setAlarmTriggered(false);         
 	}
-//  
-//  //If watering has been stopped for the night and day has come, we start water cycle again
-//  if ((nightWateringStopped) && (sensors.getLight() > lightThreshold)) {
-//    nightWateringStopped = false;
-//    waterPlants(); 
-//  }
+  
+	//If watering has been stopped for the night and day has come, we start water cycle again
+	if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
+		settings.setNightWateringStopped(false);
+		waterPlants(); 
+	}
 
-  //Delays are needed for alarms to work
+	//Delays are needed for alarms to work
 	Alarm.delay(10);
 }
 
@@ -336,12 +346,14 @@ void logSensorReadings() {
 		sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
 		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
 		sensorLog.close();
-	} else {
+		//Inform through serial
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "Error opening SD file, can't log sensor readings." << endl;   
+			Serial << "Succesfully logged sensor data to SD Card." << endl;   
 		}
-		//TODO: Warn in any other place?
+	} else if (settings.getSerialDebug()) {
+		writeSerialTimestamp();
+		Serial << "Error opening SD file, can't log sensor readings." << endl;  
 	}
 	//Set next timer
 	if (settings.getSDactive())
@@ -380,56 +392,59 @@ void updateSensors() {
 		writeSerialTimestamp();
 		Serial << "Sensors read, data updated." << endl;
 	}
+	//Set next timer
 	Alarm.timerOnce(0,0,settings.getSensorSecond(), updateSensors);
 }
 
-//void adjustECtemp() {
-//  sensors.adjustECtemp(); 
-//}
+//Adjusts EC sensor readings to temperature and sets next timer
+void adjustECtemp() {
+	sensors.adjustECtemp(); 
+	if (settings.getSerialDebug()) {
+		writeSerialTimestamp();
+		Serial << "EC sensor readings adjusted for temperature." << endl;
+	}
+	//Set next timer
+	Alarm.timerOnce(0,5,0,adjustECtemp);
+}
 
-//WATER EBB+FLOW ROUTINE
+//WATER EBB+FLOW ROUTINE - System becomes unresponsive during this process
 //Leaves flush valve opened in case it rains so plants wont flood but reservoir might be affected
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
-//void waterPlants() {
-//  led.setColour(BLUE);
-//  wateringPlants = true;
-//
-//  //Informs through LCD & serial if needed
-//  //dispScreen = 0;
-//  LCD.clrScr();
-//  gui.drawMainScreen();
-//  
-//  if (activateSerial) {
-	//writeSerialTimestamp();
-//    Serial << "Watering plants" << endl << endl;
-//  }
-//
-//  /*
-//  //Flood circuit
-//  //TODO: Cerrar valvula de salida si la hay
-//  //Waits for the time set in floodM through watering settings
-//  //Alarm.delay(floodM * 60000);
-//  
-//  //Flush circuit
-//  //digitalWrite(flushValve, HIGH);
-//  //Leaves flushValve On in case it rains
-//  //Sets manual pump variables to off
-//  inputValve = false;
-//  outputValve = false;
-//  */
-//  //TODO: Remove - only for testing purposes
-//  Alarm.delay(5000); 
-//  
-//  //Set next watering alarm and update LCD notification
-//  if (onlyDay && (sensors.getLight() < lightThreshold))
-//    nightWateringStopped = true;
-//  else {
-//    Alarm.timerOnce(wHour, wMinute, 0, waterPlants);
-//    updateNextWateringTime();
-//  }
-//  wateringPlants = false;
-//}
+void waterPlants() {
+	led.setColour(BLUE);
+	settings.setWateringPlants(true);
+	//Inform through serial
+	if (settings.getSerialDebug()) {
+		writeSerialTimestamp();
+		Serial << "Huertomato is watering plants" << endl;
+	}
+
+	/*
+	//Flood circuit
+	//TODO: Cerrar valvula de salida si la hay
+	//Waits for the time set in floodM through watering settings
+	//Alarm.delay(floodM * 60000);
+  
+	//Flush circuit
+	//digitalWrite(flushValve, HIGH);
+	//Leaves flushValve On in case it rains
+	//Sets manual pump variables to off
+	inputValve = false;
+	outputValve = false;
+	*/
+	//TODO: Remove - only for testing purposes
+	Alarm.delay(5000); 
+  
+	//Set next watering alarm 
+	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold))
+		settings.setNightWateringStopped(true);
+	else {
+		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		updateNextWateringTime();
+	}
+	settings.setWateringPlants(false);
+}
 
 /*uint32_t toMs(time_t t) {
   return (uint32_t)((((hour(t) * 60) + minute(t)) * 60) + second(t)) * 1000;

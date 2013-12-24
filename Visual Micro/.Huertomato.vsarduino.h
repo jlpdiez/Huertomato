@@ -19,11 +19,14 @@ void setupSerial();
 void setupRTC();
 void setupSD();
 void setupAlarms();
+void updateNextWateringTime();
 void initMusic();
 //
 void writeSerialTimestamp();
 void logSensorReadings();
 void updateSensors();
+void adjustECtemp();
+void waterPlants();
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"

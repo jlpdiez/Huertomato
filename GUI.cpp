@@ -383,7 +383,12 @@ void GUI::printIconAndStatus() {
     _lcd->setFont(various_symbols);
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("Huertomato Watering",xSpacer+bigFontSize*2,ySpacer); 
+	char* watering = "Huertomato Watering";
+	int x = xSpacer + bigFontSize*2;
+    _lcd->print(watering,x,ySpacer); 
+	//3 blank chars afterwards to clear line
+	x += bigFontSize*strlen(watering);
+	_lcd->print("   ",x,ySpacer);
   
   //water stopped because its night  
   } else if (_settings->getNightWateringStopped()) {
