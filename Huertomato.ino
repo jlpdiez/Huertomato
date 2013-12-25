@@ -179,22 +179,23 @@ void setupSD() {
 
 
 //Initiates system alarms and timers
-//timerOnce is used and then another timer is configured inside the called functions
-//This approach takes care of changes in settings mid sketch
+//timerOnce is used and then another timerOnce is configured inside the called functions
+//This approach takes care of changes in settings mid sketch although of course
+//these will not occur instantly but on next function call.
 void setupAlarms() { 
 	//Sensor polling and smoothing
 	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
-	//Every 5mins we adjust EC circuit readings to temperature
-	Alarm.timerRepeat(0, 5, 0, adjustECtemp);
+	//Every min we adjust EC circuit readings to temperature
+	Alarm.timerOnce(0,1,0,adjustECtemp);
 	//Log sensor data to SD Card
 	if (settings.getSDactive())
 		Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 		
 	//Every 5secs we send sensor status to Serial if needed
 	//if (activateSerial) 
-	//Alarm.timerRepeat(0,0,5, showStatsSerial);   
+	//Alarm.timerOnce(0,0,5, showStatsSerial);   
     
-    //Set watering timer
+    //Sets watering timer
     //if (settings.getWaterTimed()) {
 	Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
     updateNextWateringTime();
@@ -240,7 +241,11 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
-	//Alarm
+	//Refresh main screen
+    if (gui.getActScreen() == 0)
+		gui.updateMainScreen();
+		
+	//Alarm check
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
@@ -250,14 +255,10 @@ void loop() {
 		led.setColour(GREEN);
     
     gui.processTouch();
-	
-	//Refresh main screen
-    if (gui.getActScreen() == 0)
-     gui.updateMainScreen();
    
 //  //TODO: Will warn when initiating as values = 0
 //  //Initiate arrays to be lowerLimit < vars < upperLimit
-//  //Or activate alarms when X minutes have passed 
+//  //Or activate alarms when 1-2 minutes have passed 
 	
 	//TODO: make funtion with ifs!
 	//Checks if any alarm should be triggered
@@ -279,9 +280,18 @@ void loop() {
 			settings.setAlarmTriggered(false);         
 	}
   
-	//If watering has been stopped for the night and day has come, we start water cycle again
-	if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
+	//If watering has been stopped for the night and day has come or
+	//same thing and night watering setting has been reactivated, we start water cycle again
+	//if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
+	if (((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) 
+		|| ((settings.getNightWateringStopped()) && (settings.getNightWatering()))) {		
+			
 		settings.setNightWateringStopped(false);
+		//Inform through serial
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "Watering restarted because of daytime or settings change." << endl;
+		}
 		waterPlants(); 
 	}
 
@@ -393,7 +403,7 @@ void updateSensors() {
 		Serial << "Sensors read, data updated." << endl;
 	}
 	//Set next timer
-	Alarm.timerOnce(0,0,settings.getSensorSecond(), updateSensors);
+	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 }
 
 //Adjusts EC sensor readings to temperature and sets next timer
@@ -404,7 +414,7 @@ void adjustECtemp() {
 		Serial << "EC sensor readings adjusted for temperature." << endl;
 	}
 	//Set next timer
-	Alarm.timerOnce(0,5,0,adjustECtemp);
+	Alarm.timerOnce(0,1,0,adjustECtemp);
 }
 
 //WATER EBB+FLOW ROUTINE - System becomes unresponsive during this process
@@ -412,8 +422,12 @@ void adjustECtemp() {
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
-	led.setColour(BLUE);
 	settings.setWateringPlants(true);
+	//Refresh main screen if needed
+    if (gui.getActScreen() == 0)
+		gui.updateMainScreen();
+	led.setColour(BLUE);
+	 
 	//Inform through serial
 	if (settings.getSerialDebug()) {
 		writeSerialTimestamp();
@@ -436,10 +450,16 @@ void waterPlants() {
 	//TODO: Remove - only for testing purposes
 	Alarm.delay(5000); 
   
-	//Set next watering alarm 
-	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold))
+	//Set next watering alarm
+	//If its night and night watering is disabled we dont set another timer
+	//Main loop will be in charge of setting timer again
+	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
 		settings.setNightWateringStopped(true);
-	else {
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "Watering stopped at nighttime." << endl;
+		}
+	} else {
 		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
 		updateNextWateringTime();
 	}
