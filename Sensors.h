@@ -2,12 +2,12 @@
 // #
 // # Scriptname : Sensors.h
 // # Author     : Juan L. Pérez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.12.2013
+// # Date       : 02.01.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
 // 
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -38,9 +38,7 @@
 // the more the readings will be smoothed, but the slower the variables will
 // respond to the input.
 //const uint8_t numSamples = 10;
-//These should be read from EEPROM and should be mutable    
-const int maxWaterLevel = 16;
-const int minWaterLevel = 50;
+
 //Consts can be declared inside objects by using static const bla
 //see http://stackoverflow.com/questions/2043493/where-to-declare-define-class-scope-constants-in-c
 
@@ -67,12 +65,21 @@ class Sensors {
 	~Sensors();
   
     //Getters
-    float getTemp();
-    uint8_t getLight();
-    uint8_t getHumidity();
-    uint16_t getEC();
-    float getPH();
-    uint8_t getWaterLevel();
+    float getTemp() const;
+    uint8_t getLight() const;
+    uint8_t getHumidity() const;
+    uint16_t getEC() const;
+    float getPH() const;
+    uint8_t getWaterLevel() const;
+	
+	//TODO: implement
+	//Setters
+	void setMaxWaterLevel(uint16_t max);
+	void setMinWaterLevel(uint16_t min);
+	
+	//Poll sensor and get raw data
+	uint16_t getRawWaterLevel();
+	uint16_t getRawLight();
   
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
@@ -90,6 +97,11 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint16_t ec();
+	
+	//TODO: Should be mutable and read from EEPROM
+	//These define nutrient level thresholds
+	static const int maxWaterLevel = 16;
+	static const int minWaterLevel = 50;
 	
 	//Define a const for array size  
 	static const int numSamples = 10;

@@ -118,6 +118,7 @@ class Settings {
     uint16_t _ecAlarmDown;
     uint8_t _waterAlarm;
     //TODO: Sensor Calibration
+	//Light and deposit
     //If light < threshold we assume its night time
     //int _lightThreshold;
     //Water at night - Informs the system that watering timers are stopped for the night

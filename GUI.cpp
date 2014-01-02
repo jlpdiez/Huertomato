@@ -205,22 +205,22 @@ void GUI::printMainHeader() {
 
 //Updates main header's clock
 void GUI::updateMainHeader() {
-  const int ySpacer = 2;
+	const int ySpacer = 2;
   
-  //Get actual time
-  time_t t = now();
-  uint8_t hou = hour(t);
-  uint8_t min = minute(t);
-  uint8_t sec = second(t);
+	//Get actual time
+	time_t t = now();
+	uint8_t hou = hour(t);
+	uint8_t min = minute(t);
+	uint8_t sec = second(t);
   
-  _lcd->setFont(hallfetica_normal);
-  _lcd->setColor(grey[0], grey[1], grey[2]);
-  _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  //Clock display HH:MM
-  //X is calculated from the end of size
-  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	//Clock display HH:MM
+	//X is calculated from the end of size
+	_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 }
 
 //Prints header with centered text
@@ -253,7 +253,7 @@ void GUI::printSensorInfo() {
   x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
   int y = ySpacer+(bigFontSize+8);
   _lcd->print(sensorText[1],x,y);
-  _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*5,y,'.',4);
+  _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);
   _lcd->print("C",xSpacer-bigFontSize,y);
   
   //Light
@@ -437,6 +437,7 @@ void GUI::printIconAndStatus() {
 }
 
 void GUI::updateIconAndStatus() {
+	//TODO:
   //Same as above. Should change icon only if system state changed.
   //If not should only update next watering time
 }
@@ -454,7 +455,7 @@ void GUI::drawMainScreen() {
 void GUI::updateMainScreen() {
   updateMainHeader();
   updateSensorInfo(); 
-  //Change to updateIconAndStatus();
+  //TODO: Change to updateIconAndStatus();
   printIconAndStatus();
 }
 
