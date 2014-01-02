@@ -315,7 +315,7 @@ void GUI::updateSensorInfo() {
     _lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' ');    
     //Temp
     int y = ySpacer+(bigFontSize+8);
-    _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*5,y,'.',4);   
+    _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);   
     //Light
     y = ySpacer+(bigFontSize+8)*2;
     _lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);    
@@ -363,6 +363,7 @@ void GUI::updateSensorInfo() {
 void GUI::printIconAndStatus() {
   const int xSpacer = 10;
   const int ySpacer = 200;
+  File img;
   
   //If theres an alarm
   if (_settings->getAlarmTriggered()) {
@@ -374,6 +375,8 @@ void GUI::printIconAndStatus() {
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
     _lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
+	//Prepare img on SD for reading
+	img = SD.open("/PICTURE/alarm126.RAW",FILE_READ);
   
   //watering and not in continuous mode
   } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {  
@@ -389,6 +392,7 @@ void GUI::printIconAndStatus() {
 	//3 blank chars afterwards to clear line
 	x += bigFontSize*strlen(watering);
 	_lcd->print("   ",x,ySpacer);
+	img = SD.open("/PICTURE/logo126.RAW",FILE_READ);
   
   //water stopped because its night  
   } else if (_settings->getNightWateringStopped()) {
@@ -399,6 +403,7 @@ void GUI::printIconAndStatus() {
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
     _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
+	img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
     
   //water pump in manual mode    
   } else if (_settings->getManualPump()) {
@@ -408,13 +413,14 @@ void GUI::printIconAndStatus() {
 	_lcd->setFont(various_symbols);
 	_lcd->print("T",xSpacer,ySpacer);
 	_lcd->setFont(hallfetica_normal);
-	_lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer);  
+	_lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer); 
+	img = SD.open("/PICTURE/hand126.RAW",FILE_READ); 
 
   //Normal operation    
   } else {
 	int wHour = _settings->getNextWhour();
 	int wMin = _settings->getNextWminute();
-    _lcd->drawBitmap (15, 25+bigFontSize, 126, 126, plant126);  
+    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, plant126);  
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
@@ -432,8 +438,21 @@ void GUI::printIconAndStatus() {
 	_lcd->printNumI(wMin,x,ySpacer,2,'0');
 	x += 2*bigFontSize;
 	_lcd->print(" ",x,ySpacer);
+	//TODO: Shows a strange right line
+	img = SD.open("/PICTURE/plant126.RAW",FILE_READ);
   }
-  //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, statusPic);
+  //Read img from SD and display
+  const int imgSize = 126;
+  for (int y = 0; y < imgSize && img.available(); y++) {
+	  uint16_t buf[imgSize];
+	  for (int x = imgSize - 1; x >= 0; x--) {
+		  byte l = img.read();
+		  byte h = img.read();
+		  buf[x] = ((uint16_t)h << 8) | l;
+	  }
+	  _lcd->drawPixelLine(15,y+25+bigFontSize,imgSize,buf);
+  }
+  img.close();
 }
 
 void GUI::updateIconAndStatus() {

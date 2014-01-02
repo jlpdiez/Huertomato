@@ -35,6 +35,7 @@
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
 // # UTFT & UTouch http://www.henningkarlsen.com/electronics/library.php
+// # A custom version of UTFT is used: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 
 #include "Other.h"
 #include "Sensors.h"
@@ -105,7 +106,7 @@ dht11 DHT11;
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
 
-UTFT LCD(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST);
+UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 
 Settings settings;

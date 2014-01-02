@@ -31,6 +31,7 @@
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
+#include <SD.h>
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"

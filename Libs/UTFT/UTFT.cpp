@@ -1340,3 +1340,16 @@ int UTFT::getDisplayYSize()
 	else
 		return disp_x_size+1;
 }
+
+void UTFT::drawPixelLine(int x, int y, int sx, uint16_t* data)
+{
+	unsigned int col;
+    cbi(P_CS, B_CS);
+    setXY(x, y, x+sx-1, y);
+    for (int tc=0; tc<sx; tc++)
+    {
+        char* p = (char*)&data[tc];
+        LCD_Write_DATA(*(p + 1), *p);
+    }
+    sbi(P_CS, B_CS);
+}
