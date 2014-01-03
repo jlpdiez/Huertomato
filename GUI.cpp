@@ -360,6 +360,7 @@ void GUI::updateSensorInfo() {
 
 //Load img from SD: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 //Shows system status in main screen
+//Needs img files inside /PICTURE folder of the SD card
 void GUI::printIconAndStatus() {
   const int xSpacer = 10;
   const int ySpacer = 200;
