@@ -28,17 +28,15 @@
 #define GUI_H
 
 #include <Arduino.h>
+#include "Settings.h"
+#include "Sensors.h"
+#include "Buttons.h" 
+#include "Other.h"   
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-#include <SD.h>
-#include "Settings.h"
-#include "Sensors.h"
-#include "Buttons.h"
-#include <Time.h>  
-#include "Other.h"      
-
-//TODO: initiate all vars that are the same with ','   
+#include <Time.h> 
+#include <SD.h>    
 
 //Main Screen Icons                          
 extern prog_uint16_t plant126[0x3E04];
@@ -107,13 +105,13 @@ static char* controllerButtonText[nControllerButtons] = {
 };
 static int controllerButtons[nControllerButtons];
 
-const int nSystemButtons = 8;
+const int nSystemButtons = 7;
 static char* systemButtonText[nSystemButtons] = {
   "Watering Cycle",
   "Sensor Alarms",
   "Sensor Calibration",
   "Watering at Night:",
-  "Manual Water Pump:"
+  //"Manual Water Pump:"
 }; 
 static int systemButtons[nSystemButtons];
 
@@ -138,11 +136,9 @@ static char* timeButtonText[nTimeButtons] = {
 };
 static int timeButtons[nTimeButtons];
 
-const int nSensorPollingButtons = 7;
+const int nSensorPollingButtons = 5;
 static char* sensorPollingButtonText[nSensorPollingButtons] = {
   "=",
-  "=",
-  ">",
   ">"
 };
 static int sensorPollingButtons[nSensorPollingButtons];
@@ -287,21 +283,24 @@ class GUI {
 	~GUI();
 	//Getters
 	int getActScreen() const;
-    //updates sensors in main screen
-    //void update();
+	//Other
     void processTouch();
-    //draw();
+    void drawSplashScreen();
     void drawMainScreen();
 	void updateMainScreen();
     
   private:
-    //0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings, 
-    //4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
-    //8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
-    //12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
-    //15-pH Calibration, 16-EC Calibration, 17-Light Calibration
     //Screen currently active
-    uint8_t _actScreen;  
+	//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
+	//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
+	//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
+	//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
+	//15-pH Calibration, 16-EC Calibration, 17-Light Calibration
+    uint8_t _actScreen;
+	//State the system is in. 
+	//This is used in order to refresh icon of main screen only when state changes
+	//0 - Normal, 1 - Alarm, 2 - Watering, 3 - Off for night, 4 - Manual pump
+	uint8_t _sysState;
 
     UTFT *_lcd;
     UTouch *_touch;

@@ -46,6 +46,7 @@ void waterPlants();
 #include "C:\Users\eNDeR\Desktop\Huertomato\alarm126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\fonts.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\hand126.c"
+#include "C:\Users\eNDeR\Desktop\Huertomato\logo126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\logos64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\moon126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\plant126.c"

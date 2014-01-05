@@ -1,8 +1,5 @@
 #include "GUI.h"
 
-//TODO: processTouchSystem & processTouchController:
-//Save booleans to EEPROM when toggled or add SAVE button
-
 //Constructors
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 	: _lcd(lcd), _touch(touch), _buttons(lcd,touch), _sensors(sensors), _settings(settings) {
@@ -141,6 +138,20 @@ void GUI::processTouch() {
     }
   
   }
+}
+
+//Draw splash Screen
+//TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
+void GUI::drawSplashScreen() {
+	const int iconSize = 126;
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	//Shows centered icon
+	_lcd->drawBitmap(xSize/2-(iconSize/2),10,iconSize,iconSize,logo126); 	
+	//Shows centered text
+	char* message = "Huertomato is loading...";
+	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
 }
 
 //Prints header background and separator line
@@ -358,30 +369,44 @@ void GUI::updateSensorInfo() {
 	_lcd->print("%",xSpacer-bigFontSize,y);
 }
 
-//Load img from SD: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 //Shows system status in main screen
-//Needs img files inside /PICTURE folder of the SD card
+//Loads img files from /PICTURE folder of the SD card
+//TODO: make common part of alarm and normal state a function!
 void GUI::printIconAndStatus() {
   const int xSpacer = 10;
   const int ySpacer = 200;
+  const int imgSize = 126;
   File img;
   
   //If theres an alarm
   if (_settings->getAlarmTriggered()) {
-    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, alarm126);   
-	//statusPic = alarm126; 
+	int wHour = _settings->getNextWhour();
+	int wMin = _settings->getNextWminute();
     _lcd->setColor(red[0],red[1],red[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
+    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
+	int x = xSpacer + bigFontSize*2;
+	//Space char added after @ and last number to white out line
+	char* nWater = "Next Watering @ ";
+	_lcd->print(nWater,x,ySpacer);
+	x += bigFontSize*(strlen(nWater));
+	_lcd->printNumI(wHour,x,ySpacer,2,'0');
+	x += bigFontSize*2;
+	_lcd->print(":",x,ySpacer);
+	x += bigFontSize;
+	_lcd->printNumI(wMin,x,ySpacer,2,'0');
+	x += 2*bigFontSize;
+	_lcd->print(" ",x,ySpacer);
+	//Set system state
+	_sysState = 1;
 	//Prepare img on SD for reading
 	img = SD.open("/PICTURE/alarm126.RAW",FILE_READ);
   
   //watering and not in continuous mode
-  } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {  
-    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, logo126);     
+  } else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {     
     _lcd->setColor(blue[0],blue[1],blue[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
@@ -393,21 +418,22 @@ void GUI::printIconAndStatus() {
 	//3 blank chars afterwards to clear line
 	x += bigFontSize*strlen(watering);
 	_lcd->print("   ",x,ySpacer);
+	_sysState = 2;
 	img = SD.open("/PICTURE/logo126.RAW",FILE_READ);
   
   //water stopped because its night  
   } else if (_settings->getNightWateringStopped()) {
-    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, moon126);
     _lcd->setColor(grey[0],grey[1],grey[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
     _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
+	_sysState = 3;
 	img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
     
   //water pump in manual mode    
-  } else if (_settings->getManualPump()) {
+  /*} else if (_settings->getManualPump()) {
 	//_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, hand126); 
 	_lcd->setColor(red[0],red[1],red[2]);
 	_lcd->setBackColor(VGA_WHITE);
@@ -415,13 +441,13 @@ void GUI::printIconAndStatus() {
 	_lcd->print("T",xSpacer,ySpacer);
 	_lcd->setFont(hallfetica_normal);
 	_lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer); 
-	img = SD.open("/PICTURE/hand126.RAW",FILE_READ); 
+	_sysState = 4;
+	img = SD.open("/PICTURE/hand126.RAW",FILE_READ); */
 
   //Normal operation    
   } else {
 	int wHour = _settings->getNextWhour();
 	int wMin = _settings->getNextWminute();
-    //_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, plant126);  
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->setBackColor(VGA_WHITE);
     _lcd->setFont(various_symbols);
@@ -439,11 +465,12 @@ void GUI::printIconAndStatus() {
 	_lcd->printNumI(wMin,x,ySpacer,2,'0');
 	x += 2*bigFontSize;
 	_lcd->print(" ",x,ySpacer);
-	//TODO: Shows a strange right line
+	//TODO: Show something else if in continuous watering mode
+	_sysState = 0;
 	img = SD.open("/PICTURE/plant126.RAW",FILE_READ);
   }
+  
   //Read img from SD and display
-  const int imgSize = 126;
   for (int y = 0; y < imgSize && img.available(); y++) {
 	  uint16_t buf[imgSize];
 	  for (int x = imgSize - 1; x >= 0; x--) {
@@ -456,10 +483,118 @@ void GUI::printIconAndStatus() {
   img.close();
 }
 
+//Same as above except it only changes icon if system state changed from previous
+//If not should only update next watering time
 void GUI::updateIconAndStatus() {
-	//TODO:
-  //Same as above. Should change icon only if system state changed.
-  //If not should only update next watering time
+    const int xSpacer = 10;
+    const int ySpacer = 200;
+    const int imgSize = 126;
+    File img;
+    
+    //If theres an alarm and the previous state wasnt an alarm
+    if (_settings->getAlarmTriggered() && (_sysState != 1)) {
+		int wHour = _settings->getNextWhour();
+		int wMin = _settings->getNextWminute();
+	    _lcd->setColor(red[0],red[1],red[2]);
+	    _lcd->setBackColor(VGA_WHITE);
+	    _lcd->setFont(various_symbols);
+	    _lcd->print("T",xSpacer,ySpacer);
+	    _lcd->setFont(hallfetica_normal);
+	    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
+		int x = xSpacer + bigFontSize*2;
+		//Space char added after @ and last number to white out line
+		char* nWater = "Next Watering @ ";
+		_lcd->print(nWater,x,ySpacer);
+		x += bigFontSize*(strlen(nWater));
+		_lcd->printNumI(wHour,x,ySpacer,2,'0');
+		x += bigFontSize*2;
+		_lcd->print(":",x,ySpacer);
+		x += bigFontSize;
+		_lcd->printNumI(wMin,x,ySpacer,2,'0');
+		x += 2*bigFontSize;
+		_lcd->print(" ",x,ySpacer);
+	    //Set system state
+	    _sysState = 1;
+	    //Prepare img on SD for reading
+	    img = SD.open("/PICTURE/alarm126.RAW",FILE_READ);
+	    
+	  //watering and not in continuous mode
+	  } else if (_settings->getWaterTimed() && _settings->getWateringPlants() && (_sysState != 2)) {
+	    _lcd->setColor(blue[0],blue[1],blue[2]);
+	    _lcd->setBackColor(VGA_WHITE);
+	    _lcd->setFont(various_symbols);
+	    _lcd->print("T",xSpacer,ySpacer);
+	    _lcd->setFont(hallfetica_normal);
+	    char* watering = "Huertomato Watering";
+	    int x = xSpacer + bigFontSize*2;
+	    _lcd->print(watering,x,ySpacer);
+	    //3 blank chars afterwards to clear line
+	    x += bigFontSize*strlen(watering);
+	    _lcd->print("   ",x,ySpacer);
+	    _sysState = 2;
+	    img = SD.open("/PICTURE/logo126.RAW",FILE_READ);
+	    
+	  //water stopped because its night
+	  } else if (_settings->getNightWateringStopped() && (_sysState != 3)) {
+	    _lcd->setColor(grey[0],grey[1],grey[2]);
+	    _lcd->setBackColor(VGA_WHITE);
+	    _lcd->setFont(various_symbols);
+	    _lcd->print("T",xSpacer,ySpacer);
+	    _lcd->setFont(hallfetica_normal);
+	    _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
+	    _sysState = 3;
+	    img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
+	    
+	  //water pump in manual mode
+	  /*} else if (_settings->getManualPump() && (_sysState != 4)) {
+	    _lcd->setColor(red[0],red[1],red[2]);
+	    _lcd->setBackColor(VGA_WHITE);
+	    _lcd->setFont(various_symbols);
+	    _lcd->print("T",xSpacer,ySpacer);
+	    _lcd->setFont(hallfetica_normal);
+	    _lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer);
+	    _sysState = 4;
+	    img = SD.open("/PICTURE/hand126.RAW",FILE_READ);*/
+
+	  //If no abnormal state detected and previous state wasnt already this one 
+	  } else if (!_settings->getAlarmTriggered() && !_settings->getNightWateringStopped()
+			&& !(_settings->getWaterTimed() && _settings->getWateringPlants()) && (_sysState != 0)) {
+				
+	    int wHour = _settings->getNextWhour();
+	    int wMin = _settings->getNextWminute();
+	    _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
+	    _lcd->setBackColor(VGA_WHITE);
+	    _lcd->setFont(various_symbols);
+	    _lcd->print("T",xSpacer,ySpacer);
+	    _lcd->setFont(hallfetica_normal);
+	    int x = xSpacer + bigFontSize*2;
+	    //Space char added after @ and last number to white out line
+	    char* nWater = "Next Watering @ ";
+	    _lcd->print(nWater,x,ySpacer);
+	    x += bigFontSize*(strlen(nWater));
+	    _lcd->printNumI(wHour,x,ySpacer,2,'0');
+	    x += bigFontSize*2;
+	    _lcd->print(":",x,ySpacer);
+	    x += bigFontSize;
+	    _lcd->printNumI(wMin,x,ySpacer,2,'0');
+	    x += 2*bigFontSize;
+	    _lcd->print(" ",x,ySpacer);
+	    //TODO: Show something else if in continuous watering mode
+	    _sysState = 0;
+	    img = SD.open("/PICTURE/plant126.RAW",FILE_READ);
+    }
+    
+    //Read img from SD and display
+    for (int y = 0; y < imgSize && img.available(); y++) {
+	    uint16_t buf[imgSize];
+	    for (int x = imgSize - 1; x >= 0; x--) {
+		    byte l = img.read();
+		    byte h = img.read();
+		    buf[x] = ((uint16_t)h << 8) | l;
+	    }
+	    _lcd->drawPixelLine(15,y+25+bigFontSize,imgSize,buf);
+    }
+    img.close();
 }
 
 //GUI Starting point. Should be called from main sketch in setup()
@@ -475,8 +610,7 @@ void GUI::drawMainScreen() {
 void GUI::updateMainScreen() {
   updateMainHeader();
   updateSensorInfo(); 
-  //TODO: Change to updateIconAndStatus();
-  printIconAndStatus();
+  updateIconAndStatus();
 }
 
 //These function should be the first to get its buttons into the array buttons
@@ -596,7 +730,7 @@ void GUI::printSystemSettings() {
   const int ySpacer = 35;
  
   nightWater = _settings->getNightWatering();
-  waterPumpState = _settings->getManualPump();
+  //waterPumpState = _settings->getManualPump();
 
   _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
   _lcd->setBackColor(VGA_WHITE);
@@ -622,10 +756,11 @@ void GUI::printSystemSettings() {
 	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[3]),ySpacer+bigFontSize*2*3);
   
   //Manual Pump ON/OFF	
-  if (waterPumpState)
+  /*if (waterPumpState)
     _lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
   else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->prin("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+	*/
 
   //7 buttons
   // _lcd->print("T",xSpacer,ySpacer+bigFontSize*1.5*i);
@@ -704,12 +839,11 @@ void GUI::processTouchSystem(int x, int y) {
 	_settings->setNightWatering(nightWater);
     updateSystemSettings();
     //Manual pump toggle
-  } else if (buttonIndex == systemButtons[7]) {
+  } /*else if (buttonIndex == systemButtons[7]) {
 	waterPumpState = !waterPumpState;
-	_settings->setManualPump(waterPumpState);
-	//TODO: Go to main menu?
+	//_settings->setManualPump(waterPumpState);
 	updateSystemSettings();
-  }
+  }*/
 
 }
 
@@ -827,7 +961,6 @@ void GUI::processTouchController(int x, int y) {
   } else if (buttonIndex == controllerButtons[7]) {
     serialActive = !serialActive;
 	_settings->setSerialDebug(serialActive);
-	//TODO: Save variables to EEPROM!?
 	updateControllerSettings();
   }
   
@@ -1030,14 +1163,11 @@ void GUI::printSensorPolling() {
   const int yFirstLine = 60;
   const int ySecondLine = 135;
   const int xSpacer = 25;
-  const int xSpacer2 = 72;
+  const int xSpacer2 = 72+3*bigFontSize;
   
-  const int minU[] = {xSpacer2+8, ySecondLine-22};       //min up
-  const int secU[] = {xSpacer2+8+9*bigFontSize, ySecondLine-22};       //sec up
-  const int minD[] = {xSpacer2+8, ySecondLine+22};       //min down
-  const int secD[] = {xSpacer2+8+9*bigFontSize, ySecondLine+22};       //sec down
+  const int secU[] = {xSpacer2+bigFontSize/2, ySecondLine-22};       //sec up
+  const int secD[] = {xSpacer2+bigFontSize/2, ySecondLine+22};       //sec down
   
-  pollMin = _settings->getSensorMinute();
   pollSec = _settings->getSensorSecond();
   
   _lcd->setColor(grey[0],grey[1],grey[2]);  
@@ -1045,28 +1175,18 @@ void GUI::printSensorPolling() {
   _lcd->setFont(hallfetica_normal);
   
   char* sensorPollingText1 = "Time between readings:";
-  char* sensorPollingText2 = "mins,";
-  char* sensorPollingText3 = "secs";
+  char* sensorPollingText2 = "seconds";
   
   //Time between readings text
   _lcd->print(sensorPollingText1, xSpacer, yFirstLine);
   //XX
-  _lcd->printNumI(pollMin,xSpacer2,ySecondLine,2,'0');
-  //mins,
-  int x = xSpacer2+3*bigFontSize;
-  _lcd->print(sensorPollingText2, x, ySecondLine);
-  //XX
-  x += bigFontSize*(strlen(sensorPollingText2)+1);
-  _lcd->printNumI(pollSec,x,ySecondLine,2,'0');
+  _lcd->printNumI(pollSec,xSpacer2,ySecondLine,2,'0');
   //secs
-  x += bigFontSize*3;
-  _lcd->print(sensorPollingText3,x,ySecondLine);
+  _lcd->print(sensorPollingText2,xSpacer2+3*bigFontSize,ySecondLine);
   
   //Make +/- buttons
-  sensorPollingButtons[3] = _buttons.addButton(minU[0],minU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
-  sensorPollingButtons[4] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
-  sensorPollingButtons[5] = _buttons.addButton(minD[0],minD[1],sensorPollingButtonText[2],BUTTON_SYMBOL);
-  sensorPollingButtons[6] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[3],BUTTON_SYMBOL);
+  sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
+  sensorPollingButtons[4] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
  
 }
 
@@ -1084,14 +1204,10 @@ void GUI::drawSensorPolling() {
 //Used when +- signs are pressed
 void GUI::updateSensorPolling() {
     const int ySecondLine = 135;
-    const int xSpacer2 = 72;
-	char* sensorPollingText2 = "mins,";
+    const int  xSpacer2 = 72+3*bigFontSize;
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(pollMin,xSpacer2,ySecondLine,2,'0');
-	int x = xSpacer2+3*bigFontSize;
-	x += bigFontSize*(strlen(sensorPollingText2)+1);
-	_lcd->printNumI(pollSec,x,ySecondLine,2,'0');
+	_lcd->printNumI(pollSec,xSpacer2,ySecondLine,2,'0');
 }
 
 void GUI::processTouchSensorPolling(int x, int y) {
@@ -1104,7 +1220,6 @@ void GUI::processTouchSensorPolling(int x, int y) {
     drawControllerSettings();
   //Save
   } else if (buttonIndex == sensorPollingButtons[1]) {
-	_settings->setSensorMinute(pollMin);
 	_settings->setSensorSecond(pollSec);
 	printSavedButton();
   //Exit
@@ -1114,22 +1229,13 @@ void GUI::processTouchSensorPolling(int x, int y) {
     _lcd->fillScr(VGA_WHITE);
     drawMainScreen();
   
-  //Min up
-  } else if (buttonIndex == sensorPollingButtons[3]) {
-	  pollMin++;
-	  (pollMin > 59) ? pollMin=0 : 0;
-	  updateSensorPolling();
   //Sec up
-  } else if (buttonIndex == sensorPollingButtons[4]) {
+  } else if (buttonIndex == sensorPollingButtons[3]) {
 	  pollSec++;
 	  (pollSec > 59) ? pollSec=0 : 0;
 	  updateSensorPolling();
-  //Min down
-  } else if (buttonIndex == sensorPollingButtons[5]) {
-	  (pollMin <= 0) ? pollMin=59 : pollMin--;
-	  updateSensorPolling();
   //Sec down
-  } else if (buttonIndex == sensorPollingButtons[6]) {
+  } else if (buttonIndex == sensorPollingButtons[4]) {
 	  (pollSec <= 0) ? pollSec=59 : pollSec--;
 	  updateSensorPolling();  
   }

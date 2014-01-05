@@ -7,6 +7,8 @@
 
 //TODO: Send to GUI Class?
 
+//These functions serve to make system changes through GUI that didn0t fit anywhere else
+
 
 #ifndef OTHER_H_
 #define OTHER_H_
@@ -15,7 +17,8 @@
 #include <Time.h>
 
 void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
-
+//void activateSDcard?
+//void setContinuousWatering(boolean state);
 
 #endif /
 

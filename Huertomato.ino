@@ -34,8 +34,8 @@
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
-// # UTFT & UTouch http://www.henningkarlsen.com/electronics/library.php
-// # A custom version of UTFT is used: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
+// # UTouch & UTFT_Buttons http://www.henningkarlsen.com/electronics/library.php
+// # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 
 #include "Other.h"
 #include "Sensors.h"
@@ -114,7 +114,7 @@ Sensors sensors;
 
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
-//TODO: Move to settings object
+//TODO: Make GUI window, update references and delete
 uint8_t lightThreshold = 10;
 
 // *********************************************
@@ -122,8 +122,13 @@ uint8_t lightThreshold = 10;
 // *********************************************
 void setup() {  
 	led.setOn();
-	//TODO:Here goes splash Screen 
-	//Something like: Huertomato is loading + logo + status message
+	
+	LCD.InitLCD();
+	LCD.clrScr();
+	LCD.fillScr(VGA_WHITE);
+	Touch.InitTouch();
+	Touch.setPrecision(PREC_MEDIUM);
+	gui.drawSplashScreen();
 	
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
@@ -133,17 +138,13 @@ void setup() {
 	setupSerial();
 	setupRTC();
 	setupSD();
-	  
-	LCD.InitLCD();
-	LCD.clrScr();
-	LCD.fillScr(VGA_WHITE);
-	Touch.InitTouch();
-	Touch.setPrecision(PREC_MEDIUM);
 	
 	setupAlarms();
 	initMusic();
 	 
+	//TODO: Needed?
 	Alarm.delay(1000);
+	LCD.fillScr(VGA_WHITE);
 	gui.drawMainScreen();
 }
 
@@ -177,7 +178,6 @@ void setupSD() {
 		//TODO: Warn init screen LCD
 	}
 }
-
 
 //Initiates system alarms and timers
 //timerOnce is used and then another timerOnce is configured inside the called functions
@@ -242,18 +242,18 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
-	//Refresh main screen
-    if (gui.getActScreen() == 0)
-		gui.updateMainScreen();
-		
 	//Alarm check
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
-		if (gui.getActScreen() == 0 && settings.getSound()) 
-			tone(buzzPin, 880.00, 250);
+		if (gui.getActScreen() == 0 && settings.getSound())
+		tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
+		
+	//Refresh main screen
+    if (gui.getActScreen() == 0)
+		gui.updateMainScreen();
     
     gui.processTouch();
    
@@ -295,6 +295,10 @@ void loop() {
 		}
 		waterPlants(); 
 	}
+	
+	//TODO: activate continuous mode if needed?
+	//Maybe call it from GUI through "other functions"?
+	//TODO:Same thing for activating SD or smth mid sketch
 
 	//Delays are needed for alarms to work
 	Alarm.delay(10);
@@ -424,10 +428,10 @@ void adjustECtemp() {
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
 	settings.setWateringPlants(true);
+	led.setColour(BLUE);
 	//Refresh main screen if needed
     if (gui.getActScreen() == 0)
 		gui.updateMainScreen();
-	led.setColour(BLUE);
 	 
 	//Inform through serial
 	if (settings.getSerialDebug()) {
@@ -466,7 +470,3 @@ void waterPlants() {
 	}
 	settings.setWateringPlants(false);
 }
-
-/*uint32_t toMs(time_t t) {
-  return (uint32_t)((((hour(t) * 60) + minute(t)) * 60) + second(t)) * 1000;
-}*/

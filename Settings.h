@@ -33,7 +33,6 @@
 extern EEPROMClassEx EEPROM;
 
 // *********************************************
-//TODO: Add light Threshold
 class Settings {
   public:
 	//Constructors
@@ -55,9 +54,9 @@ class Settings {
     void setECalarmDown(const uint16_t);
     void setWaterAlarm(const uint8_t);
     void setNightWatering(const boolean);
+	void setLightThreshold(const uint8_t);
     
     //Controller Settings
-    void setSensorMinute(const uint8_t);
     void setSensorSecond(const uint8_t);
     void setSDactive(const boolean);
     void setSDhour(const uint8_t);
@@ -68,7 +67,7 @@ class Settings {
     //Status vars - These are not written to EEPROM
     void setNextWhour(const uint8_t);
     void setNextWminute(const uint8_t);
-    void setManualPump(const boolean);
+    //void setManualPump(const boolean);
     void setNightWateringStopped(const boolean);
     void setWateringPlants(const boolean);
     void setAlarmTriggered(const boolean);
@@ -85,9 +84,9 @@ class Settings {
     uint16_t getECalarmDown() const;
     uint8_t getWaterAlarm() const;
     boolean getNightWatering() const;
+	uint8_t getLightThreshold() const;
     
     //Controller Settings
-    uint8_t getSensorMinute() const;
     uint8_t getSensorSecond() const;
     boolean getSDactive() const;
     uint8_t getSDhour() const;
@@ -98,12 +97,13 @@ class Settings {
     //Status vars
     uint8_t getNextWhour() const;
     uint8_t getNextWminute() const;
-    boolean getManualPump() const;
+    //boolean getManualPump() const;
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
        
   private:
+	void setEEPROMaddresses();
     void readEEPROMvars();
     //System Settings
     //Watering Cycle
@@ -117,18 +117,15 @@ class Settings {
     uint16_t _ecAlarmUp;
     uint16_t _ecAlarmDown;
     uint8_t _waterAlarm;
-    //TODO: Sensor Calibration
-	//Light and deposit
-    //If light < threshold we assume its night time
-    //int _lightThreshold;
     //Water at night - Informs the system that watering timers are stopped for the night
     boolean _nightWatering;
+	//TODO: Sensor Calibration
+	uint8_t _lightThreshold;
 
     
     //Controller settings
     //Time & Date - Handled outside (RTC Lib)
     //Sensor Polling
-    uint8_t _sensorMinute;
     uint8_t _sensorSecond;  
     //SD Card
     boolean _sdActive;
@@ -144,7 +141,7 @@ class Settings {
     uint8_t _nextWhour;
     uint8_t _nextWminute;
     //Manual Water Pump - Keeps the pump status when manually controling them.
-    boolean _manualPump;
+    //boolean _manualPump;
     //Informs the system that watering timers are stopped for the night
     boolean _nightWateringStopped;
     //Turned on when plants are beign watered
@@ -170,6 +167,7 @@ class Settings {
     int _adressSDminute;
     int _adressSound;
     int _adressSerialDebug;
+	int _adressLightThreshold;
   
 };
 

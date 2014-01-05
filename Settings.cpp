@@ -5,106 +5,49 @@
 
 //Constructors
 Settings::Settings() {
-	//TODO: add lightThreshold and waterMin/waterMax to settings and menus
-//  _lightThreshold = 10;  
-  //Status variables - Not read from EEPROM
-  _manualPump = false;
-  _nightWateringStopped = false;
-  _manualPump = false;
-  _wateringPlants = false;
-  _alarmTriggered = false;
-  //These two are set in the main setup()
-  //_nextWhour = 20;
-  //_nextWminute = 5;
-  
-  //Init config - Maybe useful to program new hardwares?
-  /*_waterTimed = true;
-  _waterHour = 2 ;
-  _waterMinute = 30;
-  _floodMinute = 15;
-  _phAlarmUp = 7.50;
-  _phAlarmDown = 6.25;
-  _ecAlarmUp = 3200;
-  _ecAlarmDown = 1200;
-  _waterAlarm = 33;
-  _nightWatering = true;
-  
-  //Controller Settings
-  _sensorMinute = 0;
-  _sensorSecond = 5;  
-  _sdActive = true;
-  _sdHour = 0;
-  _sdMinute = 5;
-  _sound = false;
-  _serialDebug = true;*/
-  
-  //Set addresses for every value stored in EEPROM
-  _adressWaterTimed = EEPROM.getAddress(sizeof(byte));
-  _adressWaterHour = EEPROM.getAddress(sizeof(byte));
-  _adressWaterMinute = EEPROM.getAddress(sizeof(byte));
-  _adressFloodMinute = EEPROM.getAddress(sizeof(byte));
-  _adressPHalarmUp = EEPROM.getAddress(sizeof(float));
-  _adressPHalarmDown = EEPROM.getAddress(sizeof(float));
-  _adressECalarmUp = EEPROM.getAddress(sizeof(int));
-  _adressECalarmDown = EEPROM.getAddress(sizeof(int));
-  _adressWaterAlarm = EEPROM.getAddress(sizeof(byte));
-  _adressNightWatering = EEPROM.getAddress(sizeof(byte)); 
-  _adressSensorMinute = EEPROM.getAddress(sizeof(byte));
-  _adressSensorSecond = EEPROM.getAddress(sizeof(byte));  
-  _adressSDactive = EEPROM.getAddress(sizeof(byte));
-  _adressSDhour = EEPROM.getAddress(sizeof(byte));
-  _adressSDminute = EEPROM.getAddress(sizeof(byte));
-  _adressSound = EEPROM.getAddress(sizeof(byte));
-  _adressSerialDebug = EEPROM.getAddress(sizeof(byte));
-  
-  readEEPROMvars();
-}
-
-//TODO: How to initialize these?
-Settings::Settings(const Settings &other) {
-	  //Status variables - Not read from EEPROM
-	  /*_nextWhour = 0;
-	  _nextWminute = 0;
-	  _manualPump = false;
-	  _nightWateringStopped = false;
-	  _manualPump = false;
-	  _wateringPlants = false;
-	  _alarmTriggered = false;
-	  
-	  //System Settings
-	  //_waterTimed = other._waterTimed;
-	  _waterHour = other._waterHour;
-	  _waterMinute = other._waterMinute;
-	  _floodMinute = other._floodMinute;
-	  _phAlarmUp = other._phAlarmUp;
-	  _phAlarmDown = other._phAlarmDown;
-	  _ecAlarmUp = other._ecAlarmUp;
-	  _ecAlarmDown = other._ecAlarmDown;
-	  _waterAlarm = other._waterAlarm;
-	  _nightWatering = other._nightWatering;
-	  
-	  //Controller Settings
-	  _sensorMinute = other._sensorMinute;
-	  _sensorSecond = other._sensorSecond;
-	  _sdActive = other._sdActive;
-	  _sdHour = other._sdHour;
-	  _sdMinute = other._sdMinute;
-	  _sound = other._sound;
-	  _serialDebug = other._serialDebug;*/
-}
-
-Settings& Settings::operator=(const Settings &other) {
+	//TODO: add waterMin/waterMax to settings and menus
 	//Status variables - Not read from EEPROM
-	/*_nextWhour = 0;
-	_nextWminute = 0;
-	_manualPump = false;
 	_nightWateringStopped = false;
-	_manualPump = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
-		  
+	
+	//These two are set in the main setup()
+	//_nextWhour = 20;
+	//_nextWminute = 5; 
+	//Init config - Maybe useful to program new hardwares?
+	/*_waterTimed = true;
+	_waterHour = 2 ;
+	_waterMinute = 30;
+	_floodMinute = 15;
+	_phAlarmUp = 7.50;
+	_phAlarmDown = 6.25;
+	_ecAlarmUp = 3200;
+	_ecAlarmDown = 1200;
+	_waterAlarm = 33;
+	_nightWatering = true;
+	_lightThreshold = 10;
+  
+	//Controller Settings
+	_sensorSecond = 5;  
+	_sdActive = true;
+	_sdHour = 0;
+	_sdMinute = 5;
+	_sound = false;
+	_serialDebug = true;*/
+  
+	setEEPROMaddresses();
+	readEEPROMvars();
+}
+
+Settings::Settings(const Settings &other) {
+	setEEPROMaddresses();
+
+	_nightWateringStopped = false;
+	_wateringPlants = false;
+	_alarmTriggered = false;
+	  
 	//System Settings
-	//_waterTimed = other._waterTimed;
+	_waterTimed = other._waterTimed;
 	_waterHour = other._waterHour;
 	_waterMinute = other._waterMinute;
 	_floodMinute = other._floodMinute;
@@ -114,41 +57,91 @@ Settings& Settings::operator=(const Settings &other) {
 	_ecAlarmDown = other._ecAlarmDown;
 	_waterAlarm = other._waterAlarm;
 	_nightWatering = other._nightWatering;
-		  
+	_lightThreshold = other._lightThreshold;
+	  
 	//Controller Settings
-	_sensorMinute = other._sensorMinute;
 	_sensorSecond = other._sensorSecond;
 	_sdActive = other._sdActive;
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
-	_serialDebug = other._serialDebug;*/
+	_serialDebug = other._serialDebug;
+}
+
+Settings& Settings::operator=(const Settings &other) {
+	setEEPROMaddresses();
+	
+	_nightWateringStopped = false;
+	_wateringPlants = false;
+	_alarmTriggered = false;
+		  
+	//System Settings
+	_waterTimed = other._waterTimed;
+	_waterHour = other._waterHour;
+	_waterMinute = other._waterMinute;
+	_floodMinute = other._floodMinute;
+	_phAlarmUp = other._phAlarmUp;
+	_phAlarmDown = other._phAlarmDown;
+	_ecAlarmUp = other._ecAlarmUp;
+	_ecAlarmDown = other._ecAlarmDown;
+	_waterAlarm = other._waterAlarm;
+	_nightWatering = other._nightWatering;
+	_lightThreshold = other._lightThreshold;
+		  
+	//Controller Settings
+	_sensorSecond = other._sensorSecond;
+	_sdActive = other._sdActive;
+	_sdHour = other._sdHour;
+	_sdMinute = other._sdMinute;
+	_sound = other._sound;
+	_serialDebug = other._serialDebug;
 	
 	return *this;
 }
 
 //Destructor
 Settings::~Settings() {}
+	
+//Sets EEPROM addresses for all variables
+void Settings::setEEPROMaddresses() {
+	_adressWaterTimed = EEPROM.getAddress(sizeof(byte));
+	_adressWaterHour = EEPROM.getAddress(sizeof(byte));
+	_adressWaterMinute = EEPROM.getAddress(sizeof(byte));
+	_adressFloodMinute = EEPROM.getAddress(sizeof(byte));
+	_adressPHalarmUp = EEPROM.getAddress(sizeof(float));
+	_adressPHalarmDown = EEPROM.getAddress(sizeof(float));
+	_adressECalarmUp = EEPROM.getAddress(sizeof(int));
+	_adressECalarmDown = EEPROM.getAddress(sizeof(int));
+	_adressWaterAlarm = EEPROM.getAddress(sizeof(byte));
+	_adressNightWatering = EEPROM.getAddress(sizeof(byte));
+	_adressSensorSecond = EEPROM.getAddress(sizeof(byte));
+	_adressSDactive = EEPROM.getAddress(sizeof(byte));
+	_adressSDhour = EEPROM.getAddress(sizeof(byte));
+	_adressSDminute = EEPROM.getAddress(sizeof(byte));
+	_adressSound = EEPROM.getAddress(sizeof(byte));
+	_adressSerialDebug = EEPROM.getAddress(sizeof(byte));
+	_adressLightThreshold = EEPROM.getAddress(sizeof(byte));
+}
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
-  _waterTimed = EEPROM.readByte(_adressWaterTimed);
-  _waterHour = EEPROM.readByte(_adressWaterHour);
-  _waterMinute = EEPROM.readByte(_adressWaterMinute);
-  _floodMinute = EEPROM.readByte(_adressFloodMinute);
-  _phAlarmUp = EEPROM.readFloat(_adressPHalarmUp);
-  _phAlarmDown = EEPROM.readFloat(_adressPHalarmDown);
-  _ecAlarmUp = EEPROM.readInt(_adressECalarmUp);
-  _ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
-  _waterAlarm = EEPROM.readByte(_adressWaterAlarm);
-  _nightWatering = EEPROM.readByte(_adressNightWatering);  
-  _sensorMinute = EEPROM.readByte(_adressSensorMinute);
-  _sensorSecond = EEPROM.readByte(_adressSensorSecond);  
-  _sdActive = EEPROM.readByte(_adressSDactive);
-  _sdHour = EEPROM.readByte(_adressSDhour);
-  _sdMinute = EEPROM.readByte(_adressSDminute);
-  _sound = EEPROM.readByte(_adressSound );
-  _serialDebug = EEPROM.readByte(_adressSerialDebug);
+	_waterTimed = EEPROM.readByte(_adressWaterTimed);
+	_waterHour = EEPROM.readByte(_adressWaterHour);
+	_waterMinute = EEPROM.readByte(_adressWaterMinute);
+	_floodMinute = EEPROM.readByte(_adressFloodMinute);
+	_phAlarmUp = EEPROM.readFloat(_adressPHalarmUp);
+	_phAlarmDown = EEPROM.readFloat(_adressPHalarmDown);
+	_ecAlarmUp = EEPROM.readInt(_adressECalarmUp);
+	_ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
+	_waterAlarm = EEPROM.readByte(_adressWaterAlarm);
+	_nightWatering = EEPROM.readByte(_adressNightWatering);  
+	_sensorSecond = EEPROM.readByte(_adressSensorSecond);  
+	_sdActive = EEPROM.readByte(_adressSDactive);
+	_sdHour = EEPROM.readByte(_adressSDhour);
+	_sdMinute = EEPROM.readByte(_adressSDminute);
+	_sound = EEPROM.readByte(_adressSound );
+	_serialDebug = EEPROM.readByte(_adressSerialDebug);
+	_lightThreshold = EEPROM.readByte(_adressLightThreshold);
 }
 
 //Setters - These store their value on EEPROM too
@@ -203,12 +196,12 @@ void Settings::setNightWatering(const boolean n) {
 	EEPROM.updateByte(_adressNightWatering,n);
 }
 
-//Controller Settings
-void Settings::setSensorMinute(const uint8_t s) { 
-	_sensorMinute = s; 
-	EEPROM.updateByte(_adressSensorMinute,s);
+void Settings::setLightThreshold(const uint8_t l) {
+	_lightThreshold = l;
+	EEPROM.updateByte(_adressLightThreshold,l);
 }
 
+//Controller Settings
 void Settings::setSensorSecond(const uint8_t s) { 
 	_sensorSecond = s; 
 	EEPROM.updateByte(_adressSensorSecond,s);
@@ -244,7 +237,7 @@ void Settings::setNextWhour(const uint8_t n) { _nextWhour = n; }
 
 void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 
-void Settings::setManualPump(const boolean m) {	_manualPump = m; }
+//void Settings::setManualPump(const boolean m) {	_manualPump = m; }
 
 void Settings::setNightWateringStopped(const boolean n) { _nightWateringStopped = n; }
 
@@ -274,9 +267,9 @@ uint8_t Settings::getWaterAlarm() const { return _waterAlarm; }
 
 boolean Settings::getNightWatering() const { return _nightWatering; }
 
-//Controller Settings
-uint8_t Settings::getSensorMinute() const { return _sensorMinute; }
+uint8_t Settings::getLightThreshold() const { return _lightThreshold; }
 
+//Controller Settings
 uint8_t Settings::getSensorSecond() const { return _sensorSecond; }
 
 boolean Settings::getSDactive() const { return _sdActive; }
@@ -294,7 +287,7 @@ uint8_t Settings::getNextWhour() const { return _nextWhour; }
 
 uint8_t Settings::getNextWminute() const { return _nextWminute; }
 
-boolean Settings::getManualPump() const { return _manualPump; }
+//boolean Settings::getManualPump() const { return _manualPump; }
 
 boolean Settings::getNightWateringStopped() const { return _nightWateringStopped; }
 
