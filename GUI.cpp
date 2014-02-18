@@ -1805,22 +1805,22 @@ void GUI::processTouchECalarms(int x,int y) {
   //Max up	
   } else if(buttonIndex == ecAlarmsButtons[3]) {
 	ecAlarmMax += 10;
-	(ecAlarmMax > 9999) ? ecAlarmMax=1000 : 0;
+	(ecAlarmMax > 9999) ? ecAlarmMax=0 : 0;
 	updateECalarms();
   //Max down
   } else if(buttonIndex == ecAlarmsButtons[4]) {
 	ecAlarmMax -= 10;
-	(ecAlarmMax < 1000) ? ecAlarmMax=9999 : 0;
+	(ecAlarmMax < 0) ? ecAlarmMax=9999 : 0;
 	updateECalarms();
   //Min up
   } else if(buttonIndex == ecAlarmsButtons[5]) {
 	ecAlarmMin += 10;
-	(ecAlarmMin > 9999) ? ecAlarmMin=1000 : 0;
+	(ecAlarmMin > 9999) ? ecAlarmMin=0 : 0;
 	updateECalarms();
   //Min down
   } else if(buttonIndex == ecAlarmsButtons[6]) {
 	ecAlarmMin -= 10;
-	(ecAlarmMin < 1000) ? ecAlarmMin=9999 : 0;
+	(ecAlarmMin < 0) ? ecAlarmMin=9999 : 0;
 	updateECalarms();
   }
 }
