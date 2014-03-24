@@ -74,14 +74,21 @@ const int redPin = 12;
 const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
+//A1
 const int humidIn = A13;
+//A2
 const int lightIn = A15;
+//A0
 const int tempIn = 42;
+//D8
 const int waterEcho = 44;
+//D9
 const int waterTrigger = 45;
 //ACTUATORS
+//D10
 const int buzzPin = 47;
-const int flushValve = 48;
+//const int flushValve = 48;
+//A9
 const int waterPump = 49;
 //LCD
 const int lcdRS = 38;

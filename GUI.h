@@ -42,7 +42,7 @@
 extern prog_uint16_t plant126[0x3E04];
 extern prog_uint16_t alarm126[0x3E04];
 extern prog_uint16_t logo126[0x3E04];
-extern prog_uint16_t hand126[0x3E04];
+//extern prog_uint16_t hand126[0x3E04];
 extern prog_uint16_t moon126[0x3E04];
 
 //extern prog_uint16_t *statusPic;

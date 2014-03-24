@@ -27,8 +27,8 @@ void updateSensors();
 void adjustECtemp();
 void waterPlants();
 
-#include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
-#include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
+#include "C:\arduino-1.0.5-r2\hardware\arduino\variants\mega\pins_arduino.h" 
+#include "C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino\arduino.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Huertomato.ino"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.h"
