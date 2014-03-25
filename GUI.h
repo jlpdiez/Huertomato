@@ -347,7 +347,7 @@ class GUI {
     
     void printSensorPolling();
     void drawSensorPolling();
-	void updateSensorPolling();
+	void updateSensorPolling();  
     void processTouchSensorPolling(int x, int y);
     
     void printSDcard();
