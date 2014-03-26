@@ -140,7 +140,6 @@ void setup() {
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
-	//pinMode(flushValve, OUTPUT);
 	
 	setupSerial();
 	setupRTC();
@@ -203,12 +202,13 @@ void setupAlarms() {
 	//if (activateSerial) 
 	//Alarm.timerOnce(0,0,5, showStatsSerial);   
     
-    //Sets watering timer
+    //Sets watering timer or starts continuous water
     if (settings.getWaterTimed()) {
 		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
 		updateNextWateringTime();
     } else {
 		digitalWrite(waterPump,HIGH);	
+		settings.setWateringPlants(true);
 	}
 }
 
@@ -256,7 +256,7 @@ void loop() {
 		led.setColour(RED);
 		//Sound alarm in main screen only
 		if (gui.getActScreen() == 0 && settings.getSound())
-		tone(buzzPin, 880.00, 250);
+			tone(buzzPin, 880.00, 250);
 	} else
 		led.setColour(GREEN);
 		
@@ -270,6 +270,7 @@ void loop() {
 //  //Initiate arrays to be lowerLimit < vars < upperLimit
 //  //Or activate alarms when 1-2 minutes have passed 
 	
+	// ALARMS TRIGGERING
 	//TODO: make funtion with ifs!
 	//Checks if any alarm should be triggered
 	if ((sensors.getPH() < settings.getPHalarmDown()) || (sensors.getPH() > settings.getPHalarmUp()) 
@@ -290,6 +291,7 @@ void loop() {
 			settings.setAlarmTriggered(false);         
 	}
   
+	// NIGHT-DAY TOGGLE
 	//If watering has been stopped for the night and day has come or
 	//same thing and night watering setting has been reactivated, we start water cycle again
 	//if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
@@ -302,10 +304,17 @@ void loop() {
 			writeSerialTimestamp();
 			Serial << "Watering restarted because of daytime or settings change." << endl;
 		}
-		waterPlants(); 
+		//Restart watering timers if needed
+		if (settings.getWaterTimed()) 
+			waterPlants(); 	
 	}
 	
-	//TODO: activate continuous mode if needed?
+	// CONTINUOUS WATER CHECK
+	if (!settings.getWaterTimed()) {
+		digitalWrite(waterPump, HIGH);
+		settings.setWateringPlants(true);
+	}
+	
 	//Maybe call it from GUI through "other functions"?
 	//TODO:Same thing for activating SD or smth mid sketch
 
@@ -432,50 +441,51 @@ void adjustECtemp() {
 }
 
 //WATER EBB+FLOW ROUTINE - System becomes unresponsive during this process
-//Leaves flush valve opened in case it rains so plants wont flood but reservoir might be affected
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
-	settings.setWateringPlants(true);
-	led.setColour(BLUE);
-	//Refresh main screen if needed
-    if (gui.getActScreen() == 0)
-		gui.updateMainScreen();
+	if (settings.getWaterTimed()) {
+		settings.setWateringPlants(true);
+		led.setColour(BLUE);
+		//Refresh main screen if needed
+		if (gui.getActScreen() == 0)
+			gui.updateMainScreen();
 	 
-	//Inform through serial
-	if (settings.getSerialDebug()) {
-		writeSerialTimestamp();
-		Serial << "Huertomato is watering plants" << endl;
-	}
-
-	/*
-	//Flood circuit
-	//TODO: Cerrar valvula de salida si la hay
-	//Waits for the time set in floodM through watering settings
-	//Alarm.delay(floodM * 60000);
-  
-	//Flush circuit
-	//digitalWrite(flushValve, HIGH);
-	//Leaves flushValve On in case it rains
-	//Sets manual pump variables to off
-	inputValve = false;
-	outputValve = false;
-	*/
-	//TODO: Remove - only for testing purposes
-	Alarm.delay(5000); 
-  
-	//Set next watering alarm
-	//If its night and night watering is disabled we dont set another timer
-	//Main loop will be in charge of setting timer again
-	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
-		settings.setNightWateringStopped(true);
+		//Inform through serial
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "Watering stopped at nighttime." << endl;
+			Serial << "Huertomato is watering plants" << endl;
 		}
-	} else {
-		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
-		updateNextWateringTime();
+
+		/*
+		//Flood circuit
+		//TODO: Cerrar valvula de salida si la hay
+		//Waits for the time set in floodM through watering settings
+		//Alarm.delay(floodM * 60000);
+  
+		//Flush circuit
+		//digitalWrite(flushValve, HIGH);
+		//Leaves flushValve On in case it rains
+		//Sets manual pump variables to off
+		inputValve = false;
+		outputValve = false;
+		*/
+		//TODO: Remove - only for testing purposes
+		Alarm.delay(5000); 
+  
+		//Set next watering alarm
+		//If its night and night watering is disabled we dont set another timer
+		//Main loop will be in charge of setting timer again
+		if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
+			settings.setNightWateringStopped(true);
+			if (settings.getSerialDebug()) {
+				writeSerialTimestamp();
+				Serial << "Watering stopped at nighttime." << endl;
+			}
+		} else {
+			Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+			updateNextWateringTime();
+		}
+		settings.setWateringPlants(false);
 	}
-	settings.setWateringPlants(false);
 }

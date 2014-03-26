@@ -389,17 +389,22 @@ void GUI::printIconAndStatus() {
     _lcd->setFont(hallfetica_normal);
     //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
 	int x = xSpacer + bigFontSize*2;
-	//Space char added after @ and last number to white out line
-	char* nWater = "Next Watering @ ";
-	_lcd->print(nWater,x,ySpacer);
-	x += bigFontSize*(strlen(nWater));
-	_lcd->printNumI(wHour,x,ySpacer,2,'0');
-	x += bigFontSize*2;
-	_lcd->print(":",x,ySpacer);
-	x += bigFontSize;
-	_lcd->printNumI(wMin,x,ySpacer,2,'0');
-	x += 2*bigFontSize;
-	_lcd->print(" ",x,ySpacer);
+	if (_settings->getWaterTimed()) {
+		//Space char added after @ and last number to white out line
+		char* nWater = "Next Watering @ ";
+		_lcd->print(nWater,x,ySpacer);
+		x += bigFontSize*(strlen(nWater));
+		_lcd->printNumI(wHour,x,ySpacer,2,'0');
+		x += bigFontSize*2;
+		_lcd->print(":",x,ySpacer);
+		x += bigFontSize;
+		_lcd->printNumI(wMin,x,ySpacer,2,'0');
+		x += 2*bigFontSize;
+		_lcd->print(" ",x,ySpacer);
+	} else {
+		char* nWater = "Alarm! - Human needed ";
+		_lcd->print(nWater,x,ySpacer);
+	}
 	//Set system state
 	_sysState = 1;
 	//Prepare img on SD for reading
@@ -454,18 +459,23 @@ void GUI::printIconAndStatus() {
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
 	int x = xSpacer + bigFontSize*2;
-	//Space char added after @ and last number to white out line 
-	char* nWater = "Next Watering @ ";
-    _lcd->print(nWater,x,ySpacer);
-	x += bigFontSize*(strlen(nWater));
-	_lcd->printNumI(wHour,x,ySpacer,2,'0');
-	x += bigFontSize*2;
-	_lcd->print(":",x,ySpacer);
-	x += bigFontSize;
-	_lcd->printNumI(wMin,x,ySpacer,2,'0');
-	x += 2*bigFontSize;
-	_lcd->print(" ",x,ySpacer);
-	//TODO: Show something else if in continuous watering mode
+	
+	if (_settings->getWaterTimed()) {
+		//Space char added after @ and last number to white out line 
+		char* nWater = "Next Watering @ ";
+		_lcd->print(nWater,x,ySpacer);
+		x += bigFontSize*(strlen(nWater));
+		_lcd->printNumI(wHour,x,ySpacer,2,'0');
+		x += bigFontSize*2;
+		_lcd->print(":",x,ySpacer);
+		x += bigFontSize;
+		_lcd->printNumI(wMin,x,ySpacer,2,'0');
+		x += 2*bigFontSize;
+		_lcd->print(" ",x,ySpacer);
+	} else {
+		char* nWater = "System working fine   ";
+		_lcd->print(nWater,x,ySpacer);
+	}
 	_sysState = 0;
 	img = SD.open("/PICTURE/plant126.RAW",FILE_READ);
   }
@@ -502,17 +512,22 @@ void GUI::updateIconAndStatus() {
 	    _lcd->setFont(hallfetica_normal);
 	    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
 		int x = xSpacer + bigFontSize*2;
-		//Space char added after @ and last number to white out line
-		char* nWater = "Next Watering @ ";
-		_lcd->print(nWater,x,ySpacer);
-		x += bigFontSize*(strlen(nWater));
-		_lcd->printNumI(wHour,x,ySpacer,2,'0');
-		x += bigFontSize*2;
-		_lcd->print(":",x,ySpacer);
-		x += bigFontSize;
-		_lcd->printNumI(wMin,x,ySpacer,2,'0');
-		x += 2*bigFontSize;
-		_lcd->print(" ",x,ySpacer);
+		if (_settings->getWaterTimed()) {
+			//Space char added after @ and last number to white out line
+			char* nWater = "Next Watering @ ";
+			_lcd->print(nWater,x,ySpacer);
+			x += bigFontSize*(strlen(nWater));
+			_lcd->printNumI(wHour,x,ySpacer,2,'0');
+			x += bigFontSize*2;
+			_lcd->print(":",x,ySpacer);
+			x += bigFontSize;
+			_lcd->printNumI(wMin,x,ySpacer,2,'0');
+			x += 2*bigFontSize;
+			_lcd->print(" ",x,ySpacer);
+		} else {
+			char* nWater = "Alarm! - Human needed ";
+			_lcd->print(nWater,x,ySpacer);
+		}
 	    //Set system state
 	    _sysState = 1;
 	    //Prepare img on SD for reading
@@ -568,18 +583,23 @@ void GUI::updateIconAndStatus() {
 	    _lcd->print("T",xSpacer,ySpacer);
 	    _lcd->setFont(hallfetica_normal);
 	    int x = xSpacer + bigFontSize*2;
-	    //Space char added after @ and last number to white out line
-	    char* nWater = "Next Watering @ ";
-	    _lcd->print(nWater,x,ySpacer);
-	    x += bigFontSize*(strlen(nWater));
-	    _lcd->printNumI(wHour,x,ySpacer,2,'0');
-	    x += bigFontSize*2;
-	    _lcd->print(":",x,ySpacer);
-	    x += bigFontSize;
-	    _lcd->printNumI(wMin,x,ySpacer,2,'0');
-	    x += 2*bigFontSize;
-	    _lcd->print(" ",x,ySpacer);
-	    //TODO: Show something else if in continuous watering mode
+		if (_settings->getWaterTimed()) {
+			//Space char added after @ and last number to white out line
+			char* nWater = "Next Watering @ ";
+			_lcd->print(nWater,x,ySpacer);
+			x += bigFontSize*(strlen(nWater));
+			_lcd->printNumI(wHour,x,ySpacer,2,'0');
+			x += bigFontSize*2;
+			_lcd->print(":",x,ySpacer);
+			x += bigFontSize;
+			_lcd->printNumI(wMin,x,ySpacer,2,'0');
+			x += 2*bigFontSize;
+			_lcd->print(" ",x,ySpacer);
+		} else {
+			char* nWater = "System working fine   ";
+			_lcd->print(nWater,x,ySpacer);
+		}
+	    
 	    _sysState = 0;
 	    img = SD.open("/PICTURE/plant126.RAW",FILE_READ);
     }
