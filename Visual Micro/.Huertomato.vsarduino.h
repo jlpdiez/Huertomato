@@ -6,7 +6,6 @@
 */
 
 #define __AVR_ATmega2560__
-#define _VMDEBUG 1
 #define ARDUINO 101
 #define ARDUINO_MAIN
 #define F_CPU 16000000L
@@ -28,8 +27,8 @@ void updateSensors();
 void adjustECtemp();
 void waterPlants();
 
-#include "C:\Program Files\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
-#include "C:\Program Files\Arduino\hardware\arduino\cores\arduino\arduino.h"
+#include "C:\arduino-1.0.5-r2\hardware\arduino\variants\mega\pins_arduino.h" 
+#include "C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino\arduino.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Huertomato.ino"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.h"
@@ -45,7 +44,6 @@ void waterPlants();
 #include "C:\Users\eNDeR\Desktop\Huertomato\Settings.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\alarm126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\fonts.c"
-#include "C:\Users\eNDeR\Desktop\Huertomato\hand126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\logo126.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\logos64.c"
 #include "C:\Users\eNDeR\Desktop\Huertomato\moon126.c"

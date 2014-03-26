@@ -6,11 +6,7 @@
  * This example code is in the public domain.
  */
 
-<<<<<<< HEAD
-#include <EEPROMEx.h>
-=======
 #include <EEPROMex.h>
->>>>>>> origin/newUI
 
 #include "Arduino.h"
 void issuedAdresses();
@@ -307,12 +303,9 @@ void errorChecking(int adress) {
 void setup()
 {
   Serial.begin(9600);
-<<<<<<< HEAD
-=======
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
->>>>>>> origin/newUI
   
   // start reading from position memBase (address 0) of the EEPROM. Set maximumSize to EEPROMSizeUno 
   // Writes before membase or beyond EEPROMSizeUno will only give errors when _EEPROMEX_DEBUG is set

@@ -140,7 +140,7 @@ void setup() {
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
-	pinMode(flushValve, OUTPUT);
+	//pinMode(flushValve, OUTPUT);
 	
 	setupSerial();
 	setupRTC();
@@ -204,10 +204,12 @@ void setupAlarms() {
 	//Alarm.timerOnce(0,0,5, showStatsSerial);   
     
     //Sets watering timer
-    //if (settings.getWaterTimed()) {
-	Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
-    updateNextWateringTime();
-    //}
+    if (settings.getWaterTimed()) {
+		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		updateNextWateringTime();
+    } else {
+		digitalWrite(waterPump,HIGH);	
+	}
 }
 
 //Updates variables used for displaying next watering time

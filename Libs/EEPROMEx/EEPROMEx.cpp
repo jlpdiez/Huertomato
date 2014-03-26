@@ -20,23 +20,14 @@
 /******************************************************************************
  * Includes
  ******************************************************************************/
-<<<<<<< HEAD
-#include "EEPROMEx.h"
-=======
 #include "EEPROMex.h"
->>>>>>> origin/newUI
 
 /******************************************************************************
  * Definitions
  ******************************************************************************/
 
-<<<<<<< HEAD
- #define _EEPROMEX_VERSION 0.8.2 // software version of this library
- #define _EEPROMEX_DEBUG         // Enables logging of maximum of writes and out-of-memory
-=======
  #define _EEPROMEX_VERSION 1 // software version of this library
  #define _EEPROMEX_DEBUG     // Enables logging of maximum of writes and out-of-memory
->>>>>>> origin/newUI
 /******************************************************************************
  * Constructors
  ******************************************************************************/
@@ -122,11 +113,7 @@ uint8_t EEPROMClassEx::readByte(int address)
 uint16_t EEPROMClassEx::readInt(int address)
 {
 	if (!isReadOk(address+sizeof(uint16_t))) return 0;
-<<<<<<< HEAD
-	return eeprom_read_word((unsigned int *) address);
-=======
 	return eeprom_read_word((uint16_t *) address);
->>>>>>> origin/newUI
 }
 
 uint32_t EEPROMClassEx::readLong(int address)
@@ -158,10 +145,7 @@ bool EEPROMClassEx::write(int address, uint8_t value)
 
 bool EEPROMClassEx::writeBit(int address, uint8_t bit, bool value) {
 	updateBit(address, bit, value);
-<<<<<<< HEAD
-=======
 	return true;
->>>>>>> origin/newUI
 }
 
 
@@ -175,11 +159,7 @@ bool EEPROMClassEx::writeByte(int address, uint8_t value)
 bool EEPROMClassEx::writeInt(int address, uint16_t value)
 {
 	if (!isWriteOk(address+sizeof(uint16_t))) return false;
-<<<<<<< HEAD
-	eeprom_write_word((unsigned int *) address, value);
-=======
 	eeprom_write_word((uint16_t *) address, value);
->>>>>>> origin/newUI
 	return true;
 }
 
@@ -215,20 +195,13 @@ bool EEPROMClassEx::updateBit(int address, uint8_t bit, bool value)
 	  if (value) {	    
 		byteValOutput |= (1 << bit);  //Set bit to 1
 	  } else {		
-<<<<<<< HEAD
-	    byteValOutput &= !(1 << bit); //Set bit to 0
-=======
 	    byteValOutput &= ~(1 << bit); //Set bit to 0
->>>>>>> origin/newUI
 	  }
 	  // Store if different from input
 	  if (byteValOutput!=byteValInput) {
 		writeByte(address, byteValOutput);	  
 	  }
-<<<<<<< HEAD
-=======
 	  return true;
->>>>>>> origin/newUI
 }
 
 bool EEPROMClassEx::updateByte(int address, uint8_t value)

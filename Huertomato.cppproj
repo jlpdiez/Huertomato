@@ -51,7 +51,6 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -61,38 +60,68 @@
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree\utility</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -106,7 +135,6 @@
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -116,38 +144,68 @@
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree\utility</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
             <Value>
             </Value>
           </ListValues>
@@ -254,7 +312,6 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -264,38 +321,68 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree\utility</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -309,7 +396,6 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
-            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -319,38 +405,68 @@ vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\Program Files\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming</Value>
-            <Value>C:\Program Files\Arduino\libraries\Streaming\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire</Value>
-            <Value>C:\Program Files\Arduino\libraries\Wire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC</Value>
-            <Value>C:\Program Files\Arduino\libraries\DS1307RTC\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11</Value>
-            <Value>C:\Program Files\Arduino\libraries\DHT11\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire</Value>
-            <Value>C:\Program Files\Arduino\libraries\OneWire\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature</Value>
-            <Value>C:\Program Files\Arduino\libraries\DallasTemperature\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time</Value>
-            <Value>C:\Program Files\Arduino\libraries\Time\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms</Value>
-            <Value>C:\Program Files\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTouch\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons</Value>
-            <Value>C:\Program Files\Arduino\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files\Arduino\libraries\SD\utility</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree</Value>
-            <Value>C:\Program Files\Arduino\libraries\MemoryFree\utility</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\avr\</Value>
-            <Value>c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
+            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Esplora\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Ethernet\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Firmata\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\GSM\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\LiquidCrystal\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Control\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Robot_Motor\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Servo\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SoftwareSerial\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\SPI\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Stepper\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\WiFi\utility</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
+            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
+            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
             <Value>
             </Value>
           </ListValues>
