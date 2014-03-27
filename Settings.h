@@ -4,7 +4,7 @@
 // # Version    : 1.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.12.2013
+// # Date       : 27.03.2014
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -67,7 +67,6 @@ class Settings {
     //Status vars - These are not written to EEPROM
     void setNextWhour(const uint8_t);
     void setNextWminute(const uint8_t);
-    //void setManualPump(const boolean);
     void setNightWateringStopped(const boolean);
     void setWateringPlants(const boolean);
     void setAlarmTriggered(const boolean);
@@ -97,10 +96,11 @@ class Settings {
     //Status vars
     uint8_t getNextWhour() const;
     uint8_t getNextWminute() const;
-    //boolean getManualPump() const;
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
+	//Returns value and goes to false
+	boolean waterSettingsChanged();
        
   private:
 	void setEEPROMaddresses();
@@ -148,6 +148,8 @@ class Settings {
     boolean _wateringPlants;
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
+	//Tells if water settings have been changed
+	boolean _waterSettingsChanged;
     
     //EEPROM addresses for all settings
     int _adressWaterTimed;

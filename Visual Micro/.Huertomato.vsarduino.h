@@ -18,6 +18,7 @@ void setupSerial();
 void setupRTC();
 void setupSD();
 void setupAlarms();
+void setupWaterModes();
 void updateNextWateringTime();
 void initMusic();
 //

@@ -3,7 +3,7 @@
 // # Name       : Huertomato
 // # Version    : 1.2.0
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.12.2013
+// # Date       : 27.03.2014
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -124,6 +124,9 @@ GUI gui(&LCD,&Touch,&sensors,&settings);
 //TODO: Make GUI window, update references and delete
 uint8_t lightThreshold = 10;
 
+//Stores ID of the watering timer. If not present it is 0
+AlarmID_t waterAlarmID;
+
 // *********************************************
 // SETUP
 // *********************************************
@@ -146,6 +149,7 @@ void setup() {
 	setupSD();
 	
 	setupAlarms();
+	setupWaterModes();
 	initMusic();
 	 
 	//TODO: Needed?
@@ -201,15 +205,19 @@ void setupAlarms() {
 	//Every 5secs we send sensor status to Serial if needed
 	//if (activateSerial) 
 	//Alarm.timerOnce(0,0,5, showStatsSerial);   
-    
-    //Sets watering timer or starts continuous water
+}
+
+//Sets watering timer or starts continuous water
+void setupWaterModes() {
     if (settings.getWaterTimed()) {
-		Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		digitalWrite(waterPump, LOW);
+		settings.setWateringPlants(false);
+		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
 		updateNextWateringTime();
     } else {
 		digitalWrite(waterPump,HIGH);	
 		settings.setWateringPlants(true);
-	}
+	}	
 }
 
 //Updates variables used for displaying next watering time
@@ -251,6 +259,17 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
+	
+	//Alarm reporting
+	/*Serial << "total: " << Alarm.count();
+	Serial << " waterAlarmID: " << waterAlarmID << endl;
+	for (int i = 0; i < Alarm.count(); i++) {
+		Serial << "id: " << i;
+		Serial << " time_t: " << Alarm.read(i);
+		Serial << " type: " << Alarm.readType(i) << endl;
+	}*/
+	
+	
 	//Alarm check
 	if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
@@ -291,7 +310,7 @@ void loop() {
 			settings.setAlarmTriggered(false);         
 	}
   
-	// NIGHT-DAY TOGGLE
+	// NIGHT-DAY CHECK
 	//If watering has been stopped for the night and day has come or
 	//same thing and night watering setting has been reactivated, we start water cycle again
 	//if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
@@ -309,10 +328,26 @@ void loop() {
 			waterPlants(); 	
 	}
 	
-	// CONTINUOUS WATER CHECK
-	if (!settings.getWaterTimed()) {
-		digitalWrite(waterPump, HIGH);
-		settings.setWateringPlants(true);
+	// WATER SETTINGS CHECK
+	if (settings.waterSettingsChanged()) {
+		//Free previous water alarm if needed
+		if (waterAlarmID != 0) {
+			Alarm.free(waterAlarmID);
+			waterAlarmID = 0;
+		}
+			
+		//Activate continuous mode
+		if (!settings.getWaterTimed()) {
+			digitalWrite(waterPump, HIGH);
+			settings.setWateringPlants(true);
+		//Timed mode	
+		} else {
+			//Stop pump. Plan next water time
+			digitalWrite(waterPump, LOW);
+			settings.setWateringPlants(false);
+			waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);	
+			updateNextWateringTime();	
+		}
 	}
 	
 	//Maybe call it from GUI through "other functions"?
@@ -440,52 +475,44 @@ void adjustECtemp() {
 	Alarm.timerOnce(0,1,0,adjustECtemp);
 }
 
-//WATER EBB+FLOW ROUTINE - System becomes unresponsive during this process
+//TIMED WATERING ROUTINE - System becomes unresponsive during this process
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.
 //Then it will check in main loop for day to come to call again this routine, reactivating timers.
 void waterPlants() {
-	if (settings.getWaterTimed()) {
-		settings.setWateringPlants(true);
-		led.setColour(BLUE);
-		//Refresh main screen if needed
-		if (gui.getActScreen() == 0)
-			gui.updateMainScreen();
+	settings.setWateringPlants(true);
+	led.setColour(BLUE);
+	//Refresh main screen if needed
+	if (gui.getActScreen() == 0)
+		gui.updateMainScreen();
 	 
-		//Inform through serial
+	//Inform through serial
+	if (settings.getSerialDebug()) {
+		writeSerialTimestamp();
+		Serial << "Huertomato is watering plants" << endl;
+	}
+
+	/*
+	//Flood circuit
+	//TODO: Cerrar valvula de salida si la hay
+	//Waits for the time set in floodM through watering settings
+	//Alarm.delay(floodM * 60000);
+  
+	*/
+	//TODO: Remove - only for testing purposes
+	Alarm.delay(2000); 
+  
+	//Set next watering alarm
+	//If its night and night watering is disabled we dont set another timer
+	//Main loop will be in charge of setting timer again
+	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
+		settings.setNightWateringStopped(true);
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "Huertomato is watering plants" << endl;
+			Serial << "Watering stopped at nighttime." << endl;
 		}
-
-		/*
-		//Flood circuit
-		//TODO: Cerrar valvula de salida si la hay
-		//Waits for the time set in floodM through watering settings
-		//Alarm.delay(floodM * 60000);
-  
-		//Flush circuit
-		//digitalWrite(flushValve, HIGH);
-		//Leaves flushValve On in case it rains
-		//Sets manual pump variables to off
-		inputValve = false;
-		outputValve = false;
-		*/
-		//TODO: Remove - only for testing purposes
-		Alarm.delay(5000); 
-  
-		//Set next watering alarm
-		//If its night and night watering is disabled we dont set another timer
-		//Main loop will be in charge of setting timer again
-		if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
-			settings.setNightWateringStopped(true);
-			if (settings.getSerialDebug()) {
-				writeSerialTimestamp();
-				Serial << "Watering stopped at nighttime." << endl;
-			}
-		} else {
-			Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
-			updateNextWateringTime();
-		}
-		settings.setWateringPlants(false);
+	} else {
+		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		updateNextWateringTime();
 	}
+	settings.setWateringPlants(false);
 }

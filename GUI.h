@@ -4,7 +4,7 @@
 // # Version    : 2.0
 
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.12.2013
+// # Date       : 27.03.2014
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition and button presses
@@ -111,7 +111,6 @@ static char* systemButtonText[nSystemButtons] = {
   "Sensor Alarms",
   "Sensor Calibration",
   "Watering at Night:",
-  //"Manual Water Pump:"
 }; 
 static int systemButtons[nSystemButtons];
 

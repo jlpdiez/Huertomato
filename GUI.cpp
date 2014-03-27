@@ -3,11 +3,11 @@
 //Constructors
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 	: _lcd(lcd), _touch(touch), _buttons(lcd,touch), _sensors(sensors), _settings(settings) {
-  _actScreen = 0;
+	_actScreen = 0;
 
-  _buttons.setTextFont(hallfetica_normal);
-  _buttons.setSymbolFont(various_symbols);
-  _buttons.setButtonColors(lightGreen, grey, white, grey, white);
+	_buttons.setTextFont(hallfetica_normal);
+	_buttons.setSymbolFont(various_symbols);
+_buttons.setButtonColors(lightGreen, grey, white, grey, white);
   
 }
 
@@ -31,7 +31,7 @@ GUI& GUI::operator=(const GUI &other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	
-	return *this;
+return *this;
 }
 
 //Destructor
@@ -55,89 +55,87 @@ int GUI::getActScreen() const {	return _actScreen; }
 
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {
-  if (_touch->dataAvailable()) {
-    _touch->read();
-    int x = _touch->getX();
-    int y = _touch->getY();
+	if (_touch->dataAvailable()) {
+	_touch->read();
+	int x = _touch->getX();
+	int y = _touch->getY();
     
-    switch (_actScreen) {
-      //Main Screen
-      case 0: 
-        _actScreen = 1;
-        _lcd->fillScr(VGA_WHITE);
-        drawMainMenu();
-        break;
-      //MainMenu
-      case 1:
-        processTouchMainMenu(x,y);
-        break;
-      //System Settings
-      case 2:
-        processTouchSystem(x,y);
-        break;
-      //Controller Settings
-      case 3:
-        processTouchController(x,y);
-        break;
-      //Time & Date
-      case 4:
-        processTouchTime(x,y);
-        break;
-      //Sensor Polling
-      case 5:
-        processTouchSensorPolling(x,y);
-        break;
-      //SD Card
-      case 6:
-        processTouchSDcard(x,y);
-        break;
-      //Watering Cycle
-      case 7:
-        processTouchWaterCycle(x,y);
-        break;
-      //Sensor Alarms
-      case 8: 
-        processTouchSensorAlarms(x,y);
-        break;
-      //pH Alarms
-      case 9: 
-        processTouchPHalarms(x,y);
-        break;
-      //EC Alarms
-      case 10:
-        processTouchECalarms(x,y);
-        break;
-      //Nutrient Level Alarms
-      case 11:
-        processTouchWaterAlarms(x,y);
-        break;
-      //Auto Config Alarms
-      case 12:
-        processTouchAutoConfig(x,y);
-        break;
-      //Sensor Calibration
-      case 13:
-        processTouchSensorCalibration(x,y);
-        break;
-      //Water Level Calibration
-      case 14:
-        processTouchWaterCalibration(x,y);
-        break;
-      //pH Calibration
-      case 15:
-        processTouchPHcalibration(x,y);
-        break;
-      //EC Calibration
-      case 16:
-        processTouchECcalibration(x,y);
-        break;
-      //Light Calibration
-      case 17:
-        processTouchLightCalibration(x,y);
-        break;
-    }
+	switch (_actScreen) {
+		//Main Screen
+		case 0: 
+			drawMainMenu();
+			break;
+		//MainMenu
+		case 1:
+			processTouchMainMenu(x,y);
+			break;
+		//System Settings
+		case 2:
+			processTouchSystem(x,y);
+			break;
+		//Controller Settings
+		case 3:
+			processTouchController(x,y);
+			break;
+		//Time & Date
+		case 4:
+			processTouchTime(x,y);
+			break;
+		//Sensor Polling
+		case 5:
+			processTouchSensorPolling(x,y);
+			break;
+		//SD Card
+		case 6:
+			processTouchSDcard(x,y);
+			break;
+		//Watering Cycle
+		case 7:
+			processTouchWaterCycle(x,y);
+			break;
+		//Sensor Alarms
+		case 8: 
+			processTouchSensorAlarms(x,y);
+			break;
+		//pH Alarms
+		case 9: 
+			processTouchPHalarms(x,y);
+			break;
+		//EC Alarms
+		case 10:
+			processTouchECalarms(x,y);
+			break;
+		//Nutrient Level Alarms
+		case 11:
+			processTouchWaterAlarms(x,y);
+			break;
+		//Auto Config Alarms
+		case 12:
+			processTouchAutoConfig(x,y);
+			break;
+		//Sensor Calibration
+		case 13:
+			processTouchSensorCalibration(x,y);
+			break;
+		//Water Level Calibration
+		case 14:
+			processTouchWaterCalibration(x,y);
+			break;
+		//pH Calibration
+		case 15:
+			processTouchPHcalibration(x,y);
+			break;
+		//EC Calibration
+		case 16:
+			processTouchECcalibration(x,y);
+			break;
+		//Light Calibration
+		case 17:
+			processTouchLightCalibration(x,y);
+			break;
+		}
   
-  }
+	}
 }
 
 //Draw splash Screen
@@ -156,62 +154,39 @@ void GUI::drawSplashScreen() {
 
 //Prints header background and separator line
 void GUI::printHeaderBackground() {
-  const int headerHeight = 20; 
-  //Header background
-  _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  _lcd->fillRect(0,0,xSize,headerHeight);
-  //Separator line
-  _lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
-  _lcd->drawLine(0, headerHeight, xSize, headerHeight);  
+	const int headerHeight = 20; 
+	//Header background
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->fillRect(0,0,xSize,headerHeight);
+	//Separator line
+	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
+	_lcd->drawLine(0, headerHeight, xSize, headerHeight);  
 }
 
-//Prints main header text and clock
+//Prints mainscreen header text and clock
 void GUI::printMainHeader() {  
-  //For small font y = 6. For big one y = 2;
-  const int ySpacer = 2;
+	//For small font y = 6. For big one y = 2;
+	const int ySpacer = 2;
     
-  //Get actual time
-  time_t t = now();
-  uint8_t hou = hour(t);
-  uint8_t min = minute(t);
-  uint8_t sec = second(t);
+	//Get actual time
+	time_t t = now();
+	uint8_t hou = hour(t);
+	uint8_t min = minute(t);
+	uint8_t sec = second(t);
 
-  printHeaderBackground(); 
+	printHeaderBackground(); 
   
-  //Header title text
-  _lcd->setFont(hallfetica_normal);
-  _lcd->setColor(grey[0], grey[1], grey[2]);
-  _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  _lcd->print("Huertomato 1.2",10,ySpacer); 
+	//Header title text
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->print("Huertomato 1.2",10,ySpacer); 
 
-  //Clock display HH:MM
-  //X is calculated from the end of size
-  _lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
-	
-  //Display HH:MM:SS Big 
-  /*_lcd->printNumI(hou,xSize-(8*bigFontSize)-2,ySpacer,2,'0');
-  _lcd->print(":",xSize-(6*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(min,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-  _lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-  _lcd->printNumI(sec,xSize-(2*bigFontSize)-2,ySpacer,2,'0');*/
-
-    //Left
-    //_lcd->print("20:55:33",2,2);
-    //Center
-    //_lcd->print("20:55:33",xSize/2-bigFontSize*4,2);
-    //RIGHT
-    //max X - 16px per letter X 8 letters - 2px spacing
-    //_lcd->print("20:57:23",xSize-(bigFontSize*8)-2, 2);
-    
-    //Spacing is 4px between imgs (so its orig x + 16 + 4)
-    //if (alarm)
-    //  _lcd->drawBitmap(2, 2, 16, 16, alarm16);
-    //  //if (manual control)
-    //  _lcd->drawBitmap(22, 2, 16, 16, water16);
-    //  //if (watering plants)
-    //  _lcd->drawBitmap(42, 2, 16, 16, mano16);
+	//Clock display HH:MM
+	//X is calculated from the end of size
+	_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
+	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
+	_lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
 }
 
 //Updates main header's clock
@@ -236,86 +211,86 @@ void GUI::updateMainHeader() {
 
 //Prints header with centered text
 void GUI::printMenuHeader(char* c) {
-  printHeaderBackground();
-  _lcd->setFont(hallfetica_normal);
-  _lcd->setColor(grey[0], grey[1], grey[2]);
-  _lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]); 
-  //Print title centered
-  _lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
+	printHeaderBackground();
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]); 
+	//Print title centered
+	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
 }
 
 //Print sensor info on main screen. Data will turn red if theres an alarm triggered
 void GUI::printSensorInfo() {
-  const int xSpacer = xSize - 25;
-  const int ySpacer = 35;
+	const int xSpacer = xSize - 25;
+	const int ySpacer = 35;
   	
-  _lcd->setFont(hallfetica_normal);
-  _lcd->setColor(grey[0], grey[1], grey[2]);
-  _lcd->setBackColor(VGA_WHITE);
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
 
-  //For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
-  //Humidity
-  int x = xSpacer-(bigFontSize*(strlen(sensorText[0])+4));
-  _lcd->print(sensorText[0],x,ySpacer);
-  _lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' '); 
-  _lcd->print("%",xSpacer-bigFontSize,ySpacer);
+	//For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
+	//Humidity
+	int x = xSpacer-(bigFontSize*(strlen(sensorText[0])+4));
+	_lcd->print(sensorText[0],x,ySpacer);
+	_lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' '); 
+	_lcd->print("%",xSpacer-bigFontSize,ySpacer);
   
-  //Temp
-  x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
-  int y = ySpacer+(bigFontSize+8);
-  _lcd->print(sensorText[1],x,y);
-  _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);
-  _lcd->print("C",xSpacer-bigFontSize,y);
+	//Temp
+	x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
+	int y = ySpacer+(bigFontSize+8);
+	_lcd->print(sensorText[1],x,y);
+	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);
+	_lcd->print("C",xSpacer-bigFontSize,y);
   
-  //Light
-  x = xSpacer-(bigFontSize*(strlen(sensorText[2])+4));
-  y = ySpacer+(bigFontSize+8)*2;
-  _lcd->print(sensorText[2],x,y);
-  _lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);
-  _lcd->print("%",xSpacer-bigFontSize,y);
+	//Light
+	x = xSpacer-(bigFontSize*(strlen(sensorText[2])+4));
+	y = ySpacer+(bigFontSize+8)*2;
+	_lcd->print(sensorText[2],x,y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);
+	_lcd->print("%",xSpacer-bigFontSize,y);
   
-  //pH
-  x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
-  y = ySpacer+(bigFontSize+8)*3;
-  float ph = _sensors->getPH();
-  if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-    _lcd->setColor(red[0],red[1],red[2]);
-  else
-    _lcd->setColor(grey[0], grey[1], grey[2]);
+	//pH
+	x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
+	y = ySpacer+(bigFontSize+8)*3;
+	float ph = _sensors->getPH();
+	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
 
-  _lcd->print(sensorText[3],x,y);
-  _lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
+	_lcd->print(sensorText[3],x,y);
+	_lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
   
-  //EC
-  x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
-  y = ySpacer+(bigFontSize+8)*4;
-  uint16_t ec = _sensors->getEC();
-  if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-    _lcd->setColor(red[0],red[1],red[2]);
-  else
+	//EC
+	x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
+	y = ySpacer+(bigFontSize+8)*4;
+	uint16_t ec = _sensors->getEC();
+	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	
-  _lcd->print(sensorText[4],x,y);
-  _lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
-  _lcd->print("uS",xSpacer-bigFontSize*2,y);
+	_lcd->print(sensorText[4],x,y);
+	_lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
+	_lcd->print("uS",xSpacer-bigFontSize*2,y);
   
-  //Deposit level
-  x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
-  y = ySpacer+(bigFontSize+8)*5;
-  uint8_t lvl = _sensors->getWaterLevel();
-  if (lvl < _settings->getWaterAlarm())
-    _lcd->setColor(red[0],red[1],red[2]);
-  else
+	//Deposit level
+	x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
+	y = ySpacer+(bigFontSize+8)*5;
+	uint8_t lvl = _sensors->getWaterLevel();
+	if (lvl < _settings->getWaterAlarm())
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	
-  _lcd->print(sensorText[5],x,y);
-  _lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
-  _lcd->print("%",xSpacer-bigFontSize,y);
+	_lcd->print(sensorText[5],x,y);
+	_lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
+	_lcd->print("%",xSpacer-bigFontSize,y);
 }
 
 //Redraws only sensor numbers and changes colour if needed (alarm triggered)
 void GUI::updateSensorInfo() {
-    const int xSpacer = xSize - 25;
+	const int xSpacer = xSize - 25;
     const int ySpacer = 35;
     
     _lcd->setFont(hallfetica_normal);
@@ -433,21 +408,9 @@ void GUI::printIconAndStatus() {
     _lcd->setFont(various_symbols);
     _lcd->print("T",xSpacer,ySpacer);
     _lcd->setFont(hallfetica_normal);
-    _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
+    _lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
 	_sysState = 3;
 	img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
-    
-  //water pump in manual mode    
-  /*} else if (_settings->getManualPump()) {
-	//_lcd->drawBitmap (15, 25+bigFontSize, 126, 126, hand126); 
-	_lcd->setColor(red[0],red[1],red[2]);
-	_lcd->setBackColor(VGA_WHITE);
-	_lcd->setFont(various_symbols);
-	_lcd->print("T",xSpacer,ySpacer);
-	_lcd->setFont(hallfetica_normal);
-	_lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer); 
-	_sysState = 4;
-	img = SD.open("/PICTURE/hand126.RAW",FILE_READ); */
 
   //Normal operation    
   } else {
@@ -556,20 +519,9 @@ void GUI::updateIconAndStatus() {
 	    _lcd->setFont(various_symbols);
 	    _lcd->print("T",xSpacer,ySpacer);
 	    _lcd->setFont(hallfetica_normal);
-	    _lcd->print("No Watering @ Night",xSpacer+bigFontSize*2,ySpacer);
+	    _lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
 	    _sysState = 3;
 	    img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
-	    
-	  //water pump in manual mode
-	  /*} else if (_settings->getManualPump() && (_sysState != 4)) {
-	    _lcd->setColor(red[0],red[1],red[2]);
-	    _lcd->setBackColor(VGA_WHITE);
-	    _lcd->setFont(various_symbols);
-	    _lcd->print("T",xSpacer,ySpacer);
-	    _lcd->setFont(hallfetica_normal);
-	    _lcd->print("Pump Manually Enabled",xSpacer+bigFontSize*2,ySpacer);
-	    _sysState = 4;
-	    img = SD.open("/PICTURE/hand126.RAW",FILE_READ);*/
 
 	  //If no abnormal state detected and previous state wasnt already this one 
 	  } else if (!_settings->getAlarmTriggered() && !_settings->getNightWateringStopped()
@@ -620,17 +572,19 @@ void GUI::updateIconAndStatus() {
 //GUI Starting point. Should be called from main sketch in setup()
 //_actScreen == 0
 void GUI::drawMainScreen() {
-  printMainHeader();
-  printSensorInfo();
-  printIconAndStatus();
+	_actScreen = 0;
+	_lcd->fillScr(VGA_WHITE);
+	printMainHeader();
+	printSensorInfo();
+	printIconAndStatus();
 }
 
 //Redraws only values that change over time
 //Used for refreshing from main sketch
 void GUI::updateMainScreen() {
-  updateMainHeader();
-  updateSensorInfo(); 
-  updateIconAndStatus();
+	updateMainHeader();
+	updateSensorInfo(); 
+	updateIconAndStatus();
 }
 
 //These function should be the first to get its buttons into the array buttons
@@ -692,56 +646,45 @@ void GUI::printSavedButton() {
 
 //Makes window decoration and buttons
 void GUI::printMainMenu() {  
-  _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  _lcd->setBackColor(VGA_WHITE);
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
   
-  const int controllerY = 135;
-  const int xSpacer = 15;
-  const int systemY = 60;
-  //Rehacer alineacion X para iconos
-  _lcd->setFont(hallfetica_normal);
+	const int controllerY = 135;
+	const int xSpacer = 15;
+	const int systemY = 60;
+	//Rehacer alineacion X para iconos
+	_lcd->setFont(hallfetica_normal);
   
-  //Logos
-  _lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-  _lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
+	//Logos
+	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
+	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
   
-  //Make menu buttons. System and Controller settings
-  mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
-  mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
+	//Make menu buttons. System and Controller settings
+	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
+	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
 }
 
 //Draws main menu into LCD
 //_actScreen == 1
 void GUI::drawMainMenu() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Main Menu -"); 
-  printFlowButtons(false,false,true,mainMenuButtons);
-  printMainMenu(); 
-  _buttons.drawButtons();
+	_actScreen = 1;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Main Menu -"); 
+	printFlowButtons(false,false,true,mainMenuButtons);
+	printMainMenu(); 
+	_buttons.drawButtons();
 }
 
 // Processes touch for main menu screen
 void GUI::processTouchMainMenu(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Exit
-  if (buttonIndex == mainMenuButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  //System settings button
-  } else if (buttonIndex == mainMenuButtons[3]) {
-    //Go to system settings
-    _actScreen = 2;
-    _lcd->fillScr(VGA_WHITE);
-    drawSystemSettings();
-  //Controller Settings button    
-  } else if (buttonIndex == mainMenuButtons[4]) {
-    //Go to controller settings  
-    _actScreen = 3;
-    _lcd->fillScr(VGA_WHITE);
-    drawControllerSettings();
-  }
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Exit
+	if (buttonIndex == mainMenuButtons[2]) { drawMainScreen(); }
+	//System Settings
+	else if (buttonIndex == mainMenuButtons[3]) { drawSystemSettings(); }
+	//Controller Settings
+	else if (buttonIndex == mainMenuButtons[4]) { drawControllerSettings(); }
 }
 
 //Prepares window for drawing
@@ -794,11 +737,13 @@ void GUI::printSystemSettings() {
 //Draws entire screen System Settings
 //_actScreen == 2
 void GUI::drawSystemSettings() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- System Settings -");
-  printFlowButtons(true,false,true,systemButtons);
-  printSystemSettings(); 
-  _buttons.drawButtons();
+	_actScreen = 2;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- System Settings -");
+	printFlowButtons(true,false,true,systemButtons);
+	printSystemSettings(); 
+	_buttons.drawButtons();
 }
 
 //Redraws only system settings text from inner temp vars
@@ -824,47 +769,23 @@ void GUI::updateSystemSettings() {
 }
 
 void GUI::processTouchSystem(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == systemButtons[0]) {
-    //Go to main menu
-    _actScreen = 1;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainMenu();
-  //Exit
-  } else if (buttonIndex == systemButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  
-  //Watering Cycle  
-  } else if (buttonIndex == systemButtons[3]) {
-    _actScreen = 7;
-    _lcd->fillScr(VGA_WHITE);
-    drawWaterCycle();    
-  //Sensor Alarms  
-  } else if (buttonIndex == systemButtons[4]) {
-    _actScreen = 8;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorAlarms(); 
-  //Sensor Calibration  
-  } else if (buttonIndex == systemButtons[5]) {
-    _actScreen = 13;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorCalibration();
-    //Water at night Toggle 
-  } else if (buttonIndex == systemButtons[6]) {
-	nightWater = !nightWater;
-	_settings->setNightWatering(nightWater);
-    updateSystemSettings();
-    //Manual pump toggle
-  } /*else if (buttonIndex == systemButtons[7]) {
-	waterPumpState = !waterPumpState;
-	//_settings->setManualPump(waterPumpState);
-	updateSystemSettings();
-  }*/
-
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == systemButtons[0]) { drawMainMenu(); }
+	//Exit
+	else if (buttonIndex == systemButtons[2]) { drawMainScreen(); }
+	//Watering Cycle  
+	else if (buttonIndex == systemButtons[3]) { drawWaterCycle(); } 
+	//Sensor Alarms  
+	else if (buttonIndex == systemButtons[4]) { drawSensorAlarms(); }
+	//Sensor Calibration  
+	else if (buttonIndex == systemButtons[5]) { drawSensorCalibration(); }
+	//Water at night Toggle 
+	else if (buttonIndex == systemButtons[6]) {
+		nightWater = !nightWater;
+		_settings->setNightWatering(nightWater);
+		updateSystemSettings();
+	} 
 }
 
 void GUI::printControllerSettings() {
@@ -914,11 +835,13 @@ void GUI::printControllerSettings() {
 //Draws entire screen Controller Settings
 //_actScreen == 3
 void GUI::drawControllerSettings() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Controller Settings -"); 
-  printFlowButtons(true,false,true,controllerButtons);
-  printControllerSettings();
-  _buttons.drawButtons();
+	_actScreen = 3;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Controller Settings -"); 
+	printFlowButtons(true,false,true,controllerButtons);
+	printControllerSettings();
+	_buttons.drawButtons();
 }
 
 //Redraws only controller settings text from inner temp vars
@@ -943,47 +866,28 @@ void GUI::updateControllerSettings() {
 }
 
 void GUI::processTouchController(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == controllerButtons[0]) {
-    //Go to main menu
-    _actScreen = 1;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainMenu();
-  //Exit
-  } else if (buttonIndex == controllerButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  
-  //Time & Date  
-  } else if (buttonIndex == controllerButtons[3]) {
-    _actScreen = 4;
-    _lcd->fillScr(VGA_WHITE);
-    drawTimeSettings();
-  //Sensor polling
-  } else if (buttonIndex == controllerButtons[4]) {
-    _actScreen = 5;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorPolling();
-  //SD Card
-  } else if (buttonIndex == controllerButtons[5]) {
-    _actScreen = 6;
-    _lcd->fillScr(VGA_WHITE);
-    drawSDcard();
-  //Sound toggle
-  } else if (buttonIndex == controllerButtons[6]) {
-    soundActive = !soundActive;
-	_settings->setSound(soundActive);
-	updateControllerSettings();
-  //Serial debugging toggle
-  } else if (buttonIndex == controllerButtons[7]) {
-    serialActive = !serialActive;
-	_settings->setSerialDebug(serialActive);
-	updateControllerSettings();
-  }
-  
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == controllerButtons[0]) { drawMainMenu(); }
+	//Exit
+	else if (buttonIndex == controllerButtons[2]) { drawMainScreen(); } 
+	//Time & Date  
+	else if (buttonIndex == controllerButtons[3]) { drawTimeSettings(); }
+	//Sensor polling
+	else if (buttonIndex == controllerButtons[4]) { drawSensorPolling(); }
+	//SD Card
+	else if (buttonIndex == controllerButtons[5]) { drawSDcard(); }
+	//Sound toggle
+	else if (buttonIndex == controllerButtons[6]) {
+		soundActive = !soundActive;
+		_settings->setSound(soundActive);
+		updateControllerSettings();
+	//Serial debugging toggle
+	} else if (buttonIndex == controllerButtons[7]) {
+		serialActive = !serialActive;
+		_settings->setSerialDebug(serialActive);
+		updateControllerSettings();
+	}
 }
 
 void GUI::printTimeSettings() {
@@ -1068,11 +972,13 @@ void GUI::printTimeSettings() {
 //Draws entire screen Time Settings
 //_actScreen == 4
 void GUI::drawTimeSettings() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Time & Date -");
-  printFlowButtons(true,true,true,timeButtons);
-  printTimeSettings();  
-  _buttons.drawButtons();
+	_actScreen = 4;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Time & Date -");
+	printFlowButtons(true,true,true,timeButtons);
+	printTimeSettings();  
+	_buttons.drawButtons();
 }
 
 //Redraws only time & date numbers from inner temp vars
@@ -1099,84 +1005,70 @@ void GUI::updateTimeSettings() {
 }
 
 void GUI::processTouchTime(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == timeButtons[0]) {
-    //Go to controller menu
-    _actScreen = 3;
-    _lcd->fillScr(VGA_WHITE);
-    drawControllerSettings();
-  //Save
-  } else if (buttonIndex == timeButtons[1]) {	
-	setRTCtime(sysHour, sysMin, sysSec, sysDay, sysMonth, sysYear);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == timeButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == timeButtons[0]) {
+		//Go to controller menu
+		drawControllerSettings();
+	//Save
+	} else if (buttonIndex == timeButtons[1]) {	
+		setRTCtime(sysHour, sysMin, sysSec, sysDay, sysMonth, sysYear);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == timeButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
   
-  //Hour up
-  } else if (buttonIndex == timeButtons[3]) {
-	sysHour++;
-	(sysHour > 23) ? sysHour=0 : 0;
-	updateTimeSettings();  
-  //Min up		  
-  } else if (buttonIndex == timeButtons[4]) {
-    sysMin++;
-	(sysMin > 59) ? sysMin=0 : 0;
-	updateTimeSettings();  	
-  //Sec up
-  } else if (buttonIndex == timeButtons[5]) {
-	sysSec++;
-	(sysSec > 59) ? sysSec=0 : 0;
-	updateTimeSettings();
-  //Hour down
-  } else if (buttonIndex == timeButtons[6]) {
-	//We cant just -- and compare with <0 as it overflows to 255
-	(sysHour <= 0) ? sysHour=23 : sysHour--;
-	updateTimeSettings();	
-  //Min down
-  } else if (buttonIndex == timeButtons[7]) {
-	(sysMin <= 0) ? sysMin=59 : sysMin--;
-	updateTimeSettings();
-  //Sec down
-  } else if (buttonIndex == timeButtons[8]) {
-	(sysSec <= 0) ? sysSec=59 : sysSec--;
-	updateTimeSettings();
-  //Day up
-  } else if (buttonIndex == timeButtons[9]) {
-	sysDay++;
-	(sysDay > 31) ? sysDay=1 : 0;
-	updateTimeSettings();
-  //Month up
-  } else if (buttonIndex == timeButtons[10]) {
-	sysMonth++;
-	(sysMonth > 12) ? sysMonth=1 : 0;
-	updateTimeSettings();
-  //Year up
-  } else if (buttonIndex == timeButtons[11]) {
-	sysYear++;
-	//TimeAlarms can only handle 1971-2037
-	(sysYear > 2037) ? sysYear=1971 : 0;
-	updateTimeSettings();
-  //Day down
-  } else if (buttonIndex == timeButtons[12]) {
-	sysDay--;
-	(sysDay < 1) ? sysDay=31 : 0;
-	updateTimeSettings();
-  //Month down
-  } else if (buttonIndex == timeButtons[13]) {
-	sysMonth--;
-	(sysMonth < 1) ? sysMonth=12 : 0;
-	updateTimeSettings();
-  //Year down
-  } else if (buttonIndex == timeButtons[14]) {
-	sysYear--;
-	(sysYear < 1971) ? sysYear=2037 : 0;
-	updateTimeSettings();
-  }
+	//Hour up
+	} else if (buttonIndex == timeButtons[3]) {
+		(sysHour >= 23) ? sysHour=0 : sysHour++;
+		updateTimeSettings();  
+	//Min up		  
+	} else if (buttonIndex == timeButtons[4]) {
+		(sysMin >= 59) ? sysMin=0 : sysMin++;
+		updateTimeSettings(); 	
+	//Sec up
+	} else if (buttonIndex == timeButtons[5]) {
+		(sysSec >= 59) ? sysSec=0 : sysSec++;;
+		updateTimeSettings();
+	//Hour down
+	} else if (buttonIndex == timeButtons[6]) {
+		(sysHour <= 0) ? sysHour=23 : sysHour--;
+		updateTimeSettings();	
+	//Min down
+	} else if (buttonIndex == timeButtons[7]) {
+		(sysMin <= 0) ? sysMin=59 : sysMin--;
+		updateTimeSettings();
+	//Sec down
+	} else if (buttonIndex == timeButtons[8]) {
+		(sysSec <= 0) ? sysSec=59 : sysSec--;
+		updateTimeSettings();
+	//Day up
+	} else if (buttonIndex == timeButtons[9]) {
+		(sysDay >= 31) ? sysDay=1 : sysDay++;
+		updateTimeSettings();
+	//Month up
+	} else if (buttonIndex == timeButtons[10]) {
+		(sysMonth >= 12) ? sysMonth=1 : sysMonth++;
+		updateTimeSettings();
+	//Year up
+	} else if (buttonIndex == timeButtons[11]) {	
+		//TimeAlarms can only handle 1971-2037
+		(sysYear >= 2037) ? sysYear=1971 : sysYear++;
+		updateTimeSettings();
+	//Day down
+	} else if (buttonIndex == timeButtons[12]) {
+		(sysDay <= 1) ? sysDay=31 : sysDay--;
+		updateTimeSettings();
+	//Month down
+	} else if (buttonIndex == timeButtons[13]) {
+		(sysMonth <= 1) ? sysMonth=12 : sysMonth--;
+		updateTimeSettings();
+	//Year down
+	} else if (buttonIndex == timeButtons[14]) {
+		(sysYear <= 1971) ? sysYear=2037 : sysYear--;
+		updateTimeSettings();
+	}
 }
 
 void GUI::printSensorPolling() {
@@ -1213,11 +1105,13 @@ void GUI::printSensorPolling() {
 //Draws entire screen Sensor Polling
 //_actScreen == 5
 void GUI::drawSensorPolling() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Sensor Polling -");
-  printFlowButtons(true,true,true,sensorPollingButtons);
-  printSensorPolling();  
-  _buttons.drawButtons();
+	_actScreen = 5;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Sensor Polling -");
+	printFlowButtons(true,true,true,sensorPollingButtons);
+	printSensorPolling();  
+	_buttons.drawButtons();
 }
 
 //Redraws only sensor polling numbers from inner temp vars
@@ -1231,34 +1125,29 @@ void GUI::updateSensorPolling() {
 }
 
 void GUI::processTouchSensorPolling(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == sensorPollingButtons[0]) {
-    //Go to controller menu
-    _actScreen = 3;
-    _lcd->fillScr(VGA_WHITE);
-    drawControllerSettings();
-  //Save
-  } else if (buttonIndex == sensorPollingButtons[1]) {
-	_settings->setSensorSecond(pollSec);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == sensorPollingButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sensorPollingButtons[0]) {
+		//Go to controller menu
+		drawControllerSettings();
+	//Save
+	} else if (buttonIndex == sensorPollingButtons[1]) {
+		_settings->setSensorSecond(pollSec);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == sensorPollingButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
   
-  //Sec up
-  } else if (buttonIndex == sensorPollingButtons[3]) {
-	  pollSec++;
-	  (pollSec > 59) ? pollSec=0 : 0;
-	  updateSensorPolling();
-  //Sec down
-  } else if (buttonIndex == sensorPollingButtons[4]) {
-	  (pollSec <= 0) ? pollSec=59 : pollSec--;
-	  updateSensorPolling();  
-  }
+	//Sec up
+	} else if (buttonIndex == sensorPollingButtons[3]) {
+		(pollSec >= 59) ? pollSec=1 : pollSec++;
+		updateSensorPolling();
+	//Sec down
+	} else if (buttonIndex == sensorPollingButtons[4]) {
+		(pollSec <= 1) ? pollSec=59 : pollSec--;
+		updateSensorPolling();  
+	}
 }
 
 void GUI::printSDcard() {
@@ -1323,11 +1212,13 @@ void GUI::printSDcard() {
 //Draws entire screen SD Card
 //_actScreen == 6
 void GUI::drawSDcard() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- SD Card -");
-  printFlowButtons(true,true,true,sdCardButtons);
-  printSDcard();  
-  _buttons.drawButtons();
+	_actScreen = 6;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- SD Card -");
+	printFlowButtons(true,true,true,sdCardButtons);
+	printSDcard();
+	_buttons.drawButtons();
 }
 
 //Redraws only SD numbers & text from inner temp vars
@@ -1365,50 +1256,43 @@ void GUI::updateSDcard() {
 }
 
 void GUI::processTouchSDcard(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == sdCardButtons[0]) {
-    //Go to controller menu
-    _actScreen = 3;
-    _lcd->fillScr(VGA_WHITE);
-    drawControllerSettings();
-  //Save
-  } else if (buttonIndex == sdCardButtons[1]) {
-	_settings->setSDactive(sdActive);
-	_settings->setSDhour(sdHour);
-	_settings->setSDminute(sdMin);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == sdCardButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sdCardButtons[0]) {
+		//Go to controller menu
+		drawControllerSettings();
+	//Save
+	} else if (buttonIndex == sdCardButtons[1]) {
+		_settings->setSDactive(sdActive);
+		_settings->setSDhour(sdHour);
+		_settings->setSDminute(sdMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == sdCardButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
   
-  //Card active toggle
-  } else if (buttonIndex == sdCardButtons[3]) {
-    sdActive = !sdActive;
-	updateSDcard();
-  //Hour up
-  } else if (buttonIndex == sdCardButtons[4]) {
-	sdHour++;
-	(sdHour > 23) ? sdHour=0 : 0;
-	updateSDcard();
-  //Minute up
-  } else if (buttonIndex == sdCardButtons[5]) {
-	sdMin++;
-	(sdMin > 59) ? sdMin=0 : 0;
-	updateSDcard();	  
-  //Hour down
-  } else if (buttonIndex == sdCardButtons[6]) {
-	(sdHour <= 0) ? sdHour=23 : sdHour--;
-	updateSDcard();
-  //Minute down
-  } else if (buttonIndex == sdCardButtons[7]) {
-	(sdMin <= 0) ? sdMin=59 : sdMin--;
-	updateSDcard();
-  }
-  
+	//Card active toggle
+	} else if (buttonIndex == sdCardButtons[3]) {
+		sdActive = !sdActive;
+		updateSDcard();
+	//Hour up
+	} else if (buttonIndex == sdCardButtons[4]) {
+		(sdHour >= 23) ? sdHour=0 : sdHour++;
+		updateSDcard();
+	//Minute up
+	} else if (buttonIndex == sdCardButtons[5]) {
+		(sdMin >= 59) ? sdMin=0 : sdMin++;
+		updateSDcard();	  
+	//Hour down
+	} else if (buttonIndex == sdCardButtons[6]) {
+		(sdHour <= 0) ? sdHour=23 : sdHour--;
+		updateSDcard();
+	//Minute down
+	} else if (buttonIndex == sdCardButtons[7]) {
+		(sdMin <= 0) ? sdMin=59 : sdMin--;
+		updateSDcard();
+	}
 }
 
 void GUI::printWaterCycle() {
@@ -1485,11 +1369,13 @@ void GUI::printWaterCycle() {
 //Draws entire screen Watering Cycle
 //_actScreen == 7
 void GUI::drawWaterCycle() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Watering Cycle -");
-  printFlowButtons(true,true,true,waterCycleButtons);
-  printWaterCycle();  
-  _buttons.drawButtons();
+	_actScreen = 7;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Watering Cycle -");
+	printFlowButtons(true,true,true,waterCycleButtons);
+	printWaterCycle();  
+	_buttons.drawButtons();
 }
 
 //Redraws only water cycle numbers & text from inner temp vars
@@ -1535,60 +1421,52 @@ void GUI::updateWaterCycle() {
 }	
 
 void GUI::processTouchWaterCycle(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == waterCycleButtons[0]) {
-    //Go to system menu
-    _actScreen = 2;
-    _lcd->fillScr(VGA_WHITE);
-    drawSystemSettings();
-  //Save
-  } else if (buttonIndex == waterCycleButtons[1]) {
-    _settings->setWaterTimed(waterTimed);
-	_settings->setWaterHour(waterHour);
-	_settings->setWaterMinute(waterMin);
-	_settings->setFloodMinute(floodMin);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == waterCycleButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == waterCycleButtons[0]) {
+		//Go to system menu
+		drawSystemSettings();
+	//Save
+	} else if (buttonIndex == waterCycleButtons[1]) {
+		_settings->setWaterTimed(waterTimed);
+		_settings->setWaterHour(waterHour);
+		_settings->setWaterMinute(waterMin);
+		_settings->setFloodMinute(floodMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == waterCycleButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
   
-  //Water mode
-  } else if (buttonIndex == waterCycleButtons[3]) {
-	  waterTimed = !waterTimed;
-	  updateWaterCycle();
-  //Hour up  
-  } else if (buttonIndex == waterCycleButtons[4]) {
-	  waterHour++;
-	  (waterHour > 23) ? waterHour=0 : 0;
-	  updateWaterCycle();
-  //Hour down
-  } else if (buttonIndex == waterCycleButtons[5]) {
-	  (waterHour <= 0) ? waterHour=23 : waterHour--;
-	  updateWaterCycle();
-  //Minute up
-  } else if (buttonIndex == waterCycleButtons[6]) {
-	  waterMin++;
-	  (waterMin > 59) ? waterMin=0 : 0;
-	  updateWaterCycle();
-  //Minute down
-  } else if (buttonIndex == waterCycleButtons[7]) {
-	  (waterMin <= 0) ? waterMin=59 : waterMin--;
-	  updateWaterCycle();
-  //Flood minute up
-  } else if (buttonIndex == waterCycleButtons[8]) {
-	  floodMin++;
-	  (floodMin > 59) ? floodMin=0 : 0;
-	  updateWaterCycle();
-  //Flood minute down
-  } else if (buttonIndex == waterCycleButtons[9]) {
-	  (floodMin <= 0) ? floodMin=59 : floodMin--;
-	  updateWaterCycle();
-  
-  }
+	//Water mode
+	} else if (buttonIndex == waterCycleButtons[3]) {
+		waterTimed = !waterTimed;
+		updateWaterCycle();
+	//Hour up  
+	} else if (buttonIndex == waterCycleButtons[4]) {
+		(waterHour >= 23) ? waterHour=0 : waterHour++;
+		updateWaterCycle();
+	//Hour down
+	} else if (buttonIndex == waterCycleButtons[5]) {
+		(waterHour <= 0) ? waterHour=23 : waterHour--;
+		updateWaterCycle();
+	//Minute up
+	} else if (buttonIndex == waterCycleButtons[6]) {
+		(waterMin >= 59) ? waterMin=0 : waterMin++;;
+		updateWaterCycle();
+	//Minute down
+	} else if (buttonIndex == waterCycleButtons[7]) {
+		(waterMin <= 0) ? waterMin=59 : waterMin--;
+		updateWaterCycle();
+	//Flood minute up
+	} else if (buttonIndex == waterCycleButtons[8]) {	  
+		(floodMin >= 59) ? floodMin=1 : floodMin++;
+		updateWaterCycle();
+	//Flood minute down
+	} else if (buttonIndex == waterCycleButtons[9]) {
+		(floodMin <= 1) ? floodMin=59 : floodMin--;
+		updateWaterCycle();
+	}
 }
 
 void GUI::printSensorAlarms() {
@@ -1614,49 +1492,30 @@ void GUI::printSensorAlarms() {
 //Draws entire screen Sensor Alarms
 //_actScreen == 8
 void GUI::drawSensorAlarms() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Sensor Alarms -");
-  printFlowButtons(true,false,true,sensorAlarmsButtons);
-  printSensorAlarms();  
-  _buttons.drawButtons();
+	_actScreen = 8;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Sensor Alarms -");
+	printFlowButtons(true,false,true,sensorAlarmsButtons);
+	printSensorAlarms();  
+	_buttons.drawButtons();
 }
 
 void GUI::processTouchSensorAlarms(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == sensorAlarmsButtons[0]) {
-    //Go to system menu
-    _actScreen = 2;
-    _lcd->fillScr(VGA_WHITE);
-    drawSystemSettings();
-  //Exit
-  } else if (buttonIndex == sensorAlarmsButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen(); 
-  
-  //Auto config
-  } else if (buttonIndex == sensorAlarmsButtons[3]) {
-    _actScreen = 12;
-    _lcd->fillScr(VGA_WHITE);
-    drawAutoConfig();
-  //pH Thresholds
-  } else if (buttonIndex == sensorAlarmsButtons[4]) {
-    _actScreen = 9;
-    _lcd->fillScr(VGA_WHITE);
-    drawPHalarms();
-  //EC Thresholds
-  } else if (buttonIndex == sensorAlarmsButtons[5]) {
-    _actScreen = 10;
-    _lcd->fillScr(VGA_WHITE);
-    drawECalarms();
-  //Nutrient Level
-  } else if (buttonIndex == sensorAlarmsButtons[6]) {
-    _actScreen = 11;
-    _lcd->fillScr(VGA_WHITE);
-    drawWaterAlarms();
-  }
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sensorAlarmsButtons[0]) { drawSystemSettings(); }
+	//Exit
+	else if (buttonIndex == sensorAlarmsButtons[2]) { drawMainScreen();  }
+	//Auto config
+	else if (buttonIndex == sensorAlarmsButtons[3]) { drawAutoConfig(); }
+	//pH Thresholds
+	else if (buttonIndex == sensorAlarmsButtons[4]) { drawPHalarms(); }
+	//EC Thresholds
+	else if (buttonIndex == sensorAlarmsButtons[5]) { drawECalarms(); }
+	//Nutrient Level
+	else if (buttonIndex == sensorAlarmsButtons[6]) { drawWaterAlarms(); }
+
 }
 
 void GUI::printPHalarms() {
@@ -1689,11 +1548,13 @@ void GUI::printPHalarms() {
 //Draws entire screen pH Alarms
 //_actScreen == 9
 void GUI::drawPHalarms() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- pH Alarms -");
-  printFlowButtons(true,true,true,phAlarmsButtons);
-  printPHalarms();  
-  _buttons.drawButtons();
+	_actScreen = 9;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- pH Alarms -");
+	printFlowButtons(true,true,true,phAlarmsButtons);
+	printPHalarms();  
+	_buttons.drawButtons();
 }
 
 void GUI::updatePHalarms() {
@@ -1708,46 +1569,38 @@ void GUI::updatePHalarms() {
 }
 
 void GUI::processTouchPHalarms(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == phAlarmsButtons[0]) {
-    //Go to alarms menu
-    _actScreen = 8;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorAlarms();
-  //Save
-  } else if (buttonIndex == phAlarmsButtons[1]) {
-    _settings->setPHalarmUp(phAlarmMax);
-	_settings->setPHalarmDown(phAlarmMin);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == phAlarmsButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == phAlarmsButtons[0]) {
+		//Go to alarms menu
+		drawSensorAlarms();
+	//Save
+	} else if (buttonIndex == phAlarmsButtons[1]) {
+		_settings->setPHalarmUp(phAlarmMax);
+		_settings->setPHalarmDown(phAlarmMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == phAlarmsButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
 	
-  //Max up
-  } else if(buttonIndex == phAlarmsButtons[3]) {
-	  phAlarmMax += 0.05;
-	  (phAlarmMax > 14) ? phAlarmMax=0 : 0;
-	  updatePHalarms();
-  //Max down	  
-  } else if(buttonIndex == phAlarmsButtons[4]) {
-	  phAlarmMax -= 0.05;
-	  (phAlarmMax < 0) ? phAlarmMax=14 : 0;
-	  updatePHalarms();
-  //Min up
-  } else if(buttonIndex == phAlarmsButtons[5]) {
-	  phAlarmMin += 0.05;
-	  (phAlarmMin > 14) ? phAlarmMin=0 : 0;
-	  updatePHalarms();
-  //Min down
-  } else if(buttonIndex == phAlarmsButtons[6]) {
-	  phAlarmMin -= 0.05;
-	  (phAlarmMin < 0) ? phAlarmMin=14 : 0;
-	  updatePHalarms();
-  }   
+	//Max up
+	} else if(buttonIndex == phAlarmsButtons[3]) {	  
+		(phAlarmMax >= 14) ? phAlarmMax=0 : phAlarmMax += 0.05;
+		updatePHalarms();
+	//Max down	  
+	} else if(buttonIndex == phAlarmsButtons[4]) {
+		(phAlarmMax <= 0) ? phAlarmMax=14 : phAlarmMax -= 0.05;
+		updatePHalarms();
+	//Min up
+	} else if(buttonIndex == phAlarmsButtons[5]) {
+		(phAlarmMin >= 14) ? phAlarmMin=0 : phAlarmMin += 0.05;
+		updatePHalarms();
+	//Min down
+	} else if(buttonIndex == phAlarmsButtons[6]) {
+		(phAlarmMin <= 0) ? phAlarmMin=14 : phAlarmMin -= 0.05;
+		updatePHalarms();
+	}   
 }
 
 void GUI::printECalarms() {
@@ -1784,11 +1637,13 @@ void GUI::printECalarms() {
 //Draws entire screen EC alarms
 //_actScreen == 10
 void GUI::drawECalarms() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- EC Alarms -");
-  printFlowButtons(true,true,true,ecAlarmsButtons);
-  printECalarms();  
-  _buttons.drawButtons();
+	_actScreen = 10;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- EC Alarms -");
+	printFlowButtons(true,true,true,ecAlarmsButtons);
+	printECalarms();  
+	_buttons.drawButtons();
 }
 
 void GUI::updateECalarms() {
@@ -1803,46 +1658,38 @@ void GUI::updateECalarms() {
 }
 
 void GUI::processTouchECalarms(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == ecAlarmsButtons[0]) {
-    //Go to alarms menu
-    _actScreen = 8;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorAlarms();
-  //Save
-  } else if (buttonIndex == ecAlarmsButtons[1]) {
-    _settings->setECalarmUp(ecAlarmMax);
-	_settings->setECalarmDown(ecAlarmMin);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == ecAlarmsButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == ecAlarmsButtons[0]) {
+		//Go to alarms menu
+		drawSensorAlarms();
+	//Save
+	} else if (buttonIndex == ecAlarmsButtons[1]) {
+		_settings->setECalarmUp(ecAlarmMax);
+		_settings->setECalarmDown(ecAlarmMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == ecAlarmsButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
 	
-  //Max up	
-  } else if(buttonIndex == ecAlarmsButtons[3]) {
-	ecAlarmMax += 10;
-	(ecAlarmMax > 9999) ? ecAlarmMax=0 : 0;
-	updateECalarms();
-  //Max down
-  } else if(buttonIndex == ecAlarmsButtons[4]) {
-	ecAlarmMax -= 10;
-	(ecAlarmMax < 0) ? ecAlarmMax=9999 : 0;
-	updateECalarms();
-  //Min up
-  } else if(buttonIndex == ecAlarmsButtons[5]) {
-	ecAlarmMin += 10;
-	(ecAlarmMin > 9999) ? ecAlarmMin=0 : 0;
-	updateECalarms();
-  //Min down
-  } else if(buttonIndex == ecAlarmsButtons[6]) {
-	ecAlarmMin -= 10;
-	(ecAlarmMin < 0) ? ecAlarmMin=9999 : 0;
-	updateECalarms();
-  }
+	//Max up	
+	} else if(buttonIndex == ecAlarmsButtons[3]) {
+		(ecAlarmMax >= 9990) ? ecAlarmMax=0 : ecAlarmMax += 10;
+		updateECalarms();
+	//Max down
+	} else if(buttonIndex == ecAlarmsButtons[4]) {
+		(ecAlarmMax <= 0) ? ecAlarmMax=9990 : ecAlarmMax -= 10;
+		updateECalarms();
+	//Min up
+	} else if(buttonIndex == ecAlarmsButtons[5]) {
+		(ecAlarmMin >= 9990) ? ecAlarmMin=0 : ecAlarmMin += 10;
+		updateECalarms();
+	//Min down
+	} else if(buttonIndex == ecAlarmsButtons[6]) {
+		(ecAlarmMin <= 0) ? ecAlarmMin=9990 : 	ecAlarmMin -= 10;
+		updateECalarms();
+	}
 }
 
 void GUI::printWaterAlarms() {
@@ -1858,9 +1705,9 @@ void GUI::printWaterAlarms() {
   _lcd->print(wLimitS,xSpacer,yFirstLine);
   //Numbers
   int x = (4+strlen(wLimitS))*bigFontSize;
-  _lcd->printNumI(waterAlarmMin,x,yFirstLine);
+  _lcd->printNumI(waterAlarmMin,x,yFirstLine,3);
   //Buttons
-  x += 0.5*bigFontSize;
+  x += 1.5*bigFontSize;
   waterAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
   waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
   //percent sign
@@ -1871,11 +1718,13 @@ void GUI::printWaterAlarms() {
 //Draws entire screen Nutrient level alarms
 //_actScreen == 11
 void GUI::drawWaterAlarms() {
+	_actScreen = 11;
+	_lcd->fillScr(VGA_WHITE);
   _buttons.deleteAllButtons();
-  printMenuHeader("- Nutrient Alarms -");
-  printFlowButtons(true,true,true,waterAlarmsButtons);
-  printWaterAlarms();  
-  _buttons.drawButtons(); 
+	printMenuHeader("- Nutrient Alarms -");
+	printFlowButtons(true,true,true,waterAlarmsButtons);
+	printWaterAlarms();  
+	_buttons.drawButtons(); 
 }
 
 void GUI::updateWaterAlarms() {
@@ -1884,38 +1733,33 @@ void GUI::updateWaterAlarms() {
 	
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(wLimitS))*bigFontSize;
-	_lcd->printNumI(waterAlarmMin,x,yFirstLine);
+	_lcd->printNumI(waterAlarmMin,x,yFirstLine,3);
 }
 
 void GUI::processTouchWaterAlarms(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == waterAlarmsButtons[0]) {
-    //Go to alarms menu
-    _actScreen = 8;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorAlarms();
-  //Save
-  } else if (buttonIndex == waterAlarmsButtons[1]) {
-    _settings->setWaterAlarm(waterAlarmMin);
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == waterAlarmsButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == waterAlarmsButtons[0]) {
+		//Go to alarms menu
+		drawSensorAlarms();
+	//Save
+	} else if (buttonIndex == waterAlarmsButtons[1]) {
+		_settings->setWaterAlarm(waterAlarmMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == waterAlarmsButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
   
-  //Up
-  } else if (buttonIndex == waterAlarmsButtons[3]) {
-	waterAlarmMin++;
-	(waterAlarmMin > 100) ? waterAlarmMin=0 : 0;
-	updateWaterAlarms();
-  //Down  
-  } else if (buttonIndex == waterAlarmsButtons[4]) {
-	(waterAlarmMin <= 0) ? waterAlarmMin=100 : waterAlarmMin--;
-	updateWaterAlarms();
-  } 
+	//Up
+	} else if (buttonIndex == waterAlarmsButtons[3]) {
+		(waterAlarmMin >= 100) ? waterAlarmMin=0 : waterAlarmMin++;
+		updateWaterAlarms();
+	//Down  
+	} else if (buttonIndex == waterAlarmsButtons[4]) {
+		(waterAlarmMin <= 0) ? waterAlarmMin=100 : waterAlarmMin--;
+		updateWaterAlarms();
+	} 
 }
 
 void GUI::printAutoConfig() {
@@ -1925,32 +1769,30 @@ void GUI::printAutoConfig() {
 //Draws entire screen Auto Config Alarms
 //_actScreen == 12
 void GUI::drawAutoConfig() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Auto Configuration -");
-  printFlowButtons(true,true,true,autoConfigButtons);
-  printAutoConfig();  
-  _buttons.drawButtons();   
+	_actScreen = 12;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Auto Configuration -");
+	printFlowButtons(true,true,true,autoConfigButtons);
+	printAutoConfig();  
+	_buttons.drawButtons();   
 }
 
 void GUI::processTouchAutoConfig(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == autoConfigButtons[0]) {
-    //Go to alarms menu
-    _actScreen = 8;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorAlarms();
-  //Save
-  } else if (buttonIndex == autoConfigButtons[1]) {
-    //TODO: Do something!
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == autoConfigButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  }    
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == autoConfigButtons[0]) {
+		//Go to alarms menu
+		drawSensorAlarms();
+	//Save
+	} else if (buttonIndex == autoConfigButtons[1]) {
+		//TODO: Do something!
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == autoConfigButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+	}    
 }
 
 void GUI::printSensorCalibration() {
@@ -1976,49 +1818,29 @@ void GUI::printSensorCalibration() {
 //Draws entire screen Sensor Calibration
 //_actScreen == 13
 void GUI::drawSensorCalibration() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Sensor Calibration -");
-  printFlowButtons(true,false,true,sensorCalibrationButtons);
-  printSensorCalibration();  
-  _buttons.drawButtons();   
+	_actScreen = 13;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Sensor Calibration -");
+	printFlowButtons(true,false,true,sensorCalibrationButtons);
+	printSensorCalibration();  
+	_buttons.drawButtons();   
 }
 
 void GUI::processTouchSensorCalibration(int x, int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == sensorCalibrationButtons[0]) {
-    //Go to system menu
-    _actScreen = 2;
-    _lcd->fillScr(VGA_WHITE);
-    drawSystemSettings();
-  //Exit
-  } else if (buttonIndex == sensorCalibrationButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  
-  //Water calibration
-  } else if (buttonIndex == sensorCalibrationButtons[3]) {
-    _actScreen = 14;
-    _lcd->fillScr(VGA_WHITE);
-    drawWaterCalibration();
-  //pH calibration
-  } else if (buttonIndex == sensorCalibrationButtons[4]) {
-    _actScreen = 15;
-    _lcd->fillScr(VGA_WHITE);
-    drawPHcalibration();
-  //EC calibration
-  } else if (buttonIndex == sensorCalibrationButtons[5]) {
-    _actScreen = 16;
-    _lcd->fillScr(VGA_WHITE);
-    drawECcalibration();
-  //Light Calibration
-  } else if (buttonIndex == sensorCalibrationButtons[6]) {
-    _actScreen = 17;
-    _lcd->fillScr(VGA_WHITE);
-    drawLightCalibration();
-  }
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sensorCalibrationButtons[0]) { drawSystemSettings(); }
+	//Exit
+	} else if (buttonIndex == sensorCalibrationButtons[2]) { drawMainScreen(); }  
+	//Water calibration
+	} else if (buttonIndex == sensorCalibrationButtons[3]) { drawWaterCalibration(); }
+	//pH calibration
+	} else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
+	//EC calibration
+	} else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
+	//Light Calibration
+	} else if (buttonIndex == sensorCalibrationButtons[6]) { drawLightCalibration(); }
 }
 
 void GUI::printWaterCalibration() {
@@ -2028,32 +1850,30 @@ void GUI::printWaterCalibration() {
 //Draws entire screen Water Level Calibration
 //_actScreen == 14
 void GUI::drawWaterCalibration() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Nutrient Calibration -");
-  printFlowButtons(true,true,true,waterLevelButtons);
-  printWaterCalibration();  
-  _buttons.drawButtons();   
+	_actScreen = 14;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Nutrient Calibration -");
+	printFlowButtons(true,true,true,waterLevelButtons);
+	printWaterCalibration();  
+	_buttons.drawButtons();   
 }
 
 void GUI::processTouchWaterCalibration(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == waterLevelButtons[0]) {
-    //Go to calibration menu
-    _actScreen = 13;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorCalibration();
-  //Save
-  } else if (buttonIndex == waterLevelButtons[1]) {
-    //TODO: Do something!
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == waterLevelButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  }    
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == waterLevelButtons[0]) {
+		//Go to calibration menu
+		drawSensorCalibration();
+	//Save
+	} else if (buttonIndex == waterLevelButtons[1]) {
+		//TODO: Do something!
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == waterLevelButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+	}    
 }
 
 void GUI::printPHcalibration() {
@@ -2063,32 +1883,30 @@ void GUI::printPHcalibration() {
 //Draws entire screen pH Calibration
 //_actScreen == 15
 void GUI::drawPHcalibration() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- pH Calibration -");
-  printFlowButtons(true,true,true,phCalibrationButtons);
-  printPHcalibration();  
-  _buttons.drawButtons();  
+	_actScreen = 15;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- pH Calibration -");
+	printFlowButtons(true,true,true,phCalibrationButtons);
+	printPHcalibration();  
+	_buttons.drawButtons();  
 }
 
 void GUI::processTouchPHcalibration(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == phCalibrationButtons[0]) {
-    //Go to calibration menu
-    _actScreen = 13;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorCalibration();
-  //Save
-  } else if (buttonIndex == phCalibrationButtons[1]) {
-    //TODO: Do something!
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == phCalibrationButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  }   
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == phCalibrationButtons[0]) {
+		//Go to calibration menu
+		drawSensorCalibration();
+	//Save
+	} else if (buttonIndex == phCalibrationButtons[1]) {
+		//TODO: Do something!
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == phCalibrationButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+	}   
 }
 
 //Draws entire screen EC Calibration
@@ -2098,32 +1916,30 @@ void GUI::printECcalibration() {
 }
 
 void GUI::drawECcalibration() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- EC Calibration -");
-  printFlowButtons(true,true,true,ecCalibrationButtons);
-  printECcalibration();  
-  _buttons.drawButtons();  
+	_actScreen = 16;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- EC Calibration -");
+	printFlowButtons(true,true,true,ecCalibrationButtons);
+	printECcalibration();  
+	_buttons.drawButtons();  
 }
 
 void GUI::processTouchECcalibration(int x,int y) {
-  int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == ecCalibrationButtons[0]) {
-    //Go to calibration menu
-    _actScreen = 13;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorCalibration();
-  //Save
-  } else if (buttonIndex == ecCalibrationButtons[1]) {
-    //TODO: Do something!
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == ecCalibrationButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  }    
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == ecCalibrationButtons[0]) {
+		//Go to calibration menu
+		drawSensorCalibration();
+	//Save
+	} else if (buttonIndex == ecCalibrationButtons[1]) {
+		//TODO: Do something!
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == ecCalibrationButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+	}    
 }
 
 void GUI::printLightCalibration() {
@@ -2133,30 +1949,28 @@ void GUI::printLightCalibration() {
 //Draws entire screen Light Calibration
 //_actScreen == 17
 void GUI::drawLightCalibration() {
-  _buttons.deleteAllButtons();
-  printMenuHeader("- Light Calibration -");
-  printFlowButtons(true,true,true,lightCalibrationButtons);
-  printPHcalibration();  
-  _buttons.drawButtons();    
+	_actScreen = 17;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Light Calibration -");
+	printFlowButtons(true,true,true,lightCalibrationButtons);
+	printPHcalibration();  
+	_buttons.drawButtons();    
 }
 
 void GUI::processTouchLightCalibration(int x, int y) {
     int buttonIndex = _buttons.checkButtons(x,y);
-  //Back
-  if (buttonIndex == lightCalibrationButtons[0]) {
-    //Go to calibration menu
-    _actScreen = 13;
-    _lcd->fillScr(VGA_WHITE);
-    drawSensorCalibration();
-  //Save
-  } else if (buttonIndex == lightCalibrationButtons[1]) {
-    //TODO: Do something!
-	printSavedButton();
-  //Exit
-  } else if (buttonIndex == lightCalibrationButtons[2]) {
-    //Go to main screen
-    _actScreen = 0;
-    _lcd->fillScr(VGA_WHITE);
-    drawMainScreen();
-  } 
+	//Back
+	if (buttonIndex == lightCalibrationButtons[0]) {
+		//Go to calibration menu
+		drawSensorCalibration();
+	//Save
+	} else if (buttonIndex == lightCalibrationButtons[1]) {
+		//TODO: Do something!
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == lightCalibrationButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+	} 
 }

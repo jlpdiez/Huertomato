@@ -146,24 +146,30 @@ void Settings::readEEPROMvars() {
 
 //Setters - These store their value on EEPROM too
 //System Settings
+
+//Also sets _waterModeChanged to true
 void Settings::setWaterTimed(const boolean w) { 
 	_waterTimed = w; 
 	EEPROM.updateByte(_adressWaterTimed,w);
+	_waterSettingsChanged = true;
 }
 
 void Settings::setWaterHour(const uint8_t w) { 
 	_waterHour = w; 
 	EEPROM.updateByte(_adressWaterHour,w);	
+	_waterSettingsChanged = true;
 }
 
 void Settings::setWaterMinute(const uint8_t w) { 
 	_waterMinute = w; 
 	EEPROM.updateByte(_adressWaterMinute,w);
+	_waterSettingsChanged = true;
 }
 
 void Settings::setFloodMinute(const uint8_t f) { 
 	_floodMinute = f; 
 	EEPROM.updateByte(_adressFloodMinute,f);
+	_waterSettingsChanged = true;
 }
 
 void Settings::setPHalarmUp(const float p) { 
@@ -237,8 +243,6 @@ void Settings::setNextWhour(const uint8_t n) { _nextWhour = n; }
 
 void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 
-//void Settings::setManualPump(const boolean m) {	_manualPump = m; }
-
 void Settings::setNightWateringStopped(const boolean n) { _nightWateringStopped = n; }
 
 void Settings::setWateringPlants(const boolean w) { _wateringPlants = w; }
@@ -287,12 +291,15 @@ uint8_t Settings::getNextWhour() const { return _nextWhour; }
 
 uint8_t Settings::getNextWminute() const { return _nextWminute; }
 
-//boolean Settings::getManualPump() const { return _manualPump; }
-
 boolean Settings::getNightWateringStopped() const { return _nightWateringStopped; }
 
 boolean Settings::getWateringPlants() const { return _wateringPlants; }
 
 boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
 
+boolean Settings::waterSettingsChanged() {
+	boolean res = _waterSettingsChanged;
+	_waterSettingsChanged = false;
+	return res;
+}
 
