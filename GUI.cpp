@@ -1832,15 +1832,15 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 	//Back
 	if (buttonIndex == sensorCalibrationButtons[0]) { drawSystemSettings(); }
 	//Exit
-	} else if (buttonIndex == sensorCalibrationButtons[2]) { drawMainScreen(); }  
+	else if (buttonIndex == sensorCalibrationButtons[2]) { drawMainScreen(); }  
 	//Water calibration
-	} else if (buttonIndex == sensorCalibrationButtons[3]) { drawWaterCalibration(); }
+	else if (buttonIndex == sensorCalibrationButtons[3]) { drawWaterCalibration(); }
 	//pH calibration
-	} else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
+	else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
 	//EC calibration
-	} else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
+	else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
 	//Light Calibration
-	} else if (buttonIndex == sensorCalibrationButtons[6]) { drawLightCalibration(); }
+	else if (buttonIndex == sensorCalibrationButtons[6]) { drawLightCalibration(); }
 }
 
 void GUI::printWaterCalibration() {

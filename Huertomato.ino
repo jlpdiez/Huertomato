@@ -74,22 +74,22 @@ const int redPin = 12;
 const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
-//A1
-const int humidIn = A13;
-//A2
-const int lightIn = A15;
-//A0
-const int tempIn = 42;
-//D8
-const int waterEcho = 44;
-//D9
-const int waterTrigger = 45;
+//A1 - Old: A13
+const int humidIn = A1;
+//A2 - Old: A15
+const int lightIn = A2;
+//A0 - Old: 42
+const int tempIn = A0;
+//D8 - Old: 44
+const int waterEcho = 8;
+//D9 - Old: 45
+const int waterTrigger = 9;
 //ACTUATORS
-//D10
-const int buzzPin = 47;
+//D10 - Old: 47
+const int buzzPin = 10;
 //const int flushValve = 48;
-//A9
-const int waterPump = 49;
+//A9 - Old: 49
+const int waterPump = A9;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -144,6 +144,11 @@ void setup() {
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
 	
+	//First run
+	//TODO: Implement menu option
+	//settings.setDefault();
+	//settings.setReservoirModule(false);
+	
 	setupSerial();
 	setupRTC();
 	setupSD();
@@ -197,7 +202,8 @@ void setupAlarms() {
 	//Sensor polling and smoothing
 	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	//Every min we adjust EC circuit readings to temperature
-	Alarm.timerOnce(0,1,0,adjustECtemp);
+	if (settings.getReservoirModule())
+		Alarm.timerOnce(0,1,0,adjustECtemp);
 	//Log sensor data to SD Card
 	if (settings.getSDactive())
 		Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
@@ -455,7 +461,9 @@ void logSensorReadings() {
 
 //Updates sensor readings and sets next timer
 void updateSensors() {
-	sensors.update();
+	sensors.updateMain();
+	if (settings.getReservoirModule())
+		sensors.updateReservoir();
 	if (settings.getSerialDebug()) {
 		writeSerialTimestamp();
 		Serial << "Sensors read, data updated." << endl;
@@ -491,15 +499,11 @@ void waterPlants() {
 		Serial << "Huertomato is watering plants" << endl;
 	}
 
-	/*
-	//Flood circuit
-	//TODO: Cerrar valvula de salida si la hay
-	//Waits for the time set in floodM through watering settings
-	//Alarm.delay(floodM * 60000);
-  
-	*/
-	//TODO: Remove - only for testing purposes
-	Alarm.delay(2000); 
+	digitalWrite(waterPump, HIGH);
+	//TODO: live version
+	//Alarm.delay(settings.getFloodMinute() * 60000); 
+	Alarm.delay(5000);
+	digitalWrite(waterPump, LOW);
   
 	//Set next watering alarm
 	//If its night and night watering is disabled we dont set another timer

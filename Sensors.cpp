@@ -99,19 +99,26 @@ uint16_t Sensors::getRawLight() {
 		return analogRead(lightIn);
 }
 //Updates sample arrays with readings from sensors and performs smoothing
-void Sensors::update() {
+//TODO: Another form of keeping track needed?
+void Sensors::updateMain() {
 	_temps[_iSample] = temp();
 	_lights[_iSample] = light();
 	_humidities[_iSample] = humidity();
-	_ecs[_iSample] = ec();
+	/*_ecs[_iSample] = ec();
 	_phs[_iSample] = ph();
-	_waterLevels[_iSample] = waterLevel();
+	_waterLevels[_iSample] = waterLevel();*/
 	
 	_iSample++;
 	if (_iSample >= numSamples)
 		_iSample =0;
 	
 	smoothSensorReadings();
+}
+
+void Sensors::updateReservoir() {
+	_ecs[_iSample] = ec();
+	_phs[_iSample] = ph();
+	_waterLevels[_iSample] = waterLevel();
 }
 
 //For each sensor data array calculates the average and stores it

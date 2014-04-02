@@ -82,7 +82,8 @@ class Sensors {
 	uint16_t getRawLight();
   
     //Updates sample arrays with readings from sensors and smoothes data
-    void update();
+    void updateMain();
+	void updateReservoir();
     //Adjusts EC sensor readings to temperature
     void adjustECtemp();
 

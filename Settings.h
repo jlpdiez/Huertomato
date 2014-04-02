@@ -43,6 +43,7 @@ class Settings {
 	~Settings();
     
     //Setters - These store settings to EEPROM too
+	void setDefault();
     //System Settings
     void setWaterTimed(const boolean);
     void setWaterHour(const uint8_t);
@@ -63,6 +64,7 @@ class Settings {
     void setSDminute(const uint8_t);
     void setSound(const boolean);
     void setSerialDebug(const boolean);
+	void setReservoirModule(const boolean);
     
     //Status vars - These are not written to EEPROM
     void setNextWhour(const uint8_t);
@@ -92,6 +94,7 @@ class Settings {
     uint8_t getSDminute() const;
     boolean getSound() const;
     boolean getSerialDebug() const;
+	boolean getReservoirModule() const;
     
     //Status vars
     uint8_t getNextWhour() const;
@@ -135,6 +138,8 @@ class Settings {
     boolean _sound;
     //Serial Debugging
     boolean _serialDebug;
+	//Module present
+	boolean _reservoirModule;
     
     //Status variables - Not read from EEPROM
     //Time next watering will occurr
@@ -152,24 +157,25 @@ class Settings {
 	boolean _waterSettingsChanged;
     
     //EEPROM addresses for all settings
-    int _adressWaterTimed;
-    int _adressWaterHour;
-    int _adressWaterMinute;
-    int _adressFloodMinute;
-    int _adressPHalarmUp;
-    int _adressPHalarmDown;
-    int _adressECalarmUp;
+    int _addressWaterTimed;
+    int _addressWaterHour;
+    int _addressWaterMinute;
+    int _addressFloodMinute;
+    int _addressPHalarmUp;
+    int _addressPHalarmDown;
+    int _addressECalarmUp;
     int _adressECalarmDown;
-    int _adressWaterAlarm;
-    int _adressNightWatering;  
-    int _adressSensorMinute;
-    int _adressSensorSecond;  
-    int _adressSDactive;
-    int _adressSDhour;
-    int _adressSDminute;
-    int _adressSound;
-    int _adressSerialDebug;
-	int _adressLightThreshold;
+    int _addressWaterAlarm;
+    int _addressNightWatering;  
+    int _addressSensorMinute;
+    int _addressSensorSecond;  
+    int _addressSDactive;
+    int _addressSDhour;
+    int _addressSDminute;
+    int _addressSound;
+    int _addressSerialDebug;
+	int _addressLightThreshold;
+	int _addressReservoirModule;
   
 };
 
