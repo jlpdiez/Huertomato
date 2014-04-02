@@ -130,9 +130,9 @@ GUI gui(&LCD,&Touch,&sensors,&settings);
 //TODO: Make GUI window, update references and delete
 uint8_t lightThreshold = 10;
 
-//Stores ID of the watering timer. If not present it is 0
+//Stores ID of timers. If not present it is 0
+AlarmID_t sensorAlarmID;
 AlarmID_t waterAlarmID;
-//Same for sd card alarm
 AlarmID_t sdAlarmID;
 
 // *********************************************
@@ -202,6 +202,7 @@ void setupSD() {
 				Serial << "SD init problem!! Make sure it's correctly inserted" << endl; 
 			}		
 		}
+	//Timer to log sensor data to SD Card
 	sdAlarmID = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 	}
 }
@@ -212,14 +213,10 @@ void setupSD() {
 //these will not occur instantly but on next function call.
 void setupAlarms() { 
 	//Sensor polling and smoothing
-	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
+	sensorAlarmID = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	//Every min we adjust EC circuit readings to temperature
 	if (settings.getReservoirModule())
-		Alarm.timerOnce(0,1,0,adjustECtemp);
-	//Log sensor data to SD Card
-	//if (settings.getSDactive())
-		//Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
-		
+		Alarm.timerOnce(0,1,0,adjustECtemp);		
 	//Every 5secs we send sensor status to Serial if needed
 	//if (activateSerial) 
 	//Alarm.timerOnce(0,0,5, showStatsSerial);   
@@ -279,14 +276,15 @@ void initMusic() {
 void loop() {
 	
 	//Alarm reporting
-	Serial << "total: " << Alarm.count();
+	/*Serial << "total: " << Alarm.count() << endl;
 	Serial << " waterAlarmID: " << waterAlarmID << endl;
 	Serial << " sdAlarmID: " << sdAlarmID << endl;
+	Serial << " sensorAlarmID: " << sensorAlarmID << endl;
 	for (int i = 0; i < Alarm.count(); i++) {
 		Serial << "id: " << i;
 		Serial << " time_t: " << Alarm.read(i);
 		Serial << " type: " << Alarm.readType(i) << endl;
-	}
+	}*/
 	
 	
 	//Alarm check
@@ -347,7 +345,7 @@ void loop() {
 			waterPlants(); 	
 	}
 	
-	// WATER SETTINGS CHECK
+	// WATER SETTINGS CHANGED CHECK
 	if (settings.waterSettingsChanged()) {
 		//Free previous water alarm if needed
 		if (waterAlarmID != 0) {
@@ -369,7 +367,7 @@ void loop() {
 		}
 	}
 	
-	// SD SETTINGS CHECK
+	// SD SETTINGS CHANGED CHECK
 	if (settings.sdSettingsChanged()) {
 		if (sdAlarmID != 0) {
 			Alarm.free(sdAlarmID);
@@ -378,6 +376,12 @@ void loop() {
 		if (settings.getSDactive()) {
 			setupSD();
 		}
+	}
+	
+	// SENSOR POLLING INTERVAL CHANGED
+	if (settings.sensorPollingChanged()) {
+		Alarm.free(sensorAlarmID);
+		sensorAlarmID = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	}
 	
 	//Maybe call it from GUI through "other functions"?
@@ -493,7 +497,7 @@ void updateSensors() {
 		Serial << "Sensors read, data updated." << endl;
 	}
 	//Set next timer
-	Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
+	sensorAlarmID = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 }
 
 //Adjusts EC sensor readings to temperature and sets next timer

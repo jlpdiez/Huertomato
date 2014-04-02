@@ -144,7 +144,7 @@ static int sensorPollingButtons[nSensorPollingButtons];
 
 const int nSDcardButtons = 8;
 static char* sdCardButtonsText[nSDcardButtons] = {
-  "SD Card Active:",
+  "SD Card Log:",
   "=",
   "=",
   ">",

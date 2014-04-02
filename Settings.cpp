@@ -237,6 +237,7 @@ void Settings::setLightThreshold(const uint8_t l) {
 void Settings::setSensorSecond(const uint8_t s) { 
 	_sensorSecond = s; 
 	EEPROM.updateByte(_addressSensorSecond,s);
+	_sensorPollingChanged = true;
 }
 
 void Settings::setSDactive(const boolean s) { 
@@ -342,5 +343,11 @@ boolean Settings::waterSettingsChanged() {
 boolean Settings::sdSettingsChanged() {
 	boolean res = _sdSettingsChanged;
 	_sdSettingsChanged = false;
+	return res;
+}
+
+boolean Settings::sensorPollingChanged() {
+	boolean res = _sensorPollingChanged;
+	_sensorPollingChanged = false;
 	return res;
 }

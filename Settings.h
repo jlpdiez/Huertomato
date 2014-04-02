@@ -102,9 +102,10 @@ class Settings {
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
-	//Return value and goes to false
+	//These return value and goes to false
 	boolean waterSettingsChanged();
 	boolean sdSettingsChanged();
+	boolean sensorPollingChanged();
        
   private:
 	void setEEPROMaddresses();
@@ -158,6 +159,8 @@ class Settings {
 	boolean _waterSettingsChanged;
 	//SD options changed
 	boolean _sdSettingsChanged;
+	//Sensor polling changed
+	boolean _sensorPollingChanged;
     
     //EEPROM addresses for all settings
     int _addressWaterTimed;

@@ -564,6 +564,9 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="GUI.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="logo126.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="logos64.c">
       <SubType>compile</SubType>
     </Compile>
