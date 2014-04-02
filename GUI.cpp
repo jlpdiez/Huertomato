@@ -1429,8 +1429,14 @@ void GUI::processTouchWaterCycle(int x, int y) {
 	//Save
 	} else if (buttonIndex == waterCycleButtons[1]) {
 		_settings->setWaterTimed(waterTimed);
-		_settings->setWaterHour(waterHour);
-		_settings->setWaterMinute(waterMin);
+		//Prevents setting time to 0
+		if ((waterHour == 0) && (waterMin == 0)) {
+			_settings->setWaterHour(waterHour);
+			_settings->setWaterMinute(1);
+		} else {
+			_settings->setWaterHour(waterHour);
+			_settings->setWaterMinute(waterMin);
+		}	
 		_settings->setFloodMinute(floodMin);
 		printSavedButton();
 	//Exit

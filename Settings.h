@@ -102,8 +102,9 @@ class Settings {
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
-	//Returns value and goes to false
+	//Return value and goes to false
 	boolean waterSettingsChanged();
+	boolean sdSettingsChanged();
        
   private:
 	void setEEPROMaddresses();
@@ -155,6 +156,8 @@ class Settings {
     boolean _alarmTriggered;
 	//Tells if water settings have been changed
 	boolean _waterSettingsChanged;
+	//SD options changed
+	boolean _sdSettingsChanged;
     
     //EEPROM addresses for all settings
     int _addressWaterTimed;

@@ -76,20 +76,26 @@ const int bluePin = 13;
 //SENSORS
 //A1 - Old: A13
 const int humidIn = A1;
+//const int humidIn = A13;
 //A2 - Old: A15
 const int lightIn = A2;
+//const int lightIn = A15;
 //A0 - Old: 42
 const int tempIn = A0;
+//const int tempIn = 42;
 //D8 - Old: 44
 const int waterEcho = 8;
+//const int waterEcho = 44;
 //D9 - Old: 45
 const int waterTrigger = 9;
+//const int waterTrigger = 45;
 //ACTUATORS
 //D10 - Old: 47
 const int buzzPin = 10;
-//const int flushValve = 48;
+//const int buzzPin = 47;
 //A9 - Old: 49
 const int waterPump = A9;
+//const int waterPump = 49;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -126,6 +132,8 @@ uint8_t lightThreshold = 10;
 
 //Stores ID of the watering timer. If not present it is 0
 AlarmID_t waterAlarmID;
+//Same for sd card alarm
+AlarmID_t sdAlarmID;
 
 // *********************************************
 // SETUP
@@ -151,7 +159,7 @@ void setup() {
 	
 	setupSerial();
 	setupRTC();
-	setupSD();
+	setupSD(); 
 	
 	setupAlarms();
 	setupWaterModes();
@@ -182,15 +190,19 @@ void setupRTC() {
 	} 
 }
 
-//Inits SD card 
+//Inits SD card
 void setupSD() {
-	pinMode(SDCardSS, OUTPUT);
-	if (!SD.begin(SDCardSS)) {
-		if (settings.getSerialDebug()) {
-			writeSerialTimestamp();
-			Serial << "SD init problem!! Make sure it's correctly inserted" << endl; 
+	if (settings.getSDactive()) {
+		pinMode(SDCardSS, OUTPUT);
+		if (!SD.begin(SDCardSS)) {
+			//If theres an error we switch SD off
+			//settings.setSDactive(false);
+			if (settings.getSerialDebug()) {
+				writeSerialTimestamp();
+				Serial << "SD init problem!! Make sure it's correctly inserted" << endl; 
+			}		
 		}
-		//TODO: Warn init screen LCD
+	sdAlarmID = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 	}
 }
 
@@ -205,8 +217,8 @@ void setupAlarms() {
 	if (settings.getReservoirModule())
 		Alarm.timerOnce(0,1,0,adjustECtemp);
 	//Log sensor data to SD Card
-	if (settings.getSDactive())
-		Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
+	//if (settings.getSDactive())
+		//Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 		
 	//Every 5secs we send sensor status to Serial if needed
 	//if (activateSerial) 
@@ -267,13 +279,14 @@ void initMusic() {
 void loop() {
 	
 	//Alarm reporting
-	/*Serial << "total: " << Alarm.count();
+	Serial << "total: " << Alarm.count();
 	Serial << " waterAlarmID: " << waterAlarmID << endl;
+	Serial << " sdAlarmID: " << sdAlarmID << endl;
 	for (int i = 0; i < Alarm.count(); i++) {
 		Serial << "id: " << i;
 		Serial << " time_t: " << Alarm.read(i);
 		Serial << " type: " << Alarm.readType(i) << endl;
-	}*/
+	}
 	
 	
 	//Alarm check
@@ -353,6 +366,17 @@ void loop() {
 			settings.setWateringPlants(false);
 			waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);	
 			updateNextWateringTime();	
+		}
+	}
+	
+	// SD SETTINGS CHECK
+	if (settings.sdSettingsChanged()) {
+		if (sdAlarmID != 0) {
+			Alarm.free(sdAlarmID);
+			sdAlarmID = 0;
+		}
+		if (settings.getSDactive()) {
+			setupSD();
 		}
 	}
 	
@@ -498,11 +522,9 @@ void waterPlants() {
 		writeSerialTimestamp();
 		Serial << "Huertomato is watering plants" << endl;
 	}
-
+	
 	digitalWrite(waterPump, HIGH);
-	//TODO: live version
-	//Alarm.delay(settings.getFloodMinute() * 60000); 
-	Alarm.delay(5000);
+	Alarm.delay(settings.getFloodMinute() * 60000); 
 	digitalWrite(waterPump, LOW);
   
 	//Set next watering alarm

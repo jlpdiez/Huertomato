@@ -242,16 +242,19 @@ void Settings::setSensorSecond(const uint8_t s) {
 void Settings::setSDactive(const boolean s) { 
 	_sdActive = s; 
 	EEPROM.updateByte(_addressSDactive,s);
+	_sdSettingsChanged = true;
 }
 
 void Settings::setSDhour(const uint8_t s) { 
 	_sdHour = s; 
 	EEPROM.updateByte(_addressSDhour,s);
+	_sdSettingsChanged = true;
 }
 
 void Settings::setSDminute(const uint8_t s) { 
 	_sdMinute = s; 
 	EEPROM.updateByte(_addressSDminute,s);
+	_sdSettingsChanged = true;
 }
 
 void Settings::setSound(const boolean s) { 
@@ -336,3 +339,8 @@ boolean Settings::waterSettingsChanged() {
 	return res;
 }
 
+boolean Settings::sdSettingsChanged() {
+	boolean res = _sdSettingsChanged;
+	_sdSettingsChanged = false;
+	return res;
+}
