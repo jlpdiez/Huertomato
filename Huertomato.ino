@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.2.0
+// # Version    : 1.2.2
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 27.03.2014
+// # Date       : 04.04.2014
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -75,27 +75,27 @@ const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
 //A1 - Old: A13
-const int humidIn = A1;
-//const int humidIn = A13;
+//const int humidIn = A1;
+const int humidIn = A13;
 //A2 - Old: A15
-const int lightIn = A2;
-//const int lightIn = A15;
+//const int lightIn = A2;
+const int lightIn = A15;
 //A0 - Old: 42
-const int tempIn = A0;
-//const int tempIn = 42;
+//const int tempIn = A0;
+const int tempIn = 42;
 //D8 - Old: 44
-const int waterEcho = 8;
-//const int waterEcho = 44;
+//const int waterEcho = 8;
+const int waterEcho = 44;
 //D9 - Old: 45
-const int waterTrigger = 9;
-//const int waterTrigger = 45;
+//const int waterTrigger = 9;
+const int waterTrigger = 45;
 //ACTUATORS
 //D10 - Old: 47
-const int buzzPin = 10;
-//const int buzzPin = 47;
+//const int buzzPin = 10;
+const int buzzPin = 47;
 //A9 - Old: 49
-const int waterPump = A9;
-//const int waterPump = 49;
+//const int waterPump = A9;
+const int waterPump = 49;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -134,6 +134,9 @@ uint8_t lightThreshold = 10;
 AlarmID_t sensorAlarmID;
 AlarmID_t waterAlarmID;
 AlarmID_t sdAlarmID;
+
+//True when system has beeping timers activated
+boolean beeping;
 
 // *********************************************
 // SETUP
@@ -227,7 +230,7 @@ void setupWaterModes() {
     if (settings.getWaterTimed()) {
 		digitalWrite(waterPump, LOW);
 		settings.setWateringPlants(false);
-		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
 		updateNextWateringTime();
     } else {
 		digitalWrite(waterPump,HIGH);	
@@ -287,12 +290,16 @@ void loop() {
 	}*/
 	
 	
-	//Alarm check
-	if (settings.getAlarmTriggered()) {
+	//Manage LED & Sound
+	if (settings.getWateringPlants() && settings.getWaterTimed()) {
+		led.setColour(BLUE);
+	} else if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
-		if (gui.getActScreen() == 0 && settings.getSound())
-			tone(buzzPin, 880.00, 250);
+		if (gui.getActScreen() == 0 && settings.getSound() && !beeping) {
+			beeping = true;	
+			beepOn();
+		}
 	} else
 		led.setColour(GREEN);
 		
@@ -342,7 +349,7 @@ void loop() {
 		}
 		//Restart watering timers if needed
 		if (settings.getWaterTimed()) 
-			waterPlants(); 	
+			startWatering(); 	
 	}
 	
 	// WATER SETTINGS CHANGED CHECK
@@ -362,7 +369,7 @@ void loop() {
 			//Stop pump. Plan next water time
 			digitalWrite(waterPump, LOW);
 			settings.setWateringPlants(false);
-			waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);	
+			waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);	
 			updateNextWateringTime();	
 		}
 	}
@@ -383,9 +390,6 @@ void loop() {
 		Alarm.free(sensorAlarmID);
 		sensorAlarmID = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	}
-	
-	//Maybe call it from GUI through "other functions"?
-	//TODO:Same thing for activating SD or smth mid sketch
 
 	//Delays are needed for alarms to work
 	Alarm.delay(10);
@@ -511,10 +515,24 @@ void adjustECtemp() {
 	Alarm.timerOnce(0,1,0,adjustECtemp);
 }
 
-//TIMED WATERING ROUTINE - System becomes unresponsive during this process
-//If onlyDay is activated and night has come, system will water one last time and wont set more timers.
-//Then it will check in main loop for day to come to call again this routine, reactivating timers.
-void waterPlants() {
+//These handle beeping when an alarm is triggered
+void beepOn() {
+	const int onSecs = 1;
+	tone(buzzPin,440.00);
+	Alarm.timerOnce(0,0,onSecs,beepOff);
+}
+
+void beepOff() {
+	const int offSecs = 2;
+	noTone(buzzPin);
+	if (settings.getAlarmTriggered() && settings.getSound() && (gui.getActScreen() == 0))
+		Alarm.timerOnce(0,0,offSecs,beepOn);
+	else
+		beeping = false;
+}
+
+//TIMED WATERING ROUTINES
+void startWatering() {
 	settings.setWateringPlants(true);
 	led.setColour(BLUE);
 	//Refresh main screen if needed
@@ -528,11 +546,17 @@ void waterPlants() {
 	}
 	
 	digitalWrite(waterPump, HIGH);
-	Alarm.delay(settings.getFloodMinute() * 60000); 
+	//Creates timer to stop watering
+	Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
+}
+
+//If onlyDay is activated and night has come, system will water one last time and wont set more timers.
+//Then it will check in main loop for day to come to call again this routine, reactivating timers.
+void stopWatering() {
 	digitalWrite(waterPump, LOW);
-  
+		
 	//Set next watering alarm
-	//If its night and night watering is disabled we dont set another timer
+	//If its night and night watering is disabled we don't set another timer
 	//Main loop will be in charge of setting timer again
 	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
 		settings.setNightWateringStopped(true);
@@ -540,8 +564,8 @@ void waterPlants() {
 			writeSerialTimestamp();
 			Serial << "Watering stopped at nighttime." << endl;
 		}
-	} else {
-		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,waterPlants);
+		} else {
+		waterAlarmID = Alarm.timerOnce(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
 		updateNextWateringTime();
 	}
 	settings.setWateringPlants(false);

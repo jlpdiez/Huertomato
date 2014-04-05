@@ -42,10 +42,7 @@
 extern prog_uint16_t plant126[0x3E04];
 extern prog_uint16_t alarm126[0x3E04];
 extern prog_uint16_t logo126[0x3E04];
-//extern prog_uint16_t hand126[0x3E04];
 extern prog_uint16_t moon126[0x3E04];
-
-//extern prog_uint16_t *statusPic;
 
 //Menu Icons
 extern prog_uint16_t plant64[0x1000];
@@ -90,27 +87,27 @@ static char* sensorText[nSensorText] = {
 
 const int nMainMenuButtons = 5;
 static char* mainMenuButtonText[nMainMenuButtons] = {
-  "System Settings",
-  "Controller Settings"
+	"System Settings",
+	"Controller Settings"
 };
 static int mainMenuButtons[nMainMenuButtons];
 
 const int nControllerButtons = 8;
 static char* controllerButtonText[nControllerButtons] = {
-  "Time & Date",
-  "Sensor Polling",
-  "SD Card",
-  "Sound:",
-  "Serial Debugging:"
+	"Time & Date",
+	"Sensor Polling",
+	"SD Card",
+	"Sound:",
+	"Serial Debugging:"
 };
 static int controllerButtons[nControllerButtons];
 
 const int nSystemButtons = 7;
 static char* systemButtonText[nSystemButtons] = {
-  "Watering Cycle",
-  "Sensor Alarms",
-  "Sensor Calibration",
-  "Watering at Night:",
+	"Watering Cycle",
+	"Sensor Alarms",
+	"Sensor Calibration",
+	"Watering at Night:",
 }; 
 static int systemButtons[nSystemButtons];
 
@@ -120,81 +117,81 @@ static int systemButtons[nSystemButtons];
 //These buttons use symbol font hence the strange texts
 const int nTimeButtons = 15;
 static char* timeButtonText[nTimeButtons] = {
-  "=",
-  "=",
-  "=",
-  ">",
-  ">",
-  ">",
-  "=",
-  "=",
-  "=",
-  ">",
-  ">",
-  ">" 
+	"=",
+	"=",
+	"=",
+	">",
+	">",
+	">",
+	"=",
+	"=",
+	"=",
+	">",
+	">",
+	">" 
 };
 static int timeButtons[nTimeButtons];
 
 const int nSensorPollingButtons = 5;
 static char* sensorPollingButtonText[nSensorPollingButtons] = {
-  "=",
-  ">"
+	"=",
+	">"
 };
 static int sensorPollingButtons[nSensorPollingButtons];
 
 const int nSDcardButtons = 8;
 static char* sdCardButtonsText[nSDcardButtons] = {
-  "SD Card Log:",
-  "=",
-  "=",
-  ">",
-  ">"
+	"SD Card Log:",
+	"=",
+	"=",
+	">",
+	">"
 };
 static int sdCardButtons[nSDcardButtons];
 
 const int nWaterCycleButtons = 10;
 static char* waterCycleButtonsText[nWaterCycleButtons] = {
-  "Mode:",
-  "=",
-  ">",
-  "=",
-  ">",
-  "=",
-  ">",
+	"Mode:",
+	"=",
+	">",
+	"=",
+	">",
+	"=",
+	">",
 };
 static int  waterCycleButtons[nWaterCycleButtons];
 
 const int nSensorAlarmsButtons = 7;
 static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
-  "Auto Config",
-  "pH Thresholds",
-  "EC Thresholds",
-  "Nutrient Level"
+	"Auto Config",
+	"pH Thresholds",
+	"EC Thresholds",
+	"Nutrient Level"
 };
 static int sensorAlarmsButtons[nSensorAlarmsButtons];
 
 const int nPHalarmsButtons = 7;
 static char* phAlarmsButtonsText[nPHalarmsButtons] = {
-  "=",
-  ">",
-  "=",
-  ">"
+	"=",
+	">",
+	"=",
+	">"
 };
 static int phAlarmsButtons[nPHalarmsButtons];
 
 const int nECalarmsButtons = 7;
 static char* ecAlarmsButtonsText[nECalarmsButtons] = {
-  "=",
-  ">",
-  "=",
-  ">" 
+	"=",
+	">",
+	"=",
+	">" 
 };
 static int ecAlarmsButtons[nECalarmsButtons];
 
 const int nWaterAlarmsButtons = 5;
 static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
-  "=",
-  ">" 
+	"=",
+	">" 
 };
 static int waterAlarmsButtons[nWaterAlarmsButtons];
 
@@ -206,10 +203,10 @@ static int autoConfigButtons[nAutoConfigButtons];
 
 const int nSensorCalibrationButtons = 7;
 static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
-  "Water Levels",
-  "pH Sensor",
-  "EC Sensor",
-  "Light Threshold"
+	"Water Levels",
+	"pH Sensor",
+	"EC Sensor",
+	"Light Threshold"
 };
 static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
@@ -231,9 +228,9 @@ static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
 };
 static int ecCalibrationButtons[nECcalibrationButtons];
 
-const int nLightCalibrationButtons = 5;
+const int nLightCalibrationButtons = 4;
 static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
-  
+	"Set New"
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
@@ -244,13 +241,18 @@ static int lightCalibrationButtons[nLightCalibrationButtons];
 //Watering cycle
 static boolean waterTimed;
 static uint8_t waterHour, waterMin, floodMin;
-//ph Alarms
+//pH alarms
 static float phAlarmMax, phAlarmMin;
-//ec Alarms
+//EC alarms
 static uint16_t ecAlarmMax, ecAlarmMin;
 //Water alarms
 static uint8_t waterAlarmMin;
-//Night Toggle
+//Water levels calibration
+static uint16_t waterLvlMax;
+static uint16_t waterLvlMin;
+//pH calibration
+
+//Night toggle
 static boolean nightWater;
 //Water pump toggle
 static boolean waterPumpState;

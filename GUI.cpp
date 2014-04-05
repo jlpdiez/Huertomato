@@ -353,8 +353,10 @@ void GUI::printIconAndStatus() {
 	const int imgSize = 126;
 	File img;
   
-	//If theres an alarm
-	if (_settings->getAlarmTriggered()) {
+	//If theres an alarm and it isn't watering
+	if (_settings->getAlarmTriggered() 
+		&& !(_settings->getWaterTimed() && _settings->getWateringPlants())) {
+			
 		int wHour = _settings->getNextWhour();
 		int wMin = _settings->getNextWminute();
 		_lcd->setColor(red[0],red[1],red[2]);
@@ -362,7 +364,6 @@ void GUI::printIconAndStatus() {
 		_lcd->setFont(various_symbols);
 		_lcd->print("T",xSpacer,ySpacer);
 		_lcd->setFont(hallfetica_normal);
-		//_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
 		int x = xSpacer + bigFontSize*2;
 		if (_settings->getWaterTimed()) {
 			//Space char added after @ and last number to white out line
@@ -377,16 +378,28 @@ void GUI::printIconAndStatus() {
 			x += 2*bigFontSize;
 			_lcd->print(" ",x,ySpacer);
 		} else {
-			char* nWater = "Alarm! - Human needed ";
+			char* nWater = "Alarm - Check Solution";
 			_lcd->print(nWater,x,ySpacer);
 		}
 		//Set system state
 		_sysState = 1;
 		//Prepare img on SD for reading
 		img = SD.open("/PICTURE/alarm126.RAW",FILE_READ);
+		
+	//water stopped because its night
+	} else if (_settings->getNightWateringStopped()) {
+		_lcd->setColor(grey[0],grey[1],grey[2]);
+		_lcd->setBackColor(VGA_WHITE);
+		_lcd->setFont(various_symbols);
+		_lcd->print("T",xSpacer,ySpacer);
+		_lcd->setFont(hallfetica_normal);
+		_lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
+		_sysState = 3;
+		img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
   
-	//watering and not in continuous mode
-	} else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {     
+	//watering not in continuous mode and not stopped for the night
+	} else if (_settings->getWaterTimed() && _settings->getWateringPlants()
+			&& !(_settings->getNightWateringStopped())) {     
 		_lcd->setColor(blue[0],blue[1],blue[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
@@ -400,17 +413,6 @@ void GUI::printIconAndStatus() {
 		_lcd->print("   ",x,ySpacer);
 		_sysState = 2;
 		img = SD.open("/PICTURE/logo126.RAW",FILE_READ);
-  
-	//water stopped because its night  
-	} else if (_settings->getNightWateringStopped()) {
-		_lcd->setColor(grey[0],grey[1],grey[2]);
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		_lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
-		_sysState = 3;
-		img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
 
 	//Normal operation    
 	} else {
@@ -468,8 +470,10 @@ void GUI::updateIconAndStatus() {
 	File img;
 	boolean updateNeeded = false;
     
-	//If theres an alarm and the previous state wasnt an alarm
-	if (_settings->getAlarmTriggered() && (_sysState != 1)) {
+	//If theres an alarm, the previous state wasn't an alarm and it's not watering
+	if (_settings->getAlarmTriggered() && (_sysState != 1)
+		&& !(_settings->getWaterTimed() && _settings->getWateringPlants())) {
+		
 		int wHour = _settings->getNextWhour();
 		int wMin = _settings->getNextWminute();
 	    _lcd->setColor(red[0],red[1],red[2]);
@@ -477,7 +481,6 @@ void GUI::updateIconAndStatus() {
 	    _lcd->setFont(various_symbols);
 	    _lcd->print("T",xSpacer,ySpacer);
 	    _lcd->setFont(hallfetica_normal);
-	    //_lcd->print("Alarm - Check Solution",xSpacer+bigFontSize*2,ySpacer);
 		int x = xSpacer + bigFontSize*2;
 		if (_settings->getWaterTimed()) {
 			//Space char added after @ and last number to white out line
@@ -492,7 +495,7 @@ void GUI::updateIconAndStatus() {
 			x += 2*bigFontSize;
 			_lcd->print(" ",x,ySpacer);
 		} else {
-			char* nWater = "Alarm! - Human needed ";
+			char* nWater = "Alarm - Check Solution";
 			_lcd->print(nWater,x,ySpacer);
 		}
 	    //Set system state
@@ -500,9 +503,22 @@ void GUI::updateIconAndStatus() {
 	    //Prepare img on SD for reading
 	    img = SD.open("/PICTURE/alarm126.RAW",FILE_READ);
 		updateNeeded = true;
+			    
+		//water stopped because its night
+		} else if (_settings->getNightWateringStopped() && (_sysState != 3)) {
+			_lcd->setColor(grey[0],grey[1],grey[2]);
+			_lcd->setBackColor(VGA_WHITE);
+			_lcd->setFont(various_symbols);
+			_lcd->print("T",xSpacer,ySpacer);
+			_lcd->setFont(hallfetica_normal);
+			_lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
+			_sysState = 3;
+			img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
+			updateNeeded = true;
 	    
-	  //watering and not in continuous mode
-	  } else if (_settings->getWaterTimed() && _settings->getWateringPlants() && (_sysState != 2)) {
+	  //watering not in continuous mode & not stopped for the night
+	  } else if (_settings->getWaterTimed() && _settings->getWateringPlants() && (_sysState != 2) 
+				&& !(_settings->getNightWateringStopped())) {
 	    _lcd->setColor(blue[0],blue[1],blue[2]);
 	    _lcd->setBackColor(VGA_WHITE);
 	    _lcd->setFont(various_symbols);
@@ -516,18 +532,6 @@ void GUI::updateIconAndStatus() {
 	    _lcd->print("   ",x,ySpacer);
 	    _sysState = 2;
 	    img = SD.open("/PICTURE/logo126.RAW",FILE_READ);
-		updateNeeded = true;
-	    
-	  //water stopped because its night
-	  } else if (_settings->getNightWateringStopped() && (_sysState != 3)) {
-	    _lcd->setColor(grey[0],grey[1],grey[2]);
-	    _lcd->setBackColor(VGA_WHITE);
-	    _lcd->setFont(various_symbols);
-	    _lcd->print("T",xSpacer,ySpacer);
-	    _lcd->setFont(hallfetica_normal);
-	    _lcd->print("No Watering @ Night  ",xSpacer+bigFontSize*2,ySpacer);
-	    _sysState = 3;
-	    img = SD.open("/PICTURE/moon126.RAW",FILE_READ);
 		updateNeeded = true;
 
 	  //If no abnormal state detected and previous state was not already this one 
