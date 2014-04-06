@@ -322,10 +322,7 @@ class GUI {
     void updateSensorInfo();
     void printIconAndStatus();
     void updateIconAndStatus();
-    //void drawMainScreen();
-    //void updateMainScreen();
     
-    //To each its own class?
     void printMainMenu();
     void drawMainMenu();
     void processTouchMainMenu(int x, int y);

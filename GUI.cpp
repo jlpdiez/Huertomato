@@ -353,8 +353,8 @@ void GUI::printIconAndStatus() {
 	const int imgSize = 126;
 	File img;
   
-	//If theres an alarm and it isn't watering
-	if (_settings->getAlarmTriggered() 
+	//If theres an alarm and its not night or watering
+	if (_settings->getAlarmTriggered() && !(_settings->getNightWateringStopped())
 		&& !(_settings->getWaterTimed() && _settings->getWateringPlants())) {
 			
 		int wHour = _settings->getNextWhour();
@@ -471,7 +471,7 @@ void GUI::updateIconAndStatus() {
 	boolean updateNeeded = false;
     
 	//If theres an alarm, the previous state wasn't an alarm and it's not watering
-	if (_settings->getAlarmTriggered() && (_sysState != 1)
+	if (_settings->getAlarmTriggered() && (_sysState != 1) && !(_settings->getNightWateringStopped())
 		&& !(_settings->getWaterTimed() && _settings->getWateringPlants())) {
 		
 		int wHour = _settings->getNextWhour();
@@ -1967,6 +1967,22 @@ void GUI::processTouchECcalibration(int x,int y) {
 
 void GUI::printLightCalibration() {
   //TODO
+  	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+  	_lcd->setBackColor(VGA_WHITE);
+  	
+  	const int controllerY = 135;
+  	const int xSpacer = 15;
+  	const int systemY = 60;
+  	//Rehacer alineacion X para iconos
+  	_lcd->setFont(hallfetica_normal);
+  	
+  	//Logos
+  	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
+  	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
+  	
+  	//Make menu buttons. System and Controller settings
+  	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
+  	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
 }
 
 //Draws entire screen Light Calibration

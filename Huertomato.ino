@@ -158,7 +158,7 @@ void setup() {
 	//First run
 	//TODO: Implement menu option
 	//settings.setDefault();
-	//settings.setReservoirModule(false);
+	settings.setReservoirModule(true);
 	
 	setupSerial();
 	setupRTC();
@@ -296,7 +296,8 @@ void loop() {
 	} else if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
-		if (gui.getActScreen() == 0 && settings.getSound() && !beeping) {
+		if (gui.getActScreen() == 0 && settings.getSound() && !beeping && 
+			!settings.getNightWateringStopped()) {
 			beeping = true;	
 			beepOn();
 		}
@@ -525,7 +526,8 @@ void beepOn() {
 void beepOff() {
 	const int offSecs = 2;
 	noTone(buzzPin);
-	if (settings.getAlarmTriggered() && settings.getSound() && (gui.getActScreen() == 0))
+	if (settings.getAlarmTriggered() && settings.getSound() && (gui.getActScreen() == 0) 
+		&& !settings.getNightWateringStopped())
 		Alarm.timerOnce(0,0,offSecs,beepOn);
 	else
 		beeping = false;
