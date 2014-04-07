@@ -144,10 +144,9 @@ void Settings::setDefault() {
 	setECalarmUp(9990);
 	setECalarmDown(0);
 	setWaterAlarm(0);
-	setNightWatering(true);
-	setLightThreshold(10);	    
+	setNightWatering(true);    
 	//Controller Settings
-	setSensorSecond(5);
+	setSensorSecond(2);
 	setSDactive(true);
 	setSDhour(1);
 	setSDminute(0);

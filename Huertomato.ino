@@ -127,11 +127,6 @@ Sensors sensors(&settings);
 
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
-//TODO: Make GUI window, update references and delete
-uint8_t lightThreshold = 10;
-uint16_t maxWaterLvl;
-uint16_t minWaterLvl;
-
 //Stores ID of timers. If not present it is 0
 AlarmID_t sensorAlarmID;
 AlarmID_t waterAlarmID;
@@ -278,7 +273,7 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
-	Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
+	//Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
 	/*Serial << "total: " << Alarm.count() << endl;
 	Serial << " waterAlarmID: " << waterAlarmID << endl;
@@ -308,8 +303,12 @@ void loop() {
 	//Refresh screens if needed
     if (gui.getActScreen() == 0)
 		gui.updateMainScreen();
+	//Nutrient level calibration
 	else if (gui.getActScreen() == 14)
 		gui.updateWaterCalibration();
+	//Night threshold calibration
+	else if (gui.getActScreen() == 17)
+		gui.updateLightCalibration();
     
     gui.processTouch();
    
@@ -343,7 +342,7 @@ void loop() {
 	//If watering has been stopped for the night and day has come or
 	//same thing and night watering setting has been reactivated, we start water cycle again
 	//if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
-	if (((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) 
+	if (((settings.getNightWateringStopped()) && (sensors.getRawLight() > settings.getLightThreshold())) 
 		|| ((settings.getNightWateringStopped()) && (settings.getNightWatering()))) {		
 			
 		settings.setNightWateringStopped(false);
@@ -564,7 +563,7 @@ void stopWatering() {
 	//Set next watering alarm
 	//If its night and night watering is disabled we don't set another timer
 	//Main loop will be in charge of setting timer again
-	if ((!settings.getNightWatering()) && (sensors.getLight() < lightThreshold)) {
+	if ((!settings.getNightWatering()) && (sensors.getRawLight() < settings.getLightThreshold())) {
 		settings.setNightWateringStopped(true);
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();

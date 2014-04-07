@@ -2036,23 +2036,52 @@ void GUI::processTouchECcalibration(int x,int y) {
 }
 
 void GUI::printLightCalibration() {
-  //TODO
-  	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  	_lcd->setBackColor(VGA_WHITE);
-  	
-  	const int controllerY = 135;
-  	const int xSpacer = 15;
-  	const int systemY = 60;
-  	//Rehacer alineacion X para iconos
-  	_lcd->setFont(hallfetica_normal);
-  	
-  	//Logos
-  	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-  	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
-  	
-  	//Make menu buttons. System and Controller settings
-  	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
-  	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
+    const int yFirstLine = 60;
+    const int ySecondLine = 135;
+    const int xSpacer = 25;
+	
+    rawLightLvl = _sensors->getRawLight();
+    lightThreshold = _settings->getLightThreshold();
+    
+    _lcd->setColor(grey[0],grey[1],grey[2]);
+    _lcd->setFont(hallfetica_normal);
+    
+    //First Line
+    int x = xSpacer;
+    _lcd->print("Current Reading:",x,yFirstLine);
+    x += 16*bigFontSize;
+    _lcd->printNumI(rawLightLvl,x,yFirstLine,4,' ');
+    //x +=4*bigFontSize;
+    //_lcd->print("lux",x,yFirstLine);
+    
+    //Second Line
+    x = xSpacer;
+    _lcd->print("Threshold:",x,ySecondLine);
+    x += 10*bigFontSize;
+    _lcd->printNumI(lightThreshold,x,ySecondLine,4,' ');
+    //x += 4*bigFontSize;
+    //_lcd->print("lux",x,ySecondLine);
+    x += 5*bigFontSize;
+    lightCalibrationButtons[3] = _buttons.addButton(x,ySecondLine,lightCalibrationButtonsText[0]);
+}
+
+void GUI::updateLightCalibration() {
+	const int yFirstLine = 60;
+	const int ySecondLine = 135;
+	const int xSpacer = 25;
+	
+	rawLightLvl = _sensors->getRawLight();
+	
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->setFont(hallfetica_normal);
+	
+	//First Line
+	int x = xSpacer + 16*bigFontSize;
+	_lcd->printNumI(rawLightLvl,x,yFirstLine,4,' ');
+	
+	//Second Line
+	x = xSpacer + 10*bigFontSize;
+	_lcd->printNumI(lightThreshold,x,ySecondLine,4,' ');	
 }
 
 //Draws entire screen Light Calibration
@@ -2063,7 +2092,7 @@ void GUI::drawLightCalibration() {
 	_buttons.deleteAllButtons();
 	printMenuHeader("- Light Calibration -");
 	printFlowButtons(true,true,true,lightCalibrationButtons);
-	printPHcalibration();  
+	printLightCalibration();  
 	_buttons.drawButtons();    
 }
 
@@ -2075,11 +2104,14 @@ void GUI::processTouchLightCalibration(int x, int y) {
 		drawSensorCalibration();
 	//Save
 	} else if (buttonIndex == lightCalibrationButtons[1]) {
-		//TODO: Do something!
+		_settings->setLightThreshold(lightThreshold);
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == lightCalibrationButtons[2]) {
 		//Go to main screen
 		drawMainScreen();
-	} 
+	} else if (buttonIndex == lightCalibrationButtons[3]) {
+		lightThreshold = rawLightLvl;
+		updateLightCalibration();
+	}
 }

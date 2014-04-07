@@ -253,8 +253,9 @@ static uint8_t waterAlarmMin;
 static uint16_t waterLvlMax;
 static uint16_t waterLvlMin;
 static uint16_t rawWaterLvl;
-//TODO: light calibration
-//static uint16_t lightThreshold;
+//Light calibration
+static uint16_t lightThreshold;
+static uint16_t rawLightLvl;
 
 //Night toggle
 static boolean nightWater;
@@ -294,8 +295,8 @@ class GUI {
     void drawMainScreen();
 	void updateMainScreen();
 	void updateWaterCalibration();
-	//TODO:
-    //void updateLightCalibration*(<)
+	void updateLightCalibration();
+	
   private:
     //Screen currently active
 	//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
