@@ -36,6 +36,7 @@
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
 #include <Time.h> 
+#include <TimeAlarms.h>
 #include <SD.h>    
 
 //Main Screen Icons                          
@@ -212,7 +213,8 @@ static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
 const int nWaterLevelButtons = 5;
 static char* waterLevelButtonsText[nWaterLevelButtons] = {
-  
+	"Set",
+	"Set"
 };
 static int waterLevelButtons[nWaterLevelButtons];
 
@@ -230,7 +232,7 @@ static int ecCalibrationButtons[nECcalibrationButtons];
 
 const int nLightCalibrationButtons = 4;
 static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
-	"Set New"
+	"Set"
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
@@ -250,7 +252,9 @@ static uint8_t waterAlarmMin;
 //Water levels calibration
 static uint16_t waterLvlMax;
 static uint16_t waterLvlMin;
-//pH calibration
+static uint16_t rawWaterLvl;
+//TODO: light calibration
+//static uint16_t lightThreshold;
 
 //Night toggle
 static boolean nightWater;
@@ -289,7 +293,9 @@ class GUI {
     void drawSplashScreen();
     void drawMainScreen();
 	void updateMainScreen();
-    
+	void updateWaterCalibration();
+	//TODO:
+    //void updateLightCalibration*(<)
   private:
     //Screen currently active
 	//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
@@ -387,6 +393,7 @@ class GUI {
     void processTouchSensorCalibration(int x, int y);
     
     void printWaterCalibration();
+
     void drawWaterCalibration();    
     void processTouchWaterCalibration(int x,int y);
     

@@ -5,35 +5,10 @@
 
 //Constructors
 Settings::Settings() {
-	//TODO: add waterMin/waterMax to settings and menus
 	//Status variables - Not read from EEPROM
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
-	
-	//These two are set in the main setup()
-	//_nextWhour = 20;
-	//_nextWminute = 5; 
-	//Init config - Maybe useful to program new hardwares?
-	/*_waterTimed = true;
-	_waterHour = 2 ;
-	_waterMinute = 30;
-	_floodMinute = 15;
-	_phAlarmUp = 7.50;
-	_phAlarmDown = 6.25;
-	_ecAlarmUp = 3200;
-	_ecAlarmDown = 1200;
-	_waterAlarm = 33;
-	_nightWatering = true;
-	_lightThreshold = 10;
-  
-	//Controller Settings
-	_sensorSecond = 5;  
-	_sdActive = true;
-	_sdHour = 0;
-	_sdMinute = 5;
-	_sound = false;
-	_serialDebug = true;*/  
   
 	setEEPROMaddresses();
 	readEEPROMvars();
@@ -58,6 +33,8 @@ Settings::Settings(const Settings &other) {
 	_waterAlarm = other._waterAlarm;
 	_nightWatering = other._nightWatering;
 	_lightThreshold = other._lightThreshold;
+	_maxWaterLvl = other._maxWaterLvl;
+	_minWaterLvl= other._minWaterLvl;
 	  
 	//Controller Settings
 	_sensorSecond = other._sensorSecond;
@@ -88,6 +65,8 @@ Settings& Settings::operator=(const Settings &other) {
 	_waterAlarm = other._waterAlarm;
 	_nightWatering = other._nightWatering;
 	_lightThreshold = other._lightThreshold;
+	_maxWaterLvl = other._maxWaterLvl;
+	_minWaterLvl= other._minWaterLvl;
 		  
 	//Controller Settings
 	_sensorSecond = other._sensorSecond;
@@ -122,8 +101,11 @@ void Settings::setEEPROMaddresses() {
 	_addressSDminute = EEPROM.getAddress(sizeof(byte));
 	_addressSound = EEPROM.getAddress(sizeof(byte));
 	_addressSerialDebug = EEPROM.getAddress(sizeof(byte));
-	_addressLightThreshold = EEPROM.getAddress(sizeof(byte));
+	//TODO: Maybe should be int?
+	_addressLightThreshold = EEPROM.getAddress(sizeof(int));
 	_addressReservoirModule = EEPROM.getAddress(sizeof(byte));
+	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
+	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
@@ -144,8 +126,10 @@ void Settings::readEEPROMvars() {
 	_sdMinute = EEPROM.readByte(_addressSDminute);
 	_sound = EEPROM.readByte(_addressSound );
 	_serialDebug = EEPROM.readByte(_addressSerialDebug);
-	_lightThreshold = EEPROM.readByte(_addressLightThreshold);
+	_lightThreshold = EEPROM.readInt(_addressLightThreshold);
 	_reservoirModule = EEPROM.readByte(_addressReservoirModule);
+	_maxWaterLvl = EEPROM.readInt(_addressMaxWaterLvl);
+	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
 }
 
 //Setters - These store their value on EEPROM too
@@ -169,7 +153,10 @@ void Settings::setDefault() {
 	setSDminute(0);
 	setSound(false);
 	setSerialDebug(true);
-	setReservoirModule(false);
+	setLightThreshold(30);
+	setReservoirModule(true);
+	setMaxWaterLvl(16);
+	setMinWaterLvl(50);
 }
 
 //System Settings
@@ -228,9 +215,19 @@ void Settings::setNightWatering(const boolean n) {
 	EEPROM.updateByte(_addressNightWatering,n);
 }
 
-void Settings::setLightThreshold(const uint8_t l) {
+void Settings::setLightThreshold(const uint16_t l) {
 	_lightThreshold = l;
-	EEPROM.updateByte(_addressLightThreshold,l);
+	EEPROM.updateInt(_addressLightThreshold,l);
+}
+
+void Settings::setMaxWaterLvl(const uint16_t x) {
+	_maxWaterLvl = x;
+	EEPROM.updateInt(_addressMaxWaterLvl,x);
+}
+
+void Settings::setMinWaterLvl(const uint16_t n) {
+	_minWaterLvl = n;
+	EEPROM.updateInt(_addressMinWaterLvl,n);
 }
 
 //Controller Settings
@@ -306,7 +303,11 @@ uint8_t Settings::getWaterAlarm() const { return _waterAlarm; }
 
 boolean Settings::getNightWatering() const { return _nightWatering; }
 
-uint8_t Settings::getLightThreshold() const { return _lightThreshold; }
+uint16_t Settings::getLightThreshold() const { return _lightThreshold; }
+	
+uint16_t Settings::getMaxWaterLvl() const { return _maxWaterLvl; }
+	
+uint16_t Settings::getMinWaterLvl() const { return _minWaterLvl; }
 
 //Controller Settings
 uint8_t Settings::getSensorSecond() const { return _sensorSecond; }

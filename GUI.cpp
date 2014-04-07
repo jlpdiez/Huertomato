@@ -1867,7 +1867,69 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 }
 
 void GUI::printWaterCalibration() {
-  //TODO
+    const int yFirstLine = 50;
+    const int ySecondLine = 100;
+    const int yThirdLine = 160;
+    const int xSpacer = 25;
+	
+	rawWaterLvl = _sensors->getRawWaterLevel();
+	waterLvlMax = _settings->getMaxWaterLvl();
+	waterLvlMin = _settings->getMinWaterLvl();
+	
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->setFont(hallfetica_normal);
+	
+	//First Line
+	int x = xSpacer;
+	_lcd->print("Current Reading:",x,yFirstLine);
+	x += 16*bigFontSize;
+	_lcd->printNumI(rawWaterLvl,x,yFirstLine,3,' ');
+	x +=3*bigFontSize;
+	_lcd->print("cm",x,yFirstLine);
+	
+	//Second Line
+	x = xSpacer;
+	_lcd->print("Current Max:",x,ySecondLine);
+	x += 12*bigFontSize;
+	_lcd->printNumI(waterLvlMax,x,ySecondLine,3,' ');
+	x += 3*bigFontSize;
+	_lcd->print("cm",x,ySecondLine);
+	x += 3*bigFontSize;
+	waterLevelButtons[3] = _buttons.addButton(x,ySecondLine,waterLevelButtonsText[0]);
+	
+	//Third Line
+	x = xSpacer;
+	_lcd->print("Current Min:",x,yThirdLine);
+	x += 12*bigFontSize;
+	_lcd->printNumI(waterLvlMin,x,yThirdLine,3,' ');
+	x += 3*bigFontSize;
+	_lcd->print("cm",x,yThirdLine);
+	x += 3*bigFontSize;
+	waterLevelButtons[4] = _buttons.addButton(x,yThirdLine,waterLevelButtonsText[1]);
+}
+
+void GUI::updateWaterCalibration() {
+	const int yFirstLine = 50;
+	const int ySecondLine = 100;
+	const int yThirdLine = 160;
+	const int xSpacer = 25;
+	
+	rawWaterLvl = _sensors->getRawWaterLevel();
+	
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->setFont(hallfetica_normal);
+	
+	//First Line
+	int x = xSpacer + 16*bigFontSize;
+	_lcd->printNumI(rawWaterLvl,x,yFirstLine,3,' ');
+	    
+	//Second Line
+	x = xSpacer + 12*bigFontSize;
+	_lcd->printNumI(waterLvlMax,x,ySecondLine,3,' ');
+	    
+	//Third Line
+	x = xSpacer + 12*bigFontSize;
+	_lcd->printNumI(waterLvlMin,x,yThirdLine,3,' ');	
 }
 
 //Draws entire screen Water Level Calibration
@@ -1876,7 +1938,7 @@ void GUI::drawWaterCalibration() {
 	_actScreen = 14;
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Nutrient Calibration -");
+	printMenuHeader("- Nutrient Levels -");
 	printFlowButtons(true,true,true,waterLevelButtons);
 	printWaterCalibration();  
 	_buttons.drawButtons();   
@@ -1890,13 +1952,21 @@ void GUI::processTouchWaterCalibration(int x,int y) {
 		drawSensorCalibration();
 	//Save
 	} else if (buttonIndex == waterLevelButtons[1]) {
-		//TODO: Do something!
+		_settings->setMaxWaterLvl(waterLvlMax);
+		_settings->setMinWaterLvl(waterLvlMin);
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == waterLevelButtons[2]) {
 		//Go to main screen
 		drawMainScreen();
-	}    
+		
+	} else if (buttonIndex == waterLevelButtons[3]) {
+		waterLvlMax = rawWaterLvl;
+		updateWaterCalibration();
+	} else if (buttonIndex == waterLevelButtons[4]) {
+		waterLvlMin = rawWaterLvl;
+		updateWaterCalibration();
+	}
 }
 
 void GUI::printPHcalibration() {

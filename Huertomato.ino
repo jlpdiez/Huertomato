@@ -123,12 +123,14 @@ UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 
 Settings settings;
-Sensors sensors;
+Sensors sensors(&settings);
 
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //TODO: Make GUI window, update references and delete
 uint8_t lightThreshold = 10;
+uint16_t maxWaterLvl;
+uint16_t minWaterLvl;
 
 //Stores ID of timers. If not present it is 0
 AlarmID_t sensorAlarmID;
@@ -158,7 +160,6 @@ void setup() {
 	//First run
 	//TODO: Implement menu option
 	//settings.setDefault();
-	settings.setReservoirModule(true);
 	
 	setupSerial();
 	setupRTC();
@@ -277,7 +278,7 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
-	
+	Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
 	/*Serial << "total: " << Alarm.count() << endl;
 	Serial << " waterAlarmID: " << waterAlarmID << endl;
@@ -304,9 +305,11 @@ void loop() {
 	} else
 		led.setColour(GREEN);
 		
-	//Refresh main screen
+	//Refresh screens if needed
     if (gui.getActScreen() == 0)
 		gui.updateMainScreen();
+	else if (gui.getActScreen() == 14)
+		gui.updateWaterCalibration();
     
     gui.processTouch();
    
@@ -315,24 +318,25 @@ void loop() {
 //  //Or activate alarms when 1-2 minutes have passed 
 	
 	// ALARMS TRIGGERING
-	//TODO: make funtion with ifs!
 	//Checks if any alarm should be triggered
-	if ((sensors.getPH() < settings.getPHalarmDown()) || (sensors.getPH() > settings.getPHalarmUp()) 
-		|| (sensors.getEC() < settings.getECalarmDown()) || (sensors.getEC() > settings.getECalarmUp()) 
-		|| (sensors.getWaterLevel() < settings.getWaterAlarm())) { 
+	if (settings.getReservoirModule()) {
+		if ((sensors.getPH() < settings.getPHalarmDown()) || (sensors.getPH() > settings.getPHalarmUp()) 
+			|| (sensors.getEC() < settings.getECalarmDown()) || (sensors.getEC() > settings.getECalarmUp()) 
+			|| (sensors.getWaterLevel() < settings.getWaterAlarm())) { 
 			  
-			settings.setAlarmTriggered(true);		
-			//TODO: Do not SPAM console!	
-			if (settings.getSerialDebug()) {
-				//writeSerialTimestamp();
-				//Serial << "Alarm triggered! System needs human intervention." << endl;
-			}
+				settings.setAlarmTriggered(true);		
+				//TODO: Do not SPAM console!	
+				if (settings.getSerialDebug()) {
+					//writeSerialTimestamp();
+					//Serial << "Alarm triggered! System needs human intervention." << endl;
+				}
 
-	} else if ((sensors.getPH() >= settings.getPHalarmDown()) && (sensors.getPH() <= settings.getPHalarmUp()) 
-		&& (sensors.getEC() >= settings.getECalarmDown()) && (sensors.getEC() <= settings.getECalarmUp()) 
-		&& (sensors.getWaterLevel() >= settings.getWaterAlarm())) {   
+		} else if ((sensors.getPH() >= settings.getPHalarmDown()) && (sensors.getPH() <= settings.getPHalarmUp()) 
+			&& (sensors.getEC() >= settings.getECalarmDown()) && (sensors.getEC() <= settings.getECalarmUp()) 
+			&& (sensors.getWaterLevel() >= settings.getWaterAlarm())) {   
 			
-			settings.setAlarmTriggered(false);         
+				settings.setAlarmTriggered(false);         
+		}
 	}
   
 	// NIGHT-DAY CHECK

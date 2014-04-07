@@ -27,6 +27,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+#include "Settings.h"
 #include <Arduino.h>
 #include <DHT11.h>
 #include <DallasTemperature.h>
@@ -58,7 +59,7 @@ extern dht11 DHT11;
 class Sensors {
   public:
     //Constructors
-    Sensors();
+    Sensors(Settings *_settings);
 	Sensors(const Sensors &other);
 	Sensors& operator=(const Sensors &other);
 	//Destructor
@@ -74,8 +75,8 @@ class Sensors {
 	
 	//TODO: implement
 	//Setters
-	void setMaxWaterLevel(uint16_t max);
-	void setMinWaterLevel(uint16_t min);
+	//void setMaxWaterLevel(uint16_t max);
+	//void setMinWaterLevel(uint16_t min);
 	
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
@@ -88,6 +89,8 @@ class Sensors {
     void adjustECtemp();
 
   private:
+	Settings *_settings;
+  
     //Smoothes readings
     void smoothSensorReadings();
   
@@ -98,11 +101,6 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint16_t ec();
-	
-	//TODO: Should be mutable and read from EEPROM
-	//These define nutrient level thresholds
-	static const int maxWaterLevel = 16;
-	static const int minWaterLevel = 50;
 	
 	//Define a const for array size  
 	static const int numSamples = 10;

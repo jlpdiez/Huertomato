@@ -1,7 +1,7 @@
 #include "Sensors.h"
 
 //Constructors
-Sensors::Sensors() {     
+Sensors::Sensors(Settings *settings) : _settings(settings){     
     pinMode(lightIn, INPUT);
     pinMode(humidIn, INPUT);
     pinMode(waterTrigger, OUTPUT);
@@ -31,6 +31,7 @@ Sensors::Sensors() {
 }
 
 Sensors::Sensors(const Sensors &other) {
+	_settings = other._settings;
 	_iSample = other._iSample;
 	for (int i = 0; i < numSamples; i++) {
 		_temps[i] = other._temps[i];
@@ -49,6 +50,7 @@ Sensors::Sensors(const Sensors &other) {
 }
 
 Sensors& Sensors::operator=(const Sensors &other) {
+	_settings = other._settings;
 	_iSample = other._iSample;
 	for (int i = 0; i < numSamples; i++) {
 		_temps[i] = other._temps[i];
@@ -83,21 +85,27 @@ float Sensors::getPH() const { return _ph; }
 
 uint8_t Sensors::getWaterLevel() const { return _waterLevel; }
 	
-//TODO: What number range will they output? Adjust var
 //Polls sonic range sensor and returns raw reading
-uint16_t Sensors::getRawWaterLevel() {
-	  digitalWrite(waterTrigger, LOW);
-	  delayMicroseconds(2);
-	  digitalWrite(waterTrigger, HIGH);
-	  delayMicroseconds(5);
-	  digitalWrite(waterTrigger, LOW);
-	  return (pulseIn(waterEcho, HIGH) / 29) / 2;
+uint16_t Sensors::getRawWaterLevel(){
+	digitalWrite(waterTrigger, LOW);
+	delayMicroseconds(2);
+	digitalWrite(waterTrigger, HIGH);
+	delayMicroseconds(5);
+	digitalWrite(waterTrigger, LOW);
+
+	return (pulseIn(waterEcho, HIGH) / 29) / 2;
 }
 
+//TODO: Convert to LUX
+//#include <Streaming.h>
 //Returns light raw data
 uint16_t Sensors::getRawLight() {
-		return analogRead(lightIn);
+	int rawADC = analogRead(lightIn);
+	//float volts = (rawADC * 5.0) / 1023;
+	//Serial << rawADC << ", " << volts << endl;
+	return analogRead(lightIn);
 }
+
 //Updates sample arrays with readings from sensors and performs smoothing
 //TODO: Another form of keeping track needed?
 void Sensors::updateMain() {
@@ -187,9 +195,9 @@ uint8_t Sensors::waterLevel() {
 	digitalWrite(waterTrigger, LOW);
 	duration = pulseIn(waterEcho, HIGH);
 	distance = (duration / 29) / 2;
-	//Serial << "Distance: " << distance << endl;
-	distance = constrain(distance, maxWaterLevel, minWaterLevel);
-	return map(distance, maxWaterLevel, minWaterLevel, 100, 0); 
+	//Serial << "Distance: " << distance << endl;	
+	distance = constrain(distance, _settings->getMaxWaterLvl(), _settings->getMinWaterLvl());
+	return map(distance, _settings->getMaxWaterLvl(), _settings->getMinWaterLvl(), 100, 0); 
 }
 
 //Returns PH level 

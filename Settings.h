@@ -55,7 +55,9 @@ class Settings {
     void setECalarmDown(const uint16_t);
     void setWaterAlarm(const uint8_t);
     void setNightWatering(const boolean);
-	void setLightThreshold(const uint8_t);
+	void setLightThreshold(const uint16_t);
+	void setMaxWaterLvl(const uint16_t);
+	void setMinWaterLvl(const uint16_t);
     
     //Controller Settings
     void setSensorSecond(const uint8_t);
@@ -85,7 +87,9 @@ class Settings {
     uint16_t getECalarmDown() const;
     uint8_t getWaterAlarm() const;
     boolean getNightWatering() const;
-	uint8_t getLightThreshold() const;
+	uint16_t getLightThreshold() const;
+	uint16_t getMaxWaterLvl() const;
+	uint16_t getMinWaterLvl() const;
     
     //Controller Settings
     uint8_t getSensorSecond() const;
@@ -124,8 +128,10 @@ class Settings {
     uint8_t _waterAlarm;
     //Water at night - Informs the system that watering timers are stopped for the night
     boolean _nightWatering;
-	//TODO: Sensor Calibration
-	uint8_t _lightThreshold;
+	//Sensor Calibrations
+	uint16_t _lightThreshold;
+	uint16_t _maxWaterLvl;
+	uint16_t _minWaterLvl;
 
     
     //Controller settings
@@ -144,14 +150,14 @@ class Settings {
 	boolean _reservoirModule;
     
     //Status variables - Not read from EEPROM
-    //Time next watering will occurr
+    //Time next watering will happen
     uint8_t _nextWhour;
     uint8_t _nextWminute;
-    //Manual Water Pump - Keeps the pump status when manually controling them.
+    //Manual Water Pump - Keeps the pump status when manually controlling them.
     //boolean _manualPump;
     //Informs the system that watering timers are stopped for the night
     boolean _nightWateringStopped;
-    //Turned on when plants are beign watered
+    //Turned on when plants are being watered
     boolean _wateringPlants;
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
@@ -182,6 +188,8 @@ class Settings {
     int _addressSerialDebug;
 	int _addressLightThreshold;
 	int _addressReservoirModule;
+	int _addressMaxWaterLvl;
+	int _addressMinWaterLvl;
   
 };
 
