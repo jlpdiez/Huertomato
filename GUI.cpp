@@ -1869,7 +1869,7 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 void GUI::printWaterCalibration() {
     const int yFirstLine = 50;
     const int ySecondLine = 100;
-    const int yThirdLine = 160;
+    const int yThirdLine = 150;
     const int xSpacer = 25;
 	
 	rawWaterLvl = _sensors->getRawWaterLevel();
@@ -1911,7 +1911,7 @@ void GUI::printWaterCalibration() {
 void GUI::updateWaterCalibration() {
 	const int yFirstLine = 50;
 	const int ySecondLine = 100;
-	const int yThirdLine = 160;
+	const int yThirdLine = 150;
 	const int xSpacer = 25;
 	
 	rawWaterLvl = _sensors->getRawWaterLevel();
@@ -1970,7 +1970,14 @@ void GUI::processTouchWaterCalibration(int x,int y) {
 }
 
 void GUI::printPHcalibration() {
-  //TODO
+  	const int yFirstLine = 50;
+  	const int ySecondLine = 100;
+  	const int yThirdLine = 150;
+  	const int xSpacer = 25;
+	  
+	phCalibrationButtons[3] = _buttons.addButton(xSpacer,yFirstLine,phCalibrationButtonsText[0]);
+	phCalibrationButtons[4] = _buttons.addButton(xSpacer,ySecondLine,phCalibrationButtonsText[1]);
+	phCalibrationButtons[5] = _buttons.addButton(xSpacer,yThirdLine,phCalibrationButtonsText[2]);
 }
 
 //Draws entire screen pH Calibration

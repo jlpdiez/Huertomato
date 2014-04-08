@@ -1,14 +1,14 @@
 // #############################################################################
-// #
-// # Scriptname : Sensors.h
-// # Author     : Juan L. Pérez Diez <ender.vs.melkor at gmail>
-// # Date       : 02.01.2014
+//
+// # Name       : Sensors
+// # Version    : 1.0
+//
+// # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
+// # Date       : 08.04.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
 // 
-// # Version    : 1.1
-//
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or

@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.2.2
+// # Version    : 1.2.3
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 04.04.2014
+// # Date       : 08.04.2014
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -164,7 +164,6 @@ void setup() {
 	setupWaterModes();
 	initMusic();
 	 
-	//TODO: Needed?
 	Alarm.delay(1000);
 	LCD.fillScr(VGA_WHITE);
 	gui.drawMainScreen();
@@ -273,6 +272,7 @@ void initMusic() {
 // *********************************************
 //TODO: Make prettier
 void loop() {
+	
 	//Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
 	/*Serial << "total: " << Alarm.count() << endl;
@@ -284,8 +284,7 @@ void loop() {
 		Serial << " time_t: " << Alarm.read(i);
 		Serial << " type: " << Alarm.readType(i) << endl;
 	}*/
-	
-	
+		
 	//Manage LED & Sound
 	if (settings.getWateringPlants() && settings.getWaterTimed()) {
 		led.setColour(BLUE);

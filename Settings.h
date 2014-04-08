@@ -2,9 +2,9 @@
 //
 // # Name       : Settings
 // # Version    : 1.0
-
+//
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 27.03.2014
+// # Date       : 08.04.2014
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 

@@ -2,9 +2,9 @@
 // 
 // # Name       : GUI
 // # Version    : 2.0
-
+//
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 27.03.2014
+// # Date       : 08.04.2014
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition and button presses
@@ -220,7 +220,9 @@ static int waterLevelButtons[nWaterLevelButtons];
 
 const int nPHcalibrationButtons = 6;
 static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
-  
+	"1. Calibrate for pH7",
+	"2. Calibrate for pH4",
+	"3. Calibrate for pH10"
 };
 static int phCalibrationButtons[nPHcalibrationButtons];
 
