@@ -1,4 +1,5 @@
 #include "Sensors.h"
+//TODO: Update via MOD
 
 //Constructors
 Sensors::Sensors(Settings *settings) : _settings(settings){     
@@ -293,14 +294,101 @@ uint16_t Sensors::ec() {
 
 //Sends command to EC sensor to adjust readings to temperature
 void Sensors::adjustECtemp() {
-	//Convert temp from float to char*
 	//Serial << "Adjusting EC to temp: ";
 	if (_temp != 0) {
+		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(_temp,4,2,tempArray);
 		String command = (String)tempArray + ",C\r";
 		//Serial << command << endl;
 		Serial2.print(command); 
+	}
+}
+
+//pH Calibration
+void Sensors::setPHcontinuous() {
+	String command = "C/r";
+	Serial1.print(command);
+	phToSerial();
+}
+
+void Sensors::setPHstandby() {
+	Serial1.print("E/r");
+	phToSerial();
+}
+
+void Sensors::setPHfour() {
+	Serial1.print("F/r");
+	phToSerial();
+}
+
+void Sensors::setPHseven() {
+	Serial1.print("S/r");
+	phToSerial();
+}
+
+void Sensors::setPHten() {
+	Serial1.print("T/r");
+	phToSerial();
+}
+
+//EC Calibration
+void Sensors::setProbeType() {
+	Serial2.print("P,2/r");
+	ecToSerial();
+}
+
+void Sensors::setECdry() {
+	Serial2.print("Z0/r");
+	ecToSerial();
+}
+
+void Sensors::setECtenThousand() {
+	Serial2.print("Z10/r");
+	ecToSerial();
+}
+
+void Sensors::setECfortyThousand() {
+	Serial2.print("Z40/r");
+	ecToSerial();
+}
+
+//Prints to Serial(if active) pH circuit's response to commands
+void Sensors::phToSerial() {
+	if (_settings->getSerialDebug()) {
+		while (Serial1.available() <= 0) {}
+		if (Serial1.available() > 0) {
+			String sensorString = "";
+			sensorString.reserve(30);
+			//Read data from sensor
+			char inchar;
+			while (Serial1.peek() != '\r') {
+				inchar = (char)Serial1.read();
+				sensorString += inchar;
+			}
+			//Discard <CR>
+			Serial1.read();
+			Serial << sensorString << endl;
+		}
+	}
+}
+
+//Same as above but for EC circuit
+void Sensors::ecToSerial() {
+	if (_settings->getSerialDebug()) {
+		if (Serial2.available() > 0) {
+			String sensorString = "";
+			sensorString.reserve(30);
+			//Read data from sensor
+			char inchar;
+			while (Serial2.peek() != '\r') {
+				inchar = (char)Serial2.read();
+				sensorString += inchar;
+			}
+			//Discard <CR>
+			Serial2.read();
+			Serial << sensorString << endl;
+		}
 	}
 }
 

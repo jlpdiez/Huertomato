@@ -103,17 +103,15 @@ static char* controllerButtonText[nControllerButtons] = {
 };
 static int controllerButtons[nControllerButtons];
 
-const int nSystemButtons = 7;
+const int nSystemButtons = 8;
 static char* systemButtonText[nSystemButtons] = {
 	"Watering Cycle",
 	"Sensor Alarms",
 	"Sensor Calibration",
-	"Watering at Night:",
+	"Pump protection",
+	"Watering at Night:"
 }; 
 static int systemButtons[nSystemButtons];
-
-//  "Light Hours",
-//  "Fan Control",
 
 //These buttons use symbol font hence the strange texts
 const int nTimeButtons = 15;
@@ -228,7 +226,10 @@ static int phCalibrationButtons[nPHcalibrationButtons];
 
 const int nECcalibrationButtons = 6;
 static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
-  
+	"1. Set probe k=1.0",
+	"2. ",
+	"3. ",
+	"4. "
 };
 static int ecCalibrationButtons[nECcalibrationButtons];
 

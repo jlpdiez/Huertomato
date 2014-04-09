@@ -731,17 +731,10 @@ void GUI::printSystemSettings() {
   
   //Watering at night ON/OFF 
   if (nightWater)
-	_lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
   else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
   
-  //Manual Pump ON/OFF	
-  /*if (waterPumpState)
-    _lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
-  else
-	_lcd->prin("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
-	*/
-
   //7 buttons
   // _lcd->print("T",xSpacer,ySpacer+bigFontSize*1.5*i);
   //systemButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*1.5*i,systemButtonText[i]);
@@ -774,14 +767,9 @@ void GUI::updateSystemSettings() {
 	
   //Watering at night ON/OFF
   if (nightWater)
-    _lcd->print("ON ",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[3]),ySpacer+bigFontSize*2*3);
-  else
-    _lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[3]),ySpacer+bigFontSize*2*3);	  
-  //Manual Pump ON/OFF
-  if (waterPumpState)
     _lcd->print("ON ",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
   else
-    _lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+    _lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);	  
 
 }
 
@@ -797,8 +785,10 @@ void GUI::processTouchSystem(int x, int y) {
 	else if (buttonIndex == systemButtons[4]) { drawSensorAlarms(); }
 	//Sensor Calibration  
 	else if (buttonIndex == systemButtons[5]) { drawSensorCalibration(); }
+	//Pump Protection
+	else if (buttonIndex == systemButtons[6]) {}
 	//Water at night Toggle 
-	else if (buttonIndex == systemButtons[6]) {
+	else if (buttonIndex == systemButtons[7]) {
 		nightWater = !nightWater;
 		_settings->setNightWatering(nightWater);
 		updateSystemSettings();
@@ -1974,6 +1964,9 @@ void GUI::printPHcalibration() {
   	const int ySecondLine = 100;
   	const int yThirdLine = 150;
   	const int xSpacer = 25;
+	 
+	//Makes PH Circuit enter continuous mode 
+	_sensors->setPHcontinuous();
 	  
 	phCalibrationButtons[3] = _buttons.addButton(xSpacer,yFirstLine,phCalibrationButtonsText[0]);
 	phCalibrationButtons[4] = _buttons.addButton(xSpacer,ySecondLine,phCalibrationButtonsText[1]);
@@ -1987,7 +1980,7 @@ void GUI::drawPHcalibration() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader("- pH Calibration -");
-	printFlowButtons(true,true,true,phCalibrationButtons);
+	printFlowButtons(true,false,true,phCalibrationButtons);
 	printPHcalibration();  
 	_buttons.drawButtons();  
 }
@@ -1996,14 +1989,18 @@ void GUI::processTouchPHcalibration(int x,int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == phCalibrationButtons[0]) {
+		//Enter standby mode
+		_sensors->setPHstandby();
 		//Go to calibration menu
 		drawSensorCalibration();
 	//Save
-	} else if (buttonIndex == phCalibrationButtons[1]) {
+	//} else if (buttonIndex == phCalibrationButtons[1]) {
 		//TODO: Do something!
-		printSavedButton();
+		//printSavedButton();
 	//Exit
 	} else if (buttonIndex == phCalibrationButtons[2]) {
+		//Enter standby mode
+		_sensors->setPHstandby();
 		//Go to main screen
 		drawMainScreen();
 	}   

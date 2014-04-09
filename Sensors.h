@@ -31,6 +31,7 @@
 #include <Arduino.h>
 #include <DHT11.h>
 #include <DallasTemperature.h>
+#include <Streaming.h>
 
 //Ideally these variables should be given to the constructor but
 //theres no way to declare a OneWire instance and initiate it afterwards that i know of
@@ -73,11 +74,6 @@ class Sensors {
     float getPH() const;
     uint8_t getWaterLevel() const;
 	
-	//TODO: implement
-	//Setters
-	//void setMaxWaterLevel(uint16_t max);
-	//void setMinWaterLevel(uint16_t min);
-	
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLight();
@@ -87,10 +83,25 @@ class Sensors {
 	void updateReservoir();
     //Adjusts EC sensor readings to temperature
     void adjustECtemp();
+	//pH Calibration
+	void setPHcontinuous();
+	void setPHstandby();
+	void setPHfour();
+	void setPHseven();
+	void setPHten();
+	//EC Calibration
+	void setProbeType();
+	void setECdry();
+	void setECtenThousand();
+	void setECfortyThousand();
 
   private:
 	Settings *_settings;
-  
+	
+	//Prints to Serial (if active) pH circuit's response to commands
+	void phToSerial();
+	//Same as above but for EC circuit
+	void ecToSerial();
     //Smoothes readings
     void smoothSensorReadings();
   
