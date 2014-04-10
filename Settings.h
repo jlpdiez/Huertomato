@@ -58,6 +58,7 @@ class Settings {
 	void setLightThreshold(const uint16_t);
 	void setMaxWaterLvl(const uint16_t);
 	void setMinWaterLvl(const uint16_t);
+	void setPumpProtectionLvl(const uint8_t);
     
     //Controller Settings
     void setSensorSecond(const uint8_t);
@@ -90,6 +91,7 @@ class Settings {
 	uint16_t getLightThreshold() const;
 	uint16_t getMaxWaterLvl() const;
 	uint16_t getMinWaterLvl() const;
+	uint8_t getPumpProtectionLvl() const;
     
     //Controller Settings
     uint8_t getSensorSecond() const;
@@ -132,6 +134,8 @@ class Settings {
 	uint16_t _lightThreshold;
 	uint16_t _maxWaterLvl;
 	uint16_t _minWaterLvl;
+	//Pump protection threshold
+	uint8_t _pumpProtectionLvl;
 
     
     //Controller settings
@@ -153,8 +157,6 @@ class Settings {
     //Time next watering will happen
     uint8_t _nextWhour;
     uint8_t _nextWminute;
-    //Manual Water Pump - Keeps the pump status when manually controlling them.
-    //boolean _manualPump;
     //Informs the system that watering timers are stopped for the night
     boolean _nightWateringStopped;
     //Turned on when plants are being watered
@@ -190,6 +192,7 @@ class Settings {
 	int _addressReservoirModule;
 	int _addressMaxWaterLvl;
 	int _addressMinWaterLvl;
+	int _addressPumpProtectionLvl;
   
 };
 

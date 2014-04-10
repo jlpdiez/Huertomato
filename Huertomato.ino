@@ -354,7 +354,7 @@ void loop() {
 		if (settings.getWaterTimed()) 
 			startWatering(); 	
 	}
-	
+	//TODO: Stop watering if in continuous mode?
 	// WATER SETTINGS CHANGED CHECK
 	if (settings.waterSettingsChanged()) {
 		//Free previous water alarm if needed

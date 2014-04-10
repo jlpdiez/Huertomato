@@ -308,6 +308,7 @@ void Sensors::adjustECtemp() {
 //pH Calibration
 void Sensors::setPHcontinuous() {
 	String command = "C/r";
+	Serial << command << endl;
 	Serial1.print(command);
 	phToSerial();
 }
@@ -356,7 +357,7 @@ void Sensors::setECfortyThousand() {
 //Prints to Serial(if active) pH circuit's response to commands
 void Sensors::phToSerial() {
 	if (_settings->getSerialDebug()) {
-		while (Serial1.available() <= 0) {}
+		//while (Serial1.available() <= 0) {}
 		if (Serial1.available() > 0) {
 			String sensorString = "";
 			sensorString.reserve(30);

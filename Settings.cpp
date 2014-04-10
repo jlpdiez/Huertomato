@@ -35,6 +35,7 @@ Settings::Settings(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtectionLvl = other._pumpProtectionLvl;
 	  
 	//Controller Settings
 	_sensorSecond = other._sensorSecond;
@@ -67,6 +68,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtectionLvl = other._pumpProtectionLvl;
 		  
 	//Controller Settings
 	_sensorSecond = other._sensorSecond;
@@ -101,11 +103,11 @@ void Settings::setEEPROMaddresses() {
 	_addressSDminute = EEPROM.getAddress(sizeof(byte));
 	_addressSound = EEPROM.getAddress(sizeof(byte));
 	_addressSerialDebug = EEPROM.getAddress(sizeof(byte));
-	//TODO: Maybe should be int?
 	_addressLightThreshold = EEPROM.getAddress(sizeof(int));
 	_addressReservoirModule = EEPROM.getAddress(sizeof(byte));
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
+	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
@@ -130,6 +132,7 @@ void Settings::readEEPROMvars() {
 	_reservoirModule = EEPROM.readByte(_addressReservoirModule);
 	_maxWaterLvl = EEPROM.readInt(_addressMaxWaterLvl);
 	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
+	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 }
 
 //Setters - These store their value on EEPROM too
@@ -156,6 +159,7 @@ void Settings::setDefault() {
 	setReservoirModule(true);
 	setMaxWaterLvl(16);
 	setMinWaterLvl(50);
+	setPumpProtectionLvl(15);
 }
 
 //System Settings
@@ -227,6 +231,11 @@ void Settings::setMaxWaterLvl(const uint16_t x) {
 void Settings::setMinWaterLvl(const uint16_t n) {
 	_minWaterLvl = n;
 	EEPROM.updateInt(_addressMinWaterLvl,n);
+}
+
+void Settings::setPumpProtectionLvl(const uint8_t p) {
+	_pumpProtectionLvl = p;
+	EEPROM.updateByte(_addressPumpProtectionLvl,p);
 }
 
 //Controller Settings
@@ -307,6 +316,8 @@ uint16_t Settings::getLightThreshold() const { return _lightThreshold; }
 uint16_t Settings::getMaxWaterLvl() const { return _maxWaterLvl; }
 	
 uint16_t Settings::getMinWaterLvl() const { return _minWaterLvl; }
+
+uint8_t Settings::getPumpProtectionLvl() const { return _pumpProtectionLvl; }
 
 //Controller Settings
 uint8_t Settings::getSensorSecond() const { return _sensorSecond; }
