@@ -340,7 +340,6 @@ void loop() {
 	// NIGHT-DAY CHECK
 	//If watering has been stopped for the night and day has come or
 	//same thing and night watering setting has been reactivated, we start water cycle again
-	//if ((settings.getNightWateringStopped()) && (sensors.getLight() > lightThreshold)) {
 	if (((settings.getNightWateringStopped()) && (sensors.getRawLight() > settings.getLightThreshold())) 
 		|| ((settings.getNightWateringStopped()) && (settings.getNightWatering()))) {		
 			
@@ -543,21 +542,29 @@ void beepOff() {
 
 //TIMED WATERING ROUTINES
 void startWatering() {
-	settings.setWateringPlants(true);
-	led.setColour(BLUE);
-	//Refresh main screen if needed
-	if (gui.getActScreen() == 0)
+	//If theres enough water to activate pump
+	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {
+		settings.setWateringPlants(true);
+		led.setColour(BLUE);
+		//Refresh main screen if needed
+		if (gui.getActScreen() == 0)
 		gui.updateMainScreen();
-	 
-	//Inform through serial
-	if (settings.getSerialDebug()) {
-		writeSerialTimestamp();
-		Serial << "Huertomato is watering plants" << endl;
-	}
+			
+		//Inform through serial
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "Huertomato is watering plants" << endl;
+		}
+			
+		digitalWrite(waterPump, HIGH);
+		//Creates timer to stop watering
+		Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
 	
-	digitalWrite(waterPump, HIGH);
-	//Creates timer to stop watering
-	Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
+	//Pump will get damaged - System will NOT water	
+	} else {
+		writeSerialTimestamp();
+		Serial << "Huertomato will NOT water to prevent pump damage" << endl;
+	}
 }
 
 //If onlyDay is activated and night has come, system will water one last time and wont set more timers.

@@ -239,6 +239,13 @@ static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
+const int nPumpProtectionButtons = 5;
+static char* pumpProtectionButtonsText[nLightCalibrationButtons] = {
+	"=",
+	">"
+};
+static int pumpProtectionButtons[nPumpProtectionButtons];
+
 //These are temp variables used for displaying data
 //They are read from _settings in print() funcs. Changed in processTouch()
 //displayed again with update() and saved to eeprom when button save is pressed
@@ -259,6 +266,8 @@ static uint16_t rawWaterLvl;
 //Light calibration
 static uint16_t lightThreshold;
 static uint16_t rawLightLvl;
+//Pump protection
+static uint8_t pumpProtectionLvl;
 
 //Night toggle
 static boolean nightWater;
@@ -306,7 +315,7 @@ class GUI {
 	//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
 	//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
 	//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
-	//15-pH Calibration, 16-EC Calibration, 17-Light Calibration
+	//15-pH Calibration, 16-EC Calibration, 17-Light Calibration, 18-Pump Protection
     uint8_t _actScreen;
 	//State the system is in. 
 	//This is used in order to refresh icon of main screen only when state changes
@@ -397,7 +406,6 @@ class GUI {
     void processTouchSensorCalibration(int x, int y);
     
     void printWaterCalibration();
-
     void drawWaterCalibration();    
     void processTouchWaterCalibration(int x,int y);
     
@@ -412,14 +420,11 @@ class GUI {
     void printLightCalibration();
     void drawLightCalibration();
     void processTouchLightCalibration(int x, int y);  
-    
-//    void printLightHours();
-//    void drawLightHours();
-//    void processTouchLightHours(int x, int y);
-//    
-//    void printFanControl();
-//    void drawFanControl();
-//    void processTouchFanControl(int x, int y);   
+	
+	void printPumpProtection();
+	void drawPumpProtection();
+	void updatePumpProtection();
+	void processTouchPumpProtection(int x, int y);
 };
     
 #endif

@@ -56,85 +56,88 @@ int GUI::getActScreen() const {	return _actScreen; }
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {
 	if (_touch->dataAvailable()) {
-	_touch->read();
-	int x = _touch->getX();
-	int y = _touch->getY();
+		_touch->read();
+		int x = _touch->getX();
+		int y = _touch->getY();
     
-	switch (_actScreen) {
-		//Main Screen
-		case 0: 
-			drawMainMenu();
-			break;
-		//MainMenu
-		case 1:
-			processTouchMainMenu(x,y);
-			break;
-		//System Settings
-		case 2:
-			processTouchSystem(x,y);
-			break;
-		//Controller Settings
-		case 3:
-			processTouchController(x,y);
-			break;
-		//Time & Date
-		case 4:
-			processTouchTime(x,y);
-			break;
-		//Sensor Polling
-		case 5:
-			processTouchSensorPolling(x,y);
-			break;
-		//SD Card
-		case 6:
-			processTouchSDcard(x,y);
-			break;
-		//Watering Cycle
-		case 7:
-			processTouchWaterCycle(x,y);
-			break;
-		//Sensor Alarms
-		case 8: 
-			processTouchSensorAlarms(x,y);
-			break;
-		//pH Alarms
-		case 9: 
-			processTouchPHalarms(x,y);
-			break;
-		//EC Alarms
-		case 10:
-			processTouchECalarms(x,y);
-			break;
-		//Nutrient Level Alarms
-		case 11:
-			processTouchWaterAlarms(x,y);
-			break;
-		//Auto Config Alarms
-		case 12:
-			processTouchAutoConfig(x,y);
-			break;
-		//Sensor Calibration
-		case 13:
-			processTouchSensorCalibration(x,y);
-			break;
-		//Water Level Calibration
-		case 14:
-			processTouchWaterCalibration(x,y);
-			break;
-		//pH Calibration
-		case 15:
-			processTouchPHcalibration(x,y);
-			break;
-		//EC Calibration
-		case 16:
-			processTouchECcalibration(x,y);
-			break;
-		//Light Calibration
-		case 17:
-			processTouchLightCalibration(x,y);
-			break;
+		switch (_actScreen) {
+			//Main Screen
+			case 0: 
+				drawMainMenu();
+				break;
+			//MainMenu
+			case 1:
+				processTouchMainMenu(x,y);
+				break;
+			//System Settings
+			case 2:
+				processTouchSystem(x,y);
+				break;
+			//Controller Settings
+			case 3:
+				processTouchController(x,y);
+				break;
+			//Time & Date
+			case 4:
+				processTouchTime(x,y);
+				break;
+			//Sensor Polling
+			case 5:
+				processTouchSensorPolling(x,y);
+				break;
+			//SD Card
+			case 6:
+				processTouchSDcard(x,y);
+				break;
+			//Watering Cycle
+			case 7:
+				processTouchWaterCycle(x,y);
+				break;
+			//Sensor Alarms
+			case 8: 
+				processTouchSensorAlarms(x,y);
+				break;
+			//pH Alarms
+			case 9: 
+				processTouchPHalarms(x,y);
+				break;
+			//EC Alarms
+			case 10:
+				processTouchECalarms(x,y);
+				break;
+			//Nutrient Level Alarms
+			case 11:
+				processTouchWaterAlarms(x,y);
+				break;
+			//Auto Config Alarms
+			case 12:
+				processTouchAutoConfig(x,y);
+				break;
+			//Sensor Calibration
+			case 13:
+				processTouchSensorCalibration(x,y);
+				break;
+			//Water Level Calibration
+			case 14:
+				processTouchWaterCalibration(x,y);
+				break;
+			//pH Calibration
+			case 15:
+				processTouchPHcalibration(x,y);
+				break;
+			//EC Calibration
+			case 16:
+				processTouchECcalibration(x,y);
+				break;
+			//Light Calibration
+			case 17:
+				processTouchLightCalibration(x,y);
+				break;
+			//Pump Protection
+			case 18:
+				processTouchPumpProtection(x,y);
+				break;
 		}
-  
 	}
 }
 
@@ -786,7 +789,7 @@ void GUI::processTouchSystem(int x, int y) {
 	//Sensor Calibration  
 	else if (buttonIndex == systemButtons[5]) { drawSensorCalibration(); }
 	//Pump Protection
-	else if (buttonIndex == systemButtons[6]) {}
+	else if (buttonIndex == systemButtons[6]) { drawPumpProtection(); }
 	//Water at night Toggle 
 	else if (buttonIndex == systemButtons[7]) {
 		nightWater = !nightWater;
@@ -2150,5 +2153,75 @@ void GUI::processTouchLightCalibration(int x, int y) {
 	} else if (buttonIndex == lightCalibrationButtons[3]) {
 		lightThreshold = rawLightLvl;
 		updateLightCalibration();
+	}
+}
+
+void GUI::printPumpProtection() {
+  const int yFirstLine = 100;
+  const int xSpacer = 25;
+  const int signSpacer = 22;
+  
+  pumpProtectionLvl = _settings->getPumpProtectionLvl();
+  
+  char* wLimitS = "Lower Limit:";
+  _lcd->setColor(grey[0],grey[1],grey[2]);
+  //Text
+  _lcd->print(wLimitS,xSpacer,yFirstLine);
+  //Numbers
+  int x = (4+strlen(wLimitS))*bigFontSize;
+  _lcd->printNumI(pumpProtectionLvl,x,yFirstLine,3);
+  //Buttons
+  x += 1.5*bigFontSize;
+  pumpProtectionButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
+  pumpProtectionButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
+  //percent sign
+  x += 2.5*bigFontSize;
+  _lcd->print("%",x,yFirstLine);
+}
+
+//Draws entire screen Pump Protection
+//_actScreen == 18
+void GUI::drawPumpProtection() {
+	_actScreen = 18;
+	_lcd->fillScr(VGA_WHITE);
+	_buttons.deleteAllButtons();
+	printMenuHeader("- Pump Protection -");
+	printFlowButtons(true,true,true,pumpProtectionButtons);
+	printPumpProtection();
+	_buttons.drawButtons();
+}
+
+void GUI::updatePumpProtection() {
+	const int yFirstLine = 100;
+	char* wLimitS = "Lower Limit:";
+	
+	_lcd->setFont(hallfetica_normal);
+	int x = (4+strlen(wLimitS))*bigFontSize;
+	_lcd->printNumI(pumpProtectionLvl,x,yFirstLine,3);
+}
+
+void GUI::processTouchPumpProtection(int x, int y) {
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == pumpProtectionButtons[0]) {
+		//Go to system menu
+		drawSystemSettings();
+	//Save
+	} else if (buttonIndex == pumpProtectionButtons[1]) {
+		_settings->setPumpProtectionLvl(pumpProtectionLvl);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == pumpProtectionButtons[2]) {
+		//Go to main screen
+		drawMainScreen();
+		
+	//Up
+	} else if (buttonIndex == pumpProtectionButtons[3]) {
+		(pumpProtectionLvl >= 100) ? pumpProtectionLvl=0 : pumpProtectionLvl++;
+		updatePumpProtection();
+	//Down
+	} else if (buttonIndex == pumpProtectionButtons[4]) {
+		(pumpProtectionLvl <= 0) ? pumpProtectionLvl=100 : pumpProtectionLvl--;
+		updatePumpProtection();
 	}
 }
