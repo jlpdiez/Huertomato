@@ -224,12 +224,12 @@ static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
 };
 static int phCalibrationButtons[nPHcalibrationButtons];
 
-const int nECcalibrationButtons = 6;
+const int nECcalibrationButtons = 7;
 static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
-	"1. Set probe k=1.0",
-	"2. ",
-	"3. ",
-	"4. "
+	"1. Set probe type",
+	"2. Dry calibration",
+	"3. Calibrate for 40000 uS",
+	"4. Calibrate for 10500 uS"
 };
 static int ecCalibrationButtons[nECcalibrationButtons];
 

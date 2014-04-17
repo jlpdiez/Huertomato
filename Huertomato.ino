@@ -75,27 +75,27 @@ const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
 //A1 - Old: A13
-//const int humidIn = A1;
-const int humidIn = A13;
+const int humidIn = A1;
+//const int humidIn = A13;
 //A2 - Old: A15
-//const int lightIn = A2;
-const int lightIn = A15;
+const int lightIn = A2;
+//const int lightIn = A15;
 //A0 - Old: 42
-//const int tempIn = A0;
-const int tempIn = 42;
+const int tempIn = A0;
+//const int tempIn = 42;
 //D8 - Old: 44
-//const int waterEcho = 8;
-const int waterEcho = 44;
+const int waterEcho = 8;
+//const int waterEcho = 44;
 //D9 - Old: 45
-//const int waterTrigger = 9;
-const int waterTrigger = 45;
+const int waterTrigger = 9;
+//const int waterTrigger = 45;
 //ACTUATORS
 //D10 - Old: 47
-//const int buzzPin = 10;
-const int buzzPin = 47;
+const int buzzPin = 10;
+//const int buzzPin = 47;
 //A9 - Old: 49
-//const int waterPump = A9;
-const int waterPump = 49;
+const int waterPump = A9;
+//const int waterPump = 49;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -497,8 +497,11 @@ void logSensorReadings() {
 //Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.updateMain();
-	if (settings.getReservoirModule())
+	//We update external module if its present and its not being calibrated
+	if ((settings.getReservoirModule()) && (gui.getActScreen() != 14) 
+		&& (gui.getActScreen() != 15) && (gui.getActScreen() != 16)) {
 		sensors.updateReservoir();
+	}
 	if (settings.getSerialDebug()) {
 		writeSerialTimestamp();
 		Serial << "Sensors read, data updated." << endl;
@@ -509,10 +512,13 @@ void updateSensors() {
 
 //Adjusts EC sensor readings to temperature and sets next timer
 void adjustECtemp() {
-	sensors.adjustECtemp(); 
-	if (settings.getSerialDebug()) {
-		writeSerialTimestamp();
-		Serial << "EC sensor readings adjusted for temperature." << endl;
+	//Don't adjust if sensor is being calibrated
+	if (gui.getActScreen() != 16) {
+		sensors.adjustECtemp();
+		if (settings.getSerialDebug()) {
+			writeSerialTimestamp();
+			Serial << "EC sensor readings adjusted for temperature." << endl;
+		}
 	}
 	//Set next timer
 	Alarm.timerOnce(0,1,0,adjustECtemp);

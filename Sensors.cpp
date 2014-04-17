@@ -113,10 +113,7 @@ void Sensors::updateMain() {
 	_temps[_iSample] = temp();
 	_lights[_iSample] = light();
 	_humidities[_iSample] = humidity();
-	/*_ecs[_iSample] = ec();
-	_phs[_iSample] = ph();
-	_waterLevels[_iSample] = waterLevel();*/
-	
+
 	_iSample++;
 	if (_iSample >= numSamples)
 		_iSample =0;
@@ -234,6 +231,7 @@ float Sensors::ph() {
 //TODO: Error checking should be better implemented
 //Returns EC in uSiemens
 uint16_t Sensors::ec() {
+	//TODO: Comrpobar 17 ASCII characters max
   //As EC readings are continuous we can get two types of errors when reading from arduino
   //We can have a string with more than 2 commas and we can have a number too large to be valid data 
   if (Serial2.available() > 0) {
@@ -246,7 +244,8 @@ uint16_t Sensors::ec() {
       inchar = (char)Serial2.read();    
       sensorString += inchar;           
     }
-    //Serial << "String given by EC: " << sensorString << endl;
+	//TODO:Remove
+    Serial << "String given by EC: " << sensorString << endl;
     //Discard <CR>
     Serial2.read();
     //Count number of ","
@@ -307,34 +306,40 @@ void Sensors::adjustECtemp() {
 
 //pH Calibration
 void Sensors::setPHcontinuous() {
-	String command = "C/r";
-	Serial << command << endl;
-	Serial1.print(command);
-	phToSerial();
+	Serial1.print("C/r");
+	Serial << "Continuous pH" << endl;
 }
 
 void Sensors::setPHstandby() {
 	Serial1.print("E/r");
-	phToSerial();
+	Serial << "Standby pH" << endl;
 }
 
 void Sensors::setPHfour() {
 	Serial1.print("F/r");
-	phToSerial();
 }
 
 void Sensors::setPHseven() {
 	Serial1.print("S/r");
-	phToSerial();
 }
 
 void Sensors::setPHten() {
 	Serial1.print("T/r");
-	phToSerial();
 }
 
 //EC Calibration
-void Sensors::setProbeType() {
+void Sensors::setECcontinuous() {
+	Serial2.print("C/r");
+	ecToSerial();
+	Serial << "Continuous EC" << endl;
+}
+
+void Sensors::setECstandby() {
+	Serial2.print("E/r");
+	Serial << "Standby EC" << endl;
+}
+
+void Sensors::setECprobeType() {
 	Serial2.print("P,2/r");
 	ecToSerial();
 }
@@ -344,37 +349,17 @@ void Sensors::setECdry() {
 	ecToSerial();
 }
 
-void Sensors::setECtenThousand() {
-	Serial2.print("Z10/r");
-	ecToSerial();
-}
-
 void Sensors::setECfortyThousand() {
 	Serial2.print("Z40/r");
 	ecToSerial();
 }
 
-//Prints to Serial(if active) pH circuit's response to commands
-void Sensors::phToSerial() {
-	if (_settings->getSerialDebug()) {
-		//while (Serial1.available() <= 0) {}
-		if (Serial1.available() > 0) {
-			String sensorString = "";
-			sensorString.reserve(30);
-			//Read data from sensor
-			char inchar;
-			while (Serial1.peek() != '\r') {
-				inchar = (char)Serial1.read();
-				sensorString += inchar;
-			}
-			//Discard <CR>
-			Serial1.read();
-			Serial << sensorString << endl;
-		}
-	}
+void Sensors::setECtenThousand() {
+	Serial2.print("Z10/r");
+	ecToSerial();
 }
 
-//Same as above but for EC circuit
+//Outpust EC circuit's response to serial
 void Sensors::ecToSerial() {
 	if (_settings->getSerialDebug()) {
 		if (Serial2.available() > 0) {

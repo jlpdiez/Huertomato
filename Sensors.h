@@ -90,7 +90,9 @@ class Sensors {
 	void setPHseven();
 	void setPHten();
 	//EC Calibration
-	void setProbeType();
+	void setECcontinuous();
+	void setECstandby();
+	void setECprobeType();
 	void setECdry();
 	void setECtenThousand();
 	void setECfortyThousand();

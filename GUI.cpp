@@ -1964,6 +1964,9 @@ void GUI::printPHcalibration() {
   	const int ySecondLine = 100;
   	const int yThirdLine = 150;
   	const int xSpacer = 25;
+	  
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
 	 
 	//Makes PH Circuit enter continuous mode 
 	_sensors->setPHcontinuous();
@@ -1993,23 +1996,42 @@ void GUI::processTouchPHcalibration(int x,int y) {
 		_sensors->setPHstandby();
 		//Go to calibration menu
 		drawSensorCalibration();
-	//Save
-	//} else if (buttonIndex == phCalibrationButtons[1]) {
-		//TODO: Do something!
-		//printSavedButton();
 	//Exit
 	} else if (buttonIndex == phCalibrationButtons[2]) {
 		//Enter standby mode
 		_sensors->setPHstandby();
 		//Go to main screen
 		drawMainScreen();
-	}   
+	//TODO: update button visually so users can see a change
+	//1. Calibrate for ph7
+	} else if (buttonIndex == phCalibrationButtons[3]) {
+		_sensors->setPHseven();
+	//2. Calibrate for ph4
+	} else if (buttonIndex == phCalibrationButtons[4]) {
+		_sensors->setPHfour();
+	//3. Calibrate for ph10
+	} else if (buttonIndex == phCalibrationButtons[5]) {
+		_sensors->setPHten();
+	}
 }
 
 //Draws entire screen EC Calibration
 //_actScreen == 16
 void GUI::printECcalibration() {
-  //TODO
+    const int xSpacer = 25;
+	const int ySpacer = 45;
+	
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	
+	//Makes EC Circuit enter standby mode
+	_sensors->setECstandby();
+
+	//Make menu buttons
+	//Before 3 there are flow buttons
+	for (int i = 0; i < nECcalibrationButtons - 3; i++) {
+		ecCalibrationButtons[i + 3] = _buttons.addButton(xSpacer,ySpacer+bigFontSize*2.5*i,ecCalibrationButtonsText[i]);
+	}
 }
 
 void GUI::drawECcalibration() {
@@ -2017,7 +2039,7 @@ void GUI::drawECcalibration() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader("- EC Calibration -");
-	printFlowButtons(true,true,true,ecCalibrationButtons);
+	printFlowButtons(true,false,true,ecCalibrationButtons);
 	printECcalibration();  
 	_buttons.drawButtons();  
 }
@@ -2026,17 +2048,28 @@ void GUI::processTouchECcalibration(int x,int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == ecCalibrationButtons[0]) {
+		_sensors->setECcontinuous();
 		//Go to calibration menu
 		drawSensorCalibration();
-	//Save
-	} else if (buttonIndex == ecCalibrationButtons[1]) {
-		//TODO: Do something!
-		printSavedButton();
 	//Exit
 	} else if (buttonIndex == ecCalibrationButtons[2]) {
-		//Go to main screen
+		_sensors->setECcontinuous();
 		drawMainScreen();
-	}    
+	
+	//1. Set probe type
+	} else if (buttonIndex == phCalibrationButtons[3]) {
+		_sensors->setECprobeType();
+	//2. Dry calibration
+	} else if (buttonIndex == phCalibrationButtons[4]) {
+		_sensors->setECdry();
+		_sensors->setECcontinuous();
+	//3. Calibrate for 40000 uS
+	} else if (buttonIndex == phCalibrationButtons[5]) {
+		_sensors->setECfortyThousand();
+	//4. Calibrate for 10.500 uS
+	} else if (buttonIndex == phCalibrationButtons[6]) {
+		_sensors->setECtenThousand();
+	}   
 }
 
 void GUI::printLightCalibration() {
