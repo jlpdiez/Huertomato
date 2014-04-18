@@ -199,33 +199,22 @@ uint8_t Sensors::waterLevel() {
 }
 
 //Returns PH level 
+//Temp-adjusted reading
 float Sensors::ph() {   
-	//Temp-adjusted reading
 	//Convert temperature from float to char*
 	char tempArray[4];
 	dtostrf(_temp,4,2,tempArray);
 	String command = (String)tempArray + "\r";
-	//Serial << "Ph command: " << command << endl;
 	Serial1.print(command);
 	//Normal reading
 	//Serial1.print("R\r");
-	if (Serial1.available() > 0) {
-		String sensorString = ""; 
-		sensorString.reserve(30);
-		//Read data from sensor
-		while (Serial1.peek() != '\r') {
-			char inchar = (char)Serial1.read();                            
-			sensorString += inchar;           
-		}
-		//Discard <CR>
-		Serial1.read(); 
-		//Convert string to float and return
-		char sensorArray[sensorString.length() + 1];
-		sensorString.toCharArray(sensorArray, sizeof(sensorArray));
-		//Serial << "PH read: " << sensorArray << endl;
-		return atof(sensorArray);
-	} 
-	else { return 0.0; }
+	//Wait for transmission to end
+	Serial1.flush();
+	float res = Serial1.parseFloat();
+	Serial << "pH: " << res << endl;
+	//Discard carriage return '/r'
+	Serial1.read();
+	return res;
 }
 
 //TODO: Error checking should be better implemented
@@ -234,7 +223,7 @@ uint16_t Sensors::ec() {
 	//TODO: Comrpobar 17 ASCII characters max
   //As EC readings are continuous we can get two types of errors when reading from arduino
   //We can have a string with more than 2 commas and we can have a number too large to be valid data 
-  if (Serial2.available() > 0) {
+ /* if (Serial2.available() > 0) {
     //Format is: uSiemens,PPM,Salinity<CR>
     String sensorString = ""; 
     sensorString.reserve(30);
@@ -288,7 +277,23 @@ uint16_t Sensors::ec() {
   else { 
     //Serial << "Buffer empty: " << sensors.ec << endl;  
     return _ec; 
-  }
+  }*/
+ 
+ 	//Serial2.flush();
+ 	//if (Serial1.available() > 0)
+ 	uint16_t res = Serial2.parseInt();
+ 	Serial << "EC: " << res << endl;
+
+ 	//Clear buffer of remaining message
+ 	while (Serial2.peek() != '\r') {
+ 		Serial2.read();
+		Serial << "next: " << Serial2.peek() << endl;
+	 }
+ 	//Discard <CR>
+ 	Serial2.read();
+ 	Serial << "ended " << Serial2.peek() << endl;
+ 	return res;
+	 
 }
 
 //Sends command to EC sensor to adjust readings to temperature
