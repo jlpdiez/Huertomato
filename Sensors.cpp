@@ -11,10 +11,46 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     temperature.setResolution(11);
     //Open communication with PH sensor
     Serial1.begin(38400);
+	
+	/*Serial1 << "L0";
+	Serial1.print("I/r");
+	Serial1.flush();
+	Serial << "ACDC" << endl;
+	if (Serial1.available() > 0) {
+		String info = "";
+		info.reserve(30);
+		//Read data from sensor
+		while (Serial1.peek() != '\r') {
+			char inchar = (char)Serial1.read();
+			info += inchar;
+		}
+		//Discard <CR>
+		Serial1.read();
+		Serial << info << endl;
+	}*/
+
     //Set it into reading on-demand mode
     Serial1.print("E\r");
+	
     //EC sensor
     Serial2.begin(38400);
+	
+	/*Serial2 << "L0";
+	Serial2.print("I/r");
+	Serial2.flush();
+	if (Serial2.available() > 0) {
+		String info1 = "";
+		info1.reserve(30);
+		//Read data from sensor
+		while (Serial2.peek() != '\r') {
+			char inchar = (char)Serial2.read();
+			info1 += inchar;
+		}
+		//Discard <CR>
+		Serial1.read();
+		Serial << info1 << endl;
+	}*/
+	
     Serial2.print("E\r");
     //Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
     Serial2.print("C\r");
@@ -211,89 +247,31 @@ float Sensors::ph() {
 	//Wait for transmission to end
 	Serial1.flush();
 	float res = Serial1.parseFloat();
-	Serial << "pH: " << res << endl;
+	//Serial << "pH: " << res << endl;
 	//Discard carriage return '/r'
 	Serial1.read();
-	return res;
+	//Make sure data is valid
+	if (res < 14)
+		return res;
+	else 
+		return _ph;
 }
 
-//TODO: Error checking should be better implemented
 //Returns EC in uSiemens
 uint16_t Sensors::ec() {
-	//TODO: Comrpobar 17 ASCII characters max
-  //As EC readings are continuous we can get two types of errors when reading from arduino
-  //We can have a string with more than 2 commas and we can have a number too large to be valid data 
- /* if (Serial2.available() > 0) {
-    //Format is: uSiemens,PPM,Salinity<CR>
-    String sensorString = ""; 
-    sensorString.reserve(30);
-    //Read data from sensor
-    char inchar;
-    while (Serial2.peek() != '\r') {
-      inchar = (char)Serial2.read();    
-      sensorString += inchar;           
-    }
-	//TODO:Remove
-    Serial << "String given by EC: " << sensorString << endl;
-    //Discard <CR>
-    Serial2.read();
-    //Count number of ","
-    int comma = 0;
-    int index = 0;
-    while (sensorString.indexOf(',',index+1) != -1) {
-      index = sensorString.indexOf(',',index+1);
-      comma++;  
-    }
-    //If comma != 2 we have read buffer while sensor was sending data
-    if (comma == 2) {
-      //uSiemens
-      int firstComma = sensorString.indexOf(',');
-      String uSiemens = sensorString.substring(0,firstComma);
-      //PPM / TDS
-      //int secondComma = sensorString.indexOf(',',firstComma+1);
-      //String ppm = sensorString.substring(firstComma+1,secondComma);
-      //Salinity
-      //String salinity = sensorString.substring(secondComma+1,sensorString.length());
-      //Convert string to int and return
-      char uSiemensArray[uSiemens.length() + 1];
-      uSiemens.toCharArray(uSiemensArray, sizeof(uSiemensArray));      
-      //Serial << "EC in uS: " << atol(uSiemensArray) << endl;
-      uint16_t uS = atol(uSiemensArray);
-      //we dont accept readings that are clearly off charts
-      if (uS > 10000) {
-        //Serial << "Number too big: " << sensors.ec << endl;
-        return _ec;
-      }
-      //We received valid data
-      else
-        return atol(uSiemensArray);
-    } 
-    else { 
-      //Serial << "Too many commas: " << sensors.ec << endl;
-      return _ec; 
-    }
-  } 
-  //We have read buffer before sensor sent any data
-  else { 
-    //Serial << "Buffer empty: " << sensors.ec << endl;  
-    return _ec; 
-  }*/
- 
- 	//Serial2.flush();
- 	//if (Serial1.available() > 0)
  	uint16_t res = Serial2.parseInt();
- 	Serial << "EC: " << res << endl;
-
+ 	//Serial << "EC: " << res << endl;
  	//Clear buffer of remaining message
  	while (Serial2.peek() != '\r') {
  		Serial2.read();
-		Serial << "next: " << Serial2.peek() << endl;
 	 }
- 	//Discard <CR>
  	Serial2.read();
- 	Serial << "ended " << Serial2.peek() << endl;
- 	return res;
-	 
+	//Sometimes readings spike. We should prevent that
+	//Not sure if its from Serial buffer overflowing or noise in cables
+	if (res < 10000)
+		return res;
+	else
+		return _ec;	 
 }
 
 //Sends command to EC sensor to adjust readings to temperature

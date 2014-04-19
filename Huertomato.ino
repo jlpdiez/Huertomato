@@ -174,6 +174,24 @@ void setupSerial() {
 	Serial.begin(115200);
 	Serial << endl << ".::[ Huertomato ]::." << endl;
 	Serial << "By: Juan L. Perez Diez" << endl << endl;
+	
+	/*Serial1.begin(38400);
+	Serial1 << "I/r";
+	Serial1.print("I/r");
+	Serial1.print('I');
+	Serial1.print('/r');
+	Serial1.flush();
+	String info = "";
+	info.reserve(30);
+	//Read data from sensor
+	while (Serial1.peek() != '\r') {
+		char inchar = (char)Serial1.read();
+		info += inchar;
+	}
+	//Discard <CR>
+	Serial1.read();
+	Serial << info << endl;*/
+	
 }
 
 //Initiates system time from RTC
