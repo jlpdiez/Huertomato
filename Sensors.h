@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.04.2014
+// # Date       : 20.04.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards

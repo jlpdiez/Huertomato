@@ -3,7 +3,7 @@
 // # Name       : Huertomato
 // # Version    : 1.2.3
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.04.2014
+// # Date       : 20.04.2014
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -75,27 +75,27 @@ const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
 //A1 - Old: A13
-const int humidIn = A1;
-//const int humidIn = A13;
+//const int humidIn = A1;
+const int humidIn = A13;
 //A2 - Old: A15
-const int lightIn = A2;
-//const int lightIn = A15;
+//const int lightIn = A2;
+const int lightIn = A15;
 //A0 - Old: 42
-const int tempIn = A0;
-//const int tempIn = 42;
+//const int tempIn = A0;
+const int tempIn = 42;
 //D8 - Old: 44
-const int waterEcho = 8;
-//const int waterEcho = 44;
+//const int waterEcho = 8;
+const int waterEcho = 44;
 //D9 - Old: 45
-const int waterTrigger = 9;
-//const int waterTrigger = 45;
+//const int waterTrigger = 9;
+const int waterTrigger = 45;
 //ACTUATORS
 //D10 - Old: 47
-const int buzzPin = 10;
-//const int buzzPin = 47;
+//const int buzzPin = 10;
+const int buzzPin = 47;
 //A9 - Old: 49
-const int waterPump = A9;
-//const int waterPump = 49;
+//const int waterPump = A9;
+const int waterPump = 49;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -174,24 +174,6 @@ void setupSerial() {
 	Serial.begin(115200);
 	Serial << endl << ".::[ Huertomato ]::." << endl;
 	Serial << "By: Juan L. Perez Diez" << endl << endl;
-	
-	/*Serial1.begin(38400);
-	Serial1 << "I/r";
-	Serial1.print("I/r");
-	Serial1.print('I');
-	Serial1.print('/r');
-	Serial1.flush();
-	String info = "";
-	info.reserve(30);
-	//Read data from sensor
-	while (Serial1.peek() != '\r') {
-		char inchar = (char)Serial1.read();
-		info += inchar;
-	}
-	//Discard <CR>
-	Serial1.read();
-	Serial << info << endl;*/
-	
 }
 
 //Initiates system time from RTC
@@ -475,7 +457,7 @@ void logSensorReadings() {
 		//Inform through serial
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
-			Serial << "Succesfully logged sensor data to SD Card." << endl;   
+			Serial << "Logged sensor data to SD Card." << endl;   
 		}
 	} else if (settings.getSerialDebug()) {
 		writeSerialTimestamp();
@@ -560,20 +542,19 @@ void beepOff() {
 
 //TIMED WATERING ROUTINES
 void startWatering() {
-	//If theres enough water to activate pump
-	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {
-		settings.setWateringPlants(true);
-		led.setColour(BLUE);
-		//Refresh main screen if needed
-		if (gui.getActScreen() == 0)
+	settings.setWateringPlants(true);
+	led.setColour(BLUE);
+	//Refresh main screen if needed
+	if (gui.getActScreen() == 0)
 		gui.updateMainScreen();
-			
+		
+	//If theres enough water to activate pump
+	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {	
 		//Inform through serial
 		if (settings.getSerialDebug()) {
 			writeSerialTimestamp();
 			Serial << "Huertomato is watering plants" << endl;
 		}
-			
 		digitalWrite(waterPump, HIGH);
 		//Creates timer to stop watering
 		Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
@@ -582,6 +563,7 @@ void startWatering() {
 	} else {
 		writeSerialTimestamp();
 		Serial << "Huertomato will NOT water to prevent pump damage" << endl;
+		stopWatering();
 	}
 }
 

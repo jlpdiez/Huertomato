@@ -11,46 +11,11 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     temperature.setResolution(11);
     //Open communication with PH sensor
     Serial1.begin(38400);
-	
-	/*Serial1 << "L0";
-	Serial1.print("I/r");
-	Serial1.flush();
-	Serial << "ACDC" << endl;
-	if (Serial1.available() > 0) {
-		String info = "";
-		info.reserve(30);
-		//Read data from sensor
-		while (Serial1.peek() != '\r') {
-			char inchar = (char)Serial1.read();
-			info += inchar;
-		}
-		//Discard <CR>
-		Serial1.read();
-		Serial << info << endl;
-	}*/
-
     //Set it into reading on-demand mode
     Serial1.print("E\r");
 	
     //EC sensor
-    Serial2.begin(38400);
-	
-	/*Serial2 << "L0";
-	Serial2.print("I/r");
-	Serial2.flush();
-	if (Serial2.available() > 0) {
-		String info1 = "";
-		info1.reserve(30);
-		//Read data from sensor
-		while (Serial2.peek() != '\r') {
-			char inchar = (char)Serial2.read();
-			info1 += inchar;
-		}
-		//Discard <CR>
-		Serial1.read();
-		Serial << info1 << endl;
-	}*/
-	
+    Serial2.begin(38400);	
     Serial2.print("E\r");
     //Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
     Serial2.print("C\r");
