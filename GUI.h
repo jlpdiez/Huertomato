@@ -4,7 +4,7 @@
 // # Version    : 2.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.04.2014
+// # Date       : 23.04.2014
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition and button presses
@@ -30,8 +30,7 @@
 #include <Arduino.h>
 #include "Settings.h"
 #include "Sensors.h"
-#include "Buttons.h" 
-#include "Other.h"   
+#include "Buttons.h"   
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
@@ -409,13 +408,13 @@ class GUI {
     void drawWaterCalibration();    
     void processTouchWaterCalibration(int x,int y);
     
-    void printPHcalibration();
+    /*void printPHcalibration();
     void drawPHcalibration();    
     void processTouchPHcalibration(int x,int y);
     
     void printECcalibration();
     void drawECcalibration();    
-    void processTouchECcalibration(int x,int y);
+    void processTouchECcalibration(int x,int y);*/
     
     void printLightCalibration();
     void drawLightCalibration();

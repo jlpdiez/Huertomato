@@ -123,11 +123,11 @@ void GUI::processTouch() {
 				break;
 			//pH Calibration
 			case 15:
-				processTouchPHcalibration(x,y);
+				//processTouchPHcalibration(x,y);
 				break;
 			//EC Calibration
 			case 16:
-				processTouchECcalibration(x,y);
+				//processTouchECcalibration(x,y);
 				break;
 			//Light Calibration
 			case 17:
@@ -585,7 +585,7 @@ void GUI::updateIconAndStatus() {
 			}
 			img.close();
 		} else
-		_lcd->drawBitmap(15,25+bigFontSize,imgSize,imgSize,logo126);
+			_lcd->drawBitmap(15,25+bigFontSize,imgSize,imgSize,logo126);
 	}
 }
 
@@ -1022,7 +1022,7 @@ void GUI::processTouchTime(int x, int y) {
 		drawControllerSettings();
 	//Save
 	} else if (buttonIndex == timeButtons[1]) {	
-		setRTCtime(sysHour, sysMin, sysSec, sysDay, sysMonth, sysYear);
+		_sensors->setRTCtime(sysHour, sysMin, sysSec, sysDay, sysMonth, sysYear);
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == timeButtons[2]) {
@@ -1852,9 +1852,9 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 	//Water calibration
 	else if (buttonIndex == sensorCalibrationButtons[3]) { drawWaterCalibration(); }
 	//pH calibration
-	else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
+	//else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
 	//EC calibration
-	else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
+	//else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
 	//Light Calibration
 	else if (buttonIndex == sensorCalibrationButtons[6]) { drawLightCalibration(); }
 }
@@ -1962,7 +1962,7 @@ void GUI::processTouchWaterCalibration(int x,int y) {
 	}
 }
 
-void GUI::printPHcalibration() {
+/*void GUI::printPHcalibration() {
   	const int yFirstLine = 50;
   	const int ySecondLine = 100;
   	const int yThirdLine = 150;
@@ -2073,7 +2073,7 @@ void GUI::processTouchECcalibration(int x,int y) {
 	} else if (buttonIndex == phCalibrationButtons[6]) {
 		_sensors->setECtenThousand();
 	}   
-}
+}*/
 
 void GUI::printLightCalibration() {
     const int yFirstLine = 60;

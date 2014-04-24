@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 20.04.2014
+// # Date       : 23.04.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -31,7 +31,9 @@
 #include <Arduino.h>
 #include <DHT11.h>
 #include <DallasTemperature.h>
-#include <Streaming.h>
+//#include <Streaming.h>
+#include <DS1307RTC.h>
+#include <Time.h>
 
 //Ideally these variables should be given to the constructor but
 //theres no way to declare a OneWire instance and initiate it afterwards that i know of
@@ -79,12 +81,11 @@ class Sensors {
 	uint16_t getRawLight();
   
     //Updates sample arrays with readings from sensors and smoothes data
-    void updateMain();
-	void updateReservoir();
+    void update();
     //Adjusts EC sensor readings to temperature
     void adjustECtemp();
 	//pH Calibration
-	void setPHcontinuous();
+	/*void setPHcontinuous();
 	void setPHstandby();
 	void setPHfour();
 	void setPHseven();
@@ -95,7 +96,9 @@ class Sensors {
 	void setECprobeType();
 	void setECdry();
 	void setECtenThousand();
-	void setECfortyThousand();
+	void setECfortyThousand();*/
+	//RTC adjustment
+	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
   private:
 	Settings *_settings;

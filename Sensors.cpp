@@ -1,5 +1,4 @@
 #include "Sensors.h"
-//TODO: Update via MOD
 
 //Constructors
 Sensors::Sensors(Settings *settings) : _settings(settings){     
@@ -109,23 +108,22 @@ uint16_t Sensors::getRawLight() {
 }
 
 //Updates sample arrays with readings from sensors and performs smoothing
-//TODO: Another form of keeping track needed?
-void Sensors::updateMain() {
+void Sensors::update() {
 	_temps[_iSample] = temp();
 	_lights[_iSample] = light();
 	_humidities[_iSample] = humidity();
+	
+	if (_settings->getReservoirModule()) {
+		_ecs[_iSample] = ec();
+		_phs[_iSample] = ph();
+		_waterLevels[_iSample] = waterLevel();
+	}
 
 	_iSample++;
 	if (_iSample >= numSamples)
 		_iSample =0;
 	
 	smoothSensorReadings();
-}
-
-void Sensors::updateReservoir() {
-	_ecs[_iSample] = ec();
-	_phs[_iSample] = ph();
-	_waterLevels[_iSample] = waterLevel();
 }
 
 //For each sensor data array calculates the average and stores it
@@ -252,8 +250,23 @@ void Sensors::adjustECtemp() {
 	}
 }
 
+//Updates RTC internal time
+void Sensors::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y) {
+	tmElements_t t;
+	t.Hour = h;
+	t.Minute = m;
+	t.Second = s;
+	t.Day = d;
+	t.Month = mo;
+	//year argument is offset from 1970
+	t.Year = y - 1970;
+	time_t time = makeTime(t);
+	setTime(time);
+	RTC.set(time);
+}
+
 //pH Calibration
-void Sensors::setPHcontinuous() {
+/*void Sensors::setPHcontinuous() {
 	Serial1.print("C/r");
 	Serial << "Continuous pH" << endl;
 }
@@ -324,5 +337,5 @@ void Sensors::ecToSerial() {
 			Serial << sensorString << endl;
 		}
 	}
-}
+}*/
 

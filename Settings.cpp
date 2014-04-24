@@ -271,6 +271,7 @@ void Settings::setSound(const boolean s) {
 void Settings::setSerialDebug(const boolean s) { 
 	_serialDebug = s; 
 	EEPROM.updateByte(_addressSerialDebug,s);
+	_serialDebugChanged = true;
 }
 
 void Settings::setReservoirModule(const boolean r) {
@@ -360,5 +361,11 @@ boolean Settings::sdSettingsChanged() {
 boolean Settings::sensorPollingChanged() {
 	boolean res = _sensorPollingChanged;
 	_sensorPollingChanged = false;
+	return res;
+}
+
+boolean Settings::serialDebugChanged() {
+	boolean res = _serialDebugChanged;
+	_serialDebugChanged = false;
 	return res;
 }

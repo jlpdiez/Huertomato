@@ -25,7 +25,14 @@ void setupWaterModes();
 void updateNextWateringTime();
 void initMusic();
 //
-void writeSerialTimestamp();
+void checkAlarms();
+void checkNightTime();
+void checkSettingsChanged();
+void checkWater();
+void checkSD();
+void checkSensors();
+void checkSerial();
+void timestampToSerial(String str);
 void logSensorReadings();
 void updateSensors();
 void adjustECtemp();
@@ -41,8 +48,6 @@ void stopWatering();
 #include "C:\Users\eNDeR\Desktop\Huertomato\Buttons.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\GUI.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\GUI.h"
-#include "C:\Users\eNDeR\Desktop\Huertomato\Other.cpp"
-#include "C:\Users\eNDeR\Desktop\Huertomato\Other.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.cpp"
 #include "C:\Users\eNDeR\Desktop\Huertomato\RGBled.h"
 #include "C:\Users\eNDeR\Desktop\Huertomato\Sensors.cpp"
