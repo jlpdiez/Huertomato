@@ -12,14 +12,6 @@
 //highlight: used for button text and symbols when selected
 //background: used for button background
 
-//typedef struct {
-//  uint16_t  pos_x, pos_y, width, height;
-//  uint16_t  flags;
-//  char *label;
-//  bitmapdatatype data;
-//  bitmapdatatype dataOn;
-//} button_type1;
-
 class Borderless_Buttons : public UTFT_Buttons {
   public:
     //Constructors
@@ -41,7 +33,6 @@ class Borderless_Buttons : public UTFT_Buttons {
     
    protected:
      uint8_t _color_text[3], _color_text_inactive[3], _color_background[3], _color_border[3], _color_hilite[3];
-//     button_type1 buttons[MAX_BUTTONS];
 };
 
 #endif
