@@ -57,8 +57,9 @@ int Borderless_Buttons::addButton(uint16_t x, uint16_t y, char *label, uint16_t 
   else {
     buttons[btcnt].pos_x  = x;
     buttons[btcnt].pos_y  = y;
-    buttons[btcnt].width  = _UTFT->getFontXsize() * strlen(label);
-    buttons[btcnt].height = _UTFT->getFontYsize();
+	//We add a margin of 10 to all buttons in order fr them to be easier to press
+    buttons[btcnt].width  = _UTFT->getFontXsize() * strlen(label) + 10;
+    buttons[btcnt].height = _UTFT->getFontYsize() + 10;
     buttons[btcnt].flags  = flags;
     buttons[btcnt].label  = label;
     buttons[btcnt].data   = NULL;
@@ -99,9 +100,7 @@ void Borderless_Buttons::drawButton(int buttonID) {
   _UTFT->setBackColor(_color_background[0], _color_background[1], _color_background[2]);
   if (buttons[buttonID].flags & BUTTON_BITMAP) {
     _UTFT->drawBitmap(buttons[buttonID].pos_x, buttons[buttonID].pos_y, buttons[buttonID].width, buttons[buttonID].height, buttons[buttonID].data);
-    //TODO: Change icon color if disabled
-    //if (!(buttons[buttonID].flags & BUTTON_NO_BORDER)) {
-      if ((buttons[buttonID].flags & BUTTON_DISABLED))
+	if ((buttons[buttonID].flags & BUTTON_DISABLED))
         _UTFT->setColor(_color_text_inactive[0],_color_text_inactive[1],_color_text_inactive[2]);
   } else {
     if (buttons[buttonID].flags & BUTTON_DISABLED)

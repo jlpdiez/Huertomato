@@ -832,14 +832,6 @@ void GUI::printControllerSettings() {
     _lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
   else
 	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
-  
-  //This goes to waitForControllerSettings or Buttons.h
-//  _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-//  _lcd->setBackColor(VGA_WHITE);
-//  _lcd->setFont(various_symbols);
-//  _lcd->print("e",xSpacer,40+bigFontSize*2*3);
-//  _lcd->setFont(hallfetica_normal);
-//  _lcd->print(buttonText[3],xSpacer+bigFontSize*2,40+bigFontSize*2*3);
 }
 
 //Draws entire screen Controller Settings
@@ -1438,16 +1430,19 @@ void GUI::processTouchWaterCycle(int x, int y) {
 		drawSystemSettings();
 	//Save
 	} else if (buttonIndex == waterCycleButtons[1]) {
+		boolean update = false;
+		//Prevents flood time > time inactive as it will mess up alarms
+		//As flood time always > 1 this also prevents a watering time of 0
+		if ((waterHour == 0) && (floodMin >= waterMin)) {
+			waterMin = floodMin + 1;
+			update = true;
+		}
 		_settings->setWaterTimed(waterTimed);
-		//Prevents setting time to 0
-		if ((waterHour == 0) && (waterMin == 0)) {
-			_settings->setWaterHour(waterHour);
-			_settings->setWaterMinute(1);
-		} else {
-			_settings->setWaterHour(waterHour);
-			_settings->setWaterMinute(waterMin);
-		}	
+		_settings->setWaterHour(waterHour);
+		_settings->setWaterMinute(waterMin);	
 		_settings->setFloodMinute(floodMin);
+		if (update)
+			updateWaterCycle();
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == waterCycleButtons[2]) {
