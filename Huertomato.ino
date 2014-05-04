@@ -388,6 +388,11 @@ void checkNightTime() {
 			setupWaterModes();
 		}
 	}
+	//This handles settings change while watering stopped for night
+	if (settings.getNightWatering() && settings.getNightWateringStopped()) {
+		settings.setNightWateringStopped(false);
+		setupWaterModes();
+	}
 }
 
 //Checks if some setting has been changed and updates accordingly
@@ -590,7 +595,7 @@ void beepOff() {
 void startWatering() {
 	updateNextWateringTime();	
 	//If theres enough water to activate pump
-	if (sensors.getRawWaterLevel() >= settings.getPumpProtectionLvl()) {	
+	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {	
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);

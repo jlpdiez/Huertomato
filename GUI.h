@@ -106,7 +106,7 @@ const int nSystemButtons = 8;
 static char* systemButtonText[nSystemButtons] = {
 	"Watering Cycle",
 	"Sensor Alarms",
-	"Sensor Calibration",
+	"Calibration",
 	"Pump protection",
 	"Watering at Night:"
 }; 

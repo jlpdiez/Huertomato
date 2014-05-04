@@ -1720,7 +1720,7 @@ void GUI::drawSensorCalibration() {
 	_actScreen = 13;
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Sensor Calibration -");
+	printMenuHeader("- Calibration -");
 	printFlowButtons(true,false,true,sensorCalibrationButtons);
 	printSensorCalibration();  
 	_buttons.drawButtons();   
