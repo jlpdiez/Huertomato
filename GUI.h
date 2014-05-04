@@ -1,10 +1,10 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 2.0
+// # Version    : 2.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.04.2014
+// # Date       : 04.05.2014
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains all windows and manages its transition and button presses
