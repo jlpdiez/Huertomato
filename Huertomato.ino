@@ -615,9 +615,6 @@ void startWatering() {
 	//Pump will get damaged - System will NOT water	
 	} else {
 		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
-		//TODO: LCD wont update here so previous watering time showed. 
-		//Test this or change GUI
-		//settings.setAlarmTriggered(true);
 	}
 }
 
