@@ -99,9 +99,10 @@ void Borderless_Buttons::drawButton(int buttonID) {
   
   _UTFT->setBackColor(_color_background[0], _color_background[1], _color_background[2]);
   if (buttons[buttonID].flags & BUTTON_BITMAP) {
-    _UTFT->drawBitmap(buttons[buttonID].pos_x, buttons[buttonID].pos_y, buttons[buttonID].width, buttons[buttonID].height, buttons[buttonID].data);
-	if ((buttons[buttonID].flags & BUTTON_DISABLED))
-        _UTFT->setColor(_color_text_inactive[0],_color_text_inactive[1],_color_text_inactive[2]);
+		if (buttons[buttonID].data != 0)
+			_UTFT->drawBitmap(buttons[buttonID].pos_x, buttons[buttonID].pos_y, buttons[buttonID].width, buttons[buttonID].height, buttons[buttonID].data);
+		if ((buttons[buttonID].flags & BUTTON_DISABLED))
+			_UTFT->setColor(_color_text_inactive[0],_color_text_inactive[1],_color_text_inactive[2]);
   } else {
     if (buttons[buttonID].flags & BUTTON_DISABLED)
       _UTFT->setColor(_color_text_inactive[0],_color_text_inactive[1],_color_text_inactive[2]);
@@ -166,6 +167,7 @@ int Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
           result = i;
       }
     }
+	//While pressed
     if (result != -1) {
       //if (!(buttons[result].flags & BUTTON_NO_BORDER)) {
         _UTFT->setColor(_color_hilite[0], _color_hilite[1], _color_hilite[2]);
@@ -173,18 +175,22 @@ int Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
           _UTFT->setFont(_font_symbol);
         else
           _UTFT->setFont(_font_text);
-        _UTFT->print(buttons[result].label, buttons[result].pos_x, buttons[result].pos_y);
+		if (!(buttons[result].flags & BUTTON_BITMAP))
+			_UTFT->print(buttons[result].label, buttons[result].pos_x, buttons[result].pos_y);
     }
     
 	//The following line prevents multi-presses
     while (_UTouch->dataAvailable() == true) {};
+		
+	//On release
     if (result != -1) {
-      _UTFT->setColor(_color_text[0],_color_text[1],_color_text[2]);
-      if (buttons[result].flags & BUTTON_SYMBOL)
+		_UTFT->setColor(_color_text[0],_color_text[1],_color_text[2]);
+		if (buttons[result].flags & BUTTON_SYMBOL)
           _UTFT->setFont(_font_symbol);
         else
           _UTFT->setFont(_font_text);
-      _UTFT->print(buttons[result].label, buttons[result].pos_x, buttons[result].pos_y);
+		if (!(buttons[result].flags & BUTTON_BITMAP))
+			_UTFT->print(buttons[result].label, buttons[result].pos_x, buttons[result].pos_y);
     }
 
     _UTFT->setColor(_current_color);

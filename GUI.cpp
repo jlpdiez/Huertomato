@@ -36,19 +36,6 @@ return *this;
 
 //Destructor
 GUI::~GUI() {}
-	
-//GUI::GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ) :
-//  _lcd(ITDB32WD, lcdRS,lcdWR,lcdCS,lcdRST), _touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ), _buttons(&_lcd, &_touch){
-//    
-//  _actScreen = 0;
-//  _lcd->InitLCD();
-//  _lcd->clrScr();
-//  _lcd->fillScr(VGA_WHITE);
-//  _touch.InitTouch();
-//  _touch.setPrecision(PREC_MEDIUM);
-//  _buttons.setTextFont(hallfetica_normal);
-//  _buttons.setButtonColors(lightGreen, darkGreen, white, grey, white);
-//}
 
 //Getter
 int GUI::getActScreen() const {	return _actScreen; }
@@ -111,7 +98,7 @@ void GUI::processTouch() {
 				break;
 			//Auto Config Alarms
 			case 12:
-				processTouchAutoConfig(x,y);
+				//processTouchAutoConfig(x,y);
 				break;
 			//Sensor Calibration
 			case 13:
@@ -121,20 +108,12 @@ void GUI::processTouch() {
 			case 14:
 				processTouchWaterCalibration(x,y);
 				break;
-			//pH Calibration
-			case 15:
-				//processTouchPHcalibration(x,y);
-				break;
-			//EC Calibration
-			case 16:
-				//processTouchECcalibration(x,y);
-				break;
 			//Light Calibration
-			case 17:
+			case 15:
 				processTouchLightCalibration(x,y);
 				break;
 			//Pump Protection
-			case 18:
+			case 16:
 				processTouchPumpProtection(x,y);
 				break;
 		}
@@ -257,9 +236,9 @@ void GUI::printSensorInfo() {
 	y = ySpacer+(bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 
 	_lcd->print(sensorText[3],x,y);
 	_lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
@@ -269,9 +248,9 @@ void GUI::printSensorInfo() {
 	y = ySpacer+(bigFontSize+8)*4;
 	uint16_t ec = _sensors->getEC();
 	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	
 	_lcd->print(sensorText[4],x,y);
 	_lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
@@ -282,9 +261,9 @@ void GUI::printSensorInfo() {
 	y = ySpacer+(bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (lvl < _settings->getWaterAlarm())
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	
 	_lcd->print(sensorText[5],x,y);
 	_lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
@@ -621,11 +600,6 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(backX-1,backY-5,backX+bigFontSize*strlen(backText),backY-5);
     buttonArray[0] = _buttons.addButton(backX, backY, backText);
-    
-    //Coords should be x1, y1, x2, y2
-    //x1,y1 are line's x1,y1. x2 is line's x2. y2 is backY+bigFontSize+something (or maxY)
-    //const int backB[]= {backX-1, backY-5, backX+bigFontSize*strlen(backS), maxY};
-    
   } else 
     buttonArray[0] = -1;
   
@@ -636,8 +610,7 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(saveX-1,saveY-5,saveX+bigFontSize*strlen(saveText),saveY-5);
-    buttonArray[1] = _buttons.addButton(saveX, saveY, saveText);
-    
+    buttonArray[1] = _buttons.addButton(saveX, saveY, saveText);    
   } else
     buttonArray[1] = -1; 
   
@@ -648,8 +621,7 @@ void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitB
     //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
     _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
     _lcd->drawLine(cancelX-1,cancelY-5,cancelX+bigFontSize*strlen(cancelText),cancelY-5);
-    buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);
-    
+    buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);   
   } else
     buttonArray[2] = -1; 
 }
@@ -672,16 +644,18 @@ void GUI::printMainMenu() {
 	const int controllerY = 135;
 	const int xSpacer = 15;
 	const int systemY = 60;
-	//Rehacer alineacion X para iconos
 	_lcd->setFont(hallfetica_normal);
-  
-	//Logos
-	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
   
 	//Make menu buttons. System and Controller settings
 	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
 	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
+	
+	//Logos
+	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
+	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
+	//With transparent buttons
+	mainMenuButtons[5] = _buttons.addButton(xSpacer, systemY-18, 64, 64, 0);	
+	mainMenuButtons[6] = _buttons.addButton(xSpacer, controllerY-18, 64, 64, 0);
 }
 
 //Draws main menu into LCD
@@ -702,9 +676,9 @@ void GUI::processTouchMainMenu(int x, int y) {
 	//Exit
 	if (buttonIndex == mainMenuButtons[2]) { drawMainScreen(); }
 	//System Settings
-	else if (buttonIndex == mainMenuButtons[3]) { drawSystemSettings(); }
+	else if ((buttonIndex == mainMenuButtons[3]) || (buttonIndex == mainMenuButtons[5])) { drawSystemSettings(); }
 	//Controller Settings
-	else if (buttonIndex == mainMenuButtons[4]) { drawControllerSettings(); }
+	else if ((buttonIndex == mainMenuButtons[4]) || (buttonIndex == mainMenuButtons[6])) { drawControllerSettings(); }
 }
 
 //Prepares window for drawing
@@ -1490,13 +1464,13 @@ void GUI::printSensorAlarms() {
   //Print triangles
   _lcd->setFont(various_symbols);
   for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-    _lcd->print("T",xSpacer,ySpacer+bigFontSize*2.5*i);
+    _lcd->print("T",xSpacer,ySpacer+bigFontSize*3*i);
   }
   
   //Make menu buttons
   //Before 3 there are flow buttons
   for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-    sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*2.5*i,sensorAlarmsButtonsText[i]);
+    sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*3*i,sensorAlarmsButtonsText[i]);
   }  
 }
 
@@ -1519,13 +1493,13 @@ void GUI::processTouchSensorAlarms(int x, int y) {
 	//Exit
 	else if (buttonIndex == sensorAlarmsButtons[2]) { drawMainScreen();  }
 	//Auto config
-	else if (buttonIndex == sensorAlarmsButtons[3]) { drawAutoConfig(); }
+	//else if (buttonIndex == sensorAlarmsButtons[3]) { drawAutoConfig(); }
 	//pH Thresholds
-	else if (buttonIndex == sensorAlarmsButtons[4]) { drawPHalarms(); }
+	else if (buttonIndex == sensorAlarmsButtons[3]) { drawPHalarms(); }
 	//EC Thresholds
-	else if (buttonIndex == sensorAlarmsButtons[5]) { drawECalarms(); }
+	else if (buttonIndex == sensorAlarmsButtons[4]) { drawECalarms(); }
 	//Nutrient Level
-	else if (buttonIndex == sensorAlarmsButtons[6]) { drawWaterAlarms(); }
+	else if (buttonIndex == sensorAlarmsButtons[5]) { drawWaterAlarms(); }
 
 }
 
@@ -1773,7 +1747,7 @@ void GUI::processTouchWaterAlarms(int x,int y) {
 	} 
 }
 
-void GUI::printAutoConfig() {
+/*void GUI::printAutoConfig() {
   //TODO
 }
 
@@ -1804,26 +1778,24 @@ void GUI::processTouchAutoConfig(int x,int y) {
 		//Go to main screen
 		drawMainScreen();
 	}    
-}
+}*/
 
 void GUI::printSensorCalibration() {
   const int xSpacer = 15;
   const int ySpacer = 45;
   
-  _lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-  _lcd->setBackColor(VGA_WHITE);
+  	const int yFirst = 60;
+	const int ySecond = 135;
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
   
-  //Print triangles
-  _lcd->setFont(various_symbols);
-  for (int i = 0; i < nSensorCalibrationButtons - 3; i++) {
-    _lcd->print("T",xSpacer,ySpacer+bigFontSize*2.5*i);
-  }
-  
-  //Make menu buttons
-  //Before 3 there are flow buttons
-  for (int i = 0; i < nSensorCalibrationButtons - 3; i++) {
-    sensorCalibrationButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*2.5*i,sensorCalibrationButtonsText[i]);
-  }  
+	//Triangles
+	_lcd->setFont(various_symbols);
+	_lcd->print("T",xSpacer,yFirst);
+	_lcd->print("T",xSpacer,ySecond);
+	//Buttons
+	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
+	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
 }
 
 //Draws entire screen Sensor Calibration
@@ -1846,12 +1818,8 @@ void GUI::processTouchSensorCalibration(int x, int y) {
 	else if (buttonIndex == sensorCalibrationButtons[2]) { drawMainScreen(); }  
 	//Water calibration
 	else if (buttonIndex == sensorCalibrationButtons[3]) { drawWaterCalibration(); }
-	//pH calibration
-	//else if (buttonIndex == sensorCalibrationButtons[4]) { drawPHcalibration(); }
-	//EC calibration
-	//else if (buttonIndex == sensorCalibrationButtons[5]) { drawECcalibration(); }
 	//Light Calibration
-	else if (buttonIndex == sensorCalibrationButtons[6]) { drawLightCalibration(); }
+	else if (buttonIndex == sensorCalibrationButtons[4]) { drawLightCalibration(); }
 }
 
 void GUI::printWaterCalibration() {
@@ -1877,7 +1845,7 @@ void GUI::printWaterCalibration() {
 	
 	//Second Line
 	x = xSpacer;
-	_lcd->print("Current Max:",x,ySecondLine);
+	_lcd->print("Current Top:",x,ySecondLine);
 	x += 12*bigFontSize;
 	_lcd->printNumI(waterLvlMax,x,ySecondLine,3,' ');
 	x += 3*bigFontSize;
@@ -1887,7 +1855,7 @@ void GUI::printWaterCalibration() {
 	
 	//Third Line
 	x = xSpacer;
-	_lcd->print("Current Min:",x,yThirdLine);
+	_lcd->print(" and Bottom:",x,yThirdLine);
 	x += 12*bigFontSize;
 	_lcd->printNumI(waterLvlMin,x,yThirdLine,3,' ');
 	x += 3*bigFontSize;
@@ -1957,119 +1925,6 @@ void GUI::processTouchWaterCalibration(int x,int y) {
 	}
 }
 
-/*void GUI::printPHcalibration() {
-  	const int yFirstLine = 50;
-  	const int ySecondLine = 100;
-  	const int yThirdLine = 150;
-  	const int xSpacer = 25;
-	  
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->setBackColor(VGA_WHITE);
-	 
-	//Makes PH Circuit enter continuous mode 
-	_sensors->setPHcontinuous();
-	  
-	phCalibrationButtons[3] = _buttons.addButton(xSpacer,yFirstLine,phCalibrationButtonsText[0]);
-	phCalibrationButtons[4] = _buttons.addButton(xSpacer,ySecondLine,phCalibrationButtonsText[1]);
-	phCalibrationButtons[5] = _buttons.addButton(xSpacer,yThirdLine,phCalibrationButtonsText[2]);
-}
-
-//Draws entire screen pH Calibration
-//_actScreen == 15
-void GUI::drawPHcalibration() {
-	_actScreen = 15;
-	_lcd->fillScr(VGA_WHITE);
-	_buttons.deleteAllButtons();
-	printMenuHeader("- pH Calibration -");
-	printFlowButtons(true,false,true,phCalibrationButtons);
-	printPHcalibration();  
-	_buttons.drawButtons();  
-}
-
-void GUI::processTouchPHcalibration(int x,int y) {
-	int buttonIndex = _buttons.checkButtons(x,y);
-	//Back
-	if (buttonIndex == phCalibrationButtons[0]) {
-		//Enter standby mode
-		_sensors->setPHstandby();
-		//Go to calibration menu
-		drawSensorCalibration();
-	//Exit
-	} else if (buttonIndex == phCalibrationButtons[2]) {
-		//Enter standby mode
-		_sensors->setPHstandby();
-		//Go to main screen
-		drawMainScreen();
-	//TODO: update button visually so users can see a change
-	//1. Calibrate for ph7
-	} else if (buttonIndex == phCalibrationButtons[3]) {
-		_sensors->setPHseven();
-	//2. Calibrate for ph4
-	} else if (buttonIndex == phCalibrationButtons[4]) {
-		_sensors->setPHfour();
-	//3. Calibrate for ph10
-	} else if (buttonIndex == phCalibrationButtons[5]) {
-		_sensors->setPHten();
-	}
-}
-
-//Draws entire screen EC Calibration
-//_actScreen == 16
-void GUI::printECcalibration() {
-    const int xSpacer = 25;
-	const int ySpacer = 45;
-	
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->setBackColor(VGA_WHITE);
-	
-	//Makes EC Circuit enter standby mode
-	_sensors->setECstandby();
-
-	//Make menu buttons
-	//Before 3 there are flow buttons
-	for (int i = 0; i < nECcalibrationButtons - 3; i++) {
-		ecCalibrationButtons[i + 3] = _buttons.addButton(xSpacer,ySpacer+bigFontSize*2.5*i,ecCalibrationButtonsText[i]);
-	}
-}
-
-void GUI::drawECcalibration() {
-	_actScreen = 16;
-	_lcd->fillScr(VGA_WHITE);
-	_buttons.deleteAllButtons();
-	printMenuHeader("- EC Calibration -");
-	printFlowButtons(true,false,true,ecCalibrationButtons);
-	printECcalibration();  
-	_buttons.drawButtons();  
-}
-
-void GUI::processTouchECcalibration(int x,int y) {
-	int buttonIndex = _buttons.checkButtons(x,y);
-	//Back
-	if (buttonIndex == ecCalibrationButtons[0]) {
-		_sensors->setECcontinuous();
-		//Go to calibration menu
-		drawSensorCalibration();
-	//Exit
-	} else if (buttonIndex == ecCalibrationButtons[2]) {
-		_sensors->setECcontinuous();
-		drawMainScreen();
-	
-	//1. Set probe type
-	} else if (buttonIndex == phCalibrationButtons[3]) {
-		_sensors->setECprobeType();
-	//2. Dry calibration
-	} else if (buttonIndex == phCalibrationButtons[4]) {
-		_sensors->setECdry();
-		_sensors->setECcontinuous();
-	//3. Calibrate for 40000 uS
-	} else if (buttonIndex == phCalibrationButtons[5]) {
-		_sensors->setECfortyThousand();
-	//4. Calibrate for 10.500 uS
-	} else if (buttonIndex == phCalibrationButtons[6]) {
-		_sensors->setECtenThousand();
-	}   
-}*/
-
 void GUI::printLightCalibration() {
     const int yFirstLine = 60;
     const int ySecondLine = 135;
@@ -2120,12 +1975,12 @@ void GUI::updateLightCalibration() {
 }
 
 //Draws entire screen Light Calibration
-//_actScreen == 17
+//_actScreen == 15
 void GUI::drawLightCalibration() {
-	_actScreen = 17;
+	_actScreen = 15;
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Light Calibration -");
+	printMenuHeader("- Night Calibration -");
 	printFlowButtons(true,true,true,lightCalibrationButtons);
 	printLightCalibration();  
 	_buttons.drawButtons();    
@@ -2158,7 +2013,7 @@ void GUI::printPumpProtection() {
   
   pumpProtectionLvl = _settings->getPumpProtectionLvl();
   
-  char* wLimitS = "Lower Limit:";
+  char* wLimitS = "Min Water Lvl:";
   _lcd->setColor(grey[0],grey[1],grey[2]);
   //Text
   _lcd->print(wLimitS,xSpacer,yFirstLine);
@@ -2175,9 +2030,9 @@ void GUI::printPumpProtection() {
 }
 
 //Draws entire screen Pump Protection
-//_actScreen == 18
+//_actScreen == 16
 void GUI::drawPumpProtection() {
-	_actScreen = 18;
+	_actScreen = 16;
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader("- Pump Protection -");

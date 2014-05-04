@@ -213,3 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+Visual Micro/Compile.vmps.xml
+Visual Micro/Upload.vmps.xml

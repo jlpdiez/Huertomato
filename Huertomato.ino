@@ -285,7 +285,7 @@ void loop() {
 	
 	//Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
-	Serial << "total: " << Alarm.count() << endl;
+	/*Serial << "total: " << Alarm.count() << endl;
 	Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
 	Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
 	Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
@@ -294,8 +294,8 @@ void loop() {
 		Serial << "id: " << i;
 		Serial << " time_t: " << Alarm.read(i);
 		Serial << " type: " << Alarm.readType(i) << endl;
-	}
-		
+	}*/
+	
 	//Manage LED & Sound
 	if (settings.getWateringPlants() && settings.getWaterTimed()) {
 		led.setColour(BLUE);
@@ -607,6 +607,9 @@ void startWatering() {
 	//Pump will get damaged - System will NOT water	
 	} else {
 		timestampToSerial("Huertomato will NOT water to prevent pump damage");
+		//TODO: LCD wont update here so previous watering time showed. 
+		//Test this or change GUI
+		//settings.setAlarmTriggered(true);
 	}
 }
 

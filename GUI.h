@@ -85,7 +85,7 @@ static char* sensorText[nSensorText] = {
 //static in this context means vars will only be accesible in this file
 //http://www.cprogramming.com/tutorial/statickeyword.html
 
-const int nMainMenuButtons = 5;
+const int nMainMenuButtons = 7;
 static char* mainMenuButtonText[nMainMenuButtons] = {
 	"System Settings",
 	"Controller Settings"
@@ -159,9 +159,9 @@ static char* waterCycleButtonsText[nWaterCycleButtons] = {
 };
 static int  waterCycleButtons[nWaterCycleButtons];
 
-const int nSensorAlarmsButtons = 7;
+const int nSensorAlarmsButtons = 6;
 static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
-	"Auto Config",
+	//"Auto Config",
 	"pH Thresholds",
 	"EC Thresholds",
 	"Nutrient Level"
@@ -199,12 +199,10 @@ static char* autoConfigButtonsText[nAutoConfigButtons] = {
 };
 static int autoConfigButtons[nAutoConfigButtons];
 
-const int nSensorCalibrationButtons = 7;
+const int nSensorCalibrationButtons = 5;
 static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
 	"Water Levels",
-	"pH Sensor",
-	"EC Sensor",
-	"Light Threshold"
+	"Night Threshold"
 };
 static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
@@ -214,23 +212,6 @@ static char* waterLevelButtonsText[nWaterLevelButtons] = {
 	"Set"
 };
 static int waterLevelButtons[nWaterLevelButtons];
-
-const int nPHcalibrationButtons = 6;
-static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
-	"1. Calibrate for pH7",
-	"2. Calibrate for pH4",
-	"3. Calibrate for pH10"
-};
-static int phCalibrationButtons[nPHcalibrationButtons];
-
-const int nECcalibrationButtons = 7;
-static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
-	"1. Set probe type",
-	"2. Dry calibration",
-	"3. Calibrate for 40000 uS",
-	"4. Calibrate for 10500 uS"
-};
-static int ecCalibrationButtons[nECcalibrationButtons];
 
 const int nLightCalibrationButtons = 4;
 static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
@@ -314,7 +295,7 @@ class GUI {
 	//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
 	//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
 	//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
-	//15-pH Calibration, 16-EC Calibration, 17-Light Calibration, 18-Pump Protection
+	//15-Light Calibration, 16-Pump Protection
     uint8_t _actScreen;
 	//State the system is in. 
 	//This is used in order to refresh icon of main screen only when state changes
@@ -396,9 +377,9 @@ class GUI {
 	void updateWaterAlarms();
     void processTouchWaterAlarms(int x,int y);
     
-    void printAutoConfig();
+    /*void printAutoConfig();
     void drawAutoConfig();
-    void processTouchAutoConfig(int x,int y);
+    void processTouchAutoConfig(int x,int y);*/
     
     void printSensorCalibration();
     void drawSensorCalibration();
@@ -407,14 +388,6 @@ class GUI {
     void printWaterCalibration();
     void drawWaterCalibration();    
     void processTouchWaterCalibration(int x,int y);
-    
-    /*void printPHcalibration();
-    void drawPHcalibration();    
-    void processTouchPHcalibration(int x,int y);
-    
-    void printECcalibration();
-    void drawECcalibration();    
-    void processTouchECcalibration(int x,int y);*/
     
     void printLightCalibration();
     void drawLightCalibration();
