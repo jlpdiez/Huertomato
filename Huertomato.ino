@@ -92,9 +92,9 @@ const int waterTrigger = 9;
 //D10 - Old: 47
 const int buzzPin = 10;
 //const int buzzPin = 47;
-//A9 - Old: 49
+//A9 - Old: 48
 const int waterPump = A9;
-//const int waterPump = 49;
+//const int waterPump = 48;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;
@@ -285,10 +285,10 @@ void loop() {
 	
 	//Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
-	/*Serial << "total: " << Alarm.count() << endl;
-	Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
-	Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
-	Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
+	//Serial << "total: " << Alarm.count() << endl;
+	//Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
+	//Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
+	/*Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
 	Serial << " sensorAlarmID: " << sensorAlarm.id << "|" << sensorAlarm.enabled << endl;
 	for (int i = 0; i < Alarm.count(); i++) {
 		Serial << "id: " << i;
@@ -317,7 +317,7 @@ void loop() {
 	else if (gui.getActScreen() == 14)
 		gui.updateWaterCalibration();
 	//Night threshold calibration
-	else if (gui.getActScreen() == 17)
+	else if (gui.getActScreen() == 15)
 		gui.updateLightCalibration();
 	
 	//Trigger alarm if needed
@@ -333,20 +333,21 @@ void loop() {
 
 //Checks if any alarm should be triggered and changes alarm setting if needed
 void checkAlarms() {
+	//Only activate if not already done
 	if (settings.getReservoirModule()) {
-		if ((sensors.getPH() < settings.getPHalarmDown()) 
+		if ((!settings.getAlarmTriggered()) && ((sensors.getPH() < settings.getPHalarmDown()) 
 			|| (sensors.getPH() > settings.getPHalarmUp())
 			|| (sensors.getEC() < settings.getECalarmDown()) 
 			|| (sensors.getEC() > settings.getECalarmUp())
-			|| (sensors.getWaterLevel() < settings.getWaterAlarm())) {
+			|| (sensors.getWaterLevel() < settings.getWaterAlarm()))) {
 			
 				settings.setAlarmTriggered(true);
 			
-		} else if ((sensors.getPH() >= settings.getPHalarmDown()) 
+		} else if ((settings.getAlarmTriggered()) && ((sensors.getPH() >= settings.getPHalarmDown()) 
 			&& (sensors.getPH() <= settings.getPHalarmUp())
 			&& (sensors.getEC() >= settings.getECalarmDown()) 
 			&& (sensors.getEC() <= settings.getECalarmUp())
-			&& (sensors.getWaterLevel() >= settings.getWaterAlarm())) {
+			&& (sensors.getWaterLevel() >= settings.getWaterAlarm()))) {
 			
 				settings.setAlarmTriggered(false);
 		}
@@ -381,6 +382,9 @@ void checkNightTime() {
 		//Day-time and watering not reactivated already
 		} else if ((sensors.getRawLight() >= settings.getLightThreshold()) && settings.getNightWateringStopped()) {
 			settings.setNightWateringStopped(false);
+			//Just in case. Prevents overflow when there are a lot of night/day triggers in short time
+			digitalWrite(waterPump, LOW);
+			settings.setWateringPlants(false);
 			setupWaterModes();
 		}
 	}
@@ -490,7 +494,6 @@ void logSensorReadings() {
 	int y = year(t);
 	int h = hour(t);
 	int m = minute(t);
-	int s = second(t);
   
 	//Filename must be at MAX 8chars + "." + 3chars
 	//We choose it to be YYYY+MM+DD.txt
@@ -503,7 +506,7 @@ void logSensorReadings() {
    
 	if (sensorLog) {
 		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
-		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
+		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
 		sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
 		sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
 		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
@@ -587,14 +590,14 @@ void beepOff() {
 void startWatering() {
 	updateNextWateringTime();	
 	//If theres enough water to activate pump
-	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {	
+	if (sensors.getRawWaterLevel() >= settings.getPumpProtectionLvl()) {	
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
 		//Refresh main screen if needed
 		if (gui.getActScreen() == 0)
 			gui.updateMainScreen();
-		timestampToSerial("Huertomato is watering plants");
+		timestampToSerial("Huertomato is watering plants < --");
 		//Creates timer to stop watering
 		//Clears any previous one if needed
 		if (waterOffAlarm.enabled) {
@@ -606,7 +609,7 @@ void startWatering() {
 	
 	//Pump will get damaged - System will NOT water	
 	} else {
-		timestampToSerial("Huertomato will NOT water to prevent pump damage");
+		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
 		//TODO: LCD wont update here so previous watering time showed. 
 		//Test this or change GUI
 		//settings.setAlarmTriggered(true);
@@ -615,7 +618,11 @@ void startWatering() {
 
 //Stops watering pump and updates system status
 void stopWatering() {
+	if (waterOffAlarm.enabled) {
+		Alarm.free(waterOffAlarm.id);
+		waterOffAlarm.enabled = false;
+	}
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
-	timestampToSerial("Watering cycle ended");
+	timestampToSerial("Watering cycle ended < --");
 }

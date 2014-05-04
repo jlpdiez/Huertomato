@@ -284,11 +284,20 @@ void Settings::setNextWhour(const uint8_t n) { _nextWhour = n; }
 
 void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 
-void Settings::setNightWateringStopped(const boolean n) { _nightWateringStopped = n; }
+void Settings::setNightWateringStopped(const boolean n) { 
+	_nightWateringStopped = n; 
+	_systemStateChanged = true;
+}
 
-void Settings::setWateringPlants(const boolean w) { _wateringPlants = w; }
+void Settings::setWateringPlants(const boolean w) { 
+	_wateringPlants = w; 
+	_systemStateChanged = true;
+}
 
-void Settings::setAlarmTriggered(const boolean a) { _alarmTriggered = a; }
+void Settings::setAlarmTriggered(const boolean a) { 
+	_alarmTriggered = a; 
+	_systemStateChanged = true;
+}
 
 //Getters
 //System Settings
@@ -345,6 +354,12 @@ boolean Settings::getNightWateringStopped() const { return _nightWateringStopped
 boolean Settings::getWateringPlants() const { return _wateringPlants; }
 
 boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
+	
+boolean Settings::systemStateChanged() {
+	boolean res = _systemStateChanged;
+	_systemStateChanged = false;
+	return res;
+}
 
 boolean Settings::waterSettingsChanged() {
 	boolean res = _waterSettingsChanged;

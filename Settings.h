@@ -108,7 +108,9 @@ class Settings {
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
-	//These return value and goes to false
+	
+	//These return value and go to false
+	boolean systemStateChanged();
 	boolean waterSettingsChanged();
 	boolean sdSettingsChanged();
 	boolean sensorPollingChanged();
@@ -164,6 +166,8 @@ class Settings {
     boolean _wateringPlants;
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
+	//True if state changed
+	boolean _systemStateChanged;
 	//Tells if water settings have been changed
 	boolean _waterSettingsChanged;
 	//SD options changed

@@ -297,10 +297,6 @@ class GUI {
 	//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
 	//15-Light Calibration, 16-Pump Protection
     uint8_t _actScreen;
-	//State the system is in. 
-	//This is used in order to refresh icon of main screen only when state changes
-	//0 - Normal, 1 - Alarm, 2 - Watering, 3 - Off for night, 4 - Manual pump
-	uint8_t _sysState;
 
     UTFT *_lcd;
     UTouch *_touch;
