@@ -232,8 +232,7 @@ void setupWaterModes() {
     if (settings.getWaterTimed()) {
 		digitalWrite(waterPump, LOW);
 		settings.setWateringPlants(false);
-		waterAlarm.id = Alarm.timerRepeat(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
-		waterAlarm.enabled = true;
+		startWaterTimer();
 		updateNextWateringTime();
 		timestampToSerial("Timed watering mode enabled");
     } else {
@@ -361,13 +360,10 @@ void checkNightTime() {
 	if (!settings.getNightWatering()) {
 		//Its night-time and watering not stopped already
 		if ((sensors.getRawLight() < settings.getLightThreshold()) && !settings.getNightWateringStopped()) {
-			//System in timed mode
-			if (settings.getWaterTimed()) {
-				//Delete watering alarm
-				if (waterAlarm.enabled) {
-					Alarm.free(waterAlarm.id);
-					waterAlarm.enabled = false;
-				}
+			stopWaterTimer();
+			stopWaterOffTimer();
+			//System in timed mode and not currently watering
+			if (settings.getWaterTimed() && !settings.getWateringPlants()) {
 				//We make a last watering cycle
 				startWatering();
 				timestampToSerial("a last time before stopping for night");
@@ -383,14 +379,20 @@ void checkNightTime() {
 		} else if ((sensors.getRawLight() >= settings.getLightThreshold()) && settings.getNightWateringStopped()) {
 			settings.setNightWateringStopped(false);
 			//Just in case. Prevents overflow when there are a lot of night/day triggers in short time
+			stopWaterOffTimer();
 			digitalWrite(waterPump, LOW);
 			settings.setWateringPlants(false);
 			setupWaterModes();
+			timestampToSerial("Watering reactivated with daylight");
 		}
 	}
-	//This handles settings change while watering stopped for night
+	//This handles changes in settings while watering stopped for night
 	if (settings.getNightWatering() && settings.getNightWateringStopped()) {
 		settings.setNightWateringStopped(false);
+		stopWaterTimer();
+		stopWaterOffTimer();
+		digitalWrite(waterPump, LOW);
+		settings.setWateringPlants(false);
 		setupWaterModes();
 	}
 }
@@ -406,17 +408,12 @@ void checkSettingsChanged() {
 //Checks if water settings have changed and updates system
 void checkWater() {
 	if (settings.waterSettingsChanged()) {
-		//Free previous water alarm if needed
-		if (waterAlarm.enabled) {
-			Alarm.free(waterAlarm.id);
-			waterAlarm.enabled = false;
-		}
-		//If settings changed while watering we stop water and clear alarm
-		if (waterOffAlarm.enabled) {
-			Alarm.free(waterOffAlarm.id);
-			waterOffAlarm.enabled = false;
-			stopWatering();
-		}
+		//Clear alarms, stop water
+		stopWaterTimer();
+		stopWaterOffTimer();
+		digitalWrite(waterPump, LOW);
+		settings.setWateringPlants(false);
+		//Reset system
 		setupWaterModes();
 	}
 }
@@ -591,6 +588,36 @@ void beepOff() {
 		beeping = false;
 }
 
+//Timer managers
+void startWaterTimer() {
+	if (!waterAlarm.enabled) {
+		waterAlarm.id = Alarm.timerRepeat(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
+		waterAlarm.enabled = true;
+
+	}
+}
+
+void stopWaterTimer() {
+	if (waterAlarm.enabled) {
+		Alarm.free(waterAlarm.id);
+		waterAlarm.enabled = false;
+	}
+}
+
+void startWaterOffTimer() {
+	if (!waterOffAlarm.enabled) {
+		waterOffAlarm.id = Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
+		waterOffAlarm.enabled = true;
+	}
+}
+
+void stopWaterOffTimer() {
+	if (waterOffAlarm.enabled) {
+		Alarm.free(waterOffAlarm.id);
+		waterOffAlarm.enabled = false;
+	}
+}
+
 //TIMED WATERING ROUTINES
 void startWatering() {
 	updateNextWateringTime();	
@@ -604,26 +631,16 @@ void startWatering() {
 			gui.updateMainScreen();
 		timestampToSerial("Huertomato is watering plants < --");
 		//Creates timer to stop watering
-		//Clears any previous one if needed
-		if (waterOffAlarm.enabled) {
-			Alarm.free(waterOffAlarm.id);
-			waterOffAlarm.enabled = false;
-		}
-		waterOffAlarm.id = Alarm.timerOnce(0,settings.getFloodMinute(),0,stopWatering);
-		waterOffAlarm.enabled = true;
-	
+		stopWaterOffTimer();
+		startWaterOffTimer();
 	//Pump will get damaged - System will NOT water	
-	} else {
+	} else
 		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
-	}
 }
 
 //Stops watering pump and updates system status
 void stopWatering() {
-	if (waterOffAlarm.enabled) {
-		Alarm.free(waterOffAlarm.id);
-		waterOffAlarm.enabled = false;
-	}
+	stopWaterOffTimer();
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
 	timestampToSerial("Watering cycle ended < --");
