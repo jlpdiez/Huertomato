@@ -140,9 +140,6 @@ alarm sdAlarm = {};
 //True when system has beeping timers activated
 boolean beeping;
 
-//True if SD card has been initiated
-boolean sdInitiated = false;
-
 // *********************************************
 // SETUP
 // *********************************************
@@ -170,7 +167,6 @@ void setup() {
 	initMusic();
 	setupAlarms();
 	setupWaterModes();
-
 	 
 	Alarm.delay(1000);
 	LCD.fillScr(VGA_WHITE);
@@ -197,19 +193,11 @@ void setupRTC() {
 //Inits SD card and creates timer for SD logs
 void setupSD() {
 	if (settings.getSDactive()) {
-		if (!sdInitiated) {
-			pinMode(SDCardSS, OUTPUT);
-			if (!SD.begin(SDCardSS)) {
-				settings.setSDactive(false);
-				timestampToSerial("SD init problem!! Make sure it's correctly inserted"); 		
-			} else {
-				timestampToSerial("SD init OK");
-				sdInitiated = true;
-			}
-		}
+		pinMode(SDCardSS, OUTPUT);
+		if (SD.begin(SDCardSS))
+			timestampToSerial("SD init OK");
 		//Timer to log sensor data to SD Card
-		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
-		sdAlarm.enabled = true;
+		startSDlogTimer();
 	}
 }
 
@@ -287,9 +275,9 @@ void loop() {
 	//Serial << "total: " << Alarm.count() << endl;
 	//Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
 	//Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
-	/*Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
-	Serial << " sensorAlarmID: " << sensorAlarm.id << "|" << sensorAlarm.enabled << endl;
-	for (int i = 0; i < Alarm.count(); i++) {
+	//Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
+	//Serial << " sensorAlarmID: " << sensorAlarm.id << "|" << sensorAlarm.enabled << endl;
+	/*for (int i = 0; i < Alarm.count(); i++) {
 		Serial << "id: " << i;
 		Serial << " time_t: " << Alarm.read(i);
 		Serial << " type: " << Alarm.readType(i) << endl;
@@ -421,10 +409,7 @@ void checkWater() {
 //Checks if SD settings have been changed and updates system
 void checkSD() {
 	if (settings.sdSettingsChanged()) {
-		if (sdAlarm.enabled) {
-			Alarm.free(sdAlarm.id);
-			sdAlarm.enabled = false;
-		}
+		stopSDlogTimer();
 		if (settings.getSDactive()) {
 			setupSD();
 			timestampToSerial("SD logging turned ON");
@@ -515,9 +500,8 @@ void logSensorReadings() {
 		sensorLog.close();
 		//Inform through serial
 		timestampToSerial("Logged sensor data to SD Card.");
-	} else {
+	} else
 		timestampToSerial("Error opening SD file, can't log sensor readings.");
-	}
 	//Set next timer
 	if (settings.getSDactive()) {
 		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
@@ -589,11 +573,24 @@ void beepOff() {
 }
 
 //Timer managers
+void startSDlogTimer() {
+	if (!sdAlarm.enabled) {
+		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
+		sdAlarm.enabled = true;
+	}
+}
+
+void stopSDlogTimer() {
+	if (sdAlarm.enabled) {
+		Alarm.free(sdAlarm.id);
+		sdAlarm.enabled = false;
+	}
+}
+
 void startWaterTimer() {
 	if (!waterAlarm.enabled) {
 		waterAlarm.id = Alarm.timerRepeat(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
 		waterAlarm.enabled = true;
-
 	}
 }
 
