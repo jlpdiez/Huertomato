@@ -73,28 +73,14 @@ const int redPin = 12;
 const int greenPin = 11;
 const int bluePin = 13;
 //SENSORS
-//A1 - Old: A13
 const int humidIn = A1;
-//const int humidIn = A13;
-//A2 - Old: A15
 const int lightIn = A2;
-//const int lightIn = A15;
-//A0 - Old: 42
 const int tempIn = A0;
-//const int tempIn = 42;
-//D8 - Old: 44
 const int waterEcho = 8;
-//const int waterEcho = 44;
-//D9 - Old: 45
 const int waterTrigger = 9;
-//const int waterTrigger = 45;
 //ACTUATORS
-//D10 - Old: 47
 const int buzzPin = 10;
-//const int buzzPin = 47;
-//A9 - Old: 48
 const int waterPump = A9;
-//const int waterPump = 48;
 //LCD
 const int lcdRS = 38;
 const int lcdWR = 39;

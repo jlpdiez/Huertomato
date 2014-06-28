@@ -450,9 +450,6 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="alarm126.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="Buttons.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -472,12 +469,6 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="logos64.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="moon126.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="plant126.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="RGBled.cpp">
