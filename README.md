@@ -1,4 +1,4 @@
-Software
+Huertomato Arduino Code
 ========
 
-Arduino firmware of Huertomato hydroponics controller
+This is the Arduino firmware for the Huertomato hydroponics controller.
