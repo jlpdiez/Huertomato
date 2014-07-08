@@ -50,8 +50,6 @@ build/
 [Bb]in/
 [Oo]bj/
 
-Visual Micro/
-
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -215,9 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-Visual Micro/Compile.vmps.xml
-Visual Micro/Upload.vmps.xml
-Huertomato.atsuo
-Huertomato.atsuo
-Huertomato.cppproj
-Visual Micro/.Huertomato.vsarduino.h
+
+#Visual Micro
+Visual Micro/
+*.atsuo
