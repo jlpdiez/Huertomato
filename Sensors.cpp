@@ -141,9 +141,9 @@ void Sensors::smoothSensorReadings() {
 	for (int i = 0; i < numSamples; i++) { res += _humidities[i]; }
 	_humidity = (uint8_t)(res / numSamples);
 	//Electroconductivity
-	res = 0;
-	for (int i = 0; i < numSamples; i++) {  res += _ecs[i]; }
-	_ec = (uint16_t)(res / numSamples);
+	uint32_t res32 = 0;
+	for (int i = 0; i < numSamples; i++) {  res32 += _ecs[i]; }
+	_ec = (uint16_t)(res32 / numSamples);
 	//PH
 	resF = 0;
 	for (int i = 0; i < numSamples; i++) { resF += _phs[i]; }
@@ -201,16 +201,15 @@ uint8_t Sensors::waterLevel() {
 //Temp-adjusted reading
 float Sensors::ph() {   
 	//Convert temperature from float to char*
-	char tempArray[4];
-	dtostrf(_temp,4,2,tempArray);
-	String command = (String)tempArray + "\r";
-	Serial1.print(command);
+	//char tempArray[4];
+	//dtostrf(_temp,4,2,tempArray);
+	//String command = (String)tempArray + "\r";
+	//Serial1.print(command);
 	//Normal reading
-	//Serial1.print("R\r");
+	Serial1.print("R\r");
 	//Wait for transmission to end
 	Serial1.flush();
 	float res = Serial1.parseFloat();
-	//Serial << "pH: " << res << endl;
 	//Discard carriage return '/r'
 	Serial1.read();
 	//Make sure data is valid
@@ -231,7 +230,7 @@ uint16_t Sensors::ec() {
  	Serial2.read();
 	//Sometimes readings spike. We should prevent that
 	//Not sure if its from Serial buffer overflowing or noise in cables
-	if (res < 10000)
+	if (res < 20000)
 		return res;
 	else
 		return _ec;	 
