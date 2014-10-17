@@ -305,7 +305,7 @@ class GUI {
     Borderless_Buttons _buttons;
     
     //Private functions
-    void printButtonBig(char* text, int x1, int y1, int x2, int y2);
+    //void printButtonBig(char* text, int x1, int y1, int x2, int y2);
     void printHeaderBackground();
     void printMainHeader();
     void updateMainHeader();

@@ -42,6 +42,8 @@
 #include "RGBled.h"
 #include "Buttons.h"
 #include "GUI.h"
+#include "Window.h"
+#include "MainScreen.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -157,6 +159,8 @@ void setup() {
 	Alarm.delay(1000);
 	LCD.fillScr(VGA_WHITE);
 	gui.drawMainScreen();
+	
+	//settings.setReservoirModule(false);
 }
 
 //Initiates serial communication if needed
