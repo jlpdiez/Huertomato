@@ -10,14 +10,24 @@
 #define MAINSCREEN_H_
 
 #include "Window.h"
+#include <Arduino.h>
+#include <Time.h> 
+
+//Holds text strings for each sensor
+const int nSensorText = 6;
+static char* sensorText[nSensorText] = {
+	"Humidity:",
+	"Temp:",
+	"Light:",
+	"pH:",
+	"EC:",
+	"Deposit:"
+};
 
 class MainScreen: public Window {
-	public:
+	public:	
 		MainScreen();
-		MainScreen(const MainScreen &other);
-		MainScreen& operator=(const MainScreen &other);
 		~MainScreen();
-		
 		void printWindow();
 		void drawWindow();
 		void updateWindow();

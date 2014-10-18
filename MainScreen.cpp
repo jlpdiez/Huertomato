@@ -1,7 +1,5 @@
 #include "MainScreen.h"
 
-MainScreen::MainScreen() : _actScreen(1) {}
-	
 //Prints mainscreen header text and clock
 void MainScreen::printMainHeader() {
 	//For small font y = 6. For big one y = 2;

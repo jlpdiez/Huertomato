@@ -1,11 +1,43 @@
 #include "GUI.h"
 
 void GUI::init() {
-	
+	_lcd->InitLCD();
+	_lcd->clrScr();
+	_lcd->fillScr(VGA_WHITE);
+	_touch->InitTouch();
+	_touch->setPrecision(PREC_MEDIUM);
+	drawSplashScreen();
+}
+
+//Draw splash Screen
+//TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
+void GUI::drawSplashScreen() {
+	const int iconSize = 126;
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	//Shows centered icon
+	_lcd->drawBitmap(xSize/2-(iconSize/2),10,iconSize,iconSize,logo126);
+	//Shows centered text
+	char* message = "Huertomato is loading...";
+	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
+}
+
+void GUI::start() {
+	_actScreen = 0;
+	_lcd->fillScr(VGA_WHITE);
+	printWindow(Main);
+}
+
+void GUI::printWindow(const int screen) {
+	switch (screen) {
+		default:
+		break;
+	}
 }
 
 //Getter
-/*int GUI::getActScreen() const {	return _actScreen; }
+int GUI::getActScreen() const { return _actScreen; }
 
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {
@@ -14,7 +46,7 @@ void GUI::processTouch() {
 		int x = _touch->getX();
 		int y = _touch->getY();
     
-		switch (_actScreen) {
+		/*switch (_actScreen) {
 			//Main Screen
 			case 0: 
 				drawMainMenu();
@@ -83,10 +115,10 @@ void GUI::processTouch() {
 			case 16:
 				processTouchPumpProtection(x,y);
 				break;
-		}
+		}*/
 	}
 }
-
+/*
 //Draw splash Screen
 //TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
 void GUI::drawSplashScreen() {

@@ -42,7 +42,6 @@
 #include "RGBled.h"
 #include "Buttons.h"
 #include "GUI.h"
-#include "Window.h"
 #include "MainScreen.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
@@ -134,12 +133,12 @@ boolean beeping;
 void setup() {  
 	led.setOn();
 	
-	LCD.InitLCD();
+	/*LCD.InitLCD();
 	LCD.clrScr();
 	LCD.fillScr(VGA_WHITE);
 	Touch.InitTouch();
-	Touch.setPrecision(PREC_MEDIUM);
-	gui.drawSplashScreen();
+	Touch.setPrecision(PREC_MEDIUM);*/
+	gui.init();
 	
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
@@ -157,8 +156,8 @@ void setup() {
 	setupWaterModes();
 	 
 	Alarm.delay(1000);
-	LCD.fillScr(VGA_WHITE);
-	gui.drawMainScreen();
+	//LCD.fillScr(VGA_WHITE);
+	gui.start();
 	
 	//settings.setReservoirModule(false);
 }
@@ -288,14 +287,17 @@ void loop() {
 		led.setColour(GREEN);
 		
 	//Refresh screens if needed
-    if (gui.getActScreen() == 0)
-		gui.updateMainScreen();
+    //if (gui.getActScreen() == 0)
+		//TODO:
+		//gui.updateMainScreen();
 	//Nutrient level calibration
-	else if (gui.getActScreen() == 14)
-		gui.updateWaterCalibration();
+	//else if (gui.getActScreen() == 14)
+		//TODO:
+		//gui.updateWaterCalibration();
 	//Night threshold calibration
-	else if (gui.getActScreen() == 15)
-		gui.updateLightCalibration();
+	//else if (gui.getActScreen() == 15)
+		//TODO:
+		//gui.updateLightCalibration();
 	
 	//Trigger alarm if needed
 	checkAlarms();
@@ -614,8 +616,9 @@ void startWatering() {
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
 		//Refresh main screen if needed
-		if (gui.getActScreen() == 0)
-			gui.updateMainScreen();
+		//TODO:
+		//if (gui.getActScreen() == 0)
+			//gui.updateMainScreen();
 		timestampToSerial("Huertomato is watering plants < --");
 		//Creates timer to stop watering
 		stopWaterOffTimer();
