@@ -496,25 +496,19 @@ void logSensorReadings() {
 }
 
 //Sends sensor data through serial
-//void showStatsSerial() { 
-//  time_t t = now();
-//  int d = day(t);
-//  int mo = month(t);
-//  int y = year(t);
-//  int h = hour(t);
-//  int m = minute(t);
-//  int s = second(t);
-//  //Serial << "Uptime: " << elapsed(initTime) << endl;
-//  Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
-//  Serial << "Date: " << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << endl;
-//  Serial << "Time: " << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s << endl;
-//  Serial << "Temp: " << sensors.getTemp() << "C" << endl;
-//  Serial << "Humidity: " << sensors.getHumidity() << "%" << endl;
-//  Serial << "Light level: " << sensors.getLight() << "%" << endl;
-//  Serial << "EC: " << sensors.getEC() << endl;
-//  Serial << "pH: " << sensors.getPH() << endl;
-//  Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl << endl;
-//}
+void showStatsSerial() { 
+	if (settings.getSerialDebug()) {
+		Serial << "Available memory: " << freeMemory() << " bytes"<< endl;
+		Serial << "Temp: " << sensors.getTemp() << "C" << endl;
+		Serial << "Humidity: " << sensors.getHumidity() << "%" << endl;
+		Serial << "Light level: " << sensors.getLight() << "%" << endl;
+		if (settings.getReservoirModule()) {
+			Serial << "EC: " << sensors.getEC() << endl;
+			Serial << "pH: " << sensors.getPH() << endl;
+			Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl;
+		}
+	}
+}
 
 // *********************************************
 // OTHER
@@ -524,6 +518,7 @@ void logSensorReadings() {
 void updateSensors() {
 	sensors.update();
 	timestampToSerial("Sensors read, data updated.");
+	showStatsSerial();
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
