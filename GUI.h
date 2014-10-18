@@ -31,6 +31,7 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"   
+#include "Window.h"
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
@@ -38,6 +39,7 @@
 #include <TimeAlarms.h>
 #include <SD.h>    
 
+/*
 //Main Screen Icons                          
 extern prog_uint16_t plant126[0x3E04];
 extern prog_uint16_t alarm126[0x3E04];
@@ -49,26 +51,31 @@ extern prog_uint16_t plant64[0x1000];
 extern prog_uint16_t plantDark64[0x1000];
 extern prog_uint16_t settings64[0x1000];
 extern prog_uint16_t settingsDark64[0x1000];
-
+*/
 //Fonts
-extern uint8_t Sinclair_S[];
+//extern uint8_t Sinclair_S[];
 extern uint8_t hallfetica_normal[];
 extern uint8_t various_symbols[];
 
 //Colours
-const uint8_t lightGreen[3] = {184, 210, 60};
-const uint8_t darkGreen[3] = {141, 170, 39};
-const uint8_t grey[3] = {100,100,100};
-const uint8_t red[3] = {200,0,0};
-const uint8_t blue[3] = {0,135,199};
-const uint8_t yellow[3] = {255,242,32};
-const uint8_t white[3] = {255,255,255};
+uint8_t lightGreen[3] = {184, 210, 60};
+//const uint8_t darkGreen[3] = {141, 170, 39};
+uint8_t grey[3] = {100,100,100};
+//const uint8_t red[3] = {200,0,0};
+//const uint8_t blue[3] = {0,135,199};
+//const uint8_t yellow[3] = {255,242,32};
+uint8_t white[3] = {255,255,255};
+	
+extern UTFT *_lcd;
+extern UTouch *_touch;
+extern Sensors *_sensors;
+extern Settings *_settings;
 
-const int xSize = 399;
+/*const int xSize = 399;
 const int ySize = 239;
 const int bigFontSize = 16;
 const int smallFontSize = 8;
-
+*/
 //Holds text strings for each sensor
 const int nSensorText = 6;
 static char* sensorText[nSensorText] = {
@@ -267,10 +274,18 @@ static boolean soundActive;
 //Serial toggle
 static boolean serialActive;
 
+class GUI {
+	public:		
+		void init();
+		
+	private:
+		Window *_window;
+	};
+
   
 //Handless all the gui.
 //Once initialised you call drawMainScreen() and then just processTouch() on the main loop
-class GUI {
+/*class GUI {
   public:
 	//Constructors
     //GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ);
@@ -372,11 +387,11 @@ class GUI {
     void drawWaterAlarms();
 	void updateWaterAlarms();
     void processTouchWaterAlarms(int x,int y);
-    
+    */
     /*void printAutoConfig();
     void drawAutoConfig();
     void processTouchAutoConfig(int x,int y);*/
-    
+    /*
     void printSensorCalibration();
     void drawSensorCalibration();
     void processTouchSensorCalibration(int x, int y);
@@ -393,6 +408,6 @@ class GUI {
 	void drawPumpProtection();
 	void updatePumpProtection();
 	void processTouchPumpProtection(int x, int y);
-};
+};*/
     
 #endif

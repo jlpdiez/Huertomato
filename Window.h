@@ -13,6 +13,7 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"
+#include "GUI.h"
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
@@ -20,32 +21,63 @@
 #include <TimeAlarms.h>
 #include <SD.h>
 
+extern UTFT *_lcd;
+extern UTouch *_touch;
+extern Sensors *_sensors;
+extern Settings *_settings;
+
+//Main Screen Icons
+/*extern prog_uint16_t plant126[0x3E04];
+extern prog_uint16_t alarm126[0x3E04];
+
+extern prog_uint16_t moon126[0x3E04];
+
+//Menu Icons
+extern prog_uint16_t plant64[0x1000];
+extern prog_uint16_t plantDark64[0x1000];
+extern prog_uint16_t settings64[0x1000];
+extern prog_uint16_t settingsDark64[0x1000];*/
+
+extern prog_uint16_t logo126[0x3E04];
+
+//Fonts
+//extern uint8_t Sinclair_S[];
+extern uint8_t hallfetica_normal[];
+extern uint8_t various_symbols[];
+
+//Colours
+extern uint8_t lightGreen[3];
+extern uint8_t grey[3];
+extern uint8_t white[3];
+uint8_t darkGreen[3] = {141, 170, 39};
+
+const int xSize = 399;
+const int ySize = 239;
+const int bigFontSize = 16;
+const int smallFontSize = 8;
+
 class Window {
 	
 	public:
 		//Constructors
 		//GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ);
 		Window();
-		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-		Window(const Window &other);
-		Window& operator=(const Window &other);
+		//Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		//Window(const Window &other);
+		//Window& operator=(const Window &other);
 		//Destructor
-		~Window();
+		virtual ~Window();
 		//Getters
-		int getActScreen() const;
+		virtual int getActScreen() const = 0;
 		
 		virtual void printWindow() = 0;
 		virtual void drawWindow() = 0;
 		virtual void updateWindow() = 0;	
-		virtual void processTouchWindow() = 0;
+		virtual void processTouch() = 0;
 	
-	private:	
+	protected:
 		static uint8_t _actScreen;
 		
-		static UTFT *_lcd;
-		static UTouch *_touch;
-		static Sensors *_sensors;
-		static Settings *_settings;
 		static Borderless_Buttons _buttons;
 		
 		void drawSplashScreen();
@@ -54,39 +86,9 @@ class Window {
 
 //Constructors
 Window::Window() {
-}
-
-/*Window::Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
-: _lcd(lcd), _touch(touch), _buttons(lcd,touch), _sensors(sensors), _settings(settings) {
-	_actScreen = 0;
-
 	_buttons.setTextFont(hallfetica_normal);
 	_buttons.setSymbolFont(various_symbols);
 	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
-	
-}*/
-
-Window::Window(const Window &other) /*: _buttons(other._buttons)*/ {
-	_lcd = other._lcd;
-	_touch = other._touch;
-	_sensors = other._sensors;
-	_settings = other._settings;
-	
-	_actScreen = 0;
-
-	_buttons.setTextFont(hallfetica_normal);
-	_buttons.setSymbolFont(various_symbols);
-	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
-}
-
-Window& Window::operator=(const Window &other) {
-	_lcd = other._lcd;
-	_touch = other._touch;
-	_buttons = other._buttons;
-	_sensors = other._sensors;
-	_settings = other._settings;
-	
-	return *this;
 }
 
 //Destructor

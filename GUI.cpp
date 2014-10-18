@@ -1,44 +1,11 @@
 #include "GUI.h"
 
-//Constructors
-GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
-	: _lcd(lcd), _touch(touch), _buttons(lcd,touch), _sensors(sensors), _settings(settings) {
-	_actScreen = 0;
-
-	_buttons.setTextFont(hallfetica_normal);
-	_buttons.setSymbolFont(various_symbols);
-_buttons.setButtonColors(lightGreen, grey, white, grey, white);
-  
-}
-
-GUI::GUI(const GUI &other) : _buttons(other._buttons) {
-	_lcd = other._lcd;
-	_touch = other._touch;
-	_sensors = other._sensors;
-	_settings = other._settings;
+void GUI::init() {
 	
-	_actScreen = 0;
-
-	_buttons.setTextFont(hallfetica_normal);
-	_buttons.setSymbolFont(various_symbols);
-	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
 }
-
-GUI& GUI::operator=(const GUI &other) {
-	_lcd = other._lcd;
-	_touch = other._touch;
-	_buttons = other._buttons;
-	_sensors = other._sensors;
-	_settings = other._settings;
-	
-return *this;
-}
-
-//Destructor
-GUI::~GUI() {}
 
 //Getter
-int GUI::getActScreen() const {	return _actScreen; }
+/*int GUI::getActScreen() const {	return _actScreen; }
 
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {
@@ -1695,7 +1662,7 @@ void GUI::processTouchAutoConfig(int x,int y) {
 		drawMainScreen();
 	}    
 }*/
-
+/*
 void GUI::printSensorCalibration() {
   const int xSpacer = 15;
   const int ySpacer = 45;
@@ -1991,3 +1958,4 @@ void GUI::processTouchPumpProtection(int x, int y) {
 		updatePumpProtection();
 	}
 }
+*/

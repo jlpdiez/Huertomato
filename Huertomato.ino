@@ -112,7 +112,7 @@ UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 Settings settings;
 Sensors sensors(&settings);
 
-GUI gui(&LCD,&Touch,&sensors,&settings);
+GUI gui;
 
 //Stores timers ID's and status
 struct alarm {

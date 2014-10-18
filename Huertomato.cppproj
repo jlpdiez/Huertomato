@@ -465,6 +465,15 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="GUI.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MainScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="logo126.c">
       <SubType>compile</SubType>
     </Compile>

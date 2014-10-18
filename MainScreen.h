@@ -9,6 +9,8 @@
 #ifndef MAINSCREEN_H_
 #define MAINSCREEN_H_
 
+#include "Window.h"
+
 class MainScreen: public Window {
 	public:
 		MainScreen();
@@ -22,21 +24,11 @@ class MainScreen: public Window {
 		void processTouchWindow();
 		
 	private:
-		uint8_t _actScreen;
-		
-		static UTFT *_lcd;
-		static UTouch *_touch;
-		static Sensors *_sensors;
-		static Settings *_settings;
-		static Borderless_Buttons _buttons;
-		
 		void printMainHeader();
 		void updateMainHeader();
 };
 
-MainScreen::MainScreen() : _actScreen(1) {
-	
-}
+
 
 
 
