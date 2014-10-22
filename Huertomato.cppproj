@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>6.1</ProjectVersion>
+    <ProjectVersion>6.2</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
     <ProjectGuid>{07b459b4-8d76-4638-bc6d-a459ba2d616b}</ProjectGuid>
     <avrdevice>atmega2560</avrdevice>
@@ -27,15 +27,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.3.0" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -60,44 +60,44 @@
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\eNDeR\Documents\Arduino\libraries</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -120,44 +120,44 @@
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\eNDeR\Documents\Arduino\libraries</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
             <Value>
             </Value>
           </ListValues>
@@ -261,44 +261,44 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\eNDeR\Documents\Arduino\libraries</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -321,44 +321,44 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\cores\arduino</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\variants\mega</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Streaming\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Wire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DS1307RTC\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DHT11\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\OneWire\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\DallasTemperature\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\Time\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\TimeAlarms\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTouch\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\UTFT_Buttons\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\EEPROMEx\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\SD\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries\MemoryFree\utility</Value>
-            <Value>C:\arduino-1.0.5-r2\libraries</Value>
-            <Value>C:\arduino-1.0.5-r2\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>C:\Users\eNDeR\Documents\Arduino\libraries</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\include\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\avr\</Value>
-            <Value>c:\arduino-1.0.5-r2\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
             <Value>
             </Value>
           </ListValues>
@@ -456,6 +456,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="Buttons.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="fonts.c">
       <SubType>compile</SubType>
     </Compile>
@@ -466,9 +472,6 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MainScreen.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Window.h">

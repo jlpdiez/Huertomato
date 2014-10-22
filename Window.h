@@ -21,7 +21,7 @@
 #include <TimeAlarms.h>
 #include <SD.h>
 
-extern UTFT *_lcd;
+//extern UTFT *_lcd;
 //extern UTouch *_touch;
 //extern Sensors *_sensors;
 //extern Settings *_settings;
@@ -41,40 +41,32 @@ extern int xSize;
 class Window {
 	
 	public:
-		Window();
+		Window(UTFT *lcd, UTouch *touch);
+		Window(const Window &other);
+		Window& operator=(const Window &other);
 		~Window();
 		
 		virtual void printWindow() = 0;
 		virtual void drawWindow() = 0;
 		virtual void updateWindow() = 0;	
 		virtual void processTouch() = 0;
+		virtual int getActScreen() const;
 	
 	protected:
-		static Borderless_Buttons _buttons;
+		//Screen currently active
+		//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
+		//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
+		//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
+		//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
+		//15-Light Calibration, 16-Pump Protection
+		static uint8_t _actScreen;
+
+		UTFT *_lcd;
+		UTouch *_touch;
+		//array de ventanas indexado por _actScreen!
+		Borderless_Buttons _buttons;
+		
 		void printHeaderBackground();
 };
-
-//Constructors
-Window::Window() {
-	_buttons.setTextFont(hallfetica_normal);
-	_buttons.setSymbolFont(various_symbols);
-	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
-}
-
-//Destructor
-Window::~Window() {}
-	
-
-
-//Prints header background and separator line
-void Window::printHeaderBackground() {
-	const int headerHeight = 20;
-	//Header background
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->fillRect(0,0,xSize,headerHeight);
-	//Separator line
-	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
-	_lcd->drawLine(0, headerHeight, xSize, headerHeight);
-}
 
 #endif

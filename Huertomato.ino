@@ -111,7 +111,7 @@ UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 Settings settings;
 Sensors sensors(&settings);
 
-GUI gui;
+GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //Stores timers ID's and status
 struct alarm {
@@ -156,10 +156,6 @@ void setup() {
 	setupWaterModes();
 	 
 	Alarm.delay(1000);
-	//LCD.fillScr(VGA_WHITE);
-	gui.start();
-	
-	//settings.setReservoirModule(false);
 }
 
 //Initiates serial communication if needed
@@ -198,10 +194,7 @@ void setupAlarms() {
 	sensorAlarm.enabled = true;
 	//Every min we adjust EC circuit readings to temperature
 	if (settings.getReservoirModule())
-		Alarm.timerOnce(0,1,0,adjustECtemp);		
-	//Every 5secs we send sensor status to Serial if needed
-	//if (settings.getSerialDebug()) 
-		//Alarm.timerOnce(0,0,5,showStatsSerial);   
+		Alarm.timerOnce(0,1,0,adjustECtemp);		  
 }
 
 //Sets watering timer or starts continuous water
@@ -278,26 +271,13 @@ void loop() {
 	} else if (settings.getAlarmTriggered()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
-		if (gui.getActScreen() == 0 && settings.getSound() && !beeping && 
+		if (gui.isMainScreen() && settings.getSound() && !beeping && 
 			!settings.getNightWateringStopped()) {
 			beeping = true;	
 			beepOn();
 		}
 	} else
 		led.setColour(GREEN);
-		
-	//Refresh screens if needed
-    //if (gui.getActScreen() == 0)
-		//TODO:
-		//gui.updateMainScreen();
-	//Nutrient level calibration
-	//else if (gui.getActScreen() == 14)
-		//TODO:
-		//gui.updateWaterCalibration();
-	//Night threshold calibration
-	//else if (gui.getActScreen() == 15)
-		//TODO:
-		//gui.updateLightCalibration();
 	
 	//Trigger alarm if needed
 	checkAlarms();
@@ -537,8 +517,7 @@ void updateSensors() {
 
 //Adjusts EC sensor readings to temperature and sets next timer
 void adjustECtemp() {
-	//Don't adjust if sensor is being calibrated
-	if (gui.getActScreen() != 16) {
+	if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
 		timestampToSerial("EC sensor readings adjusted for temperature.");
 	}
@@ -557,7 +536,7 @@ void beepOn() {
 void beepOff() {
 	const int offSecs = 2;
 	noTone(buzzPin);
-	if (settings.getAlarmTriggered() && settings.getSound() && (gui.getActScreen() == 0) 
+	if (settings.getAlarmTriggered() && settings.getSound() && gui.isMainScreen() 
 		&& !settings.getNightWateringStopped())
 		Alarm.timerOnce(0,0,offSecs,beepOn);
 	else
@@ -617,6 +596,7 @@ void startWatering() {
 		led.setColour(BLUE);
 		//Refresh main screen if needed
 		//TODO:
+		//gui.isMainScreen()
 		//if (gui.getActScreen() == 0)
 			//gui.updateMainScreen();
 		timestampToSerial("Huertomato is watering plants < --");

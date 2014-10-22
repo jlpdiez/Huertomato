@@ -31,7 +31,7 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"   
-#include "MainScreen.h"
+#include "Window.h"
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
@@ -65,11 +65,6 @@ extern uint8_t red[3] = {200,0,0};
 extern uint8_t blue[3] = {0,135,199};
 extern uint8_t yellow[3] = {255,242,32};
 extern uint8_t white[3] = {255,255,255};
-	
-extern UTFT *_lcd;
-extern UTouch *_touch;
-extern Sensors *_sensors;
-extern Settings *_settings;
 
 int xSize = 399;
 const int ySize = 239;
@@ -281,57 +276,38 @@ enum screens {
 
 class GUI {
 	public:		
+		//Constructors
+		GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		GUI(const GUI &other);
+		GUI& operator=(const GUI &other);
+		//Destructor
+		~GUI();
+		
 		void init();
-		void start();
 		void processTouch();
-		int getActScreen() const;
+		void refresh();
+		boolean isMainScreen();
 		
 	private:
-		static uint8_t _actScreen;
+	    UTFT *_lcd;
+	    UTouch *_touch;
+	    Sensors *_sensors;
+	    Settings *_settings;
+		
+		//Const inside a class!!
+		enum { MAX = 100 };
+		
+		Window _window;
 		
 		void drawSplashScreen();
 		void printWindow(const int screen=0);
 	};
 
   
-//Handless all the gui.
-//Once initialised you call drawMainScreen() and then just processTouch() on the main loop
-/*class GUI {
-  public:
-	//Constructors
-    //GUI(int lcdRS,int lcdWR,int lcdCS,int lcdRST,int lcdTCLK,int lcdTCS,int lcdTDIN,int lcdTDOUT,int lcdIRQ);
-    GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-	GUI(const GUI &other);
-	GUI& operator=(const GUI &other);
-	//Destructor
-	~GUI();
-	//Getters
-	int getActScreen() const;
-	//Other
-    void processTouch();
-    void drawSplashScreen();
-    void drawMainScreen();
-	void updateMainScreen();
-	void updateWaterCalibration();
-	void updateLightCalibration();
-	
+//Handless all the gui
+/*
   private:
-    //Screen currently active
-	//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
-	//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
-	//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
-	//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
-	//15-Light Calibration, 16-Pump Protection
-    uint8_t _actScreen;
-
-    UTFT *_lcd;
-    UTouch *_touch;
-	Sensors *_sensors;
-	Settings *_settings;
-    Borderless_Buttons _buttons;
-    
     //Private functions
-    //void printButtonBig(char* text, int x1, int y1, int x2, int y2);
     void printHeaderBackground();
     void printMainHeader();
     void updateMainHeader();
@@ -344,77 +320,92 @@ class GUI {
     void printIconAndStatus();
     void updateIconAndStatus();
     
+	//1 - Main menu
     void printMainMenu();
     void drawMainMenu();
     void processTouchMainMenu(int x, int y);
     
+	//2-System Settings
     void printSystemSettings();
     void drawSystemSettings();
 	void updateSystemSettings();
     void processTouchSystem(int x, int y);
     
+	//3-Controller Settings
     void printControllerSettings();
     void drawControllerSettings();
 	void updateControllerSettings();
     void processTouchController(int x,int y);
     
-    //Controller menu
+    //4-Time & Date
     void printTimeSettings();
     void drawTimeSettings();
 	void updateTimeSettings();
     void processTouchTime(int x, int y);
     
+	//5-Sensor Polling
     void printSensorPolling();
     void drawSensorPolling();
 	void updateSensorPolling();  
     void processTouchSensorPolling(int x, int y);
     
+	//6-SD Card
     void printSDcard();
     void drawSDcard();
 	void updateSDcard();
     void processTouchSDcard(int x, int y);
-    
-    //System Menu
+	
+    //7-Watering Cycle
     void printWaterCycle();
     void drawWaterCycle();
 	void updateWaterCycle();
     void processTouchWaterCycle(int x, int y);
-
+	
+	//8-Sensor Alarms
     void printSensorAlarms();
     void drawSensorAlarms();
     void processTouchSensorAlarms(int x, int y);
     
+	//9-pH Alarms
     void printPHalarms();
     void drawPHalarms();
 	void updatePHalarms();
     void processTouchPHalarms(int x, int y);
     
+	//10-EC Alarms
     void printECalarms();
     void drawECalarms();
 	void updateECalarms();
     void processTouchECalarms(int x,int y);
     
+	//11-Nutrient Level Alarms
     void printWaterAlarms();
     void drawWaterAlarms();
 	void updateWaterAlarms();
     void processTouchWaterAlarms(int x,int y);
-    */
-    /*void printAutoConfig();
+	
+	/*
+    //12-Auto Config Alarms
+    void printAutoConfig();
     void drawAutoConfig();
     void processTouchAutoConfig(int x,int y);*/
-    /*
+	/*
+	//13-Sensor Calibration
     void printSensorCalibration();
     void drawSensorCalibration();
     void processTouchSensorCalibration(int x, int y);
     
+	//14-Water Level Calibration
     void printWaterCalibration();
     void drawWaterCalibration();    
     void processTouchWaterCalibration(int x,int y);
     
+	//15-Light Calibration
     void printLightCalibration();
     void drawLightCalibration();
     void processTouchLightCalibration(int x, int y);  
 	
+	//16-Pump Protection
 	void printPumpProtection();
 	void drawPumpProtection();
 	void updatePumpProtection();

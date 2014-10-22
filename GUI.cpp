@@ -1,12 +1,58 @@
 #include "GUI.h"
 
+//Constructors
+GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
+: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings), _window(lcd,touch) {
+}
+
+GUI::GUI(const GUI &other) : _window(other._window){
+	_lcd = other._lcd;
+	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+}
+
+GUI& GUI::operator=(const GUI &other) {
+	_lcd = other._lcd;
+	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	_window = other._window;
+	
+	return *this;
+}
+
+//Destructor
+GUI::~GUI() {}
+
 void GUI::init() {
 	_lcd->InitLCD();
 	_lcd->clrScr();
 	_lcd->fillScr(VGA_WHITE);
 	_touch->InitTouch();
-	_touch->setPrecision(PREC_MEDIUM);
+	_touch->setPrecision(PREC_HI);
 	drawSplashScreen();
+}
+
+void GUI::refresh() {
+	//Refresh screens if needed
+	//if (gui.getActScreen() == 0)
+	//TODO:
+	//gui.updateMainScreen();
+	//Nutrient level calibration
+	//else if (gui.getActScreen() == 14)
+	//TODO:
+	//gui.updateWaterCalibration();
+	//Night threshold calibration
+	//else if (gui.getActScreen() == 15)
+	//TODO:
+	//gui.updateLightCalibration();
+}
+
+boolean GUI::isMainScreen() {
+	if (_window.getActScreen() == 0)
+		return true;
+	return false;
 }
 
 //Draw splash Screen
@@ -23,21 +69,12 @@ void GUI::drawSplashScreen() {
 	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
 }
 
-void GUI::start() {
-	_actScreen = 0;
-	_lcd->fillScr(VGA_WHITE);
-	printWindow(Main);
-}
-
 void GUI::printWindow(const int screen) {
 	switch (screen) {
 		default:
 		break;
 	}
 }
-
-//Getter
-int GUI::getActScreen() const { return _actScreen; }
 
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processTouch() {

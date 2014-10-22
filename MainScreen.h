@@ -31,15 +31,17 @@ class MainScreen: public Window {
 		void printWindow();
 		void drawWindow();
 		void updateWindow();
-		void processTouchWindow();
+		void processTouch();
 		
-	private:
+	protected:
 		void printMainHeader();
 		void updateMainHeader();
 };
 
 
-
+int MainScreen::getActScreen() const {
+	return _actScreen;
+}
 
 
 #endif 
