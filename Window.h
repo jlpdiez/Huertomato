@@ -46,10 +46,10 @@ class Window {
 		Window& operator=(const Window &other);
 		~Window();
 		
-		virtual void printWindow() = 0;
-		virtual void drawWindow() = 0;
-		virtual void updateWindow() = 0;	
-		virtual void processTouch() = 0;
+		virtual void printWindow();
+		virtual void drawWindow();
+		virtual void updateWindow();	
+		virtual void processTouch();
 		virtual int getActScreen() const;
 	
 	protected:

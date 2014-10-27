@@ -5,6 +5,7 @@ Window::Window(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lc
 	_buttons.setTextFont(hallfetica_normal);
 	_buttons.setSymbolFont(various_symbols);
 	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
+	_actScreen = 0;
 }
 
 Window::Window(const Window &other) : _buttons(other._buttons) {

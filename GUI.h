@@ -297,7 +297,7 @@ class GUI {
 		//Const inside a class!!
 		enum { MAX = 100 };
 		
-		Window _window;
+		Window *_window;
 		
 		void drawSplashScreen();
 		void printWindow(const int screen=0);

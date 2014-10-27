@@ -2,14 +2,18 @@
 
 //Constructors
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
-: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings), _window(lcd,touch) {
+: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings) {
+	_window = new Window(lcd,touch);
 }
 
-GUI::GUI(const GUI &other) : _window(other._window){
+GUI::GUI(const GUI &other) { //: _window(other._window){
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
+	//_window = new Window(other._lcd, other._touch);
+	//*_window = *other._window;
+	_window = other._window;
 }
 
 GUI& GUI::operator=(const GUI &other) {
@@ -17,13 +21,16 @@ GUI& GUI::operator=(const GUI &other) {
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
+	//*_window = *other._window;
 	_window = other._window;
 	
 	return *this;
 }
 
 //Destructor
-GUI::~GUI() {}
+GUI::~GUI() {
+	delete _window;
+}
 
 void GUI::init() {
 	_lcd->InitLCD();
@@ -50,7 +57,7 @@ void GUI::refresh() {
 }
 
 boolean GUI::isMainScreen() {
-	if (_window.getActScreen() == 0)
+	if (_window->getActScreen() == 0)
 		return true;
 	return false;
 }
