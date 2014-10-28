@@ -28,48 +28,16 @@
 #define GUI_H
 
 #include <Arduino.h>
-#include "Settings.h"
-#include "Sensors.h"
-#include "Buttons.h"   
+//#include "Settings.h"
+//#include "Sensors.h" 
 #include "Window.h"
 #include <UTFT.h>
 #include <UTouch.h>
-#include <UTFT_Buttons.h>
-#include <Time.h> 
-#include <TimeAlarms.h>
-#include <SD.h>    
+//#include <UTFT_Buttons.h>
+//#include <Time.h> 
+//#include <TimeAlarms.h>
+//#include <SD.h>    
 
-
-//Main Screen Icons                          
-extern prog_uint16_t plant126[0x3E04];
-extern prog_uint16_t alarm126[0x3E04];
-extern prog_uint16_t logo126[0x3E04];
-extern prog_uint16_t moon126[0x3E04];
-
-//Menu Icons
-extern prog_uint16_t plant64[0x1000];
-extern prog_uint16_t plantDark64[0x1000];
-extern prog_uint16_t settings64[0x1000];
-extern prog_uint16_t settingsDark64[0x1000];
-
-//Fonts
-//extern uint8_t Sinclair_S[];
-extern uint8_t hallfetica_normal[];
-extern uint8_t various_symbols[];
-
-//Colours
-extern uint8_t lightGreen[3] = {184, 210, 60};
-extern uint8_t darkGreen[3] = {141, 170, 39};
-extern uint8_t grey[3] = {100,100,100};
-extern uint8_t red[3] = {200,0,0};
-extern uint8_t blue[3] = {0,135,199};
-extern uint8_t yellow[3] = {255,242,32};
-extern uint8_t white[3] = {255,255,255};
-
-int xSize = 399;
-const int ySize = 239;
-const int bigFontSize = 16;
-const int smallFontSize = 8;
 
 //Holds text strings for each sensor
 /*const int nSensorText = 6;
@@ -289,6 +257,9 @@ class GUI {
 		boolean isMainScreen();
 		
 	private:
+		void drawSplashScreen();
+		void printWindow(const int screen=0);
+			
 	    UTFT *_lcd;
 	    UTouch *_touch;
 	    Sensors *_sensors;
@@ -296,12 +267,17 @@ class GUI {
 		
 		//Const inside a class!!
 		enum { MAX = 100 };
+			
+		//Screen currently active
+		//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
+		//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
+		//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
+		//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
+		//15-Light Calibration, 16-Pump Protection
+		static uint8_t _actScreen;
 		
-		Window *_window;
-		
-		void drawSplashScreen();
-		void printWindow(const int screen=0);
-	};
+		Window _window;
+};
 
   
 //Handless all the gui

@@ -13,28 +13,45 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "Buttons.h"
-#include "GUI.h"
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-#include <Time.h>
-#include <TimeAlarms.h>
-#include <SD.h>
+//#include <Time.h>
+//#include <TimeAlarms.h>
+//#include <SD.h>
 
-//extern UTFT *_lcd;
-//extern UTouch *_touch;
-//extern Sensors *_sensors;
-//extern Settings *_settings;
+//Main Screen Icons
+extern prog_uint16_t plant126[0x3E04];
+extern prog_uint16_t alarm126[0x3E04];
+extern prog_uint16_t logo126[0x3E04];
+extern prog_uint16_t moon126[0x3E04];
+
+//Menu Icons
+extern prog_uint16_t plant64[0x1000];
+extern prog_uint16_t plantDark64[0x1000];
+extern prog_uint16_t settings64[0x1000];
+extern prog_uint16_t settingsDark64[0x1000];
 
 //Fonts
 extern uint8_t hallfetica_normal[];
 extern uint8_t various_symbols[];
+//extern uint8_t Sinclair_S[];
 
 //Colours
-extern uint8_t lightGreen[3];
-extern uint8_t darkGreen[3];
-extern uint8_t grey[3];
-extern uint8_t white[3];
+/*uint8_t lightGreen[3] = {184, 210, 60};
+uint8_t darkGreen[3] = {141, 170, 39};
+uint8_t grey[3] = {100,100,100};
+uint8_t white[3] = {255,255,255};*/
+
+/*
+//Colours
+//extern uint8_t lightGreen[3] = {184, 210, 60};
+//extern uint8_t darkGreen[3] = {141, 170, 39};
+//extern uint8_t grey[3] = {100,100,100};
+extern uint8_t red[3] = {200,0,0};
+extern uint8_t blue[3] = {0,135,199};
+extern uint8_t yellow[3] = {255,242,32};
+extern uint8_t white[3] = {255,255,255};*/
 
 extern int xSize;
 
@@ -44,26 +61,30 @@ class Window {
 		Window(UTFT *lcd, UTouch *touch);
 		Window(const Window &other);
 		Window& operator=(const Window &other);
-		~Window();
+		virtual ~Window();
 		
 		virtual void printWindow();
 		virtual void drawWindow();
 		virtual void updateWindow();	
-		virtual void processTouch();
-		virtual int getActScreen() const;
-	
+		virtual int processTouch(int x, int y);
+		void drawSplashScreen();
+
 	protected:
-		//Screen currently active
-		//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
-		//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
-		//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
-		//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
-		//15-Light Calibration, 16-Pump Protection
-		static uint8_t _actScreen;
+		
+		static const int xSize = 399;
+		static const int ySize = 239;
+		static const int bigFontSize = 16;
+		static const int smallFontSize = 8;
+		
+		//Colours
+		static const uint8_t lightGreen[3];
+		static const uint8_t darkGreen[3];
+		static const uint8_t grey[3];
+		static const uint8_t white[3];
 
 		UTFT *_lcd;
 		UTouch *_touch;
-		//array de ventanas indexado por _actScreen!
+		//array de ventanas indexado por _actScreen
 		Borderless_Buttons _buttons;
 		
 		void printHeaderBackground();

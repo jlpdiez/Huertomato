@@ -1,5 +1,3 @@
-//#include <Arduino.h>
-//#include <UTFT_Buttons.h>
 #include "Buttons.h"
 
 //Constructors

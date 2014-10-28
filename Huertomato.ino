@@ -42,6 +42,7 @@
 #include "RGBled.h"
 #include "Buttons.h"
 #include "GUI.h"
+#include "Window.h"
 #include "MainScreen.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>

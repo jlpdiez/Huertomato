@@ -2,18 +2,14 @@
 
 //Constructors
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
-: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings) {
-	_window = new Window(lcd,touch);
-}
+: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings), _window(lcd, touch) { }
 
-GUI::GUI(const GUI &other) { //: _window(other._window){
+GUI::GUI(const GUI &other) : _window(other._window) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
-	//_window = new Window(other._lcd, other._touch);
-	//*_window = *other._window;
-	_window = other._window;
+	//_window = other._window;
 }
 
 GUI& GUI::operator=(const GUI &other) {
@@ -28,9 +24,7 @@ GUI& GUI::operator=(const GUI &other) {
 }
 
 //Destructor
-GUI::~GUI() {
-	delete _window;
-}
+GUI::~GUI() { }
 
 void GUI::init() {
 	_lcd->InitLCD();
@@ -38,7 +32,7 @@ void GUI::init() {
 	_lcd->fillScr(VGA_WHITE);
 	_touch->InitTouch();
 	_touch->setPrecision(PREC_HI);
-	drawSplashScreen();
+	//_window->drawSplashScreen();
 }
 
 void GUI::refresh() {
@@ -57,24 +51,10 @@ void GUI::refresh() {
 }
 
 boolean GUI::isMainScreen() {
-	if (_window->getActScreen() == 0)
-		return true;
-	return false;
+	return _actScreen == 0;
 }
 
-//Draw splash Screen
-//TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
-void GUI::drawSplashScreen() {
-	const int iconSize = 126;
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(VGA_WHITE);
-	//Shows centered icon
-	_lcd->drawBitmap(xSize/2-(iconSize/2),10,iconSize,iconSize,logo126);
-	//Shows centered text
-	char* message = "Huertomato is loading...";
-	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
-}
+
 
 void GUI::printWindow(const int screen) {
 	switch (screen) {
