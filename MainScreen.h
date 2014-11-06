@@ -24,19 +24,22 @@ static char* sensorText[nSensorText] = {
 
 class MainScreen: public Window {
 	public:	
-		MainScreen();
+		MainScreen(UTFT *lcd, UTouch *touch);
 		MainScreen(const MainScreen &other);
 		MainScreen& operator=(const MainScreen &other);
-		~MainScreen();
-		void printWindow();
-		void drawWindow();
-		void updateWindow();
-		int processTouch();
-		int getActScreen() const;
+		virtual ~MainScreen();
+		void draw();
+		void update();
+		int processTouch(int x, int y);
 		
-	protected:		
+	protected:			
+		void printHeaderBackground();
 		void printMainHeader();
+		void printSensorInfo();
+		void printIconAndStatus();
 		void updateMainHeader();
+		void updateIconAndStatus();
+		void updateSensorInfo();
 };
 
 #endif 

@@ -2,14 +2,17 @@
 
 //Constructors
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
-: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings), _window(lcd, touch) { }
+: _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings) {
+	_window = new Window(lcd, touch);
+}
 
-GUI::GUI(const GUI &other) : _window(other._window) {
+GUI::GUI(const GUI &other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
-	//_window = other._window;
+	_window = new Window(_lcd,_touch);
+	*_window = *other._window;
 }
 
 GUI& GUI::operator=(const GUI &other) {
@@ -17,14 +20,15 @@ GUI& GUI::operator=(const GUI &other) {
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
-	//*_window = *other._window;
-	_window = other._window;
-	
+	*_window = *other._window;
+
 	return *this;
 }
 
 //Destructor
-GUI::~GUI() { }
+GUI::~GUI() {
+	delete _window;
+}
 
 void GUI::init() {
 	_lcd->InitLCD();
@@ -32,7 +36,6 @@ void GUI::init() {
 	_lcd->fillScr(VGA_WHITE);
 	_touch->InitTouch();
 	_touch->setPrecision(PREC_HI);
-	//_window->drawSplashScreen();
 }
 
 void GUI::refresh() {
@@ -54,13 +57,20 @@ boolean GUI::isMainScreen() {
 	return _actScreen == 0;
 }
 
-
-
-void GUI::printWindow(const int screen) {
-	switch (screen) {
+void GUI::draw() {
+	delete _window;
+	switch (_actScreen) {
+		case 0:		
+			_window = new Window(_lcd,_touch);
+			break;
+		case 1:
+			_window = new MainScreen(_lcd,_touch);
+			break;
 		default:
-		break;
+			_window = new Window(_lcd,_touch);
+			break;
 	}
+	_window->draw();
 }
 
 //Reads x,y press and calls one function or another depending on active screen
@@ -69,103 +79,45 @@ void GUI::processTouch() {
 		_touch->read();
 		int x = _touch->getX();
 		int y = _touch->getY();
-    
-		/*switch (_actScreen) {
-			//Main Screen
-			case 0: 
-				drawMainMenu();
-				break;
-			//MainMenu
-			case 1:
-				processTouchMainMenu(x,y);
-				break;
-			//System Settings
-			case 2:
-				processTouchSystem(x,y);
-				break;
-			//Controller Settings
-			case 3:
-				processTouchController(x,y);
-				break;
-			//Time & Date
-			case 4:
-				processTouchTime(x,y);
-				break;
-			//Sensor Polling
-			case 5:
-				processTouchSensorPolling(x,y);
-				break;
-			//SD Card
-			case 6:
-				processTouchSDcard(x,y);
-				break;
-			//Watering Cycle
-			case 7:
-				processTouchWaterCycle(x,y);
-				break;
-			//Sensor Alarms
-			case 8: 
-				processTouchSensorAlarms(x,y);
-				break;
-			//pH Alarms
-			case 9: 
-				processTouchPHalarms(x,y);
-				break;
-			//EC Alarms
-			case 10:
-				processTouchECalarms(x,y);
-				break;
-			//Nutrient Level Alarms
-			case 11:
-				processTouchWaterAlarms(x,y);
-				break;
-			//Auto Config Alarms
-			case 12:
-				//processTouchAutoConfig(x,y);
-				break;
-			//Sensor Calibration
-			case 13:
-				processTouchSensorCalibration(x,y);
-				break;
-			//Water Level Calibration
-			case 14:
-				processTouchWaterCalibration(x,y);
-				break;
-			//Light Calibration
-			case 15:
-				processTouchLightCalibration(x,y);
-				break;
-			//Pump Protection
-			case 16:
-				processTouchPumpProtection(x,y);
-				break;
-		}*/
+		
+		_actScreen = _window->processTouch(x,y);
+		draw();
 	}
 }
 /*
-//Draw splash Screen
-//TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
-void GUI::drawSplashScreen() {
-	const int iconSize = 126;
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(VGA_WHITE);
-	//Shows centered icon
-	_lcd->drawBitmap(xSize/2-(iconSize/2),10,iconSize,iconSize,logo126); 	
-	//Shows centered text
-	char* message = "Huertomato is loading...";
-	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
+
+
+
+//Overlays "Saved" text over save button
+//Used when button is pressed to inform the user values have been stored
+void GUI::printSavedButton() {
+	char* savedText = " Saved ";
+	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
+	const int saveY = 215;
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->print(savedText,saveX,saveY);
 }
 
-//Prints header background and separator line
-void GUI::printHeaderBackground() {
-	const int headerHeight = 20; 
-	//Header background
+//Makes window decoration and buttons
+void GUI::printMainMenu() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->fillRect(0,0,xSize,headerHeight);
-	//Separator line
-	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
-	_lcd->drawLine(0, headerHeight, xSize, headerHeight);  
+	_lcd->setBackColor(VGA_WHITE);
+	
+	const int controllerY = 135;
+	const int xSpacer = 15;
+	const int systemY = 60;
+	_lcd->setFont(hallfetica_normal);
+	
+	//Make menu buttons. System and Controller settings
+	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
+	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
+	
+	//Logos
+	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
+	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
+	//With transparent buttons
+	mainMenuButtons[5] = _buttons.addButton(xSpacer, systemY-18, 64, 64, 0);
+	mainMenuButtons[6] = _buttons.addButton(xSpacer, controllerY-18, 64, 64, 0);
 }
 
 //Prints mainscreen header text and clock
@@ -224,378 +176,6 @@ void GUI::printMenuHeader(char* c) {
 	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
 }
 
-//Print sensor info on main screen. Data will turn red if theres an alarm triggered
-void GUI::printSensorInfo() {
-	const int xSpacer = xSize - 25;
-	const int ySpacer = 35;
-  	
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(VGA_WHITE);
-
-	//For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
-	//Humidity
-	int x = xSpacer-(bigFontSize*(strlen(sensorText[0])+4));
-	_lcd->print(sensorText[0],x,ySpacer);
-	_lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' '); 
-	_lcd->print("%",xSpacer-bigFontSize,ySpacer);
-  
-	//Temp
-	x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
-	int y = ySpacer+(bigFontSize+8);
-	_lcd->print(sensorText[1],x,y);
-	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);
-	_lcd->print("C",xSpacer-bigFontSize,y);
-  
-	//Light
-	x = xSpacer-(bigFontSize*(strlen(sensorText[2])+4));
-	y = ySpacer+(bigFontSize+8)*2;
-	_lcd->print(sensorText[2],x,y);
-	_lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-bigFontSize,y);
-  
-	//pH
-	x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
-	y = ySpacer+(bigFontSize+8)*3;
-	float ph = _sensors->getPH();
-	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-
-	_lcd->print(sensorText[3],x,y);
-	_lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
-  
-	//EC
-	x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
-	y = ySpacer+(bigFontSize+8)*4;
-	uint16_t ec = _sensors->getEC();
-	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-	
-	_lcd->print(sensorText[4],x,y);
-	_lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
-	_lcd->print("uS",xSpacer-bigFontSize*2,y);
-  
-	//Deposit level
-	x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
-	y = ySpacer+(bigFontSize+8)*5;
-	uint8_t lvl = _sensors->getWaterLevel();
-	if (lvl < _settings->getWaterAlarm())
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-	
-	_lcd->print(sensorText[5],x,y);
-	_lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-bigFontSize,y);
-}
-
-//Redraws only sensor numbers and changes colour if needed (alarm triggered)
-void GUI::updateSensorInfo() {
-	const int xSpacer = xSize - 25;
-    const int ySpacer = 35;
-    
-    _lcd->setFont(hallfetica_normal);
-    _lcd->setColor(grey[0], grey[1], grey[2]);
-    _lcd->setBackColor(VGA_WHITE);
-
-    //Humidity
-    _lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' ');    
-    //Temp
-    int y = ySpacer+(bigFontSize+8);
-    _lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);   
-    //Light
-    y = ySpacer+(bigFontSize+8)*2;
-    _lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);    
-	//pH
-	int x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
-	y = ySpacer+(bigFontSize+8)*3;
-	float ph = _sensors->getPH();
-	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-
-	_lcd->print(sensorText[3],x,y);
-	_lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
-  
-	//EC
-	x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
-	y = ySpacer+(bigFontSize+8)*4;
-	uint16_t ec = _sensors->getEC();
-	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-  
-	_lcd->print(sensorText[4],x,y);
-	_lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
-	_lcd->print("uS",xSpacer-bigFontSize*2,y);
-  
-	//Deposit level
-	x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
-	y = ySpacer+(bigFontSize+8)*5;
-	uint8_t lvl = _sensors->getWaterLevel();
-	if (lvl < _settings->getWaterAlarm())
-		_lcd->setColor(red[0],red[1],red[2]);
-	else
-		_lcd->setColor(grey[0], grey[1], grey[2]);
-  
-	_lcd->print(sensorText[5],x,y);
-	_lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-bigFontSize,y);
-}
-
-//Shows system status in main screen
-//Loads img files from /PICTURE folder of the SD card
-//TODO: make common part of alarm and normal state a function!
-void GUI::printIconAndStatus() {
-	const int xSpacer = 10;
-	const int ySpacer = 200;
-	const int imgSize = 126;
-	File img;
-	char* path;
-	
-	//Watering Stopped
-	if (_settings->getNightWateringStopped()) {
-		_lcd->setColor(grey[0],grey[1],grey[2]);
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		_lcd->print("No Watering @ Night   ",xSpacer+bigFontSize*2,ySpacer);
-		path = "/PICTURE/moon126.RAW";
-	
-	//Timed mode and watering plants
-	} else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {
-		_lcd->setColor(blue[0],blue[1],blue[2]);
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		char* watering = "Huertomato Watering";
-		int x = xSpacer + bigFontSize*2;
-		_lcd->print(watering,x,ySpacer);
-		//3 blank chars afterwards to clear line
-		x += bigFontSize*strlen(watering);
-		_lcd->print("   ",x,ySpacer);
-		path = "/PICTURE/logo126.RAW";
-	
-	//Alarm triggered
-	} else if (_settings->getAlarmTriggered()) {
-		int wHour = _settings->getNextWhour();
-		int wMin = _settings->getNextWminute();
-		_lcd->setColor(red[0],red[1],red[2]);
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		int x = xSpacer + bigFontSize*2;
-		//Timed mode
-		if (_settings->getWaterTimed()) {
-			//Space char added after @ and last number to white out line
-			char* nWater = "Next Watering @ ";
-			_lcd->print(nWater,x,ySpacer);
-			x += bigFontSize*(strlen(nWater));
-			_lcd->printNumI(wHour,x,ySpacer,2,'0');
-			x += bigFontSize*2;
-			_lcd->print(":",x,ySpacer);
-			x += bigFontSize;
-			_lcd->printNumI(wMin,x,ySpacer,2,'0');
-			x += 2*bigFontSize;
-			_lcd->print(" ",x,ySpacer);
-		//Continuous mode
-		} else {
-			char* nWater = "Alarm - Check Solution";
-			_lcd->print(nWater,x,ySpacer);
-		}
-		path = "/PICTURE/alarm126.RAW";
-	
-	//Normal operation
-	} else {
-		int wHour = _settings->getNextWhour();
-		int wMin = _settings->getNextWminute();
-		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		int x = xSpacer + bigFontSize*2;
-				
-		//Timed mode
-		if (_settings->getWaterTimed()) {
-			//Space char added after @ and last number to white out line
-			char* nWater = "Next Watering @ ";
-			_lcd->print(nWater,x,ySpacer);
-			x += bigFontSize*(strlen(nWater));
-			_lcd->printNumI(wHour,x,ySpacer,2,'0');
-			x += bigFontSize*2;
-			_lcd->print(":",x,ySpacer);
-			x += bigFontSize;
-			_lcd->printNumI(wMin,x,ySpacer,2,'0');
-			x += 2*bigFontSize;
-			_lcd->print(" ",x,ySpacer);
-		
-		//Continuous
-		} else {
-			char* nWater = "System working fine   ";
-			_lcd->print(nWater,x,ySpacer);
-		}
-		path = "/PICTURE/plant126.RAW";
-	}
-	
-	//Read from SD line by line and display.
-	//Requires new function at UTFT library 
-	//Slow but effective
-	if (SD.exists(path)) {
-		img = SD.open(path,FILE_READ);
-		for (int y = 0; y < imgSize && img.available(); y++) {
-			uint16_t buf[imgSize];
-			for (int x = imgSize - 1; x >= 0; x--) {
-				byte l = img.read();
-				byte h = img.read();
-				buf[x] = ((uint16_t)h << 8) | l;
-			}
-			_lcd->drawPixelLine(15,y+25+bigFontSize,imgSize,buf);
-		}
-		img.close();
-	} else
-		_lcd->drawBitmap(15,25+bigFontSize,imgSize,imgSize,logo126); 
-}
-
-//Same as above except it only changes icon if system state changed from previous
-//If not should only update next watering time
-void GUI::updateIconAndStatus() {
-	if (_settings->systemStateChanged())
-		printIconAndStatus();
-		
-	//Updates next watering time if needed
-	else if (!_settings->getNightWateringStopped() && !_settings->getWateringPlants()
-				&& _settings->getWaterTimed()) {
-		
-		const int xSpacer = 10;
-		const int ySpacer = 200;
-		int wHour = _settings->getNextWhour();
-		int wMin = _settings->getNextWminute();
-		_lcd->setBackColor(VGA_WHITE);
-		_lcd->setFont(various_symbols);
-		
-		//Alarm triggered
-		if (_settings->getAlarmTriggered())		
-			_lcd->setColor(red[0],red[1],red[2]);	
-		//Normal operation
-		else
-			_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-		
-		_lcd->print("T",xSpacer,ySpacer);		
-		_lcd->setFont(hallfetica_normal);
-		int x = xSpacer + bigFontSize*2;
-		//Space char added after @ and last number to white out line
-		char* nWater = "Next Watering @ ";
-		_lcd->print(nWater,x,ySpacer);
-		x += bigFontSize*(strlen(nWater));
-		_lcd->printNumI(wHour,x,ySpacer,2,'0');
-		x += bigFontSize*2;
-		_lcd->print(":",x,ySpacer);
-		x += bigFontSize;
-		_lcd->printNumI(wMin,x,ySpacer,2,'0');
-		x += 2*bigFontSize;
-		_lcd->print(" ",x,ySpacer);
-	}
-}
-
-//GUI Starting point. Should be called from main sketch in setup()
-//_actScreen == 0
-void GUI::drawMainScreen() {
-	_actScreen = 0;
-	_lcd->fillScr(VGA_WHITE);
-	printMainHeader();
-	printSensorInfo();
-	printIconAndStatus();
-}
-
-//Redraws only values that change over time
-//Used for refreshing from main sketch
-void GUI::updateMainScreen() {
-	updateMainHeader();
-	updateSensorInfo(); 
-	updateIconAndStatus();
-}
-
-//These function should be the first to get its buttons into the array buttons
-//It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2 
-void GUI::printFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]) {
-  _lcd->setBackColor(VGA_WHITE);
-  _lcd->setFont(hallfetica_normal);
-  
-  if (backButton) {
-    const int backX = 15;
-    const int backY = 215;
-    char* backText = " Back ";
-    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);   
-    _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-    _lcd->drawLine(backX-1,backY-5,backX+bigFontSize*strlen(backText),backY-5);
-    buttonArray[0] = _buttons.addButton(backX, backY, backText);
-  } else 
-    buttonArray[0] = -1;
-  
-  if (saveButton) {
-    char* saveText = " Save ";
-    const int saveX = xSize/2 - bigFontSize*strlen(saveText)/2;
-    const int saveY = 215;
-    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-    _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-    _lcd->drawLine(saveX-1,saveY-5,saveX+bigFontSize*strlen(saveText),saveY-5);
-    buttonArray[1] = _buttons.addButton(saveX, saveY, saveText);    
-  } else
-    buttonArray[1] = -1; 
-  
-  if (exitButton) { 
-    char* cancelText = " Exit ";
-    const int cancelX = xSize - 15 - bigFontSize*strlen(cancelText);
-    const int cancelY = 215;  
-    //_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-    _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-    _lcd->drawLine(cancelX-1,cancelY-5,cancelX+bigFontSize*strlen(cancelText),cancelY-5);
-    buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);   
-  } else
-    buttonArray[2] = -1; 
-}
-
-//Overlays "Saved" text over save button
-//Used when button is pressed to inform the user values have been stored
-void GUI::printSavedButton() {
-	char* savedText = " Saved ";
-	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
-	const int saveY = 215;
-	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->print(savedText,saveX,saveY);
-}
-
-//Makes window decoration and buttons
-void GUI::printMainMenu() {  
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->setBackColor(VGA_WHITE);
-  
-	const int controllerY = 135;
-	const int xSpacer = 15;
-	const int systemY = 60;
-	_lcd->setFont(hallfetica_normal);
-  
-	//Make menu buttons. System and Controller settings
-	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
-	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
-	
-	//Logos
-	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
-	//With transparent buttons
-	mainMenuButtons[5] = _buttons.addButton(xSpacer, systemY-18, 64, 64, 0);	
-	mainMenuButtons[6] = _buttons.addButton(xSpacer, controllerY-18, 64, 64, 0);
-}
 
 //Draws main menu into LCD
 //_actScreen == 1

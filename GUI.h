@@ -31,6 +31,7 @@
 //#include "Settings.h"
 //#include "Sensors.h" 
 #include "Window.h"
+#include "MainScreen.h"
 #include <UTFT.h>
 #include <UTouch.h>
 //#include <UTFT_Buttons.h>
@@ -257,26 +258,23 @@ class GUI {
 		boolean isMainScreen();
 		
 	private:
-		void drawSplashScreen();
-		void printWindow(const int screen=0);
+		void draw();
 			
 	    UTFT *_lcd;
 	    UTouch *_touch;
 	    Sensors *_sensors;
 	    Settings *_settings;
 		
-		//Const inside a class!!
-		enum { MAX = 100 };
-			
+		Window *_window;
+				
 		//Screen currently active
+		//ALL NUMBERS +1 Screen 0 is loading screen
 		//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
 		//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
 		//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
 		//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
 		//15-Light Calibration, 16-Pump Protection
-		static uint8_t _actScreen;
-		
-		Window _window;
+		uint8_t _actScreen;
 };
 
   

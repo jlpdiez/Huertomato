@@ -43,15 +43,15 @@ uint8_t darkGreen[3] = {141, 170, 39};
 uint8_t grey[3] = {100,100,100};
 uint8_t white[3] = {255,255,255};*/
 
-/*
+
 //Colours
-//extern uint8_t lightGreen[3] = {184, 210, 60};
-//extern uint8_t darkGreen[3] = {141, 170, 39};
-//extern uint8_t grey[3] = {100,100,100};
-extern uint8_t red[3] = {200,0,0};
-extern uint8_t blue[3] = {0,135,199};
-extern uint8_t yellow[3] = {255,242,32};
-extern uint8_t white[3] = {255,255,255};*/
+//uint8_t lightGreen[3] = {184, 210, 60};
+//uint8_t darkGreen[3] = {141, 170, 39};
+//uint8_t grey[3] = {100,100,100};
+//extern uint8_t red[3] = {200,0,0};
+//extern uint8_t blue[3] = {0,135,199};
+//extern uint8_t yellow[3] = {255,242,32};
+//uint8_t white[3] = {255,255,255};
 
 extern int xSize;
 
@@ -63,13 +63,13 @@ class Window {
 		Window& operator=(const Window &other);
 		virtual ~Window();
 		
-		virtual void printWindow();
-		virtual void drawWindow();
-		virtual void updateWindow();	
+		virtual void draw();
+		virtual void update();	
 		virtual int processTouch(int x, int y);
-		void drawSplashScreen();
 
 	protected:
+		virtual void printWindow();
+		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
 		
 		static const int xSize = 399;
 		static const int ySize = 239;
@@ -77,17 +77,16 @@ class Window {
 		static const int smallFontSize = 8;
 		
 		//Colours
-		static const uint8_t lightGreen[3];
+		/*static const uint8_t lightGreen[3];
 		static const uint8_t darkGreen[3];
 		static const uint8_t grey[3];
-		static const uint8_t white[3];
-
+		static const uint8_t white[3];*/
 		UTFT *_lcd;
 		UTouch *_touch;
 		//array de ventanas indexado por _actScreen
 		Borderless_Buttons _buttons;
 		
-		void printHeaderBackground();
+		friend class MainScreen;
 };
 
 #endif
