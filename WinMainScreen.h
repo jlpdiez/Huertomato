@@ -35,10 +35,8 @@ class WinMainScreen: public Window {
 		void update();
 		int processTouch(int x, int y);
 		
-	protected:			
-		Sensors *_sensors;
-		Settings *_settings;
-			
+	protected:		
+		void print();	
 		void printMainHeader();
 		void printSensorInfo();
 		void printIconAndStatus();

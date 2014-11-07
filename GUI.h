@@ -39,61 +39,6 @@
 //#include <TimeAlarms.h>
 //#include <SD.h>    
 
-//Here lies the button info for each window
-//We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
-//static in this context means vars will only be accesible in this file
-//http://www.cprogramming.com/tutorial/statickeyword.html
-
-
-
-/*const int nAutoConfigButtons = 13;
-static char* autoConfigButtonsText[nAutoConfigButtons] = {
-  
-};
-static int autoConfigButtons[nAutoConfigButtons];*/
-
-
-//These are temp variables used for displaying data
-//They are read from _settings in print() funcs. Changed in processTouch()
-//displayed again with update() and saved to eeprom when button save is pressed
-//System Settings
-//Watering cycle
-static boolean waterTimed;
-static uint8_t waterHour, waterMin, floodMin;
-//pH alarms
-static float phAlarmMax, phAlarmMin;
-//EC alarms
-static uint16_t ecAlarmMax, ecAlarmMin;
-//Water alarms
-static uint8_t waterAlarmMin;
-//Water levels calibration
-static uint16_t waterLvlMax;
-static uint16_t waterLvlMin;
-static uint16_t rawWaterLvl;
-//Light calibration
-static uint16_t lightThreshold;
-static uint16_t rawLightLvl;
-//Pump protection
-static uint8_t pumpProtectionLvl;
-
-//Night toggle
-static boolean nightWater;
-//Water pump toggle
-static boolean waterPumpState;
-//Controller Settings
-//Time & Date
-static uint8_t sysHour, sysMin, sysSec, sysDay, sysMonth;
-static int sysYear;
-//Sensor Polling
-static uint8_t pollMin, pollSec;
-//SD Card
-static boolean sdActive;
-static uint8_t sdHour, sdMin;
-//Sound toggle
-static boolean soundActive;
-//Serial toggle
-static boolean serialActive;
-
 class GUI {
 	public:		
 		//Constructors
@@ -109,21 +54,19 @@ class GUI {
 		boolean isMainScreen();
 		
 	private:
-		void draw();
+		void createAndRenderWindow();
 			
 	    UTFT *_lcd;
 	    UTouch *_touch;
 	    Sensors *_sensors;
 	    Settings *_settings;
-		
 		Window *_window;
-				
+	
 		//Screen currently active
-		//ALL NUMBERS +1 Screen 0 is loading screen
-		//0-Main Screen, 1-Main Menu, 2-System Settings, 3-Controller Settings,
-		//4-Time & Date, 5-Sensor Polling, 6-SD Card, 7-Watering Cycle
-		//8-Sensor Alarms, 9-pH Alarms, 10-EC Alarms, 11-Nutrient Level Alarms,
-		//12-Auto Config Alarms, 13-Sensor Calibration, 14-Water Level Calibration
+		//1-Main Screen, 2-Main Menu, 3-System Settings, 4-Controller Settings,
+		//5-Time & Date, 6-Sensor Polling, 7-SD Card, 8-Watering Cycle
+		//9-Sensor Alarms, 10-pH Alarms, 11-EC Alarms, 12-Nutrient Level Alarms,
+		//13-Sensor Calibration, 14-Water Level Calibration
 		//15-Light Calibration, 16-Pump Protection
 		uint8_t _actScreen;
 };

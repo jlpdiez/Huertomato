@@ -11,9 +11,7 @@
 
 #include "Window.h"
 
-/*
-	//3-Controller Settings
-	*/
+//3-Controller Settings
 
 const int nControllerButtons = 8;
 static char* controllerButtonText[nControllerButtons] = {
@@ -28,7 +26,7 @@ static int controllerButtons[nControllerButtons];
 
 class WinControllerMenu: public Window {
 	public:
-		WinControllerMenu(UTFT *lcd, UTouch *touch);
+		WinControllerMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinControllerMenu(const WinControllerMenu &other);
 		WinControllerMenu& operator=(const WinControllerMenu &other);
 		virtual ~WinControllerMenu();
@@ -37,6 +35,10 @@ class WinControllerMenu: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		//Sound toggle
+		boolean _soundActive;
+		//Serial toggle
+		boolean _serialActive;
 		void print();
 };
 

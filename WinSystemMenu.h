@@ -26,7 +26,7 @@ static int systemButtons[nSystemButtons];
 
 class WinSystemMenu: public Window {
 	public:
-		WinSystemMenu(UTFT *lcd, UTouch *touch);
+		WinSystemMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSystemMenu(const WinSystemMenu &other);
 		WinSystemMenu& operator=(const WinSystemMenu &other);
 		virtual ~WinSystemMenu();
@@ -35,6 +35,7 @@ class WinSystemMenu: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		boolean _nightWater;
 		void print();
 };
 

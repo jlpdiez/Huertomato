@@ -6,26 +6,85 @@
  */ 
 #include "WinLvlAlarms.h"
 
-WinLvlAlarms::WinLvlAlarms(UTFT *lcd, UTouch *touch) : Window(lcd,touch) { }
+WinLvlAlarms::WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+: Window(lcd,touch,sensors,settings)  { }
 
 WinLvlAlarms::WinLvlAlarms(const WinLvlAlarms &other) : Window(other) { }
 	
 WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	_buttons = other._buttons;
 	return *this;
 }
 
-/*
-//Draws main menu into LCD
-//_actScreen == 1
-void GUI::drawMainMenu() {
-	_actScreen = 1;
+void WinLvlAlarms::print() {
+	const int yFirstLine = 100;
+	const int xSpacer = 25;
+	const int signSpacer = 22;
+	
+	_waterAlarmMin = _settings->getWaterAlarm();
+	
+	char* wLimitS = "Lower Limit:";
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	//Text
+	_lcd->print(wLimitS,xSpacer,yFirstLine);
+	//Numbers
+	int x = (4+strlen(wLimitS))*bigFontSize;
+	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
+	//Buttons
+	x += 1.5*bigFontSize;
+	waterAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
+	waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+	//percent sign
+	x += 2.5*bigFontSize;
+	_lcd->print("%",x,yFirstLine);
+}
+
+//Draws entire screen Nutrient level alarms
+void WinLvlAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Main Menu -");
-	printFlowButtons(false,false,true,mainMenuButtons);
-	printMainMenu();
+	printMenuHeader("- Nutrient Alarms -");
+	addFlowButtons(true,true,true,waterAlarmsButtons);
+	print();
 	_buttons.drawButtons();
 }
-*/
+
+void WinLvlAlarms::update() {
+	const int yFirstLine = 100;
+	char* wLimitS = "Lower Limit:";
+	
+	_lcd->setFont(hallfetica_normal);
+	int x = (4+strlen(wLimitS))*bigFontSize;
+	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
+}
+
+int WinLvlAlarms::processTouch(int x,int y) {
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == waterAlarmsButtons[0]) {
+		//Go to alarms menu
+		return Alarms;
+	//Save
+	} else if (buttonIndex == waterAlarmsButtons[1]) {
+		_settings->setWaterAlarm(_waterAlarmMin);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == waterAlarmsButtons[2]) {
+		//Go to main screen
+		return MainScreen;
+		
+	//Up
+	} else if (buttonIndex == waterAlarmsButtons[3]) {
+		(_waterAlarmMin >= 100) ? _waterAlarmMin=0 : _waterAlarmMin++;
+		update();
+	//Down
+	} else if (buttonIndex == waterAlarmsButtons[4]) {
+		(_waterAlarmMin <= 0) ? _waterAlarmMin=100 : _waterAlarmMin--;
+		update();
+	}
+	return 0;
+}

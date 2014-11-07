@@ -21,7 +21,7 @@ static int mainMenuButtons[nMainMenuButtons];
 
 class WinMainMenu: public Window {
 	public:
-		WinMainMenu(UTFT *lcd, UTouch *touch);
+		WinMainMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinMainMenu(const WinMainMenu &other);
 		WinMainMenu& operator=(const WinMainMenu &other);
 		virtual ~WinMainMenu();

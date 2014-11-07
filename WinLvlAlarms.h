@@ -11,9 +11,8 @@
 
 #include "Window.h"
 
-/*
-	//11-Nutrient Level Alarms
-	*/
+//11-Nutrient Level Alarms
+
 
 const int nWaterAlarmsButtons = 5;
 static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
@@ -25,7 +24,7 @@ static int waterAlarmsButtons[nWaterAlarmsButtons];
 
 class WinLvlAlarms: public Window {
 	public:
-		WinLvlAlarms(UTFT *lcd, UTouch *touch);
+		WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlAlarms(const WinLvlAlarms &other);
 		WinLvlAlarms& operator=(const WinLvlAlarms &other);
 		virtual ~WinLvlAlarms();
@@ -34,6 +33,7 @@ class WinLvlAlarms: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		uint8_t _waterAlarmMin;
 		void print();
 };
 

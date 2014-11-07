@@ -10,9 +10,9 @@
 #define WINALARMS_H_
 
 #include "Window.h"
-/*
-	//8-Sensor Alarms
-	*/
+
+//8-Sensor Alarms
+
 const int nSensorAlarmsButtons = 6;
 static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
 	//"Auto Config",
@@ -25,7 +25,7 @@ static int sensorAlarmsButtons[nSensorAlarmsButtons];
 
 class WinAlarms: public Window {
 	public:
-		WinAlarms(UTFT *lcd, UTouch *touch);
+		WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinAlarms(const WinAlarms &other);
 		WinAlarms& operator=(const WinAlarms &other);
 		virtual ~WinAlarms();

@@ -26,7 +26,7 @@ static int ecAlarmsButtons[nECalarmsButtons];
 
 class WinEcAlarms: public Window {
 	public:
-		WinEcAlarms(UTFT *lcd, UTouch *touch);
+		WinEcAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinEcAlarms(const WinEcAlarms &other);
 		WinEcAlarms& operator=(const WinEcAlarms &other);
 		virtual ~WinEcAlarms();
@@ -35,6 +35,7 @@ class WinEcAlarms: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		uint16_t _ecAlarmMax, _ecAlarmMin;
 		void print();
 };
 

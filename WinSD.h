@@ -26,7 +26,7 @@ static int sdCardButtons[nSDcardButtons];
 
 class WinSD: public Window {
 	public:
-		WinSD(UTFT *lcd, UTouch *touch);
+		WinSD(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSD(const WinSD &other);
 		WinSD& operator=(const WinSD &other);
 		virtual ~WinSD();
@@ -35,9 +35,11 @@ class WinSD: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		static boolean _sdActive;
+		static uint8_t _sdHour, _sdMin;
 		void print();
 };
 
 
 
-#endif /* MAINMENU_H_ */
+#endif

@@ -25,7 +25,7 @@ static int pumpProtectionButtons[nPumpProtectionButtons];
 
 class WinPump: public Window {
 	public:
-		WinPump(UTFT *lcd, UTouch *touch);
+		WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPump(const WinPump &other);
 		WinPump& operator=(const WinPump &other);
 		virtual ~WinPump();
@@ -34,6 +34,7 @@ class WinPump: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		uint8_t _pumpProtectionLvl;
 		void print();
 };
 

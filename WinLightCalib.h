@@ -25,14 +25,16 @@ static int lightCalibrationButtons[nLightCalibrationButtons];
 
 class WinLightCalib: public Window {
 	public:
-		WinLightCalib(UTFT *lcd, UTouch *touch);
+		WinLightCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLightCalib(const WinLightCalib &other);
 		WinLightCalib& operator=(const WinLightCalib &other);
 		virtual ~WinLightCalib();
 		void draw();
+		void update();
 		int processTouch(int x, int y);
 	
 	protected:
+		uint16_t _lightThreshold, _rawLightLvl;
 		void print();
 };
 

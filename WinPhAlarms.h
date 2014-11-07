@@ -28,7 +28,7 @@ static int phAlarmsButtons[nPHalarmsButtons];
 
 class WinPhAlarms: public Window {
 	public:
-		WinPhAlarms(UTFT *lcd, UTouch *touch);
+		WinPhAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPhAlarms(const WinPhAlarms &other);
 		WinPhAlarms& operator=(const WinPhAlarms &other);
 		virtual ~WinPhAlarms();
@@ -37,6 +37,7 @@ class WinPhAlarms: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		float _phAlarmMax, _phAlarmMin;
 		void print();
 };
 

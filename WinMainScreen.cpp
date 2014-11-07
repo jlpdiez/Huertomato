@@ -1,7 +1,7 @@
 #include "WinMainScreen.h"
 
 WinMainScreen::WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
-: Window(lcd,touch), _sensors(sensors), _settings(settings) { }
+: Window(lcd,touch,sensors,settings) { }
 
 WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {
 	_sensors = other._sensors;
@@ -13,6 +13,7 @@ WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
 	_touch = other._touch;
 	_sensors = other._sensors;
 	_settings = other._settings;
+	_buttons = other._buttons;
 	return *this;
 }
 
@@ -25,8 +26,6 @@ void WinMainScreen::draw() {
 	printSensorInfo();
 	printIconAndStatus();
 }
-
-int WinMainScreen::processTouch(int x, int y) { return 1; }
 
 //Prints mainscreen header text and clock
 void WinMainScreen::printMainHeader() {
@@ -52,6 +51,65 @@ void WinMainScreen::printMainHeader() {
 	_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
 	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
 	_lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
+}
+
+//Print sensor info on main screen. Data will turn red if theres an alarm triggered
+void WinMainScreen::printSensorInfo() {
+	const int xSpacer = xSize - 25;
+	const int ySpacer = 35;
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	//For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
+	//Humidity
+	int x = xSpacer-(bigFontSize*(strlen(sensorText[0])+4));
+	_lcd->print(sensorText[0],x,ySpacer);
+	_lcd->printNumI(_sensors->getHumidity(),xSpacer-bigFontSize*4,ySpacer,3,' ');
+	_lcd->print("%",xSpacer-bigFontSize,ySpacer);
+	//Temp
+	x = xSpacer-(bigFontSize*(strlen(sensorText[1])+7));
+	int y = ySpacer+(bigFontSize+8);
+	_lcd->print(sensorText[1],x,y);
+	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-bigFontSize*6,y,'.',5);
+	_lcd->print("C",xSpacer-bigFontSize,y);
+	//Light
+	x = xSpacer-(bigFontSize*(strlen(sensorText[2])+4));
+	y = ySpacer+(bigFontSize+8)*2;
+	_lcd->print(sensorText[2],x,y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-bigFontSize*4,y,3);
+	_lcd->print("%",xSpacer-bigFontSize,y);
+	//pH
+	x = xSpacer-(bigFontSize*(strlen(sensorText[3])+5));
+	y = ySpacer+(bigFontSize+8)*3;
+	float ph = _sensors->getPH();
+	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->print(sensorText[3],x,y);
+	_lcd->printNumF(ph,2,xSpacer-bigFontSize*4,y,'.',4);
+	//EC
+	x = xSpacer-(bigFontSize*(strlen(sensorText[4])+7));
+	y = ySpacer+(bigFontSize+8)*4;
+	uint16_t ec = _sensors->getEC();
+	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->print(sensorText[4],x,y);
+	_lcd->printNumI(ec,xSpacer-bigFontSize*6,y,4);
+	_lcd->print("uS",xSpacer-bigFontSize*2,y);
+	//Deposit level
+	x = xSpacer-(bigFontSize*(strlen(sensorText[5])+4));
+	y = ySpacer+(bigFontSize+8)*5;
+	uint8_t lvl = _sensors->getWaterLevel();
+	if (lvl < _settings->getWaterAlarm())
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->print(sensorText[5],x,y);
+	_lcd->printNumI(lvl,xSpacer-bigFontSize*4,y,3);
+	_lcd->print("%",xSpacer-bigFontSize,y);
 }
 
 //Updates main header's clock
@@ -83,7 +141,7 @@ void WinMainScreen::update() {
 }
 
 //Print sensor info on main screen. Data will turn red if theres an alarm triggered
-void WinMainScreen::printSensorInfo() {
+void WinMainScreen::print() {
 	const int xSpacer = xSize - 25;
 	const int ySpacer = 35;
 	
@@ -364,3 +422,5 @@ void WinMainScreen::updateIconAndStatus() {
 		_lcd->print(" ",x,ySpacer);
 	}
 }
+
+int WinMainScreen::processTouch(int x, int y) { return MainMenu; }

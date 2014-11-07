@@ -24,14 +24,16 @@ static int waterLevelButtons[nWaterLevelButtons];
 
 class WinLvlCalib: public Window {
 	public:
-		WinLvlCalib(UTFT *lcd, UTouch *touch);
+		WinLvlCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlCalib(const WinLvlCalib &other);
 		WinLvlCalib& operator=(const WinLvlCalib &other);
 		virtual ~WinLvlCalib();
 		void draw();
+		void update();
 		int processTouch(int x, int y);
 	
 	protected:
+		uint16_t _waterLvlMax, _waterLvlMin, _rawWaterLvl;
 		void print();
 };
 

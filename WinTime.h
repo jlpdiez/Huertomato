@@ -34,7 +34,7 @@ static int timeButtons[nTimeButtons];
 
 class WinTime: public Window {
 	public:
-		WinTime(UTFT *lcd, UTouch *touch);
+		WinTime(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinTime(const WinTime &other);
 		WinTime& operator=(const WinTime &other);
 		virtual ~WinTime();
@@ -43,6 +43,8 @@ class WinTime: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		static uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
+		static int _sysYear;
 		void print();
 };
 

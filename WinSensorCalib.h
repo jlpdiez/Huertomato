@@ -25,7 +25,7 @@ static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
 class WinSensorCalib: public Window {
 	public:
-		WinSensorCalib(UTFT *lcd, UTouch *touch);
+		WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSensorCalib(const WinSensorCalib &other);
 		WinSensorCalib& operator=(const WinSensorCalib &other);
 		virtual ~WinSensorCalib();

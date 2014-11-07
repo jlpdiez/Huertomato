@@ -23,7 +23,7 @@ static int sensorPollingButtons[nSensorPollingButtons];
 
 class WinSensorPolling: public Window {
 	public:
-		WinSensorPolling(UTFT *lcd, UTouch *touch);
+		WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSensorPolling(const WinSensorPolling &other);
 		WinSensorPolling& operator=(const WinSensorPolling &other);
 		virtual ~WinSensorPolling();
@@ -32,6 +32,7 @@ class WinSensorPolling: public Window {
 		int processTouch(int x, int y);
 	
 	protected:
+		static uint8_t _pollSec;
 		void print();
 };
 

@@ -6,26 +6,94 @@
  */ 
 #include "WinSensorPolling.h"
 
-WinSensorPolling::WinSensorPolling(UTFT *lcd, UTouch *touch) : Window(lcd,touch) { }
+WinSensorPolling::WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+: Window(lcd,touch,sensors,settings) { }
 
 WinSensorPolling::WinSensorPolling(const WinSensorPolling &other) : Window(other) { }
 	
 WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	_buttons = other._buttons;
 	return *this;
 }
 
-/*
-//Draws main menu into LCD
-//_actScreen == 1
-void GUI::drawMainMenu() {
-	_actScreen = 1;
+void WinSensorPolling::print() {
+	const int yFirstLine = 60;
+	const int ySecondLine = 135;
+	const int xSpacer = 25;
+	const int xSpacer2 = 72+3*bigFontSize;
+	
+	const int secU[] = {xSpacer2+bigFontSize/2, ySecondLine-22};       //sec up
+	const int secD[] = {xSpacer2+bigFontSize/2, ySecondLine+22};       //sec down
+	
+	_pollSec = _settings->getSensorSecond();
+	
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	_lcd->setFont(hallfetica_normal);
+	
+	char* sensorPollingText1 = "Time between readings:";
+	char* sensorPollingText2 = "seconds";
+	
+	//Time between readings text
+	_lcd->print(sensorPollingText1, xSpacer, yFirstLine);
+	//XX
+	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
+	//secs
+	_lcd->print(sensorPollingText2,xSpacer2+3*bigFontSize,ySecondLine);
+	
+	//Make +/- buttons
+	sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
+	sensorPollingButtons[4] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
+	
+}
+
+//Draws entire screen Sensor Polling
+void WinSensorPolling::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Main Menu -");
-	printFlowButtons(false,false,true,mainMenuButtons);
-	printMainMenu();
+	printMenuHeader("- Sensor Polling -");
+	addFlowButtons(true,true,true,sensorPollingButtons);
+	print();
 	_buttons.drawButtons();
 }
-*/
+
+//Redraws only sensor polling numbers from inner temp vars
+//Used when +- signs are pressed
+void WinSensorPolling::update() {
+	const int ySecondLine = 135;
+	const int  xSpacer2 = 72+3*bigFontSize;
+	
+	_lcd->setFont(hallfetica_normal);
+	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
+}
+
+int WinSensorPolling::processTouch(int x, int y) {
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sensorPollingButtons[0]) {
+		//Go to controller menu
+		return ControllerSettings;
+	//Save
+	} else if (buttonIndex == sensorPollingButtons[1]) {
+		_settings->setSensorSecond(_pollSec);
+		printSavedButton();
+	//Exit
+	} else if (buttonIndex == sensorPollingButtons[2]) {
+		//Go to main screen
+		return MainScreen;
+		
+	//Sec up
+	} else if (buttonIndex == sensorPollingButtons[3]) {
+		(_pollSec >= 59) ? _pollSec=1 : _pollSec++;
+		update();
+	//Sec down
+	} else if (buttonIndex == sensorPollingButtons[4]) {
+		(_pollSec <= 1) ? _pollSec=59 : _pollSec--;
+		update();
+	}
+	return 0;
+}

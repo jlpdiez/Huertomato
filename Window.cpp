@@ -1,7 +1,8 @@
 #include "Window.h"
 
 //Constructors
-Window::Window(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lcd,touch) {
+Window::Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+: _lcd(lcd), _touch(touch), _sensors(sensors),_settings(settings),_buttons(lcd,touch) {
 	_buttons.setTextFont(hallfetica_normal);
 	_buttons.setSymbolFont(various_symbols);
 	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
@@ -11,13 +12,16 @@ Window::Window(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch), _buttons(lc
 Window::Window(const Window &other) : _buttons(other._buttons) {
 	_lcd = other._lcd;
 	_touch = other._touch;	
+	_sensors = other._sensors;
+	_settings = other._settings;
 }
 
 Window& Window::operator=(const Window &other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
 	_buttons = other._buttons;
-
 	return *this;
 }
 
@@ -47,7 +51,6 @@ void Window::update() {
 }
 
 int Window::processTouch(int x, int y) { return 0; }
-
 	
 //These function should be the first to get its buttons into the array buttons
 //It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2
@@ -109,8 +112,6 @@ void Window::printMenuHeader(char* c) {
 	//Print title centered
 	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
 }
-
-
 
 //Overlays "Saved" text over save button
 //Used when button is pressed to inform the user values have been stored

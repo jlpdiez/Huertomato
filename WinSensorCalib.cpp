@@ -6,26 +6,57 @@
  */ 
 #include "WinSensorCalib.h"
 
-WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch) : Window(lcd,touch) { }
+WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+: Window(lcd,touch,sensors,settings) { }
 
 WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) { }
 	
 WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	_buttons = other._buttons;
 	return *this;
 }
 
-/*
-//Draws main menu into LCD
-//_actScreen == 1
-void GUI::drawMainMenu() {
-	_actScreen = 1;
+void WinSensorCalib::print() {
+	const int xSpacer = 15;
+	const int ySpacer = 45;
+	
+	const int yFirst = 60;
+	const int ySecond = 135;
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	
+	//Triangles
+	_lcd->setFont(various_symbols);
+	_lcd->print("T",xSpacer,yFirst);
+	_lcd->print("T",xSpacer,ySecond);
+	//Buttons
+	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
+	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
+}
+
+//Draws entire screen Sensor Calibration
+void WinSensorCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Main Menu -");
-	printFlowButtons(false,false,true,mainMenuButtons);
-	printMainMenu();
+	printMenuHeader("- Calibration -");
+	addFlowButtons(true,false,true,sensorCalibrationButtons);
+	print();
 	_buttons.drawButtons();
 }
-*/
+
+int WinSensorCalib::processTouch(int x, int y) {
+	int buttonIndex = _buttons.checkButtons(x,y);
+	//Back
+	if (buttonIndex == sensorCalibrationButtons[0]) { return SystemSettings; }
+	//Exit
+	else if (buttonIndex == sensorCalibrationButtons[2]) { return MainScreen; }
+	//Water calibration
+	else if (buttonIndex == sensorCalibrationButtons[3]) { return LvlCalib; }
+	//Light Calibration
+	else if (buttonIndex == sensorCalibrationButtons[4]) { return LightCalib; }
+	return 0;
+}
