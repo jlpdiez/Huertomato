@@ -6,10 +6,13 @@
  */ 
 
 
-#ifndef MAINSCREEN_H_
-#define MAINSCREEN_H_
+#ifndef WINMAINSCREEN_H_
+#define WINMAINSCREEN_H_
 
+#include "Sensors.h"
+#include "Settings.h"
 #include "Window.h"
+#include <SD.h>   
 
 //Holds text strings for each sensor
 const int nSensorText = 6;
@@ -22,18 +25,20 @@ static char* sensorText[nSensorText] = {
 	"Deposit:"
 };
 
-class MainScreen: public Window {
+class WinMainScreen: public Window {
 	public:	
-		MainScreen(UTFT *lcd, UTouch *touch);
-		MainScreen(const MainScreen &other);
-		MainScreen& operator=(const MainScreen &other);
-		virtual ~MainScreen();
+		WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinMainScreen(const WinMainScreen &other);
+		WinMainScreen& operator=(const WinMainScreen &other);
+		virtual ~WinMainScreen();
 		void draw();
 		void update();
 		int processTouch(int x, int y);
 		
 	protected:			
-		void printHeaderBackground();
+		Sensors *_sensors;
+		Settings *_settings;
+			
 		void printMainHeader();
 		void printSensorInfo();
 		void printIconAndStatus();

@@ -38,11 +38,12 @@ extern uint8_t various_symbols[];
 //extern uint8_t Sinclair_S[];
 
 //Colours
-/*uint8_t lightGreen[3] = {184, 210, 60};
-uint8_t darkGreen[3] = {141, 170, 39};
-uint8_t grey[3] = {100,100,100};
-uint8_t white[3] = {255,255,255};*/
-
+static uint8_t lightGreen[3] = {184, 210, 60};
+static uint8_t darkGreen[3] = {141, 170, 39};
+static uint8_t grey[3] = {100,100,100};
+static uint8_t white[3] = {255,255,255};
+static uint8_t red[3] = {200,0,0};
+static uint8_t blue[3] = {0,135,199};
 
 //Colours
 //uint8_t lightGreen[3] = {184, 210, 60};
@@ -52,8 +53,6 @@ uint8_t white[3] = {255,255,255};*/
 //extern uint8_t blue[3] = {0,135,199};
 //extern uint8_t yellow[3] = {255,242,32};
 //uint8_t white[3] = {255,255,255};
-
-extern int xSize;
 
 class Window {
 	
@@ -70,6 +69,9 @@ class Window {
 	protected:
 		virtual void printWindow();
 		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
+		void printHeaderBackground();
+		void printMenuHeader(char* c);
+		void printSavedButton();
 		
 		static const int xSize = 399;
 		static const int ySize = 239;

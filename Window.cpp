@@ -51,7 +51,7 @@ int Window::processTouch(int x, int y) { return 0; }
 	
 //These function should be the first to get its buttons into the array buttons
 //It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2
-void Window:addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]) {
+void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]) {
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(hallfetica_normal);
 		
@@ -87,4 +87,37 @@ void Window:addFlowButtons(boolean backButton, boolean saveButton, boolean exitB
 		buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);
 	} else
 	buttonArray[2] = -1;
+}
+
+//Prints header background and separator line
+void Window::printHeaderBackground() {
+	const int headerHeight = 20;
+	//Header background
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->fillRect(0,0,xSize,headerHeight);
+	//Separator line
+	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
+	_lcd->drawLine(0, headerHeight, xSize, headerHeight);
+}
+
+//Prints header with centered text
+void Window::printMenuHeader(char* c) {
+	printHeaderBackground();
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	//Print title centered
+	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
+}
+
+
+
+//Overlays "Saved" text over save button
+//Used when button is pressed to inform the user values have been stored
+void Window::printSavedButton() {
+	char* savedText = " Saved ";
+	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
+	const int saveY = 215;
+	_lcd->setColor(grey[0],grey[1],grey[2]);
+	_lcd->print(savedText,saveX,saveY);
 }

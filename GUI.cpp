@@ -64,7 +64,7 @@ void GUI::draw() {
 			_window = new Window(_lcd,_touch);
 			break;
 		case 1:
-			_window = new MainScreen(_lcd,_touch);
+			_window = new WinMainScreen(_lcd,_touch,_sensors,_settings);
 			break;
 		default:
 			_window = new Window(_lcd,_touch);
@@ -88,16 +88,6 @@ void GUI::processTouch() {
 
 
 
-//Overlays "Saved" text over save button
-//Used when button is pressed to inform the user values have been stored
-void GUI::printSavedButton() {
-	char* savedText = " Saved ";
-	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
-	const int saveY = 215;
-	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->print(savedText,saveX,saveY);
-}
-
 //Makes window decoration and buttons
 void GUI::printMainMenu() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -120,74 +110,8 @@ void GUI::printMainMenu() {
 	mainMenuButtons[6] = _buttons.addButton(xSpacer, controllerY-18, 64, 64, 0);
 }
 
-//Prints mainscreen header text and clock
-void GUI::printMainHeader() {  
-	//For small font y = 6. For big one y = 2;
-	const int ySpacer = 2;
-    
-	//Get actual time
-	time_t t = now();
-	uint8_t hou = hour(t);
-	uint8_t min = minute(t);
-	uint8_t sec = second(t);
-
-	printHeaderBackground(); 
-  
-	//Header title text
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->print("Huertomato 1.2",10,ySpacer); 
-
-	//Clock display HH:MM
-	//X is calculated from the end of size
-	_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
-}
-
-//Updates main header's clock
-void GUI::updateMainHeader() {
-	const int ySpacer = 2;
-  
-	//Get actual time
-	time_t t = now();
-	uint8_t hou = hour(t);
-	uint8_t min = minute(t);
-	uint8_t sec = second(t);
-  
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	//Clock display HH:MM
-	//X is calculated from the end of size
-	_lcd->printNumI(hou,xSize-(5*bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",xSize-(3*bigFontSize)-2,ySpacer);
-	_lcd->printNumI(min,xSize-(2*bigFontSize)-2,ySpacer,2,'0');
-}
-
-//Prints header with centered text
-void GUI::printMenuHeader(char* c) {
-	printHeaderBackground();
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]); 
-	//Print title centered
-	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
-}
 
 
-//Draws main menu into LCD
-//_actScreen == 1
-void GUI::drawMainMenu() {
-	_actScreen = 1;
-	_lcd->fillScr(VGA_WHITE);
-	_buttons.deleteAllButtons();
-	printMenuHeader("- Main Menu -"); 
-	printFlowButtons(false,false,true,mainMenuButtons);
-	printMainMenu(); 
-	_buttons.drawButtons();
-}
 
 // Processes touch for main menu screen
 void GUI::processTouchMainMenu(int x, int y) {

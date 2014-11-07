@@ -1,36 +1,35 @@
-#include "MainScreen.h"
+#include "WinMainScreen.h"
 
-MainScreen::MainScreen(UTFT *lcd, UTouch *touch) : Window(lcd,touch) {
-	
+WinMainScreen::WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+: Window(lcd,touch), _sensors(sensors), _settings(settings) { }
+
+WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {
+	_sensors = other._sensors;
+	_settings = other._settings;
 }
 
-//MainScreen(const MainScreen &other);
-//MainScreen& operator=(const MainScreen &other);
+WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
+	_lcd = other._lcd;
+	_touch = other._touch;
+	_sensors = other._sensors;
+	_settings = other._settings;
+	return *this;
+}
 
-MainScreen::~MainScreen() {}
 
-void MainScreen::draw() {
+WinMainScreen::~WinMainScreen() {}
+
+void WinMainScreen::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	printMainHeader();
 	printSensorInfo();
 	printIconAndStatus();
 }
 
-int MainScreen::processTouch(int x, int y) { return 1; }
-
-//Prints header background and separator line
-void MainScreen::printHeaderBackground() {
-	const int headerHeight = 20;
-	//Header background
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->fillRect(0,0,xSize,headerHeight);
-	//Separator line
-	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
-	_lcd->drawLine(0, headerHeight, xSize, headerHeight);
-}
+int WinMainScreen::processTouch(int x, int y) { return 1; }
 
 //Prints mainscreen header text and clock
-void MainScreen::printMainHeader() {
+void WinMainScreen::printMainHeader() {
 	//For small font y = 6. For big one y = 2;
 	const int ySpacer = 2;
 	
@@ -56,7 +55,7 @@ void MainScreen::printMainHeader() {
 }
 
 //Updates main header's clock
-void MainScreen::updateMainHeader() {
+void WinMainScreen::updateMainHeader() {
 	const int ySpacer = 2;
 	
 	//Get actual time
@@ -77,14 +76,14 @@ void MainScreen::updateMainHeader() {
 
 //Redraws only values that change over time
 //Used for refreshing from main sketch
-void MainScreen::update() {
+void WinMainScreen::update() {
 	updateMainHeader();
 	updateSensorInfo();
 	updateIconAndStatus();
 }
 
 //Print sensor info on main screen. Data will turn red if theres an alarm triggered
-void MainScreen::printSensorInfo() {
+void WinMainScreen::printSensorInfo() {
 	const int xSpacer = xSize - 25;
 	const int ySpacer = 35;
 	
@@ -153,7 +152,7 @@ void MainScreen::printSensorInfo() {
 }
 
 //Redraws only sensor numbers and changes colour if needed (alarm triggered)
-void MainScreen::updateSensorInfo() {
+void WinMainScreen::updateSensorInfo() {
 	const int xSpacer = xSize - 25;
 	const int ySpacer = 35;
 	
@@ -211,7 +210,7 @@ void MainScreen::updateSensorInfo() {
 //Shows system status in main screen
 //Loads img files from /PICTURE folder of the SD card
 //TODO: make common part of alarm and normal state a function!
-void MainScreen::printIconAndStatus() {
+void WinMainScreen::printIconAndStatus() {
 	const int xSpacer = 10;
 	const int ySpacer = 200;
 	const int imgSize = 126;
@@ -327,7 +326,7 @@ void MainScreen::printIconAndStatus() {
 
 //Same as above except it only changes icon if system state changed from previous
 //If not should only update next watering time
-void MainScreen::updateIconAndStatus() {
+void WinMainScreen::updateIconAndStatus() {
 	if (_settings->systemStateChanged())
 	printIconAndStatus();
 	

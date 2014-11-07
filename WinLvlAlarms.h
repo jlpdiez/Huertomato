@@ -1,0 +1,42 @@
+/*
+ * MainMenu.h
+ *
+ * Created: 07/11/2014 1:19:48
+ *  Author: HAL
+ */ 
+
+
+#ifndef WINLVLALARMS_H_
+#define WINLVLALARMS_H_
+
+#include "Window.h"
+
+/*
+	//11-Nutrient Level Alarms
+	*/
+
+const int nWaterAlarmsButtons = 5;
+static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
+	"=",
+	">"
+};
+static int waterAlarmsButtons[nWaterAlarmsButtons];
+
+
+class WinLvlAlarms: public Window {
+	public:
+		WinLvlAlarms(UTFT *lcd, UTouch *touch);
+		WinLvlAlarms(const WinLvlAlarms &other);
+		WinLvlAlarms& operator=(const WinLvlAlarms &other);
+		virtual ~WinLvlAlarms();
+		void draw();
+		void update();
+		int processTouch(int x, int y);
+	
+	protected:
+		void print();
+};
+
+
+
+#endif

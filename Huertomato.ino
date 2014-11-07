@@ -43,7 +43,7 @@
 #include "Buttons.h"
 #include "GUI.h"
 #include "Window.h"
-#include "MainScreen.h"
+#include "WinMainScreen.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
