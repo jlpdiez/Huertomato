@@ -20,6 +20,8 @@ WinSD& WinSD::operator=(const WinSD& other) {
 	return *this;
 }
 
+WinSD::~WinSD() {}
+
 void WinSD::print() {
 	const int yFirstLine = 60;
 	const int ySecondLine = 135;
@@ -40,27 +42,27 @@ void WinSD::print() {
 	_lcd->setFont(various_symbols);
 	_lcd->print("T",xSpacer,yFirstLine);
 	//First line button
-	sdCardButtons[3] = _buttons.addButton(xSpacer+2*bigFontSize,yFirstLine,sdCardButtonsText[0]);
+	sdCardButtons[3] = _buttons.addButton(xSpacer+2*_bigFontSize,yFirstLine,sdCardButtonsText[0]);
 	//On - off symbol -
 	_lcd->setFont(hallfetica_normal);
 	if (_sdActive)
-	_lcd->print("ON",xSpacer+((3+strlen(sdCardButtonsText[0]))*bigFontSize),yFirstLine);
+	_lcd->print("ON",xSpacer+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),yFirstLine);
 	else
-	_lcd->print("OFF",xSpacer+((3+strlen(sdCardButtonsText[0]))*bigFontSize),yFirstLine);
+	_lcd->print("OFF",xSpacer+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),yFirstLine);
 	
 	//Second line
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	char* sdCardText1 = "Save every";
 	_lcd->print(sdCardText1,xSpacer,ySecondLine);
 	//hours
-	int x = houU[0]+bigFontSize/2-bigFontSize+2;
+	int x = houU[0]+_bigFontSize/2-_bigFontSize+2;
 	_lcd->printNumI(_sdHour,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->print("h",x,ySecondLine);
 	//Mins
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->printNumI(_sdMin,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->print("m",x,ySecondLine);
 	
 	//Make +/- buttons
@@ -100,17 +102,17 @@ void WinSD::update() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	if (_sdActive)
-	_lcd->print("ON ",xSpacer+((3+strlen(sdCardButtonsText[0]))*bigFontSize),yFirstLine);
+	_lcd->print("ON ",xSpacer+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),yFirstLine);
 	else
-	_lcd->print("OFF",xSpacer+((3+strlen(sdCardButtonsText[0]))*bigFontSize),yFirstLine);
+	_lcd->print("OFF",xSpacer+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),yFirstLine);
 
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//hours
-	int x = houU[0]+bigFontSize/2-bigFontSize+2;
+	int x = houU[0]+_bigFontSize/2-_bigFontSize+2;
 	_lcd->printNumI(_sdHour,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	//Mins
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->printNumI(_sdMin,x,ySecondLine,2,'0');
 	
 	//If first toggle is inactive we grey out buttons
@@ -123,25 +125,21 @@ void WinSD::update() {
 	}
 }
 
-int WinSD::processTouch(int x, int y) {
+Window::Screen WinSD::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sdCardButtons[0]) {
-		//Go to controller menu
-		return ControllerSettings;
+	if (buttonIndex == sdCardButtons[0]) { return ControllerSettings; }
 	//Save
-	} else if (buttonIndex == sdCardButtons[1]) {
+	else if (buttonIndex == sdCardButtons[1]) {
 		_settings->setSDactive(_sdActive);
 		_settings->setSDhour(_sdHour);
 		_settings->setSDminute(_sdMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == sdCardButtons[2]) {
-		//Go to main screen
-		return MainScreen;
-		
+	} else if (buttonIndex == sdCardButtons[2]) { return MainScreen; }
+				
 	//Card active toggle
-	} else if (buttonIndex == sdCardButtons[3]) {
+	else if (buttonIndex == sdCardButtons[3]) {
 		_sdActive = !_sdActive;
 		update();
 	//Hour up
@@ -161,5 +159,5 @@ int WinSD::processTouch(int x, int y) {
 		(_sdMin <= 0) ? _sdMin=59 : _sdMin--;
 		update();
 	}
-	return 0;
+	return None;
 }

@@ -5,10 +5,11 @@
  *  Author: HAL
  */ 
 
-
 #ifndef WINMAINMENU_H_
 #define WINMAINMENU_H_
 
+#include "Sensors.h"
+#include "Settings.h"
 #include "Window.h"
 
 const int nMainMenuButtons = 7;
@@ -26,12 +27,10 @@ class WinMainMenu: public Window {
 		WinMainMenu& operator=(const WinMainMenu &other);
 		virtual ~WinMainMenu();
 		void draw();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		void print();
 };
-
-
 
 #endif

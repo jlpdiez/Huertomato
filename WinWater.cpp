@@ -20,6 +20,8 @@ WinWater& WinWater::operator=(const WinWater& other) {
 	return *this;
 }
 
+WinWater::~WinWater() {}
+
 void WinWater::print() {
 	const int yFirstLine = 50;
 	const int ySecondLine = 100;
@@ -44,10 +46,10 @@ void WinWater::print() {
 	_lcd->print("T",xSpacer,yFirstLine);
 	//Water mode button
 	_lcd->setFont(hallfetica_normal);
-	int x = xSpacer + 2*bigFontSize;
+	int x = xSpacer + 2*_bigFontSize;
 	waterCycleButtons[3] = _buttons.addButton(x,yFirstLine,waterCycleButtonsText[0]);
 	//Continuous/timed text
-	x += (1+strlen(waterCycleButtonsText[0]))*bigFontSize;
+	x += (1+strlen(waterCycleButtonsText[0]))*_bigFontSize;
 	if (_waterTimed)
 	_lcd->print("Timed",x,yFirstLine);
 	else
@@ -57,13 +59,13 @@ void WinWater::print() {
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	x = xSpacer;
 	_lcd->print("Water every:",x,ySecondLine);
-	x += 13*bigFontSize;
+	x += 13*_bigFontSize;
 	_lcd->printNumI(_waterHour,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->print("h",x,ySecondLine);
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->printNumI(_waterMin,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->print("m",x,ySecondLine);
 	waterCycleButtons[4] = _buttons.addButton(houU[0],houU[1],waterCycleButtonsText[1],BUTTON_SYMBOL);
 	waterCycleButtons[5] = _buttons.addButton(houD[0],houD[1],waterCycleButtonsText[2],BUTTON_SYMBOL);
@@ -73,9 +75,9 @@ void WinWater::print() {
 	//Third line
 	x = xSpacer;
 	_lcd->print("Active for:",x,yThirdLine);
-	x += 12*bigFontSize;
+	x += 12*_bigFontSize;
 	_lcd->printNumI(_floodMin,x,yThirdLine,2,'0');
-	x += 3*bigFontSize;
+	x += 3*_bigFontSize;
 	_lcd->print("minutes",x,yThirdLine);
 	waterCycleButtons[8] = _buttons.addButton(fMinU[0],fMinU[1],waterCycleButtonsText[5],BUTTON_SYMBOL);
 	waterCycleButtons[9] = _buttons.addButton(fMinD[0],fMinD[1],waterCycleButtonsText[6],BUTTON_SYMBOL);
@@ -113,8 +115,8 @@ void WinWater::update() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	
 	//Continuous/timed text
-	int x = xSpacer + 2*bigFontSize;;
-	x += (1+strlen(waterCycleButtonsText[0]))*bigFontSize;
+	int x = xSpacer + 2*_bigFontSize;;
+	x += (1+strlen(waterCycleButtonsText[0]))*_bigFontSize;
 	if (_waterTimed)
 	_lcd->print("Timed     ",x,yFirstLine);
 	else
@@ -123,55 +125,47 @@ void WinWater::update() {
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Water every
 	x = xSpacer;
-	x += 13*bigFontSize;
+	x += 13*_bigFontSize;
 	_lcd->printNumI(_waterHour,x,ySecondLine,2,'0');
-	x += 2*bigFontSize;
-	x += 2*bigFontSize;
+	x += 2*_bigFontSize;
+	x += 2*_bigFontSize;
 	_lcd->printNumI(_waterMin,x,ySecondLine,2,'0');
 	//Flood time
 	x = xSpacer;
-	x += 12*bigFontSize;
+	x += 12*_bigFontSize;
 	_lcd->printNumI(_floodMin,x,yThirdLine,2,'0');
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_waterTimed) {
 		for (int i = 4; i < nWaterCycleButtons; i++)
 		_buttons.disableButton(waterCycleButtons[i],true);
-		} else {
+	} else {
 		for (int i = 4; i < nWaterCycleButtons; i++)
 		_buttons.enableButton(waterCycleButtons[i],true);
 	}
 }
 
-int WinWater::processTouch(int x, int y) {
+Window::Screen WinWater::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == waterCycleButtons[0]) {
-		//Go to system menu
-		return SystemSettings;
+	if (buttonIndex == waterCycleButtons[0]) { return SystemSettings; }
 	//Save
-	} else if (buttonIndex == waterCycleButtons[1]) {
-		boolean refresh = false;
+	else if (buttonIndex == waterCycleButtons[1]) {
 		//Prevents flood time > time inactive as it will mess up alarms
 		//As flood time always > 1 this also prevents a watering time of 0
 		if ((_waterHour == 0) && (_floodMin >= _waterMin)) {
 			_waterMin = _floodMin + 1;
-			refresh = true;
+			update();
 		}
 		_settings->setWaterTimed(_waterTimed);
 		_settings->setWaterHour(_waterHour);
 		_settings->setWaterMinute(_waterMin);
 		_settings->setFloodMinute(_floodMin);
-		if (refresh)
-			update();
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == waterCycleButtons[2]) {
-		//Go to main screen
-		return MainScreen;
-		
+	} else if (buttonIndex == waterCycleButtons[2]) { return MainScreen; }	
 	//Water mode
-	} else if (buttonIndex == waterCycleButtons[3]) {
+	else if (buttonIndex == waterCycleButtons[3]) {
 		_waterTimed = !_waterTimed;
 		update();
 	//Hour up
@@ -199,5 +193,5 @@ int WinWater::processTouch(int x, int y) {
 		(_floodMin <= 1) ? _floodMin=59 : _floodMin--;
 		update();
 	}
-	return 0;
+	return None;
 }

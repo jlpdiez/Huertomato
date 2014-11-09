@@ -38,14 +38,14 @@ class WinWater: public Window {
 		virtual ~WinWater();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		//These are temp variables used for displaying data
 		//They are read from _settings in print() funcs. Changed in processTouch()
 		//displayed again with update() and saved to eeprom when button save is pressed
-		static boolean _waterTimed;
-		static uint8_t _waterHour, _waterMin, _floodMin;
+		boolean _waterTimed;
+		uint8_t _waterHour, _waterMin, _floodMin;
 		void print();
 };
 

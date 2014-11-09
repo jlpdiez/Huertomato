@@ -30,7 +30,7 @@ class WinAlarms: public Window {
 		WinAlarms& operator=(const WinAlarms &other);
 		virtual ~WinAlarms();
 		void draw();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		void print();

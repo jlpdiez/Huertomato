@@ -20,6 +20,8 @@ WinPump& WinPump::operator=(const WinPump& other) {
 	return *this;
 }
 
+WinPump::~WinPump() {}
+
 void WinPump::print() {
 	const int yFirstLine = 100;
 	const int xSpacer = 25;
@@ -32,14 +34,14 @@ void WinPump::print() {
 	//Text
 	_lcd->print(wLimitS,xSpacer,yFirstLine);
 	//Numbers
-	int x = (4+strlen(wLimitS))*bigFontSize;
+	int x = (4+strlen(wLimitS))*_bigFontSize;
 	_lcd->printNumI(_pumpProtectionLvl,x,yFirstLine,3);
 	//Buttons
-	x += 1.5*bigFontSize;
+	x += 1.5*_bigFontSize;
 	pumpProtectionButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
 	pumpProtectionButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
-	x += 2.5*bigFontSize;
+	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,yFirstLine);
 }
 
@@ -58,27 +60,23 @@ void WinPump::update() {
 	char* wLimitS = "Lower Limit:";
 	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(wLimitS))*bigFontSize;
+	int x = (4+strlen(wLimitS))*_bigFontSize;
 	_lcd->printNumI(_pumpProtectionLvl,x,yFirstLine,3);
 }
 
-int WinPump::processTouch(int x, int y) {
+Window::Screen WinPump::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == pumpProtectionButtons[0]) {
-		//Go to system menu
-		return SystemSettings;
+	if (buttonIndex == pumpProtectionButtons[0]) { return SystemSettings; }
 	//Save
-	} else if (buttonIndex == pumpProtectionButtons[1]) {
+	else if (buttonIndex == pumpProtectionButtons[1]) {
 		_settings->setPumpProtectionLvl(_pumpProtectionLvl);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == pumpProtectionButtons[2]) {
-		//Go to main screen
-		return MainScreen;
+	} else if (buttonIndex == pumpProtectionButtons[2]) { return MainScreen; }
 		
 	//Up
-	} else if (buttonIndex == pumpProtectionButtons[3]) {
+	else if (buttonIndex == pumpProtectionButtons[3]) {
 		(_pumpProtectionLvl >= 100) ? _pumpProtectionLvl=0 : _pumpProtectionLvl++;
 		update();
 	//Down
@@ -86,5 +84,5 @@ int WinPump::processTouch(int x, int y) {
 		(_pumpProtectionLvl <= 0) ? _pumpProtectionLvl=100 : _pumpProtectionLvl--;
 		update();
 	}
-	return 0;
+	return None;
 }

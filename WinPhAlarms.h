@@ -34,7 +34,7 @@ class WinPhAlarms: public Window {
 		virtual ~WinPhAlarms();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		float _phAlarmMax, _phAlarmMin;

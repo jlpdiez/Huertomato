@@ -20,14 +20,16 @@ WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 	return *this;
 }
 
+WinSensorPolling::~WinSensorPolling() {}
+
 void WinSensorPolling::print() {
 	const int yFirstLine = 60;
 	const int ySecondLine = 135;
 	const int xSpacer = 25;
-	const int xSpacer2 = 72+3*bigFontSize;
+	const int xSpacer2 = 72+3*_bigFontSize;
 	
-	const int secU[] = {xSpacer2+bigFontSize/2, ySecondLine-22};       //sec up
-	const int secD[] = {xSpacer2+bigFontSize/2, ySecondLine+22};       //sec down
+	const int secU[] = {xSpacer2+_bigFontSize/2, ySecondLine-22};       //sec up
+	const int secD[] = {xSpacer2+_bigFontSize/2, ySecondLine+22};       //sec down
 	
 	_pollSec = _settings->getSensorSecond();
 	
@@ -43,7 +45,7 @@ void WinSensorPolling::print() {
 	//XX
 	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
 	//secs
-	_lcd->print(sensorPollingText2,xSpacer2+3*bigFontSize,ySecondLine);
+	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,ySecondLine);
 	
 	//Make +/- buttons
 	sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
@@ -65,29 +67,25 @@ void WinSensorPolling::draw() {
 //Used when +- signs are pressed
 void WinSensorPolling::update() {
 	const int ySecondLine = 135;
-	const int  xSpacer2 = 72+3*bigFontSize;
+	const int  xSpacer2 = 72+3*_bigFontSize;
 	
 	_lcd->setFont(hallfetica_normal);
 	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
 }
 
-int WinSensorPolling::processTouch(int x, int y) {
+Window::Screen WinSensorPolling::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorPollingButtons[0]) {
-		//Go to controller menu
-		return ControllerSettings;
+	if (buttonIndex == sensorPollingButtons[0]) { return ControllerSettings; }
 	//Save
-	} else if (buttonIndex == sensorPollingButtons[1]) {
+	else if (buttonIndex == sensorPollingButtons[1]) {
 		_settings->setSensorSecond(_pollSec);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == sensorPollingButtons[2]) {
-		//Go to main screen
-		return MainScreen;
+	} else if (buttonIndex == sensorPollingButtons[2]) { return MainScreen; }
 		
 	//Sec up
-	} else if (buttonIndex == sensorPollingButtons[3]) {
+	else if (buttonIndex == sensorPollingButtons[3]) {
 		(_pollSec >= 59) ? _pollSec=1 : _pollSec++;
 		update();
 	//Sec down
@@ -95,5 +93,5 @@ int WinSensorPolling::processTouch(int x, int y) {
 		(_pollSec <= 1) ? _pollSec=59 : _pollSec--;
 		update();
 	}
-	return 0;
+	return None;
 }

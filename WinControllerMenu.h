@@ -32,7 +32,7 @@ class WinControllerMenu: public Window {
 		virtual ~WinControllerMenu();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		//Sound toggle

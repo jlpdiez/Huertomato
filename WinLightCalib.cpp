@@ -20,6 +20,8 @@ WinLightCalib& WinLightCalib::operator=(const WinLightCalib& other) {
 	return *this;
 }
 
+WinLightCalib::~WinLightCalib() {}
+
 void WinLightCalib::print() {
 	const int yFirstLine = 60;
 	const int ySecondLine = 135;
@@ -34,7 +36,7 @@ void WinLightCalib::print() {
 	//First Line
 	int x = xSpacer;
 	_lcd->print("Current Reading:",x,yFirstLine);
-	x += 16*bigFontSize;
+	x += 16*_bigFontSize;
 	_lcd->printNumI(_rawLightLvl,x,yFirstLine,4,' ');
 	//x +=4*bigFontSize;
 	//_lcd->print("lux",x,yFirstLine);
@@ -42,11 +44,11 @@ void WinLightCalib::print() {
 	//Second Line
 	x = xSpacer;
 	_lcd->print("Threshold:",x,ySecondLine);
-	x += 10*bigFontSize;
+	x += 10*_bigFontSize;
 	_lcd->printNumI(_lightThreshold,x,ySecondLine,4,' ');
 	//x += 4*bigFontSize;
 	//_lcd->print("lux",x,ySecondLine);
-	x += 5*bigFontSize;
+	x += 5*_bigFontSize;
 	lightCalibrationButtons[3] = _buttons.addButton(x,ySecondLine,lightCalibrationButtonsText[0]);
 }
 
@@ -61,11 +63,11 @@ void WinLightCalib::update() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = xSpacer + 16*bigFontSize;
+	int x = xSpacer + 16*_bigFontSize;
 	_lcd->printNumI(_rawLightLvl,x,yFirstLine,4,' ');
 	
 	//Second Line
-	x = xSpacer + 10*bigFontSize;
+	x = xSpacer + 10*_bigFontSize;
 	_lcd->printNumI(_lightThreshold,x,ySecondLine,4,' ');
 }
 
@@ -79,23 +81,20 @@ void WinLightCalib::draw() {
 	_buttons.drawButtons();
 }
 
-int WinLightCalib::processTouch(int x, int y) {
+Window::Screen WinLightCalib::processTouch(const int x, int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == lightCalibrationButtons[0]) {
-		//Go to calibration menu
-		return SensorCalib;
+	if (buttonIndex == lightCalibrationButtons[0]) { return SensorCalib; }
 	//Save
-	} else if (buttonIndex == lightCalibrationButtons[1]) {
+	else if (buttonIndex == lightCalibrationButtons[1]) {
 		_settings->setLightThreshold(_lightThreshold);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == lightCalibrationButtons[2]) {
-		//Go to main screen
-		return MainScreen;
-	} else if (buttonIndex == lightCalibrationButtons[3]) {
+	} else if (buttonIndex == lightCalibrationButtons[2]) { return MainScreen; }
+		
+	else if (buttonIndex == lightCalibrationButtons[3]) {
 		_lightThreshold = _rawLightLvl;
 		update();
 	}
-	return 0;
+	return None;
 }

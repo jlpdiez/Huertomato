@@ -10,6 +10,7 @@
 #define WINTIME_H_
 
 #include "Window.h"
+#include <Time.h>
 
 //4-Time & Date
 
@@ -40,11 +41,11 @@ class WinTime: public Window {
 		virtual ~WinTime();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
-		static int _sysYear;
+		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
+		int _sysYear;
 		void print();
 };
 

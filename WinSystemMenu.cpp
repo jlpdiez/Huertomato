@@ -20,6 +20,7 @@ WinSystemMenu& WinSystemMenu::operator=(const WinSystemMenu& other) {
 	return *this;
 }
 
+WinSystemMenu::~WinSystemMenu() {}
 
 void WinSystemMenu::print() {
 	const int xSpacer = 15;
@@ -35,21 +36,21 @@ void WinSystemMenu::print() {
 	_lcd->setFont(various_symbols);
 	//Before 3 there are the flow buttons
 	for (int i = 0; i < nSystemButtons -3; i++) {
-		_lcd->print("T",xSpacer,ySpacer+bigFontSize*2*i);
+		_lcd->print("T",xSpacer,ySpacer+_bigFontSize*2*i);
 	}
 	
 	//Make menu buttons
 	//-3 because back/save/exit are already added at this stage
 	for (int i = 0; i < nSystemButtons - 3; i++) {
-		systemButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*2*i,systemButtonText[i]);
+		systemButtons[i + 3] = _buttons.addButton(xSpacer+_bigFontSize*2,ySpacer+_bigFontSize*2*i,systemButtonText[i]);
 	}
 	_lcd->setFont(hallfetica_normal);
 	
 	//Watering at night ON/OFF
 	if (_nightWater)
-		_lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+		_lcd->print("ON",xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),ySpacer+_bigFontSize*2*4);
 	else
-		_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+		_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),ySpacer+_bigFontSize*2*4);
 	
 	//7 buttons
 	// _lcd->print("T",xSpacer,ySpacer+bigFontSize*1.5*i);
@@ -81,13 +82,13 @@ void WinSystemMenu::update() {
 	
 	//Watering at night ON/OFF
 	if (_nightWater)
-	_lcd->print("ON ",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("ON ",xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),ySpacer+_bigFontSize*2*4);
 	else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(systemButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),ySpacer+_bigFontSize*2*4);
 
 }
 
-int WinSystemMenu::processTouch(int x, int y) {
+Window::Screen WinSystemMenu::processTouch(const int x,const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == systemButtons[0]) { return MainMenu; }
@@ -107,5 +108,5 @@ int WinSystemMenu::processTouch(int x, int y) {
 		_settings->setNightWatering(_nightWater);
 		update();
 	}
-	return 0;
+	return None;
 }

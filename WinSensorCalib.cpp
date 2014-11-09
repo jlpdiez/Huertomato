@@ -20,6 +20,8 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	return *this;
 }
 
+WinSensorCalib::~WinSensorCalib() {}
+
 void WinSensorCalib::print() {
 	const int xSpacer = 15;
 	const int ySpacer = 45;
@@ -34,8 +36,8 @@ void WinSensorCalib::print() {
 	_lcd->print("T",xSpacer,yFirst);
 	_lcd->print("T",xSpacer,ySecond);
 	//Buttons
-	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
-	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
+	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+_bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
+	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+_bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
 }
 
 //Draws entire screen Sensor Calibration
@@ -48,7 +50,7 @@ void WinSensorCalib::draw() {
 	_buttons.drawButtons();
 }
 
-int WinSensorCalib::processTouch(int x, int y) {
+Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == sensorCalibrationButtons[0]) { return SystemSettings; }
@@ -58,5 +60,5 @@ int WinSensorCalib::processTouch(int x, int y) {
 	else if (buttonIndex == sensorCalibrationButtons[3]) { return LvlCalib; }
 	//Light Calibration
 	else if (buttonIndex == sensorCalibrationButtons[4]) { return LightCalib; }
-	return 0;
+	return None;
 }

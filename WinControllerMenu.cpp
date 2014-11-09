@@ -20,6 +20,8 @@ WinControllerMenu& WinControllerMenu::operator=(const WinControllerMenu& other) 
 	return *this;
 }
 
+WinControllerMenu::~WinControllerMenu() {}
+
 void WinControllerMenu::print() {
 	const int xSpacer = 15;
 	const int ySpacer = 40;
@@ -33,27 +35,27 @@ void WinControllerMenu::print() {
 	//Print triangles
 	_lcd->setFont(various_symbols);
 	for (int i = 0; i < nControllerButtons - 3; i++) {
-		_lcd->print("T",xSpacer,ySpacer+bigFontSize*2*i);
+		_lcd->print("T",xSpacer,ySpacer+_bigFontSize*2*i);
 	}
 	
 	//Make menu buttons
 	//Before 3 there are flow buttons
 	for (int i = 0; i < nControllerButtons - 3; i++) {
-		controllerButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*2*i,controllerButtonText[i]);
+		controllerButtons[i + 3] = _buttons.addButton(xSpacer+_bigFontSize*2,ySpacer+_bigFontSize*2*i,controllerButtonText[i]);
 	}
 	
 	_lcd->setFont(hallfetica_normal);
 	
 	//Sound ON/OFF
 	if (_soundActive)
-	_lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("ON",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[3]),ySpacer+_bigFontSize*2*3);
 	else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[3]),ySpacer+_bigFontSize*2*3);
 	//Serial Debug ON/OFF
 	if (_serialActive)
-	_lcd->print("ON",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("ON",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[4]),ySpacer+_bigFontSize*2*4);
 	else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[4]),ySpacer+_bigFontSize*2*4);
 }
 
 //Draws entire screen Controller Settings
@@ -77,17 +79,17 @@ void WinControllerMenu::update() {
 	
 	//Sound ON/OFF
 	if (_soundActive)
-	_lcd->print("ON ",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("ON ",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[3]),ySpacer+_bigFontSize*2*3);
 	else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[3]),ySpacer+bigFontSize*2*3);
+	_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[3]),ySpacer+_bigFontSize*2*3);
 	//Serial Debug ON/OFF
 	if (_serialActive)
-	_lcd->print("ON ",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("ON ",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[4]),ySpacer+_bigFontSize*2*4);
 	else
-	_lcd->print("OFF",xSpacer+bigFontSize*2+bigFontSize*strlen(controllerButtonText[4]),ySpacer+bigFontSize*2*4);
+	_lcd->print("OFF",xSpacer+_bigFontSize*2+_bigFontSize*strlen(controllerButtonText[4]),ySpacer+_bigFontSize*2*4);
 }
 
-int WinControllerMenu::processTouch(int x, int y) {
+Window::Screen WinControllerMenu::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == controllerButtons[0]) { return MainMenu; }
@@ -110,5 +112,5 @@ int WinControllerMenu::processTouch(int x, int y) {
 		_settings->setSerialDebug(_serialActive);
 		update();
 	}
-	return 0;
+	return None;
 }

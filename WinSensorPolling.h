@@ -29,10 +29,10 @@ class WinSensorPolling: public Window {
 		virtual ~WinSensorPolling();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static uint8_t _pollSec;
+		uint8_t _pollSec;
 		void print();
 };
 

@@ -20,6 +20,8 @@ WinEcAlarms& WinEcAlarms::operator=(const WinEcAlarms& other) {
 	return *this;
 }
 
+WinEcAlarms::~WinEcAlarms() {}
+
 void WinEcAlarms::print() {
 	const int yFirstLine = 65;
 	const int ySecondLine = 140;
@@ -36,17 +38,17 @@ void WinEcAlarms::print() {
 	_lcd->print(uLimit,xSpacer,yFirstLine);
 	_lcd->print(dLimit,xSpacer,ySecondLine);
 	//Numbers
-	int x = (4+strlen(uLimit))*bigFontSize;
+	int x = (4+strlen(uLimit))*_bigFontSize;
 	_lcd->printNumI(_ecAlarmMax,x,yFirstLine,4);
 	_lcd->printNumI(_ecAlarmMin,x,ySecondLine,4);
 	//Buttons
-	x += 1.5*bigFontSize;
+	x += 1.5*_bigFontSize;
 	ecAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
 	ecAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
 	ecAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
 	ecAlarmsButtons[6] = _buttons.addButton(x,ySecondLine+signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
 	//uS Text
-	x += 3.5*bigFontSize;
+	x += 3.5*_bigFontSize;
 	_lcd->print("uS",x,yFirstLine);
 	_lcd->print("uS",x,ySecondLine);
 }
@@ -67,29 +69,25 @@ void WinEcAlarms::update() {
 	char* uLimit = "Upper Limit:";
 	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(uLimit))*bigFontSize;
+	int x = (4+strlen(uLimit))*_bigFontSize;
 	_lcd->printNumI(_ecAlarmMax,x,yFirstLine,4);
 	_lcd->printNumI(_ecAlarmMin,x,ySecondLine,4);
 }
 
-int WinEcAlarms::processTouch(int x,int y) {
+Window::Screen WinEcAlarms::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == ecAlarmsButtons[0]) {
-		//Go to alarms menu
-		return Alarms;
+	if (buttonIndex == ecAlarmsButtons[0]) { return Alarms; }
 	//Save
-	} else if (buttonIndex == ecAlarmsButtons[1]) {
+	else if (buttonIndex == ecAlarmsButtons[1]) {
 		_settings->setECalarmUp(_ecAlarmMax);
 		_settings->setECalarmDown(_ecAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == ecAlarmsButtons[2]) {
-		//Go to main screen
-		return MainScreen;
+	} else if (buttonIndex == ecAlarmsButtons[2]) { return MainScreen; }
 		
 	//Max up
-	} else if(buttonIndex == ecAlarmsButtons[3]) {
+	else if(buttonIndex == ecAlarmsButtons[3]) {
 		(_ecAlarmMax >= 9990) ? _ecAlarmMax=0 : _ecAlarmMax += 10;
 		update();
 	//Max down
@@ -102,8 +100,8 @@ int WinEcAlarms::processTouch(int x,int y) {
 		update();
 	//Min down
 	} else if(buttonIndex == ecAlarmsButtons[6]) {
-		(_ecAlarmMin <= 0) ? _ecAlarmMin=9990 : 	_ecAlarmMin -= 10;
+		(_ecAlarmMin <= 0) ? _ecAlarmMin=9990 : _ecAlarmMin -= 10;
 		update();
 	}
-	return 0;
+	return None;
 }

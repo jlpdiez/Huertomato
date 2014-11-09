@@ -1,13 +1,13 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 2.1
+// # Version    : 2.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 04.05.2014
+// # Date       : 09.11.2014
 // 
 // # Description: Library for controlling Huertomato's GUI
-// # Contains all windows and manages its transition and button presses
+// # Contains window and manages its transition and button presses
 // 
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -28,17 +28,31 @@
 #define GUI_H
 
 #include <Arduino.h>
-//#include "Settings.h"
-//#include "Sensors.h" 
+#include "Settings.h"
+#include "Sensors.h" 
 #include "Window.h"
+#include "WinAlarms.h"
+#include "WinControllerMenu.h"
+#include "WinEcAlarms.h"
+#include "WinLightCalib.h"
+#include "WinLvlAlarms.h"
+#include "WinLvlCalib.h"
+#include "WinMainMenu.h"
 #include "WinMainScreen.h"
+#include "WinPhAlarms.h"
+#include "WinPump.h"
+#include "WinSD.h"
+#include "WinSensorCalib.h"
+#include "WinSensorPolling.h"
+#include "WinSystemMenu.h"
+#include "WinTime.h"
+#include "WinWater.h"
+
 #include <UTFT.h>
 #include <UTouch.h>
-//#include <UTFT_Buttons.h>
-//#include <Time.h> 
-//#include <TimeAlarms.h>
-//#include <SD.h>    
 
+//Class in charge of starting and using LCD and Touchscreen
+//Holds a pointer to a window
 class GUI {
 	public:		
 		//Constructors
@@ -48,27 +62,23 @@ class GUI {
 		//Destructor
 		~GUI();
 		
+		//First function to call. Setups and shows Splash Screen
 		void init();
+		//Second function. Shows Main Screen
+		void start();
 		void processTouch();
 		void refresh();
 		boolean isMainScreen();
 		
 	private:
-		void createAndRenderWindow();
+		void updateScreen();
 			
 	    UTFT *_lcd;
 	    UTouch *_touch;
 	    Sensors *_sensors;
 	    Settings *_settings;
 		Window *_window;
-	
-		//Screen currently active
-		//1-Main Screen, 2-Main Menu, 3-System Settings, 4-Controller Settings,
-		//5-Time & Date, 6-Sensor Polling, 7-SD Card, 8-Watering Cycle
-		//9-Sensor Alarms, 10-pH Alarms, 11-EC Alarms, 12-Nutrient Level Alarms,
-		//13-Sensor Calibration, 14-Water Level Calibration
-		//15-Light Calibration, 16-Pump Protection
-		uint8_t _actScreen;
+		Window::Screen _actScreen;
 };
     
 #endif

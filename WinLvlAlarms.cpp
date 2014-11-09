@@ -20,6 +20,8 @@ WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 	return *this;
 }
 
+WinLvlAlarms::~WinLvlAlarms() {}
+
 void WinLvlAlarms::print() {
 	const int yFirstLine = 100;
 	const int xSpacer = 25;
@@ -32,14 +34,14 @@ void WinLvlAlarms::print() {
 	//Text
 	_lcd->print(wLimitS,xSpacer,yFirstLine);
 	//Numbers
-	int x = (4+strlen(wLimitS))*bigFontSize;
+	int x = (4+strlen(wLimitS))*_bigFontSize;
 	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
 	//Buttons
-	x += 1.5*bigFontSize;
+	x += 1.5*_bigFontSize;
 	waterAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
 	waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
-	x += 2.5*bigFontSize;
+	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,yFirstLine);
 }
 
@@ -58,27 +60,23 @@ void WinLvlAlarms::update() {
 	char* wLimitS = "Lower Limit:";
 	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(wLimitS))*bigFontSize;
+	int x = (4+strlen(wLimitS))*_bigFontSize;
 	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
 }
 
-int WinLvlAlarms::processTouch(int x,int y) {
+Window::Screen WinLvlAlarms::processTouch(int x,int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == waterAlarmsButtons[0]) {
-		//Go to alarms menu
-		return Alarms;
+	if (buttonIndex == waterAlarmsButtons[0]) { return Alarms; }
 	//Save
-	} else if (buttonIndex == waterAlarmsButtons[1]) {
+	else if (buttonIndex == waterAlarmsButtons[1]) {
 		_settings->setWaterAlarm(_waterAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == waterAlarmsButtons[2]) {
-		//Go to main screen
-		return MainScreen;
+	} else if (buttonIndex == waterAlarmsButtons[2]) { return MainScreen; }
 		
 	//Up
-	} else if (buttonIndex == waterAlarmsButtons[3]) {
+	else if (buttonIndex == waterAlarmsButtons[3]) {
 		(_waterAlarmMin >= 100) ? _waterAlarmMin=0 : _waterAlarmMin++;
 		update();
 	//Down
@@ -86,5 +84,5 @@ int WinLvlAlarms::processTouch(int x,int y) {
 		(_waterAlarmMin <= 0) ? _waterAlarmMin=100 : _waterAlarmMin--;
 		update();
 	}
-	return 0;
+	return None;
 }

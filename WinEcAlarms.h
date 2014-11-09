@@ -32,7 +32,7 @@ class WinEcAlarms: public Window {
 		virtual ~WinEcAlarms();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		uint16_t _ecAlarmMax, _ecAlarmMin;

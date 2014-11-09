@@ -142,7 +142,7 @@ class Settings {
 
     
     //Controller settings
-    //Time & Date - Handled outside (RTC Lib)
+    //Time & Date - Handled outside in RTC Lib
     //Sensor Polling
     uint8_t _sensorSecond;  
     //SD Card
@@ -200,6 +200,7 @@ class Settings {
 	int _addressMaxWaterLvl;
 	int _addressMinWaterLvl;
 	int _addressPumpProtectionLvl;
+	//int _addressVersion;
   
 };
 

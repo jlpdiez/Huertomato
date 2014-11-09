@@ -30,7 +30,7 @@ class WinSensorCalib: public Window {
 		WinSensorCalib& operator=(const WinSensorCalib &other);
 		virtual ~WinSensorCalib();
 		void draw();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		void print();

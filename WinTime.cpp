@@ -20,6 +20,8 @@ WinTime& WinTime::operator=(const WinTime& other) {
 	return *this;
 }
 
+WinTime::~WinTime() {}
+
 void WinTime::print() {
 	const int yTime = 60;
 	const int yDate = 135;
@@ -74,28 +76,28 @@ void WinTime::print() {
 	char* hhmmssS = "(HH:MM:SS)";
 	//(strlen(timeS)*bigFontSize)/2 is middle point of "Time". (strlen(hhmmss)*smallFontSize)/2 is middle point of "(HH:MM:SS)"
 	//So the x coord is xTime + middle "Time" - middle of "(HH:MM:SS)"
-	_lcd->print(hhmmssS, xSpacer+(strlen(timeS)*bigFontSize)/2-(strlen(hhmmssS)*smallFontSize)/2, yTime+bigFontSize+2);
+	_lcd->print(hhmmssS, xSpacer+(strlen(timeS)*_bigFontSize)/2-(strlen(hhmmssS)*_smallFontSize)/2, yTime+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
 	_lcd->print(":",houU[0]+39,yTime);
-	_lcd->printNumI(_sysMin,minU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
 	_lcd->print(":",minU[0]+39,yTime);
-	_lcd->printNumI(_sysSec,secU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
 
 	//DATE
 	char* dateS = "Date";
 	_lcd->print(dateS, xSpacer, yDate);
 	_lcd->setFont(Sinclair_S);
 	char* ddmmyyyyS = "(DD/MM/YYYY)";
-	_lcd->print(ddmmyyyyS, xSpacer+(strlen(dateS)*bigFontSize)/2-(strlen(ddmmyyyyS)*smallFontSize)/2, yDate+bigFontSize+2);
+	_lcd->print(ddmmyyyyS, xSpacer+(strlen(dateS)*_bigFontSize)/2-(strlen(ddmmyyyyS)*_smallFontSize)/2, yDate+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysDay, dayU[0]+smallFontSize/2-bigFontSize+2, yDate,2,'0');
+	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
 	_lcd->print("/", dayU[0]+39, yDate);
-	_lcd->printNumI(_sysMonth, monU[0]+smallFontSize/2-bigFontSize+2, yDate,2,'0');
+	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
 	_lcd->print("/", monU[0]+39, yDate);
-	_lcd->printNumI(_sysYear, yeaU[0]+smallFontSize/2-bigFontSize+2, yDate,4);
+	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, yDate,4);
 	
 }
 
@@ -123,34 +125,28 @@ void WinTime::update() {
 	const int yeaU[] = {290, yDate-22};       //year up
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
-	_lcd->printNumI(_sysMin,minU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
-	_lcd->printNumI(_sysSec,secU[0]+smallFontSize/2-bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
 	
-	_lcd->printNumI(_sysDay, dayU[0]+smallFontSize/2-bigFontSize+2, yDate,2,'0');
-	_lcd->printNumI(_sysMonth, monU[0]+smallFontSize/2-bigFontSize+2, yDate,2,'0');
-	_lcd->printNumI(_sysYear, yeaU[0]+smallFontSize/2-bigFontSize+2, yDate,4);
+	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
+	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
+	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, yDate,4);
 }
 
-int WinTime::processTouch(int x, int y) {
+Window::Screen WinTime::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	//TODO: Where to?
-	if (buttonIndex == timeButtons[0]) {
-		//Go to controller menu
-		return ControllerSettings;
+	if (buttonIndex == timeButtons[0]) { return ControllerSettings; }
 	//Save
-	} else if (buttonIndex == timeButtons[1]) {
+	else if (buttonIndex == timeButtons[1]) {
 		_sensors->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == timeButtons[2]) {
-		//Go to main screen
-		return MainScreen;
+	} else if (buttonIndex == timeButtons[2]) { return MainScreen; }
 		
-	//TODO: Sacar el update y hacer general
 	//Hour up
-	} else if (buttonIndex == timeButtons[3]) {
+	else if (buttonIndex == timeButtons[3]) {
 		(_sysHour >= 23) ? _sysHour=0 : _sysHour++;
 		update();
 	//Min up
@@ -199,5 +195,5 @@ int WinTime::processTouch(int x, int y) {
 		(_sysYear <= 1971) ? _sysYear=2037 : _sysYear--;
 		update();
 	}
-	return 0;
+	return None;
 }

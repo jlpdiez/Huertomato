@@ -10,6 +10,9 @@
 #define WINSD_H_
 
 #include "Window.h"
+#include "Settings.h"
+#include <SD.h>
+
 
 //6-SD Card                                                                  
 
@@ -32,11 +35,11 @@ class WinSD: public Window {
 		virtual ~WinSD();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static boolean _sdActive;
-		static uint8_t _sdHour, _sdMin;
+		boolean _sdActive;
+		uint8_t _sdHour, _sdMin;
 		void print();
 };
 

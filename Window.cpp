@@ -6,7 +6,6 @@ Window::Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 	_buttons.setTextFont(hallfetica_normal);
 	_buttons.setSymbolFont(various_symbols);
 	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
-	printWindow();
 }
 
 Window::Window(const Window &other) : _buttons(other._buttons) {
@@ -30,77 +29,65 @@ Window::~Window() {}
 
 //Draw splash Screen
 //TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
-void Window::printWindow() {
-	const int iconSize = 126;
+void Window::print() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	//Shows centered icon
-	_lcd->drawBitmap(xSize/2-(iconSize/2),10,iconSize,iconSize,logo126);
+	_lcd->drawBitmap(_xSize/2-(_iconSize/2),10,_iconSize,_iconSize,logo126);
 	//Shows centered text
 	char* message = "Huertomato is loading...";
-	_lcd->print(message,xSize/2-(bigFontSize*(strlen(message)/2)),50+iconSize);
+	_lcd->print(message,_xSize/2-(_bigFontSize*(strlen(message)/2)),50+_iconSize);
 }
 
 void Window::draw() {
-	printWindow();
+	_lcd->fillScr(VGA_WHITE);
+	print();
 }
 
 void Window::update() {  
-	printWindow();
+	print();
 }
 
-int Window::processTouch(int x, int y) { return 0; }
+Window::Screen Window::processTouch(const int x, const int y) { return Splash; }
 	
 //These function should be the first to get its buttons into the array buttons
 //It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2
 void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]) {
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		
 	if (backButton) {
 		const int backX = 15;
-		const int backY = 215;
-		char* backText = " Back ";
-		//_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-		_lcd->drawLine(backX-1,backY-5,backX+bigFontSize*strlen(backText),backY-5);
-		buttonArray[0] = _buttons.addButton(backX, backY, backText);
+		_lcd->drawLine(backX-1,_buttonY-5,backX+_bigFontSize*strlen(backText),_buttonY-5);
+		buttonArray[0] = _buttons.addButton(backX, _buttonY, backText);
 	} else
-	buttonArray[0] = -1;
+		buttonArray[0] = -1;
 		
 	if (saveButton) {
-		char* saveText = " Save ";
-		const int saveX = xSize/2 - bigFontSize*strlen(saveText)/2;
-		const int saveY = 215;
-		//_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-		_lcd->drawLine(saveX-1,saveY-5,saveX+bigFontSize*strlen(saveText),saveY-5);
-		buttonArray[1] = _buttons.addButton(saveX, saveY, saveText);
+		const int saveX = _xSize/2 - _bigFontSize*strlen(saveText)/2;
+		_lcd->drawLine(saveX-1,_buttonY-5,saveX+_bigFontSize*strlen(saveText),_buttonY-5);
+		buttonArray[1] = _buttons.addButton(saveX, _buttonY, saveText);
 	} else
-	buttonArray[1] = -1;
+		buttonArray[1] = -1;
 		
 	if (exitButton) {
-		char* cancelText = " Exit ";
-		const int cancelX = xSize - 15 - bigFontSize*strlen(cancelText);
-		const int cancelY = 215;
-		//_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
-		_lcd->drawLine(cancelX-1,cancelY-5,cancelX+bigFontSize*strlen(cancelText),cancelY-5);
-		buttonArray[2] = _buttons.addButton(cancelX, cancelY, cancelText);
+		const int cancelX = _xSize - 15 - _bigFontSize*strlen(cancelText);
+		_lcd->drawLine(cancelX-1,_buttonY-5,cancelX+_bigFontSize*strlen(cancelText),_buttonY-5);
+		buttonArray[2] = _buttons.addButton(cancelX, _buttonY, cancelText);
 	} else
-	buttonArray[2] = -1;
+		buttonArray[2] = -1;
 }
 
 //Prints header background and separator line
 void Window::printHeaderBackground() {
-	const int headerHeight = 20;
 	//Header background
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->fillRect(0,0,xSize,headerHeight);
+	_lcd->fillRect(0,0,_xSize,_headerHeight);
 	//Separator line
 	_lcd->setColor(darkGreen[0], darkGreen[1], darkGreen[2]);
-	_lcd->drawLine(0, headerHeight, xSize, headerHeight);
+	_lcd->drawLine(0, _headerHeight, _xSize, _headerHeight);
 }
 
 //Prints header with centered text
@@ -110,15 +97,13 @@ void Window::printMenuHeader(char* c) {
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	//Print title centered
-	_lcd->print(c,xSize/2-(bigFontSize*(strlen(c)/2)),2);
+	_lcd->print(c,_xSize/2-(_bigFontSize*(strlen(c)/2)),2);
 }
 
 //Overlays "Saved" text over save button
 //Used when button is pressed to inform the user values have been stored
 void Window::printSavedButton() {
-	char* savedText = " Saved ";
-	const int saveX = xSize/2 - bigFontSize*strlen(savedText)/2;
-	const int saveY = 215;
+	const int saveX = _xSize/2 - _bigFontSize*strlen(savedText)/2;
 	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->print(savedText,saveX,saveY);
+	_lcd->print(savedText,saveX,_buttonY);
 }

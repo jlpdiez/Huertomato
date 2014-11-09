@@ -1,9 +1,27 @@
-/*
- * Window.h
- *
- * Created: 10/17/2014 8:49:56 PM
- *  Author: eNDeR
- */ 
+// #############################################################################
+//
+// # Name       : Window
+// # Version    : 1.0
+//
+// # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
+// # Date       : 09.11.2014
+//
+// # Description: Superclass window. Can 
+//
+// #  This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// #############################################################################
 
 
 #ifndef WINDOW_H
@@ -16,9 +34,6 @@
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-//#include <Time.h>
-//#include <TimeAlarms.h>
-//#include <SD.h>
 
 //Main Screen Icons
 extern prog_uint16_t plant126[0x3E04];
@@ -46,9 +61,34 @@ static uint8_t red[3] = {200,0,0};
 static uint8_t blue[3] = {0,135,199};
 //static uint8_t yellow[3] = {255,242,32};
 
+static char* backText = " Back ";
+static char* saveText = " Save ";
+static char* savedText = " Saved ";
+static char* cancelText = " Exit ";
+
 class Window {
-	
 	public:
+		enum Screen {
+			None=0,
+			Splash=1,
+			MainScreen=2,
+			MainMenu=3,
+			SystemSettings=4,
+			ControllerSettings=5,
+			TimeDate=6,
+			SensorPolling=7,
+			SDCard=8,
+			WateringCycle=9,
+			Alarms=10,
+			PhAlarms=11,
+			EcAlarms=12,
+			LvlAlarms=13,
+			SensorCalib=14,
+			LvlCalib=15,
+			LightCalib=16,
+			Pump=17
+		};
+				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		Window(const Window &other);
 		Window& operator=(const Window &other);
@@ -56,40 +96,18 @@ class Window {
 		
 		virtual void draw();
 		virtual void update();	
-		virtual int processTouch(int x, int y);
+		virtual Screen processTouch(const int x, const int y);
 
-	protected:
-		//1-Main Screen, 2-Main Menu, 3-System Settings, 4-Controller Settings,
-		//5-Time & Date, 6-Sensor Polling, 7-SD Card, 8-Watering Cycle
-		//9-Sensor Alarms, 10-pH Alarms, 11-EC Alarms, 12-Nutrient Level Alarms,
-		//13-Sensor Calibration, 14-Water Level Calibration
-		//15-Light Calibration, 16-Pump Protection
-		enum Screen {
-			Splash=0,
-			MainScreen=1,
-			MainMenu=2,
-			SystemSettings=3,
-			ControllerSettings=4,
-			TimeDate=5,
-			SensorPolling=6,
-			SDCard=7,
-			WateringCycle=8,
-			Alarms=9,
-			PhAlarms=10,
-			EcAlarms=11,
-			LvlAlarms=12,
-			SensorCalib=13,
-			LvlCalib=14,
-			LightCalib=15,
-			Pump=16
-		};
+	protected:		
+		static const int _xSize = 399;
+		static const int _ySize = 239;
+		static const int _bigFontSize = 16;
+		static const int _smallFontSize = 8;
+		static const int _iconSize = 126;
+		static const int _headerHeight = 20;
+		static const int _buttonY = 215;
 		
-		static const int xSize = 399;
-		static const int ySize = 239;
-		static const int bigFontSize = 16;
-		static const int smallFontSize = 8;
-		
-		virtual void printWindow();
+		virtual void print();
 		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
 		void printHeaderBackground();
 		void printMenuHeader(char* c);

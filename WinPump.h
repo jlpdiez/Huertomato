@@ -31,7 +31,7 @@ class WinPump: public Window {
 		virtual ~WinPump();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		uint8_t _pumpProtectionLvl;

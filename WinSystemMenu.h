@@ -32,7 +32,7 @@ class WinSystemMenu: public Window {
 		virtual ~WinSystemMenu();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		boolean _nightWater;

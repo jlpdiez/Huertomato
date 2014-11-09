@@ -13,6 +13,7 @@
 #include "Settings.h"
 #include "Window.h"
 #include <SD.h>   
+#include <Time.h>
 
 //Holds text strings for each sensor
 const int nSensorText = 6;
@@ -33,7 +34,7 @@ class WinMainScreen: public Window {
 		virtual ~WinMainScreen();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 		
 	protected:		
 		void print();	

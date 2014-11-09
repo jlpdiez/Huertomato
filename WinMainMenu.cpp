@@ -20,6 +20,8 @@ WinMainMenu& WinMainMenu::operator=(const WinMainMenu& other) {
 	return *this;
 }
 
+WinMainMenu::~WinMainMenu() {}
+
 //Makes window decoration and buttons
 void WinMainMenu::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -53,7 +55,7 @@ void WinMainMenu::draw() {
 }
 
 // Processes touch for main menu screen
-int WinMainMenu::processTouch(int x, int y) {
+Window::Screen WinMainMenu::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Exit
 	if (buttonIndex == mainMenuButtons[2]) { return MainScreen; }
@@ -61,5 +63,5 @@ int WinMainMenu::processTouch(int x, int y) {
 	else if ((buttonIndex == mainMenuButtons[3]) || (buttonIndex == mainMenuButtons[5])) { return SystemSettings; }
 	//Controller Settings
 	else if ((buttonIndex == mainMenuButtons[4]) || (buttonIndex == mainMenuButtons[6])) { return ControllerSettings; }
-	return 0;
+	return None;
 }

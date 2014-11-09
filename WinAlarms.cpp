@@ -20,6 +20,8 @@ WinAlarms& WinAlarms::operator=(const WinAlarms& other) {
 	return *this;
 }
 
+WinAlarms::~WinAlarms() {}
+
 void WinAlarms::print() {
 	const int xSpacer = 15;
 	const int ySpacer = 50;
@@ -30,13 +32,13 @@ void WinAlarms::print() {
 	//Print triangles
 	_lcd->setFont(various_symbols);
 	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		_lcd->print("T",xSpacer,ySpacer+bigFontSize*3*i);
+		_lcd->print("T",xSpacer,ySpacer+_bigFontSize*3*i);
 	}
 	
 	//Make menu buttons
 	//Before 3 there are flow buttons
 	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*3*i,sensorAlarmsButtonsText[i]);
+		sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+_bigFontSize*2,ySpacer+_bigFontSize*3*i,sensorAlarmsButtonsText[i]);
 	}
 }
 
@@ -50,7 +52,7 @@ void WinAlarms::draw() {
 	_buttons.drawButtons();
 }
 
-int WinAlarms::processTouch(int x, int y) {
+Window::Screen WinAlarms::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == sensorAlarmsButtons[0]) { return SystemSettings; }
@@ -62,5 +64,5 @@ int WinAlarms::processTouch(int x, int y) {
 	else if (buttonIndex == sensorAlarmsButtons[4]) { return EcAlarms; }
 	//Nutrient Level
 	else if (buttonIndex == sensorAlarmsButtons[5]) { return LvlAlarms; }
-	return 0;
+	return None;
 }

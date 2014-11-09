@@ -13,7 +13,6 @@
 
 //11-Nutrient Level Alarms
 
-
 const int nWaterAlarmsButtons = 5;
 static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
 	"=",
@@ -30,7 +29,7 @@ class WinLvlAlarms: public Window {
 		virtual ~WinLvlAlarms();
 		void draw();
 		void update();
-		int processTouch(int x, int y);
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		uint8_t _waterAlarmMin;
