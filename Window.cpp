@@ -26,6 +26,10 @@ Window& Window::operator=(const Window &other) {
 
 //Destructor
 Window::~Window() {}
+	
+Window::Screen Window::getType() const {
+	return Window::None;
+}
 
 //Draw splash Screen
 //TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen

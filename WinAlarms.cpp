@@ -22,6 +22,10 @@ WinAlarms& WinAlarms::operator=(const WinAlarms& other) {
 
 WinAlarms::~WinAlarms() {}
 
+Window::Screen WinAlarms::getType() const {
+	return Window::Alarms;
+}
+
 void WinAlarms::print() {
 	const int xSpacer = 15;
 	const int ySpacer = 50;

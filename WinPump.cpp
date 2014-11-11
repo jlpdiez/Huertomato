@@ -21,6 +21,10 @@ WinPump& WinPump::operator=(const WinPump& other) {
 }
 
 WinPump::~WinPump() {}
+	
+Window::Screen WinPump::getType() const {
+	return Window::Pump;
+}
 
 void WinPump::print() {
 	const int yFirstLine = 100;

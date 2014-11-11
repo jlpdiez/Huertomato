@@ -4,7 +4,6 @@
 GUI::GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : _lcd(lcd), _touch(touch), _sensors(sensors), _settings(settings) {
 	_window = new Window(lcd, touch, sensors, settings);
-	_actScreen = Window::None;
 }
 
 GUI::GUI(const GUI &other) {
@@ -41,31 +40,31 @@ void GUI::init() {
 	_window->draw();
 }
 
-//Second function. Shows Main Screen
+//Second function. Shows Main Screen. Starts user interaction
 void GUI::start() {
-	if (_actScreen == Window::None) {
+	if (_window->getType() == Window::None) {
 		delete _window;
 		_window = new WinMainScreen(_lcd,_touch,_sensors,_settings);
-		_actScreen = Window::MainScreen;
 		_window->draw();
 	}
 }
 
-//Refreshes non-static windows
+//Refreshes non-static windows.
 void GUI::refresh() {
-	if ((_actScreen == Window::MainScreen) || (_actScreen == Window::LightCalib)
-		|| (_actScreen == Window::LvlCalib))
+	Window::Screen actScreen = _window->getType();
+	if ((actScreen == Window::MainScreen) || (actScreen == Window::LightCalib)
+		|| (actScreen == Window::LvlCalib))
 			_window->update();	
 }
 
 boolean GUI::isMainScreen() {
-	return _actScreen == Window::MainScreen;
+	return _window->getType() == Window::MainScreen;
 }
 
-void GUI::updateScreen() {
-	if (_actScreen != Window::None)
+void GUI::updateScreen(Window::Screen newScreen) {
+	if (newScreen != Window::None)
 		delete _window;
-	switch (_actScreen) {
+	switch (newScreen) {
 		case Window::None:
 			break;
 		case Window::MainScreen:
@@ -131,8 +130,7 @@ void GUI::processTouch() {
 		
 		Window::Screen newScreen = _window->processTouch(x,y);
 		if (newScreen != Window::None) {
-			_actScreen = newScreen;
-			updateScreen();
+			updateScreen(newScreen);
 			_window->draw();
 		}
 	}

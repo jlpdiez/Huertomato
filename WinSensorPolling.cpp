@@ -21,6 +21,10 @@ WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 }
 
 WinSensorPolling::~WinSensorPolling() {}
+	
+Window::Screen WinSensorPolling::getType() const {
+	return Window::SensorPolling;
+}
 
 void WinSensorPolling::print() {
 	const int yFirstLine = 60;

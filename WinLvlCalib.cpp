@@ -21,6 +21,10 @@ WinLvlCalib& WinLvlCalib::operator=(const WinLvlCalib& other) {
 }
 
 WinLvlCalib::~WinLvlCalib() {}
+	
+Window::Screen WinLvlCalib::getType() const {
+	return Window::LvlCalib;
+}
 
 void WinLvlCalib::print() {
 	const int yFirstLine = 50;

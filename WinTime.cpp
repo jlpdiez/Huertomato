@@ -21,6 +21,10 @@ WinTime& WinTime::operator=(const WinTime& other) {
 }
 
 WinTime::~WinTime() {}
+	
+Window::Screen WinTime::getType() const {
+	return Window::TimeDate;
+}
 
 void WinTime::print() {
 	const int yTime = 60;

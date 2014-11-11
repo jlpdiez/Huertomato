@@ -4,9 +4,9 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.11.2014
+// # Date       : 11.11.2014
 //
-// # Description: Superclass window. Can 
+// # Description: Superclass window. holds types of screens, and common variables.
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -94,6 +94,7 @@ class Window {
 		Window& operator=(const Window &other);
 		virtual ~Window();
 		
+		virtual Screen getType() const;
 		virtual void draw();
 		virtual void update();	
 		virtual Screen processTouch(const int x, const int y);

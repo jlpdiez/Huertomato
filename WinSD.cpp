@@ -21,6 +21,10 @@ WinSD& WinSD::operator=(const WinSD& other) {
 }
 
 WinSD::~WinSD() {}
+	
+Window::Screen WinSD::getType() const {
+	return Window::SDCard;
+}
 
 void WinSD::print() {
 	const int yFirstLine = 60;

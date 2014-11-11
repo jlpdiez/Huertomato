@@ -21,6 +21,10 @@ WinControllerMenu& WinControllerMenu::operator=(const WinControllerMenu& other) 
 }
 
 WinControllerMenu::~WinControllerMenu() {}
+	
+Window::Screen WinControllerMenu::getType() const {
+	return Window::ControllerSettings;
+}
 
 void WinControllerMenu::print() {
 	const int xSpacer = 15;

@@ -1,9 +1,27 @@
-/*
- * MainMenu.h
- *
- * Created: 07/11/2014 1:19:48
- *  Author: HAL
- */ 
+// #############################################################################
+//
+// # Name       : WinSD
+// # Version    : 1.0
+//
+// # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
+// # Date       : 11.11.2014
+//
+// # Description: SD configuration window
+//
+// #  This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// #############################################################################
 
 
 #ifndef WINSD_H_
@@ -11,10 +29,7 @@
 
 #include "Window.h"
 #include "Settings.h"
-#include <SD.h>
-
-
-//6-SD Card                                                                  
+#include <SD.h>                                                       
 
 const int nSDcardButtons = 8;
 static char* sdCardButtonsText[nSDcardButtons] = {
@@ -33,6 +48,7 @@ class WinSD: public Window {
 		WinSD(const WinSD &other);
 		WinSD& operator=(const WinSD &other);
 		virtual ~WinSD();
+		virtual Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);

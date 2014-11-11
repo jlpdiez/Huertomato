@@ -21,6 +21,10 @@ WinEcAlarms& WinEcAlarms::operator=(const WinEcAlarms& other) {
 }
 
 WinEcAlarms::~WinEcAlarms() {}
+	
+Window::Screen WinEcAlarms::getType() const {
+	return Window::EcAlarms;
+}
 
 void WinEcAlarms::print() {
 	const int yFirstLine = 65;

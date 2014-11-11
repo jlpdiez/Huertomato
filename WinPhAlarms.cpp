@@ -21,6 +21,10 @@ WinPhAlarms& WinPhAlarms::operator=(const WinPhAlarms& other) {
 }
 
 WinPhAlarms::~WinPhAlarms() {}
+	
+Window::Screen WinPhAlarms::getType() const {
+	return Window::PhAlarms;
+}
 
 void WinPhAlarms::print() {
 	const int yFirstLine = 65;

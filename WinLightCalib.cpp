@@ -21,6 +21,10 @@ WinLightCalib& WinLightCalib::operator=(const WinLightCalib& other) {
 }
 
 WinLightCalib::~WinLightCalib() {}
+	
+Window::Screen WinLightCalib::getType() const {
+	return Window::LightCalib;
+}
 
 void WinLightCalib::print() {
 	const int yFirstLine = 60;

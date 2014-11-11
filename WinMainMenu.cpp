@@ -21,6 +21,10 @@ WinMainMenu& WinMainMenu::operator=(const WinMainMenu& other) {
 }
 
 WinMainMenu::~WinMainMenu() {}
+	
+Window::Screen WinMainMenu::getType() const {
+	return Window::MainMenu;
+}
 
 //Makes window decoration and buttons
 void WinMainMenu::print() {

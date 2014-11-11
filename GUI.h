@@ -64,21 +64,21 @@ class GUI {
 		
 		//First function to call. Setups and shows Splash Screen
 		void init();
-		//Second function. Shows Main Screen
+		//Second function. Shows Main Screen. Starts user interaction
 		void start();
 		void processTouch();
+		//Refreshes non-static windows.
 		void refresh();
 		boolean isMainScreen();
 		
 	private:
-		void updateScreen();
+		void updateScreen(Window::Screen newScreen);
 			
 	    UTFT *_lcd;
 	    UTouch *_touch;
 	    Sensors *_sensors;
 	    Settings *_settings;
 		Window *_window;
-		Window::Screen _actScreen;
 };
     
 #endif

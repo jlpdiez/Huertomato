@@ -21,6 +21,10 @@ WinWater& WinWater::operator=(const WinWater& other) {
 }
 
 WinWater::~WinWater() {}
+	
+Window::Screen WinWater::getType() const {
+	return Window::WateringCycle;
+}
 
 void WinWater::print() {
 	const int yFirstLine = 50;

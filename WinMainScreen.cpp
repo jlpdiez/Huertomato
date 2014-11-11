@@ -18,6 +18,10 @@ WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
 }
 
 WinMainScreen::~WinMainScreen() {}
+	
+Window::Screen WinMainScreen::getType() const {
+	return Window::MainScreen;
+}
 
 void WinMainScreen::draw() {
 	_lcd->fillScr(VGA_WHITE);

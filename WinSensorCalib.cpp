@@ -21,6 +21,10 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 }
 
 WinSensorCalib::~WinSensorCalib() {}
+	
+Window::Screen WinSensorCalib::getType() const {
+	return Window::SensorCalib;
+}
 
 void WinSensorCalib::print() {
 	const int xSpacer = 15;

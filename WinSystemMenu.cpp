@@ -21,6 +21,10 @@ WinSystemMenu& WinSystemMenu::operator=(const WinSystemMenu& other) {
 }
 
 WinSystemMenu::~WinSystemMenu() {}
+	
+Window::Screen WinSystemMenu::getType() const {
+	return Window::SystemSettings;
+}
 
 void WinSystemMenu::print() {
 	const int xSpacer = 15;

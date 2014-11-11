@@ -21,6 +21,10 @@ WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 }
 
 WinLvlAlarms::~WinLvlAlarms() {}
+	
+Window::Screen WinLvlAlarms::getType() const {
+	return Window::LvlAlarms;
+}
 
 void WinLvlAlarms::print() {
 	const int yFirstLine = 100;
