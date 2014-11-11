@@ -108,10 +108,15 @@ void Settings::setEEPROMaddresses() {
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
+	//_addressVersion == EEPROM.getAddress((sizeof(char[4])));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
+	//TODO: Auto load defaults if needed
+	// if (EEPROM.read(_addressVersion) != MYVERSION))
+	//	setDefault();
+	//else 
 	_waterTimed = EEPROM.readByte(_addressWaterTimed);
 	_waterHour = EEPROM.readByte(_addressWaterHour);
 	_waterMinute = EEPROM.readByte(_addressWaterMinute);

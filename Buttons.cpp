@@ -1,5 +1,3 @@
-//#include <Arduino.h>
-//#include <UTFT_Buttons.h>
 #include "Buttons.h"
 
 //Constructors
@@ -17,8 +15,7 @@ Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other)
 		_color_hilite[i] = other._color_hilite[i];
 	}
 }
-
-//Not sure if it works correctly
+ 
 Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &other) {
 	//Should call operator= of the superclass but its not available
 	_UTFT = other._UTFT;
