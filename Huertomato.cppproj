@@ -27,15 +27,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.3.0" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -490,6 +490,108 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinAlarms.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinAlarms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinControllerMenu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinControllerMenu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinEcAlarms.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinEcAlarms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLightCalib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLightCalib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLvlAlarms.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLvlAlarms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLvlCalib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinLvlCalib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainMenu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainMenu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPhAlarms.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPhAlarms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPump.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPump.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSD.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSensorCalib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSensorCalib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSensorPolling.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSensorPolling.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSystemMenu.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinSystemMenu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinTime.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinTime.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinWater.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinWater.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
