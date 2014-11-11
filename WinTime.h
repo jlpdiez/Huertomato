@@ -47,7 +47,8 @@ static char* timeButtonText[nTimeButtons] = {
 	">"
 };
 static int timeButtons[nTimeButtons];
-
+ 
+static char* _nameS = "- Time & Date -";
 
 class WinTime: public Window {
 	public:

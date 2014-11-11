@@ -36,7 +36,8 @@ static char* mainMenuButtonText[nMainMenuButtons] = {
 	"Controller Settings"
 };
 static int mainMenuButtons[nMainMenuButtons];
-
+  
+static char* _nameS = "- Main Menu -";
 
 class WinMainMenu: public Window {
 	public:

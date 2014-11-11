@@ -48,12 +48,12 @@ void WinSensorCalib::print() {
 void WinSensorCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Calibration -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,false,true,sensorCalibrationButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back

@@ -69,12 +69,12 @@ void WinSystemMenu::print() {
 void WinSystemMenu::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- System Settings -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,false,true,systemButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 //Redraws only system settings text from inner temp vars
 //Used when +- signs are pressed
 void WinSystemMenu::update() {

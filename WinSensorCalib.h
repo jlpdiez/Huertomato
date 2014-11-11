@@ -36,8 +36,6 @@ static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
 };
 static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
-
-
 class WinSensorCalib: public Window {
 	public:
 		WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -49,6 +47,7 @@ class WinSensorCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static char* _nameS = "- Calibration -";
 		void print();
 };
 

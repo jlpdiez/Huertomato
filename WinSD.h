@@ -22,7 +22,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 // #############################################################################
-
+ 
 
 #ifndef WINSD_H_
 #define WINSD_H_
@@ -41,6 +41,7 @@ static char* sdCardButtonsText[nSDcardButtons] = {
 };
 static int sdCardButtons[nSDcardButtons];
 
+static char* _nameS = "- SD Card -";
 
 class WinSD: public Window {
 	public:

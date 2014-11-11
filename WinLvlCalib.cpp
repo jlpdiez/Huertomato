@@ -91,12 +91,12 @@ void WinLvlCalib::update() {
 	x = xSpacer + 12*_bigFontSize;
 	_lcd->printNumI(_waterLvlMin,x,yThirdLine,3,' ');
 }
-
+ 
 //Draws entire screen Water Level Calibration
 void WinLvlCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Nutrient Levels -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,waterLevelButtons);
 	print();
 	_buttons.drawButtons();

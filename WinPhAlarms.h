@@ -35,9 +35,11 @@ static char* phAlarmsButtonsText[nPHalarmsButtons] = {
 	">",
 	"=",
 	">"
-};
+}; 
+
 static int phAlarmsButtons[nPHalarmsButtons];
 
+static char* _nameS = "- pH Alarms -";
 
 class WinPhAlarms: public Window {
 	public:

@@ -42,9 +42,10 @@ static char* waterCycleButtonsText[nWaterCycleButtons] = {
 	">",
 	"=",
 	">",
-};
+}; 
 static int  waterCycleButtons[nWaterCycleButtons];
 
+static char* _nameS = "- Watering Cycle -";
 
 class WinWater: public Window {
 	public:

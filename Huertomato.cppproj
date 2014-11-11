@@ -51,6 +51,7 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -111,6 +112,7 @@
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -252,6 +254,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -312,6 +315,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>__AVR_ATmega2560__</Value>
+            <Value>_VMDEBUG=1</Value>
             <Value>ARDUINO=101</Value>
             <Value>ARDUINO_MAIN</Value>
             <Value>F_CPU=16000000L</Value>
@@ -549,6 +553,9 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="Visual Micro\.Huertomato.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
+<<<<<<< HEAD
+    <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
+=======
     <Compile Include="WinPhAlarms.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -595,6 +602,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinWater.h">
+>>>>>>> origin/wip
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

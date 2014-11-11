@@ -23,7 +23,7 @@ Window& Window::operator=(const Window &other) {
 	_buttons = other._buttons;
 	return *this;
 }
-
+ 
 //Destructor
 Window::~Window() {}
 	

@@ -109,7 +109,7 @@ void WinTime::print() {
 void WinTime::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Time & Date -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,timeButtons);
 	print();
 	_buttons.drawButtons();
@@ -120,7 +120,7 @@ void WinTime::draw() {
 void WinTime::update() {
 	const int yTime = 60;
 	const int yDate = 135;
-	
+	 
 	const int houU[] = {150, yTime-22};       //hour up
 	const int minU[] = {220, yTime-22};       //min up
 	const int secU[] = {290, yTime-22};       //sec up

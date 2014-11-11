@@ -79,11 +79,11 @@ void WinLightCalib::update() {
 void WinLightCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Night Calibration -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,lightCalibrationButtons);
 	print();
 	_buttons.drawButtons();
-}
+} 
 
 Window::Screen WinLightCalib::processTouch(const int x, int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);

@@ -38,7 +38,8 @@ static char* ecAlarmsButtonsText[nECalarmsButtons] = {
 };
 static int ecAlarmsButtons[nECalarmsButtons];
 
-
+static char* _nameS = "- EC Alarms -";
+ 
 class WinEcAlarms: public Window {
 	public:
 		WinEcAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);

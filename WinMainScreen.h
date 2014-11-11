@@ -44,6 +44,8 @@ static char* sensorText[nSensorText] = {
 	"Deposit:"
 };
 
+static char* _nameS = "- Controller Settings -"
+
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -54,7 +56,7 @@ class WinMainScreen: public Window {
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
-		
+		 
 	protected:		
 		void print();	
 		void printMainHeader();

@@ -57,11 +57,11 @@ void WinPhAlarms::print() {
 void WinPhAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- pH Alarms -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,phAlarmsButtons);
 	print();
 	_buttons.drawButtons();
-}
+} 
 
 void WinPhAlarms::update() {
 	const int yFirstLine = 65;

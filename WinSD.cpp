@@ -83,13 +83,13 @@ void WinSD::print() {
 		for (int i = 4; i < nSDcardButtons; i++)
 		_buttons.enableButton(sdCardButtons[i],true);
 	}
-}
+} 
 
 //Draws entire screen SD Card
 void WinSD::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- SD Card -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,sdCardButtons);
 	print();
 	_buttons.drawButtons();

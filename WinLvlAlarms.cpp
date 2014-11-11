@@ -47,13 +47,13 @@ void WinLvlAlarms::print() {
 	//percent sign
 	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,yFirstLine);
-}
+} 
 
 //Draws entire screen Nutrient level alarms
 void WinLvlAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Nutrient Alarms -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,waterAlarmsButtons);
 	print();
 	_buttons.drawButtons();

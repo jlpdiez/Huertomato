@@ -52,12 +52,12 @@ void WinMainMenu::print() {
 void WinMainMenu::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Main Menu -");
+	printMenuHeader(_nameS);
 	addFlowButtons(false,false,true,mainMenuButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 // Processes touch for main menu screen
 Window::Screen WinMainMenu::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);

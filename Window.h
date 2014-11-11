@@ -107,7 +107,7 @@ class Window {
 		static const int _iconSize = 126;
 		static const int _headerHeight = 20;
 		static const int _buttonY = 215;
-		
+	 	
 		virtual void print();
 		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
 		void printHeaderBackground();

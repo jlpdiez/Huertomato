@@ -28,7 +28,7 @@
 #define WINCONTROLLERMENU_H_
 
 #include "Window.h"
-
+ 
 const int nControllerButtons = 8;
 static char* controllerButtonText[nControllerButtons] = {
 	"Time & Date",
@@ -39,6 +39,7 @@ static char* controllerButtonText[nControllerButtons] = {
 };
 static int controllerButtons[nControllerButtons];
 
+static char* _nameS = "- Controller Settings -";
 
 class WinControllerMenu: public Window {
 	public:

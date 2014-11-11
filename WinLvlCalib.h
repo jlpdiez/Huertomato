@@ -27,7 +27,7 @@
 #ifndef WINLVLCALIB_H_
 #define WINLVLCALIB_H_
 
-#include "Window.h"
+#include "Window.h" 
 
 const int nWaterLevelButtons = 5;
 static char* waterLevelButtonsText[nWaterLevelButtons] = {
@@ -36,6 +36,7 @@ static char* waterLevelButtonsText[nWaterLevelButtons] = {
 };
 static int waterLevelButtons[nWaterLevelButtons];
 
+static char* _nameS = "- Nutrient Levels -";
 
 class WinLvlCalib: public Window {
 	public:

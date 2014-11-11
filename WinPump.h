@@ -36,7 +36,9 @@ static char* pumpProtectionButtonsText[nPumpProtectionButtons] = {
 };
 static int pumpProtectionButtons[nPumpProtectionButtons];
 
-
+static char* _nameS = "- Pump Protection -";
+static char* _wLimitS = "Min Water Lvl:";
+ 
 class WinPump: public Window {
 	public:
 		WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -49,6 +51,7 @@ class WinPump: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 100;
 		uint8_t _pumpProtectionLvl;
 		void print();
 };

@@ -45,12 +45,12 @@ void WinAlarms::print() {
 		sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+_bigFontSize*2,ySpacer+_bigFontSize*3*i,sensorAlarmsButtonsText[i]);
 	}
 }
-
+ 
 //Draws entire screen Sensor Alarms
 void WinAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Sensor Alarms -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,false,true,sensorAlarmsButtons);
 	print();
 	_buttons.drawButtons();

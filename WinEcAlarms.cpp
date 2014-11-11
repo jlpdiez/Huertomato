@@ -61,11 +61,11 @@ void WinEcAlarms::print() {
 void WinEcAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- EC Alarms -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,ecAlarmsButtons);
 	print();
 	_buttons.drawButtons();
-}
+} 
 
 void WinEcAlarms::update() {
 	const int yFirstLine = 65;

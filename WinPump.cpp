@@ -27,44 +27,40 @@ Window::Screen WinPump::getType() const {
 }
 
 void WinPump::print() {
-	const int yFirstLine = 100;
 	const int xSpacer = 25;
 	const int signSpacer = 22;
 	
 	_pumpProtectionLvl = _settings->getPumpProtectionLvl();
 	
-	char* wLimitS = "Min Water Lvl:";
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wLimitS,xSpacer,yFirstLine);
+	_lcd->print(_wLimitS,xSpacer,_yFirstLine);
 	//Numbers
-	int x = (4+strlen(wLimitS))*_bigFontSize;
-	_lcd->printNumI(_pumpProtectionLvl,x,yFirstLine,3);
+	int x = (4+strlen(_wLimitS))*_bigFontSize;
+	_lcd->printNumI(_pumpProtectionLvl,x,_yFirstLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	pumpProtectionButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
-	pumpProtectionButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
+	pumpProtectionButtons[3] = _buttons.addButton(x,_yFirstLine-signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
+	pumpProtectionButtons[4] = _buttons.addButton(x,_yFirstLine+signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,yFirstLine);
+	_lcd->print("%",x,_yFirstLine);
 }
 
 //Draws entire screen Pump Protection
 void WinPump::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Pump Protection -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,pumpProtectionButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 void WinPump::update() {
 	const int yFirstLine = 100;
-	char* wLimitS = "Lower Limit:";
-	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(wLimitS))*_bigFontSize;
+	int x = (4+strlen(_wLimitS))*_bigFontSize;
 	_lcd->printNumI(_pumpProtectionLvl,x,yFirstLine,3);
 }
 

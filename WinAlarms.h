@@ -31,14 +31,14 @@
 
 const int nSensorAlarmsButtons = 6;
 static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
-	//"Auto Config",
 	"pH Thresholds",
 	"EC Thresholds",
 	"Nutrient Level"
 };
 static int sensorAlarmsButtons[nSensorAlarmsButtons];
 
-
+static char* _nameS = "- Sensor Alarms -";
+ 
 class WinAlarms: public Window {
 	public:
 		WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -50,6 +50,7 @@ class WinAlarms: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		char* getName() const;
 		void print();
 };
 

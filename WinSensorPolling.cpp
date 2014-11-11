@@ -54,14 +54,13 @@ void WinSensorPolling::print() {
 	//Make +/- buttons
 	sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
 	sensorPollingButtons[4] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
-	
-}
+} 
 
 //Draws entire screen Sensor Polling
 void WinSensorPolling::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Sensor Polling -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,sensorPollingButtons);
 	print();
 	_buttons.drawButtons();

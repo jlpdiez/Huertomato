@@ -29,7 +29,7 @@ void WinMainScreen::draw() {
 	printSensorInfo();
 	printIconAndStatus();
 }
-
+ 
 //Prints mainscreen header text and clock
 void WinMainScreen::printMainHeader() {
 	//For small font y = 6. For big one y = 2;
@@ -82,7 +82,7 @@ void WinMainScreen::printSensorInfo() {
 	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
 	_lcd->print("%",xSpacer-_bigFontSize,y);
 	//pH
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+5));
+	x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
@@ -90,17 +90,17 @@ void WinMainScreen::printSensorInfo() {
 	else
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(sensorText[3],x,y);
-	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*4,y,'.',4);
+	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);
 	//EC
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
 	y = ySpacer+(_bigFontSize+8)*4;
 	uint16_t ec = _sensors->getEC();
 	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(sensorText[4],x,y);
-	_lcd->printNumI(ec,xSpacer-_bigFontSize*6,y,4);
+	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
 	_lcd->print("uS",xSpacer-_bigFontSize*2,y);
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
@@ -110,6 +110,61 @@ void WinMainScreen::printSensorInfo() {
 	_lcd->setColor(red[0],red[1],red[2]);
 	else
 	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->print(sensorText[5],x,y);
+	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
+	_lcd->print("%",xSpacer-_bigFontSize,y);
+}
+
+//Redraws only sensor numbers and changes colour if needed (alarm triggered)
+void WinMainScreen::updateSensorInfo() {
+	const int xSpacer = _xSize - 25;
+	const int ySpacer = 35;
+	
+	_lcd->setFont(hallfetica_normal);
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->setBackColor(VGA_WHITE);
+
+	//Humidity
+	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,ySpacer,3,' ');
+	//Temp
+	int y = ySpacer+(_bigFontSize+8);
+	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
+	//Light
+	y = ySpacer+(_bigFontSize+8)*2;
+	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
+	//pH
+	int x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
+	y = ySpacer+(_bigFontSize+8)*3;
+	float ph = _sensors->getPH();
+	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	
+	_lcd->print(sensorText[3],x,y);
+	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);
+	
+	//EC
+	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
+	y = ySpacer+(_bigFontSize+8)*4;
+	uint16_t ec = _sensors->getEC();
+	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
+		_lcd->setColor(red[0],red[1],red[2]);
+	else
+		_lcd->setColor(grey[0], grey[1], grey[2]);
+	_lcd->print(sensorText[4],x,y);
+	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
+	_lcd->print("uS",xSpacer-_bigFontSize*2,y);
+	
+	//Deposit level
+	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
+	y = ySpacer+(_bigFontSize+8)*5;
+	uint8_t lvl = _sensors->getWaterLevel();
+	if (lvl < _settings->getWaterAlarm())
+	_lcd->setColor(red[0],red[1],red[2]);
+	else
+	_lcd->setColor(grey[0], grey[1], grey[2]);
+	
 	_lcd->print(sensorText[5],x,y);
 	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
 	_lcd->print("%",xSpacer-_bigFontSize,y);
@@ -212,61 +267,7 @@ void WinMainScreen::print() {
 	_lcd->print("%",xSpacer-_bigFontSize,y);
 }
 
-//Redraws only sensor numbers and changes colour if needed (alarm triggered)
-void WinMainScreen::updateSensorInfo() {
-	const int xSpacer = _xSize - 25;
-	const int ySpacer = 35;
-	
-	_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->setBackColor(VGA_WHITE);
 
-	//Humidity
-	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,ySpacer,3,' ');
-	//Temp
-	int y = ySpacer+(_bigFontSize+8);
-	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
-	//Light
-	y = ySpacer+(_bigFontSize+8)*2;
-	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
-	//pH
-	int x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+5));
-	y = ySpacer+(_bigFontSize+8)*3;
-	float ph = _sensors->getPH();
-	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
-	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-
-	_lcd->print(sensorText[3],x,y);
-	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*4,y,'.',4);
-	
-	//EC
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
-	y = ySpacer+(_bigFontSize+8)*4;
-	uint16_t ec = _sensors->getEC();
-	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
-	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	
-	_lcd->print(sensorText[4],x,y);
-	_lcd->printNumI(ec,xSpacer-_bigFontSize*6,y,4);
-	_lcd->print("uS",xSpacer-_bigFontSize*2,y);
-	
-	//Deposit level
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
-	y = ySpacer+(_bigFontSize+8)*5;
-	uint8_t lvl = _sensors->getWaterLevel();
-	if (lvl < _settings->getWaterAlarm())
-	_lcd->setColor(red[0],red[1],red[2]);
-	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	
-	_lcd->print(sensorText[5],x,y);
-	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-_bigFontSize,y);
-}
 
 //Shows system status in main screen
 //Loads img files from /PICTURE folder of the SD card

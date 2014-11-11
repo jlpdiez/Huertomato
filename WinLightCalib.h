@@ -35,6 +35,7 @@ static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
+static char* _nameS = "- Night Calibration -";
 
 class WinLightCalib: public Window {
 	public:

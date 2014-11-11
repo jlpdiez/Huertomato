@@ -26,7 +26,7 @@
 
 #ifndef WINLVLALARMS_H_
 #define WINLVLALARMS_H_
-
+ 
 #include "Window.h"
 
 const int nWaterAlarmsButtons = 5;
@@ -36,6 +36,7 @@ static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
 };
 static int waterAlarmsButtons[nWaterAlarmsButtons];
 
+static char* _nameS = "- Nutrient Alarms -";
 
 class WinLvlAlarms: public Window {
 	public:

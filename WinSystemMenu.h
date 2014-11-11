@@ -38,7 +38,8 @@ static char* systemButtonText[nSystemButtons] = {
 	"Watering at Night:"
 };
 static int systemButtons[nSystemButtons];
-
+ 
+static char* _nameS = "- System Settings -";
 
 class WinSystemMenu: public Window {
 	public:

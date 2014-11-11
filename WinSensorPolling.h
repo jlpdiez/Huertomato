@@ -34,7 +34,8 @@ static char* sensorPollingButtonText[nSensorPollingButtons] = {
 	">"
 };
 static int sensorPollingButtons[nSensorPollingButtons];
-
+ 
+static char* _nameS = "- Sensor Polling -";
 
 class WinSensorPolling: public Window {
 	public:

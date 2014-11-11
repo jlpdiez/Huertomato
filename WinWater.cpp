@@ -95,13 +95,13 @@ void WinWater::print() {
 		_buttons.enableButton(waterCycleButtons[i],true);
 	}
 
-}
+} 
 
 //Draws entire screen Watering Cycle
 void WinWater::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Watering Cycle -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,true,true,waterCycleButtons);
 	print();
 	_buttons.drawButtons();

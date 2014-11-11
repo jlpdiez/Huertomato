@@ -66,12 +66,12 @@ void WinControllerMenu::print() {
 void WinControllerMenu::draw() { 
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Controller Settings -");
+	printMenuHeader(_nameS);
 	addFlowButtons(true,false,true,controllerButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 //Redraws only controller settings text from inner temp vars
 //Used when +- signs are pressed
 void WinControllerMenu::update() {
