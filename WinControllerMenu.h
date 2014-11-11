@@ -39,20 +39,23 @@ static char* controllerButtonText[nControllerButtons] = {
 };
 static int controllerButtons[nControllerButtons];
 
-static char* _nameS = "- Controller Settings -";
+static char* nameWinControllerMenu = "- Controller Settings -";
 
 class WinControllerMenu: public Window {
 	public:
 		WinControllerMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinControllerMenu(const WinControllerMenu &other);
 		WinControllerMenu& operator=(const WinControllerMenu &other);
-		virtual ~WinControllerMenu();
-		virtual Screen getType() const;
+		~WinControllerMenu();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _xSpacer = 15;
+		static const int _ySpacer = 40;
+		
 		//Sound toggle
 		boolean _soundActive;
 		//Serial toggle

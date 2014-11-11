@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinLvlCalib.h"
 
 WinLvlCalib::WinLvlCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,11 +21,6 @@ Window::Screen WinLvlCalib::getType() const {
 }
 
 void WinLvlCalib::print() {
-	const int yFirstLine = 50;
-	const int ySecondLine = 100;
-	const int yThirdLine = 150;
-	const int xSpacer = 25;
-	
 	_rawWaterLvl = _sensors->getRawWaterLevel();
 	_waterLvlMax = _settings->getMaxWaterLvl();
 	_waterLvlMin = _settings->getMinWaterLvl();
@@ -40,63 +29,58 @@ void WinLvlCalib::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = xSpacer;
-	_lcd->print("Current Reading:",x,yFirstLine);
+	int x = _xSpacer;
+	_lcd->print(firstLvlCalib,x,_yFirstLine);
 	x += 16*_bigFontSize;
-	_lcd->printNumI(_rawWaterLvl,x,yFirstLine,3,' ');
+	_lcd->printNumI(_rawWaterLvl,x,_yFirstLine,3,' ');
 	x +=3*_bigFontSize;
-	_lcd->print("cm",x,yFirstLine);
+	_lcd->print(unitLvl,x,_yFirstLine);
 	
 	//Second Line
-	x = xSpacer;
-	_lcd->print("Current Top:",x,ySecondLine);
+	x = _xSpacer;
+	_lcd->print(secondLvlCalib,x,_ySecondLine);
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMax,x,ySecondLine,3,' ');
+	_lcd->printNumI(_waterLvlMax,x,_ySecondLine,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print("cm",x,ySecondLine);
+	_lcd->print(unitLvl,x,_ySecondLine);
 	x += 3*_bigFontSize;
-	waterLevelButtons[3] = _buttons.addButton(x,ySecondLine,waterLevelButtonsText[0]);
+	waterLevelButtons[3] = _buttons.addButton(x,_ySecondLine,waterLevelButtonsText[0]);
 	
 	//Third Line
-	x = xSpacer;
-	_lcd->print(" and Bottom:",x,yThirdLine);
+	x = _xSpacer;
+	_lcd->print(thirdLvlCalib,x,_yThirdLine);
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMin,x,yThirdLine,3,' ');
+	_lcd->printNumI(_waterLvlMin,x,_yThirdLine,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print("cm",x,yThirdLine);
+	_lcd->print(unitLvl,x,_yThirdLine);
 	x += 3*_bigFontSize;
-	waterLevelButtons[4] = _buttons.addButton(x,yThirdLine,waterLevelButtonsText[1]);
+	waterLevelButtons[4] = _buttons.addButton(x,_yThirdLine,waterLevelButtonsText[1]);
 }
 
 void WinLvlCalib::update() {
-	const int yFirstLine = 50;
-	const int ySecondLine = 100;
-	const int yThirdLine = 150;
-	const int xSpacer = 25;
-	
 	_rawWaterLvl = _sensors->getRawWaterLevel();
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = xSpacer + 16*_bigFontSize;
-	_lcd->printNumI(_rawWaterLvl,x,yFirstLine,3,' ');
+	int x = _xSpacer + 16*_bigFontSize;
+	_lcd->printNumI(_rawWaterLvl,x,_yFirstLine,3,' ');
 	
 	//Second Line
-	x = xSpacer + 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMax,x,ySecondLine,3,' ');
+	x = _xSpacer + 12*_bigFontSize;
+	_lcd->printNumI(_waterLvlMax,x,_ySecondLine,3,' ');
 	
 	//Third Line
-	x = xSpacer + 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMin,x,yThirdLine,3,' ');
+	x = _xSpacer + 12*_bigFontSize;
+	_lcd->printNumI(_waterLvlMin,x,_yThirdLine,3,' ');
 }
  
 //Draws entire screen Water Level Calibration
 void WinLvlCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinLvlCalib);
 	addFlowButtons(true,true,true,waterLevelButtons);
 	print();
 	_buttons.drawButtons();

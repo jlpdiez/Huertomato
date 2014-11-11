@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinPump.h"
 
 WinPump::WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -26,22 +20,18 @@ Window::Screen WinPump::getType() const {
 	return Window::Pump;
 }
 
-void WinPump::print() {
-	const int xSpacer = 25;
-	const int signSpacer = 22;
-	
-	_pumpProtectionLvl = _settings->getPumpProtectionLvl();
-	
+void WinPump::print() {	
+	_pumpProtectionLvl = _settings->getPumpProtectionLvl();	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(_wLimitS,xSpacer,_yFirstLine);
+	_lcd->print(wPumpLimit,_xSpacer,_yFirstLine);
 	//Numbers
-	int x = (4+strlen(_wLimitS))*_bigFontSize;
+	int x = (4+strlen(wPumpLimit))*_bigFontSize;
 	_lcd->printNumI(_pumpProtectionLvl,x,_yFirstLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	pumpProtectionButtons[3] = _buttons.addButton(x,_yFirstLine-signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
-	pumpProtectionButtons[4] = _buttons.addButton(x,_yFirstLine+signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
+	pumpProtectionButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
+	pumpProtectionButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,_yFirstLine);
@@ -51,17 +41,16 @@ void WinPump::print() {
 void WinPump::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinPump);
 	addFlowButtons(true,true,true,pumpProtectionButtons);
 	print();
 	_buttons.drawButtons();
 }
  
 void WinPump::update() {
-	const int yFirstLine = 100;
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(_wLimitS))*_bigFontSize;
-	_lcd->printNumI(_pumpProtectionLvl,x,yFirstLine,3);
+	int x = (4+strlen(wPumpLimit))*_bigFontSize;
+	_lcd->printNumI(_pumpProtectionLvl,x,_yFirstLine,3);
 }
 
 Window::Screen WinPump::processTouch(const int x, const int y) {

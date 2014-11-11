@@ -3,10 +3,7 @@
 WinMainScreen::WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 : Window(lcd,touch,sensors,settings) { }
 
-WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {
-	//_sensors = other._sensors;
-	//_settings = other._settings;
-}
+WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) { }
 
 WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
 	_lcd = other._lcd;
@@ -47,7 +44,7 @@ void WinMainScreen::printMainHeader() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->print("Huertomato 1.2",10,ySpacer);
+	_lcd->print(versionName,10,ySpacer);
 
 	//Clock display HH:MM
 	//X is calculated from the end of size
@@ -68,29 +65,29 @@ void WinMainScreen::printSensorInfo() {
 	int x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));
 	_lcd->print(sensorText[0],x,ySpacer);
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,ySpacer,3,' ');
-	_lcd->print("%",xSpacer-_bigFontSize,ySpacer);
+	_lcd->print(humidUnit,xSpacer-_bigFontSize,ySpacer);
 	//Temp
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[1])+7));
 	int y = ySpacer+(_bigFontSize+8);
 	_lcd->print(sensorText[1],x,y);
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
-	_lcd->print("C",xSpacer-_bigFontSize,y);
+	_lcd->print(tempUnit,xSpacer-_bigFontSize,y);
 	//Light
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[2])+4));
 	y = ySpacer+(_bigFontSize+8)*2;
 	_lcd->print(sensorText[2],x,y);
 	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-_bigFontSize,y);
+	_lcd->print(lightUnit,xSpacer-_bigFontSize,y);
 	//pH
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->print(sensorText[3],x,y);
-	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->print(sensorText[3],x,y);
+		_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);
 	//EC
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
 	y = ySpacer+(_bigFontSize+8)*4;
@@ -101,18 +98,18 @@ void WinMainScreen::printSensorInfo() {
 		_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(sensorText[4],x,y);
 	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
-	_lcd->print("uS",xSpacer-_bigFontSize*2,y);
+	_lcd->print(ecUnit,xSpacer-_bigFontSize*2,y);
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
 	y = ySpacer+(_bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (lvl < _settings->getWaterAlarm())
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
-	_lcd->print(sensorText[5],x,y);
-	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-_bigFontSize,y);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->print(sensorText[5],x,y);
+		_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
+		_lcd->print(lvlUnit,xSpacer-_bigFontSize,y);
 }
 
 //Redraws only sensor numbers and changes colour if needed (alarm triggered)
@@ -161,9 +158,9 @@ void WinMainScreen::updateSensorInfo() {
 	y = ySpacer+(_bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (lvl < _settings->getWaterAlarm())
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	
 	_lcd->print(sensorText[5],x,y);
 	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
@@ -233,9 +230,9 @@ void WinMainScreen::print() {
 	y = ySpacer+(_bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (ph > _settings->getPHalarmUp() || (ph < _settings->getPHalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 
 	_lcd->print(sensorText[3],x,y);
 	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*4,y,'.',4);
@@ -245,26 +242,26 @@ void WinMainScreen::print() {
 	y = ySpacer+(_bigFontSize+8)*4;
 	uint16_t ec = _sensors->getEC();
 	if (ec > _settings->getECalarmUp() || (ec < _settings->getECalarmDown()))
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	
 	_lcd->print(sensorText[4],x,y);
 	_lcd->printNumI(ec,xSpacer-_bigFontSize*6,y,4);
-	_lcd->print("uS",xSpacer-_bigFontSize*2,y);
+	_lcd->print(ecUnit,xSpacer-_bigFontSize*2,y);
 	
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
 	y = ySpacer+(_bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (lvl < _settings->getWaterAlarm())
-	_lcd->setColor(red[0],red[1],red[2]);
+		_lcd->setColor(red[0],red[1],red[2]);
 	else
-	_lcd->setColor(grey[0], grey[1], grey[2]);
+		_lcd->setColor(grey[0], grey[1], grey[2]);
 	
 	_lcd->print(sensorText[5],x,y);
 	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-_bigFontSize,y);
+	_lcd->print(lvlUnit,xSpacer-_bigFontSize,y);
 }
 
 
@@ -283,42 +280,37 @@ void WinMainScreen::printIconAndStatus() {
 		_lcd->setColor(grey[0],grey[1],grey[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
+		_lcd->print(bulletStr,xSpacer,ySpacer);
 		_lcd->setFont(hallfetica_normal);
-		_lcd->print("No Watering @ Night   ",xSpacer+_bigFontSize*2,ySpacer);
-		path = "/PICTURE/moon126.RAW";
+		_lcd->print(noNight,xSpacer+_bigFontSize*2,ySpacer);
+		path = nightPath;
 		
-		//Timed mode and watering plants
-		} else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {
+	//Timed mode and watering plants
+	} else if (_settings->getWaterTimed() && _settings->getWateringPlants()) {
 		_lcd->setColor(blue[0],blue[1],blue[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
-		_lcd->setFont(hallfetica_normal);
-		char* watering = "Huertomato Watering";
+		_lcd->print(bulletStr,xSpacer,ySpacer);
+		_lcd->setFont(hallfetica_normal); 
 		int x = xSpacer + _bigFontSize*2;
-		_lcd->print(watering,x,ySpacer);
-		//3 blank chars afterwards to clear line
-		x += _bigFontSize*strlen(watering);
-		_lcd->print("   ",x,ySpacer);
-		path = "/PICTURE/logo126.RAW";
+		_lcd->print(htmtWatering,x,ySpacer);
+		x += _bigFontSize*strlen(htmtWatering);
+		path = logoPath;
 		
-		//Alarm triggered
-		} else if (_settings->getAlarmTriggered()) {
+	//Alarm triggered
+	} else if (_settings->getAlarmTriggered()) {
 		int wHour = _settings->getNextWhour();
 		int wMin = _settings->getNextWminute();
 		_lcd->setColor(red[0],red[1],red[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
+		_lcd->print(bulletStr,xSpacer,ySpacer);
 		_lcd->setFont(hallfetica_normal);
 		int x = xSpacer + _bigFontSize*2;
 		//Timed mode
 		if (_settings->getWaterTimed()) {
-			//Space char added after @ and last number to white out line
-			char* nWater = "Next Watering @ ";
-			_lcd->print(nWater,x,ySpacer);
-			x += _bigFontSize*(strlen(nWater));
+			_lcd->print(nextWater,x,ySpacer);
+			x += _bigFontSize*(strlen(nextWater));
 			_lcd->printNumI(wHour,x,ySpacer,2,'0');
 			x += _bigFontSize*2;
 			_lcd->print(":",x,ySpacer);
@@ -326,44 +318,39 @@ void WinMainScreen::printIconAndStatus() {
 			_lcd->printNumI(wMin,x,ySpacer,2,'0');
 			x += 2*_bigFontSize;
 			_lcd->print(" ",x,ySpacer);
-			//Continuous mode
-			} else {
-			char* nWater = "Alarm - Check Solution";
-			_lcd->print(nWater,x,ySpacer);
-		}
-		path = "/PICTURE/alarm126.RAW";
+		//Continuous mode
+		} else
+			_lcd->print(alarmCont,x,ySpacer);
+			
+		path = alarmPath;
 		
-		//Normal operation
-		} else {
+	//Normal operation
+	} else {
 		int wHour = _settings->getNextWhour();
 		int wMin = _settings->getNextWminute();
 		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
-		_lcd->print("T",xSpacer,ySpacer);
+		_lcd->print(bulletStr,xSpacer,ySpacer);
 		_lcd->setFont(hallfetica_normal);
 		int x = xSpacer + _bigFontSize*2;
 		
 		//Timed mode
 		if (_settings->getWaterTimed()) {
-			//Space char added after @ and last number to white out line
-			char* nWater = "Next Watering @ ";
-			_lcd->print(nWater,x,ySpacer);
-			x += _bigFontSize*(strlen(nWater));
+			_lcd->print(nextWater,x,ySpacer);
+			x += _bigFontSize*(strlen(nextWater));
 			_lcd->printNumI(wHour,x,ySpacer,2,'0');
 			x += _bigFontSize*2;
 			_lcd->print(":",x,ySpacer);
 			x += _bigFontSize;
 			_lcd->printNumI(wMin,x,ySpacer,2,'0');
 			x += 2*_bigFontSize;
-			_lcd->print(" ",x,ySpacer);
-			
-			//Continuous
-			} else {
-			char* nWater = "System working fine   ";
-			_lcd->print(nWater,x,ySpacer);
-		}
-		path = "/PICTURE/plant126.RAW";
+			_lcd->print(" ",x,ySpacer);		
+		//Continuous
+		} else
+			_lcd->print(normalCont,x,ySpacer);
+		
+		path = plantPath;
 	}
 	
 	//Read from SD line by line and display.
@@ -389,7 +376,7 @@ void WinMainScreen::printIconAndStatus() {
 //If not should only update next watering time
 void WinMainScreen::updateIconAndStatus() {
 	if (_settings->systemStateChanged())
-	printIconAndStatus();
+		printIconAndStatus();
 	
 	//Updates next watering time if needed
 	else if (!_settings->getNightWateringStopped() && !_settings->getWateringPlants()
@@ -404,18 +391,16 @@ void WinMainScreen::updateIconAndStatus() {
 		
 		//Alarm triggered
 		if (_settings->getAlarmTriggered())
-		_lcd->setColor(red[0],red[1],red[2]);
+			_lcd->setColor(red[0],red[1],red[2]);
 		//Normal operation
 		else
-		_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
+			_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		
-		_lcd->print("T",xSpacer,ySpacer);
+		_lcd->print(bulletStr,xSpacer,ySpacer);
 		_lcd->setFont(hallfetica_normal);
 		int x = xSpacer + _bigFontSize*2;
-		//Space char added after @ and last number to white out line
-		char* nWater = "Next Watering @ ";
-		_lcd->print(nWater,x,ySpacer);
-		x += _bigFontSize*(strlen(nWater));
+		_lcd->print(nextWater,x,ySpacer);
+		x += _bigFontSize*(strlen(nextWater));
 		_lcd->printNumI(wHour,x,ySpacer,2,'0');
 		x += _bigFontSize*2;
 		_lcd->print(":",x,ySpacer);

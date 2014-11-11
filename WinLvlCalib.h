@@ -36,20 +36,28 @@ static char* waterLevelButtonsText[nWaterLevelButtons] = {
 };
 static int waterLevelButtons[nWaterLevelButtons];
 
-static char* _nameS = "- Nutrient Levels -";
+static char* nameWinLvlCalib = "- Nutrient Levels -";
+static char* firstLvlCalib = "Current Reading:";
+static char* secondLvlCalib = "Current Top:";
+static char* thirdLvlCalib = " and Bottom:";
+static char* unitLvl = "cm";
 
 class WinLvlCalib: public Window {
 	public:
 		WinLvlCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlCalib(const WinLvlCalib &other);
 		WinLvlCalib& operator=(const WinLvlCalib &other);
-		virtual ~WinLvlCalib();
-		virtual Screen getType() const;
+		~WinLvlCalib();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 50;
+		static const int _ySecondLine = 100;
+		static const int _yThirdLine = 150;
+		static const int _xSpacer = 25;
 		uint16_t _waterLvlMax, _waterLvlMin, _rawWaterLvl;
 		void print();
 };

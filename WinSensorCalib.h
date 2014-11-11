@@ -36,18 +36,23 @@ static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
 };
 static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
+static char* nameWinSensorCalib = "- Calibration -";
+
 class WinSensorCalib: public Window {
 	public:
 		WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSensorCalib(const WinSensorCalib &other);
 		WinSensorCalib& operator=(const WinSensorCalib &other);
-		virtual ~WinSensorCalib();
-		virtual Screen getType() const;
+		~WinSensorCalib();
+		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static char* _nameS = "- Calibration -";
+		static const int _xSpacer = 15;
+		static const int _ySpacer = 45;
+		static const int _yFirst = 60;
+		static const int _ySecond = 135;
 		void print();
 };
 

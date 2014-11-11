@@ -43,21 +43,39 @@ static char* sensorText[nSensorText] = {
 	"EC:",
 	"Deposit:"
 };
-
-static char* _nameS = "- Controller Settings -"
+//Name is not used really. Its here because its neccesary for other windows
+static char* nameWinMainScreen = "- Main Screen -";
+//Paths for finding icons in SD card
+static char* plantPath = "/PICTURE/plant126.RAW";
+static char* nightPath  = "/PICTURE/moon126.RAW";
+static char* logoPath = "/PICTURE/logo126.RAW";
+static char* alarmPath = "/PICTURE/alarm126.RAW";
+//Misc texts
+static char* versionName = "Huertomato 1.3";
+static char* humidUnit = "%";
+static char* tempUnit = "C";
+static char* lightUnit = "%";
+static char* ecUnit = "uS";
+static char* lvlUnit = "%";
+//Spaces at the end are used to have all strings of same size and no thrash on screen
+static char* nextWater = "Next Watering @ ";
+static char* noNight = "No Watering @ Night   ";
+static char* htmtWatering = "Huertomato Watering   ";
+static char* alarmCont = "Alarm - Check Solution";
+static char* normalCont = "System working fine  ";
 
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinMainScreen(const WinMainScreen &other);
 		WinMainScreen& operator=(const WinMainScreen &other);
-		virtual ~WinMainScreen();
-		virtual Screen getType() const;
+		~WinMainScreen();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 		 
-	protected:		
+	protected:	
 		void print();	
 		void printMainHeader();
 		void printSensorInfo();

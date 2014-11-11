@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinAlarms.h"
 
 WinAlarms::WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -26,23 +20,20 @@ Window::Screen WinAlarms::getType() const {
 	return Window::Alarms;
 }
 
-void WinAlarms::print() {
-	const int xSpacer = 15;
-	const int ySpacer = 50;
-	
+void WinAlarms::print() {	
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	
-	//Print triangles
+	//Print bulletpoints
 	_lcd->setFont(various_symbols);
 	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		_lcd->print("T",xSpacer,ySpacer+_bigFontSize*3*i);
+		_lcd->print(bulletStr,_xSpacer,_ySpacer+_bigFontSize*3*i);
 	}
 	
 	//Make menu buttons
 	//Before 3 there are flow buttons
 	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		sensorAlarmsButtons[i + 3] = _buttons.addButton(xSpacer+_bigFontSize*2,ySpacer+_bigFontSize*3*i,sensorAlarmsButtonsText[i]);
+		sensorAlarmsButtons[i + 3] = _buttons.addButton(_xSpacer+_bigFontSize*2,_ySpacer+_bigFontSize*3*i,sensorAlarmsButtonsText[i]);
 	}
 }
  
@@ -50,7 +41,7 @@ void WinAlarms::print() {
 void WinAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinAlarms);
 	addFlowButtons(true,false,true,sensorAlarmsButtons);
 	print();
 	_buttons.drawButtons();

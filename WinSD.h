@@ -41,20 +41,24 @@ static char* sdCardButtonsText[nSDcardButtons] = {
 };
 static int sdCardButtons[nSDcardButtons];
 
-static char* _nameS = "- SD Card -";
+static char* nameWinSD = "- SD Card -";
+static char* sdCardText1 = "Save every";
 
 class WinSD: public Window {
 	public:
 		WinSD(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSD(const WinSD &other);
 		WinSD& operator=(const WinSD &other);
-		virtual ~WinSD();
-		virtual Screen getType() const;
+		~WinSD();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 60;
+		static const int _ySecondLine = 135;
+		static const int _xSpacer = 25;
 		boolean _sdActive;
 		uint8_t _sdHour, _sdMin;
 		void print();

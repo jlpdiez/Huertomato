@@ -61,10 +61,17 @@ static uint8_t red[3] = {200,0,0};
 static uint8_t blue[3] = {0,135,199};
 //static uint8_t yellow[3] = {255,242,32};
 
+//Common window buttons text
 static char* backText = " Back ";
 static char* saveText = " Save ";
 static char* savedText = " Saved ";
 static char* cancelText = " Exit ";
+//Common window toggles
+static char* onStr = "ON ";
+static char* offStr = "OFF";
+//various_symbols font is used for bulletpoints
+static char* bulletStr = "T";
+
 
 class Window {
 	public:

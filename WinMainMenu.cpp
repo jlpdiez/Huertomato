@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinMainMenu.h"
 
 WinMainMenu::WinMainMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -30,29 +24,24 @@ Window::Screen WinMainMenu::getType() const {
 void WinMainMenu::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
-	
-	const int controllerY = 135;
-	const int xSpacer = 15;
-	const int systemY = 60;
 	_lcd->setFont(hallfetica_normal);
 	
 	//Make menu buttons. System and Controller settings
-	mainMenuButtons[3] = _buttons.addButton(xSpacer+70,systemY,mainMenuButtonText[0]);
-	mainMenuButtons[4] = _buttons.addButton(xSpacer+70,controllerY,mainMenuButtonText[1]);
-	
+	mainMenuButtons[3] = _buttons.addButton(_xSpacer+70,_systemY,mainMenuButtonText[0]);
+	mainMenuButtons[4] = _buttons.addButton(_xSpacer+70,_controllerY,mainMenuButtonText[1]);
 	//Logos
-	_lcd->drawBitmap (xSpacer, systemY-18, 64, 64, plant64);
-	_lcd->drawBitmap (xSpacer, controllerY-18, 64, 64, settings64);
+	_lcd->drawBitmap (_xSpacer, _systemY-18, _iconSize, _iconSize, plant64);
+	_lcd->drawBitmap (_xSpacer, _controllerY-18, _iconSize, _iconSize, settings64);
 	//With transparent buttons
-	mainMenuButtons[5] = _buttons.addButton(xSpacer, systemY-18, 64, 64, 0);
-	mainMenuButtons[6] = _buttons.addButton(xSpacer, controllerY-18, 64, 64, 0);
+	mainMenuButtons[5] = _buttons.addButton(_xSpacer, _systemY-18, _iconSize, _iconSize, 0);
+	mainMenuButtons[6] = _buttons.addButton(_xSpacer, _controllerY-18, _iconSize, _iconSize, 0);
 }
 
 //Draws main menu into LCD
 void WinMainMenu::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinMainMenu);
 	addFlowButtons(false,false,true,mainMenuButtons);
 	print();
 	_buttons.drawButtons();

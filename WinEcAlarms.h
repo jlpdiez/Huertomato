@@ -38,20 +38,27 @@ static char* ecAlarmsButtonsText[nECalarmsButtons] = {
 };
 static int ecAlarmsButtons[nECalarmsButtons];
 
-static char* _nameS = "- EC Alarms -";
+static char* nameWinEcAlarms = "- EC Alarms -";
+static char* unitEcS = "uS";
+static char* uEcLimit = "Upper Limit:";
+static char* dEcLimit = "Lower Limit:";
  
 class WinEcAlarms: public Window {
 	public:
 		WinEcAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinEcAlarms(const WinEcAlarms &other);
 		WinEcAlarms& operator=(const WinEcAlarms &other);
-		virtual ~WinEcAlarms();
-		virtual Screen getType() const;
+		~WinEcAlarms();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 65;
+		static const int _ySecondLine = 140;
+		static const int _xSpacer = 25;
+		static const int _signSpacer = 22;
 		uint16_t _ecAlarmMax, _ecAlarmMin;
 		void print();
 };

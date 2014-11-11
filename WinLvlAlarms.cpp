@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinLvlAlarms.h"
 
 WinLvlAlarms::WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,45 +21,37 @@ Window::Screen WinLvlAlarms::getType() const {
 }
 
 void WinLvlAlarms::print() {
-	const int yFirstLine = 100;
-	const int xSpacer = 25;
-	const int signSpacer = 22;
-	
 	_waterAlarmMin = _settings->getWaterAlarm();
 	
-	char* wLimitS = "Lower Limit:";
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wLimitS,xSpacer,yFirstLine);
+	_lcd->print(wLimitLvlS,_xSpacer,_yFirstLine);
 	//Numbers
-	int x = (4+strlen(wLimitS))*_bigFontSize;
-	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
+	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
+	_lcd->printNumI(_waterAlarmMin,x,_yFirstLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	waterAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
-	waterAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+	waterAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
+	waterAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,yFirstLine);
+	_lcd->print("%",x,_yFirstLine);
 } 
 
 //Draws entire screen Nutrient level alarms
 void WinLvlAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinLvlAlarms);
 	addFlowButtons(true,true,true,waterAlarmsButtons);
 	print();
 	_buttons.drawButtons();
 }
 
 void WinLvlAlarms::update() {
-	const int yFirstLine = 100;
-	char* wLimitS = "Lower Limit:";
-	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(wLimitS))*_bigFontSize;
-	_lcd->printNumI(_waterAlarmMin,x,yFirstLine,3);
+	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
+	_lcd->printNumI(_waterAlarmMin,x,_yFirstLine,3);
 }
 
 Window::Screen WinLvlAlarms::processTouch(int x,int y) {

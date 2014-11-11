@@ -35,20 +35,26 @@ static char* lightCalibrationButtonsText[nLightCalibrationButtons] = {
 };
 static int lightCalibrationButtons[nLightCalibrationButtons];
 
-static char* _nameS = "- Night Calibration -";
+static char* nameWinLightCalib = "- Night Calibration -";
+static char* rawLight = "Current Reading:";
+static char* lightThreshold = "Threshold:";
 
 class WinLightCalib: public Window {
 	public:
 		WinLightCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLightCalib(const WinLightCalib &other);
 		WinLightCalib& operator=(const WinLightCalib &other);
-		virtual ~WinLightCalib();
-		virtual Screen getType() const;
+		~WinLightCalib();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 60;
+		static const int _ySecondLine = 135;
+		static const int _xSpacer = 25;
+		
 		uint16_t _lightThreshold, _rawLightLvl;
 		void print();
 };

@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinEcAlarms.h"
 
 WinEcAlarms::WinEcAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,55 +21,44 @@ Window::Screen WinEcAlarms::getType() const {
 }
 
 void WinEcAlarms::print() {
-	const int yFirstLine = 65;
-	const int ySecondLine = 140;
-	const int xSpacer = 25;
-	const int signSpacer = 22;
-	
 	_ecAlarmMax = _settings->getECalarmUp();
 	_ecAlarmMin = _settings->getECalarmDown();
 	
-	char* uLimit = "Upper Limit:";
-	char* dLimit = "Lower Limit:";
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uLimit,xSpacer,yFirstLine);
-	_lcd->print(dLimit,xSpacer,ySecondLine);
+	_lcd->print(uEcLimit,_xSpacer,_yFirstLine);
+	_lcd->print(dEcLimit,_xSpacer,_ySecondLine);
 	//Numbers
-	int x = (4+strlen(uLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,yFirstLine,4);
-	_lcd->printNumI(_ecAlarmMin,x,ySecondLine,4);
+	int x = (4+strlen(uEcLimit))*_bigFontSize;
+	_lcd->printNumI(_ecAlarmMax,x,_yFirstLine,4);
+	_lcd->printNumI(_ecAlarmMin,x,_ySecondLine,4);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	ecAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
-	ecAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
-	ecAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
-	ecAlarmsButtons[6] = _buttons.addButton(x,ySecondLine+signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
+	ecAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
+	ecAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
+	ecAlarmsButtons[5] = _buttons.addButton(x,_ySecondLine-_signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
+	ecAlarmsButtons[6] = _buttons.addButton(x,_ySecondLine+_signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
 	//uS Text
 	x += 3.5*_bigFontSize;
-	_lcd->print("uS",x,yFirstLine);
-	_lcd->print("uS",x,ySecondLine);
+	_lcd->print(unitEcS,x,_yFirstLine);
+	_lcd->print(unitEcS,x,_ySecondLine);
 }
 
 //Draws entire screen EC alarms
 void WinEcAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinEcAlarms);
 	addFlowButtons(true,true,true,ecAlarmsButtons);
 	print();
 	_buttons.drawButtons();
 } 
 
 void WinEcAlarms::update() {
-	const int yFirstLine = 65;
-	const int ySecondLine = 140;
-	char* uLimit = "Upper Limit:";
-	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(uLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,yFirstLine,4);
-	_lcd->printNumI(_ecAlarmMin,x,ySecondLine,4);
+	int x = (4+strlen(uEcLimit))*_bigFontSize;
+	_lcd->printNumI(_ecAlarmMax,x,_yFirstLine,4);
+	_lcd->printNumI(_ecAlarmMin,x,_ySecondLine,4);
 }
 
 Window::Screen WinEcAlarms::processTouch(const int x, const int y) {

@@ -45,20 +45,28 @@ static char* waterCycleButtonsText[nWaterCycleButtons] = {
 }; 
 static int  waterCycleButtons[nWaterCycleButtons];
 
-static char* _nameS = "- Watering Cycle -";
+static char* nameWinWater = "- Watering Cycle -";
+static char* modeTimedS = "Timed     ";
+static char* modeContS = "Continuous";
+static char* waterTwo = "Water every:";
+static char* waterThree = "Active for:";
 
 class WinWater: public Window {
 	public:
 		WinWater(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinWater(const WinWater &other);
 		WinWater& operator=(const WinWater &other);
-		virtual ~WinWater();
-		virtual Screen getType() const;
-		virtual void draw();
-		virtual void update();
+		~WinWater();
+		Screen getType() const;
+		void draw();
+		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 50;
+		static const int _ySecondLine = 100;
+		static const int _yThirdLine = 160;
+		static const int _xSpacer = 25;
 		//These are temp variables used for displaying data
 		//They are read from _settings in print() funcs. Changed in processTouch()
 		//displayed again with update() and saved to eeprom when button save is pressed

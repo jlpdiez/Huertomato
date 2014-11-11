@@ -48,20 +48,29 @@ static char* timeButtonText[nTimeButtons] = {
 };
 static int timeButtons[nTimeButtons];
  
-static char* _nameS = "- Time & Date -";
+static char* nameWinTime = "- Time & Date -";
+static char* timeS = "Time";
+static char* timeFormatS = "(HH:MM:SS)";
+static char* timeSeparator = ":";
+static char* dateS = "Date";
+static char* dateFormatS = "(DD/MM/YYYY)";
+static char* dateSeparator = "/";
 
 class WinTime: public Window {
 	public:
 		WinTime(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinTime(const WinTime &other);
 		WinTime& operator=(const WinTime &other);
-		virtual ~WinTime();
-		virtual Screen getType() const;
+		~WinTime();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _xSpacer = 25;
+		static const int _yTime = 60;
+		static const int _yDate = 135;
 		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
 		int _sysYear;
 		void print();

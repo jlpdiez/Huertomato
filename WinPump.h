@@ -36,22 +36,24 @@ static char* pumpProtectionButtonsText[nPumpProtectionButtons] = {
 };
 static int pumpProtectionButtons[nPumpProtectionButtons];
 
-static char* _nameS = "- Pump Protection -";
-static char* _wLimitS = "Min Water Lvl:";
+static char* nameWinPump = "- Pump Protection -";
+static char* wPumpLimit = "Min Water Lvl:";
  
 class WinPump: public Window {
 	public:
 		WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPump(const WinPump &other);
 		WinPump& operator=(const WinPump &other);
-		virtual ~WinPump();
-		virtual Screen getType() const;
+		~WinPump();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
 		static const int _yFirstLine = 100;
+		static const int _xSpacer = 25;
+		static const int _signSpacer = 22;
 		uint8_t _pumpProtectionLvl;
 		void print();
 };

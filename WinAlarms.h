@@ -37,20 +37,21 @@ static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
 };
 static int sensorAlarmsButtons[nSensorAlarmsButtons];
 
-static char* _nameS = "- Sensor Alarms -";
+static char* nameWinAlarms = "- Sensor Alarms -";
  
 class WinAlarms: public Window {
 	public:
 		WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinAlarms(const WinAlarms &other);
 		WinAlarms& operator=(const WinAlarms &other);
-		virtual ~WinAlarms();
-		virtual Screen getType() const;
+		~WinAlarms();
+		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		char* getName() const;
+		static const int _xSpacer = 15;
+		static const int _ySpacer = 50;
 		void print();
 };
 

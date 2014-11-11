@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinLightCalib.h"
 
 WinLightCalib::WinLightCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,10 +21,6 @@ Window::Screen WinLightCalib::getType() const {
 }
 
 void WinLightCalib::print() {
-	const int yFirstLine = 60;
-	const int ySecondLine = 135;
-	const int xSpacer = 25;
-	
 	_rawLightLvl = _sensors->getRawLight();
 	_lightThreshold = _settings->getLightThreshold();
 	
@@ -38,48 +28,44 @@ void WinLightCalib::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = xSpacer;
-	_lcd->print("Current Reading:",x,yFirstLine);
+	int x = _xSpacer;
+	_lcd->print(rawLight,x,_yFirstLine);
 	x += 16*_bigFontSize;
-	_lcd->printNumI(_rawLightLvl,x,yFirstLine,4,' ');
+	_lcd->printNumI(_rawLightLvl,x,_yFirstLine,4,' ');
 	//x +=4*bigFontSize;
 	//_lcd->print("lux",x,yFirstLine);
 	
 	//Second Line
-	x = xSpacer;
-	_lcd->print("Threshold:",x,ySecondLine);
+	x = _xSpacer;
+	_lcd->print(lightThreshold,x,_ySecondLine);
 	x += 10*_bigFontSize;
-	_lcd->printNumI(_lightThreshold,x,ySecondLine,4,' ');
+	_lcd->printNumI(_lightThreshold,x,_ySecondLine,4,' ');
 	//x += 4*bigFontSize;
 	//_lcd->print("lux",x,ySecondLine);
 	x += 5*_bigFontSize;
-	lightCalibrationButtons[3] = _buttons.addButton(x,ySecondLine,lightCalibrationButtonsText[0]);
+	lightCalibrationButtons[3] = _buttons.addButton(x,_ySecondLine,lightCalibrationButtonsText[0]);
 }
 
 void WinLightCalib::update() {
-	const int yFirstLine = 60;
-	const int ySecondLine = 135;
-	const int xSpacer = 25;
-	
 	_rawLightLvl = _sensors->getRawLight();
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = xSpacer + 16*_bigFontSize;
-	_lcd->printNumI(_rawLightLvl,x,yFirstLine,4,' ');
+	int x = _xSpacer + 16*_bigFontSize;
+	_lcd->printNumI(_rawLightLvl,x,_yFirstLine,4,' ');
 	
 	//Second Line
-	x = xSpacer + 10*_bigFontSize;
-	_lcd->printNumI(_lightThreshold,x,ySecondLine,4,' ');
+	x = _xSpacer + 10*_bigFontSize;
+	_lcd->printNumI(_lightThreshold,x,_ySecondLine,4,' ');
 }
 
 //Draws entire screen Light Calibration
 void WinLightCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinLightCalib);
 	addFlowButtons(true,true,true,lightCalibrationButtons);
 	print();
 	_buttons.drawButtons();

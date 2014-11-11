@@ -37,19 +37,23 @@ static char* mainMenuButtonText[nMainMenuButtons] = {
 };
 static int mainMenuButtons[nMainMenuButtons];
   
-static char* _nameS = "- Main Menu -";
+static char* nameWinMainMenu = "- Main Menu -";
 
 class WinMainMenu: public Window {
 	public:
 		WinMainMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinMainMenu(const WinMainMenu &other);
 		WinMainMenu& operator=(const WinMainMenu &other);
-		virtual ~WinMainMenu();
-		virtual Screen getType() const;
+		~WinMainMenu();
+		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _xSpacer = 15;
+		static const int _systemY = 60;
+		static const int _controllerY = 135;
+		static const int _iconSize = 64;
 		void print();
 };
 

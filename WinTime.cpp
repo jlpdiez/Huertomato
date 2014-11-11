@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinTime.h"
 
 WinTime::WinTime(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,22 +21,18 @@ Window::Screen WinTime::getType() const {
 }
 
 void WinTime::print() {
-	const int yTime = 60;
-	const int yDate = 135;
-	const int xSpacer = 25;
-	
-	const int houU[] = {150, yTime-22};       //hour up
-	const int minU[] = {220, yTime-22};       //min up
-	const int secU[] = {290, yTime-22};       //sec up
-	const int houD[] = {150, yTime+22};       //hour down
-	const int minD[] = {220, yTime+22};       //min down
-	const int secD[] = {290, yTime+22};       //sec down
-	const int dayU[] = {150, yDate-22};       //day up
-	const int monU[] = {220, yDate-22};       //month up
-	const int yeaU[] = {290, yDate-22};       //year up
-	const int dayD[] = {150, yDate+22};       //day down
-	const int monD[] = {220, yDate+22};       //month down
-	const int yeaD[] = {290, yDate+22};       //year down
+	const int houU[] = {150, _yTime-22};       //hour up
+	const int minU[] = {220, _yTime-22};       //min up
+	const int secU[] = {290, _yTime-22};       //sec up
+	const int houD[] = {150, _yTime+22};       //hour down
+	const int minD[] = {220, _yTime+22};       //min down
+	const int secD[] = {290, _yTime+22};       //sec down
+	const int dayU[] = {150, _yDate-22};       //day up
+	const int monU[] = {220, _yDate-22};       //month up
+	const int yeaU[] = {290, _yDate-22};       //year up
+	const int dayD[] = {150, _yDate+22};       //day down
+	const int monD[] = {220, _yDate+22};       //month down
+	const int yeaD[] = {290, _yDate+22};       //year down
 
 	//Get actual time
 	time_t t = now();
@@ -73,35 +63,31 @@ void WinTime::print() {
 	timeButtons[14] = _buttons.addButton(yeaD[0],yeaD[1],timeButtonText[11],BUTTON_SYMBOL);
 	
 	//TIME
-	char* timeS = "Time";
 	_lcd->setFont(hallfetica_normal);
-	_lcd->print(timeS, xSpacer, yTime);
+	_lcd->print(timeS, _xSpacer, _yTime);
 	_lcd->setFont(Sinclair_S);
-	char* hhmmssS = "(HH:MM:SS)";
 	//(strlen(timeS)*bigFontSize)/2 is middle point of "Time". (strlen(hhmmss)*smallFontSize)/2 is middle point of "(HH:MM:SS)"
 	//So the x coord is xTime + middle "Time" - middle of "(HH:MM:SS)"
-	_lcd->print(hhmmssS, xSpacer+(strlen(timeS)*_bigFontSize)/2-(strlen(hhmmssS)*_smallFontSize)/2, yTime+_bigFontSize+2);
+	_lcd->print(timeFormatS, _xSpacer+(strlen(timeS)*_bigFontSize)/2-(strlen(timeFormatS)*_smallFontSize)/2, _yTime+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
-	_lcd->print(":",houU[0]+39,yTime);
-	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
-	_lcd->print(":",minU[0]+39,yTime);
-	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
+	_lcd->print(timeSeparator,houU[0]+39,_yTime);
+	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
+	_lcd->print(timeSeparator,minU[0]+39,_yTime);
+	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
 
 	//DATE
-	char* dateS = "Date";
-	_lcd->print(dateS, xSpacer, yDate);
+	_lcd->print(dateS, _xSpacer, _yDate);
 	_lcd->setFont(Sinclair_S);
-	char* ddmmyyyyS = "(DD/MM/YYYY)";
-	_lcd->print(ddmmyyyyS, xSpacer+(strlen(dateS)*_bigFontSize)/2-(strlen(ddmmyyyyS)*_smallFontSize)/2, yDate+_bigFontSize+2);
+	_lcd->print(dateFormatS, _xSpacer+(strlen(dateS)*_bigFontSize)/2-(strlen(dateFormatS)*_smallFontSize)/2, _yDate+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
-	_lcd->print("/", dayU[0]+39, yDate);
-	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
-	_lcd->print("/", monU[0]+39, yDate);
-	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, yDate,4);
+	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,2,'0');
+	_lcd->print(dateSeparator, dayU[0]+39, _yDate);
+	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,2,'0');
+	_lcd->print(dateSeparator, monU[0]+39, _yDate);
+	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,4);
 	
 }
 
@@ -109,7 +95,7 @@ void WinTime::print() {
 void WinTime::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinTime);
 	addFlowButtons(true,true,true,timeButtons);
 	print();
 	_buttons.drawButtons();
@@ -118,24 +104,21 @@ void WinTime::draw() {
 //Redraws only time & date numbers from inner temp vars
 //Used when +- signs are pressed
 void WinTime::update() {
-	const int yTime = 60;
-	const int yDate = 135;
-	 
-	const int houU[] = {150, yTime-22};       //hour up
-	const int minU[] = {220, yTime-22};       //min up
-	const int secU[] = {290, yTime-22};       //sec up
-	const int dayU[] = {150, yDate-22};       //day up
-	const int monU[] = {220, yDate-22};       //month up
-	const int yeaU[] = {290, yDate-22};       //year up
+	const int houU[] = {150, _yTime-22};       //hour up
+	const int minU[] = {220, _yTime-22};       //min up
+	const int secU[] = {290, _yTime-22};       //sec up
+	const int dayU[] = {150, _yDate-22};       //day up
+	const int monU[] = {220, _yDate-22};       //month up
+	const int yeaU[] = {290, _yDate-22};       //year up
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
-	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
-	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,yTime,2,'0');
+	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
+	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
+	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,_yTime,2,'0');
 	
-	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
-	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, yDate,2,'0');
-	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, yDate,4);
+	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,2,'0');
+	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,2,'0');
+	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, _yDate,4);
 }
 
 Window::Screen WinTime::processTouch(const int x, const int y) {

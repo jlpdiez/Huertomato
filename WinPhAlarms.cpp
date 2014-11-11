@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinPhAlarms.h"
 
 WinPhAlarms::WinPhAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,51 +21,39 @@ Window::Screen WinPhAlarms::getType() const {
 }
 
 void WinPhAlarms::print() {
-	const int yFirstLine = 65;
-	const int ySecondLine = 140;
-	const int xSpacer = 25;
-	const int signSpacer = 22;
-	
 	_phAlarmMax = _settings->getPHalarmUp();
 	_phAlarmMin = _settings->getPHalarmDown();
-	
-	char* uLimit = "Upper Limit:";
-	char* dLimit = "Lower Limit:";
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uLimit,xSpacer,yFirstLine);
-	_lcd->print(dLimit,xSpacer,ySecondLine);
+	_lcd->print(uPhLimit,_xSpacer,_yFirstLine);
+	_lcd->print(dPhLimit,_xSpacer,_ySecondLine);
 	//Numbers
-	int x = (4+strlen(uLimit))*_bigFontSize;
-	_lcd->printNumF(_phAlarmMax,2,x,yFirstLine,'.',5);
-	_lcd->printNumF(_phAlarmMin,2,x,ySecondLine,'.',5);
+	int x = (4+strlen(uPhLimit))*_bigFontSize;
+	_lcd->printNumF(_phAlarmMax,2,x,_yFirstLine,'.',5);
+	_lcd->printNumF(_phAlarmMin,2,x,_ySecondLine,'.',5);
 	//Buttons
 	x += 2*_bigFontSize;
-	phAlarmsButtons[3] = _buttons.addButton(x,yFirstLine-signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
-	phAlarmsButtons[4] = _buttons.addButton(x,yFirstLine+signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
-	phAlarmsButtons[5] = _buttons.addButton(x,ySecondLine-signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
-	phAlarmsButtons[6] = _buttons.addButton(x,ySecondLine+signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
+	phAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
+	phAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
+	phAlarmsButtons[5] = _buttons.addButton(x,_ySecondLine-_signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
+	phAlarmsButtons[6] = _buttons.addButton(x,_ySecondLine+_signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
 }
 
 //Draws entire screen pH Alarms
 void WinPhAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinPhAlarms);
 	addFlowButtons(true,true,true,phAlarmsButtons);
 	print();
 	_buttons.drawButtons();
 } 
 
 void WinPhAlarms::update() {
-	const int yFirstLine = 65;
-	const int ySecondLine = 140;
-	char* uLimit = "Upper Limit:";
-	
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(uLimit))*_bigFontSize;
-	_lcd->printNumF(_phAlarmMax,2,x,yFirstLine,'.',5);
-	_lcd->printNumF(_phAlarmMin,2,x,ySecondLine,'.',5);
+	int x = (4+strlen(uPhLimit))*_bigFontSize;
+	_lcd->printNumF(_phAlarmMax,2,x,_yFirstLine,'.',5);
+	_lcd->printNumF(_phAlarmMin,2,x,_ySecondLine,'.',5);
 }
 
 Window::Screen WinPhAlarms::processTouch(const int x, const int y) {

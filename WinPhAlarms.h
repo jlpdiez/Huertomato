@@ -39,20 +39,26 @@ static char* phAlarmsButtonsText[nPHalarmsButtons] = {
 
 static int phAlarmsButtons[nPHalarmsButtons];
 
-static char* _nameS = "- pH Alarms -";
+static char* nameWinPhAlarms = "- pH Alarms -";
+static char* uPhLimit = "Upper Limit:";
+static char* dPhLimit = "Lower Limit:";
 
 class WinPhAlarms: public Window {
 	public:
 		WinPhAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPhAlarms(const WinPhAlarms &other);
 		WinPhAlarms& operator=(const WinPhAlarms &other);
-		virtual ~WinPhAlarms();
-		virtual Screen getType() const;
+		~WinPhAlarms();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 65;
+		static const int _ySecondLine = 140;
+		static const int _xSpacer = 25;
+		static const int _signSpacer = 22;
 		float _phAlarmMax, _phAlarmMin;
 		void print();
 };

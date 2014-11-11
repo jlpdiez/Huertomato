@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinSensorCalib.h"
 
 WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,28 +21,23 @@ Window::Screen WinSensorCalib::getType() const {
 }
 
 void WinSensorCalib::print() {
-	const int xSpacer = 15;
-	const int ySpacer = 45;
-	
-	const int yFirst = 60;
-	const int ySecond = 135;
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	
-	//Triangles
+	//Bulletpoints
 	_lcd->setFont(various_symbols);
-	_lcd->print("T",xSpacer,yFirst);
-	_lcd->print("T",xSpacer,ySecond);
+	_lcd->print(bulletStr,_xSpacer,_yFirst);
+	_lcd->print(bulletStr,_xSpacer,_ySecond);
 	//Buttons
-	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+_bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
-	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+_bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
+	sensorCalibrationButtons[3] = _buttons.addButton(_xSpacer+_bigFontSize*2,_yFirst,sensorCalibrationButtonsText[0]);
+	sensorCalibrationButtons[4] = _buttons.addButton(_xSpacer+_bigFontSize*2,_ySecond,sensorCalibrationButtonsText[1]);
 }
 
 //Draws entire screen Sensor Calibration
 void WinSensorCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinSensorCalib);
 	addFlowButtons(true,false,true,sensorCalibrationButtons);
 	print();
 	_buttons.drawButtons();

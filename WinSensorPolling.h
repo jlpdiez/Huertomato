@@ -35,20 +35,25 @@ static char* sensorPollingButtonText[nSensorPollingButtons] = {
 };
 static int sensorPollingButtons[nSensorPollingButtons];
  
-static char* _nameS = "- Sensor Polling -";
+static char* nameWinSensorPolling = "- Sensor Polling -";
+static char* sensorPollingText1 = "Time between readings:";
+static char* sensorPollingText2 = "seconds";
 
 class WinSensorPolling: public Window {
 	public:
 		WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSensorPolling(const WinSensorPolling &other);
 		WinSensorPolling& operator=(const WinSensorPolling &other);
-		virtual ~WinSensorPolling();
-		virtual Screen getType() const;
+		~WinSensorPolling();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 60;
+		static const int _ySecondLine = 135;
+		static const int _xSpacer = 25;
 		uint8_t _pollSec;
 		void print();
 };

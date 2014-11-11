@@ -39,20 +39,22 @@ static char* systemButtonText[nSystemButtons] = {
 };
 static int systemButtons[nSystemButtons];
  
-static char* _nameS = "- System Settings -";
+static char* nameWinSystemMenu = "- System Settings -";
 
 class WinSystemMenu: public Window {
 	public:
 		WinSystemMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSystemMenu(const WinSystemMenu &other);
 		WinSystemMenu& operator=(const WinSystemMenu &other);
-		virtual ~WinSystemMenu();
-		virtual Screen getType() const;
+		~WinSystemMenu();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _xSpacer = 15;
+		static const int _ySpacer = 35;
 		boolean _nightWater;
 		void print();
 };

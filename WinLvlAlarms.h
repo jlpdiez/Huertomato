@@ -36,20 +36,25 @@ static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
 };
 static int waterAlarmsButtons[nWaterAlarmsButtons];
 
-static char* _nameS = "- Nutrient Alarms -";
+static char* nameWinLvlAlarms = "- Nutrient Alarms -";
+static char* wLimitLvlS = "Lower Limit:";
 
 class WinLvlAlarms: public Window {
 	public:
 		WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlAlarms(const WinLvlAlarms &other);
 		WinLvlAlarms& operator=(const WinLvlAlarms &other);
-		virtual ~WinLvlAlarms();
-		virtual Screen getType() const;
+		~WinLvlAlarms();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const int _yFirstLine = 100;
+		static const int _xSpacer = 25;
+		static const int _signSpacer = 22;
+		
 		uint8_t _waterAlarmMin;
 		void print();
 };

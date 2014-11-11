@@ -1,9 +1,3 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinSensorPolling.h"
 
 WinSensorPolling::WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
@@ -27,13 +21,9 @@ Window::Screen WinSensorPolling::getType() const {
 }
 
 void WinSensorPolling::print() {
-	const int yFirstLine = 60;
-	const int ySecondLine = 135;
-	const int xSpacer = 25;
-	const int xSpacer2 = 72+3*_bigFontSize;
-	
-	const int secU[] = {xSpacer2+_bigFontSize/2, ySecondLine-22};       //sec up
-	const int secD[] = {xSpacer2+_bigFontSize/2, ySecondLine+22};       //sec down
+	const int xSpacer2 = 72+3*_bigFontSize;	
+	const int secU[] = {xSpacer2+_bigFontSize/2, _ySecondLine-22};       //sec up
+	const int secD[] = {xSpacer2+_bigFontSize/2, _ySecondLine+22};       //sec down
 	
 	_pollSec = _settings->getSensorSecond();
 	
@@ -41,15 +31,12 @@ void WinSensorPolling::print() {
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(hallfetica_normal);
 	
-	char* sensorPollingText1 = "Time between readings:";
-	char* sensorPollingText2 = "seconds";
-	
 	//Time between readings text
-	_lcd->print(sensorPollingText1, xSpacer, yFirstLine);
+	_lcd->print(sensorPollingText1, _xSpacer, _yFirstLine);
 	//XX
-	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
+	_lcd->printNumI(_pollSec,xSpacer2,_ySecondLine,2,'0');
 	//secs
-	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,ySecondLine);
+	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_ySecondLine);
 	
 	//Make +/- buttons
 	sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
@@ -60,7 +47,7 @@ void WinSensorPolling::print() {
 void WinSensorPolling::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(_nameS);
+	printMenuHeader(nameWinSensorPolling);
 	addFlowButtons(true,true,true,sensorPollingButtons);
 	print();
 	_buttons.drawButtons();
@@ -69,11 +56,10 @@ void WinSensorPolling::draw() {
 //Redraws only sensor polling numbers from inner temp vars
 //Used when +- signs are pressed
 void WinSensorPolling::update() {
-	const int ySecondLine = 135;
 	const int  xSpacer2 = 72+3*_bigFontSize;
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_pollSec,xSpacer2,ySecondLine,2,'0');
+	_lcd->printNumI(_pollSec,xSpacer2,_ySecondLine,2,'0');
 }
 
 Window::Screen WinSensorPolling::processTouch(const int x, const int y) {
