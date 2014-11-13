@@ -107,6 +107,24 @@ uint16_t Sensors::getRawLight() {
 	return analogRead(lightIn);
 }
 
+boolean Sensors::ecOffRange() {
+	if ((_ph < settings.getPHalarmDown()) || (_ph > settings.getPHalarmUp())) 
+		return true;
+	return false;
+}
+
+boolean Sensors::phOffRange() {
+	if ((_ec < settings.getECalarmDown()) || (_ec > settings.getECalarmUp()))
+		return true;
+	return false;
+}
+
+boolean Sensors::lvlOffRange() {
+	if (_waterLevel < _settings->getWaterAlarm())
+		return true;
+	return false;
+}
+
 //Updates sample arrays with readings from sensors and performs smoothing
 void Sensors::update() {
 	_temps[_iSample] = temp();

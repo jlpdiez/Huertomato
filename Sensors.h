@@ -79,7 +79,12 @@ class Sensors {
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLight();
-  
+	
+	//Tests
+	boolean ecOffRange();
+	boolean phOffRange();
+	boolean lvlOffRange();
+	
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
     //Adjusts EC sensor readings to temperature
@@ -104,9 +109,9 @@ class Sensors {
 	Settings *_settings;
 	
 	//Prints to Serial (if active) pH circuit's response to commands
-	void phToSerial();
+	//void phToSerial();
 	//Same as above but for EC circuit
-	void ecToSerial();
+	//void ecToSerial();
     //Smoothes readings
     void smoothSensorReadings();
   
@@ -139,3 +144,21 @@ class Sensors {
     uint8_t _waterLevel;
 };
 #endif
+/*
+template <class T>; 
+class Sensor {
+	public:
+		//Constructors
+		Sensor(Settings *_settings);
+		Sensor(const Sensor &other);
+		Sensor& operator=(const Sensor &other);
+		//Destructor
+		virtual ~Sensor();
+		virtual T get() const;		
+		
+	protected:
+		T _data;
+
+};
+
+*/

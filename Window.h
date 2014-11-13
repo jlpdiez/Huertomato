@@ -112,8 +112,11 @@ class Window {
 		static const int _bigFontSize = 16;
 		static const int _smallFontSize = 8;
 		static const int _iconSize = 126;
+		//static const int _smallIconSize = 64;
 		static const int _headerHeight = 20;
 		static const int _buttonY = 215;
+		//static const int _xSpacerMenu = 15;
+		//static const int _xSpacerConfig = 25;
 	 	
 		virtual void print();
 		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);

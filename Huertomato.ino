@@ -264,7 +264,6 @@ void loop() {
 	gui.refresh();
 	gui.processTouch();
 	
-	Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
 	//Alarm reporting
 	//Serial << "total: " << Alarm.count() << endl;
 	//Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
@@ -302,24 +301,16 @@ void loop() {
 	Alarm.delay(10);
 }
 
-//Checks if any alarm should be triggered and changes alarm setting if needed
+//Checks if any alarm has been triggered and changes alarm setting if needed
 void checkAlarms() {
-	//Only activate if not already done
 	if (settings.getReservoirModule()) {
-		if ((!settings.getAlarmTriggered()) && ((sensors.getPH() < settings.getPHalarmDown()) 
-			|| (sensors.getPH() > settings.getPHalarmUp())
-			|| (sensors.getEC() < settings.getECalarmDown()) 
-			|| (sensors.getEC() > settings.getECalarmUp())
-			|| (sensors.getWaterLevel() < settings.getWaterAlarm()))) {
-			
+		//Only activate if not already done
+		if ((!settings.getAlarmTriggered()) 
+			&& (sensors.ecOffRange() || sensors.phOffRange() || sensors.lvlOffRange())) {
 				settings.setAlarmTriggered(true);
 			
-		} else if ((settings.getAlarmTriggered()) && ((sensors.getPH() >= settings.getPHalarmDown()) 
-			&& (sensors.getPH() <= settings.getPHalarmUp())
-			&& (sensors.getEC() >= settings.getECalarmDown()) 
-			&& (sensors.getEC() <= settings.getECalarmUp())
-			&& (sensors.getWaterLevel() >= settings.getWaterAlarm()))) {
-			
+		} else if ((settings.getAlarmTriggered()) 
+			&& (!sensors.ecOffRange() && !sensors.phOffRange() && !sensors.lvlOffRange())) {		
 				settings.setAlarmTriggered(false);
 		}
 	}
@@ -597,8 +588,23 @@ void stopWaterOffTimer() {
 //TIMED WATERING ROUTINES
 void startWatering() {
 	updateNextWateringTime();	
+	//TODO: Add pump on,off setting for this logic
+	//Abort watering if pump protection is on & level is critical
+	if (settings.getReservoirModule() && (sensors.getWaterLevel() < settings.getPumpProtectionLvl()))
+		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
+		//TODO: Show in GUI!
+	else {
+		digitalWrite(waterPump, HIGH);
+		settings.setWateringPlants(true);
+		led.setColour(BLUE);
+		gui.refresh();
+		timestampToSerial("Huertomato is watering plants < --");
+		//Creates timer to stop watering
+		stopWaterOffTimer();
+		startWaterOffTimer();	
+	}
 	//If theres enough water to activate pump
-	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {	
+	/*if ((sensors.getWaterLevel() >= settings.getPumpProtectionLvl())) {	
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
@@ -609,7 +615,7 @@ void startWatering() {
 		startWaterOffTimer();
 	//Pump will get damaged - System will NOT water	
 	} else
-		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
+		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");*/
 }
 
 //Stops watering pump and updates system status
