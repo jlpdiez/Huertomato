@@ -108,13 +108,13 @@ class Window {
 
 	protected:		
 		static const int _xSize = 399;
-		static const int _ySize = 239;
+		static const int _ySize= 239;
 		static const int _bigFontSize = 16;
 		static const int _smallFontSize = 8;
-		static const int _iconSize = 126;
+		static const int _bigIconSize = 126;
 		//static const int _smallIconSize = 64;
 		static const int _headerHeight = 20;
-		static const int _buttonY = 215;
+		static const int _flowButtonY = 215;
 		//static const int _xSpacerMenu = 15;
 		//static const int _xSpacerConfig = 25;
 	 	

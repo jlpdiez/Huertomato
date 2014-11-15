@@ -108,13 +108,13 @@ uint16_t Sensors::getRawLight() {
 }
 
 boolean Sensors::ecOffRange() {
-	if ((_ph < settings.getPHalarmDown()) || (_ph > settings.getPHalarmUp())) 
+	if ((_ph < _settings->getPHalarmDown()) || (_ph > _settings->getPHalarmUp())) 
 		return true;
 	return false;
 }
 
 boolean Sensors::phOffRange() {
-	if ((_ec < settings.getECalarmDown()) || (_ec > settings.getECalarmUp()))
+	if ((_ec < _settings->getECalarmDown()) || (_ec > _settings->getECalarmUp()))
 		return true;
 	return false;
 }

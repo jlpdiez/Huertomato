@@ -158,7 +158,7 @@ void setup() {
 	//TODO:Make auto-detect
 	//First run
 	//settings.setDefault();
-	
+	settings.setAlarmTriggered(false);
 	setupSerial();
 	setupRTC();
 	setupSD(); 
@@ -210,6 +210,7 @@ void setupAlarms() {
 
 //Sets watering timer or starts continuous water
 void setupWaterModes() {
+	settings.setNightWateringStopped(false);
     if (settings.getWaterTimed()) {
 		digitalWrite(waterPump, LOW);
 		settings.setWateringPlants(false);

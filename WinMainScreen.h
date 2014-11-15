@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainScreen
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 15.11.2014
 //
 // # Description: Main idle screen window
 //
@@ -64,6 +64,7 @@ static char* htmtWatering = "Huertomato Watering   ";
 static char* alarmCont = "Alarm - Check Solution";
 static char* normalCont = "System working fine  ";
 
+//Contains two main screens. One when reservoir module is on, another when off
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -76,13 +77,16 @@ class WinMainScreen: public Window {
 		Window::Screen processTouch(const int x, const int y);
 		 
 	protected:	
-		void print();	
 		void printMainHeader();
-		void printSensorInfo();
-		void printIconAndStatus();
 		void updateMainHeader();
+				
+		void printInfoReservoir();
+		void updateInfoReservoir();
+		void printInfoNoModule();
+		void updateInfoNoModule();
+	
+		void printIconAndStatus();
 		void updateIconAndStatus();
-		void updateSensorInfo();
 };
 
 #endif 

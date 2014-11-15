@@ -282,6 +282,7 @@ void Settings::setSerialDebug(const boolean s) {
 void Settings::setReservoirModule(const boolean r) {
 	_reservoirModule = r;
 	EEPROM.updateByte(_addressReservoirModule,r);
+	_moduleChanged = true;
 }
 
 //Status vars - These are not stored in EEPROM
@@ -387,5 +388,11 @@ boolean Settings::sensorPollingChanged() {
 boolean Settings::serialDebugChanged() {
 	boolean res = _serialDebugChanged;
 	_serialDebugChanged = false;
+	return res;
+}
+
+boolean Settings::moduleChanged() {
+	boolean res = _moduleChanged;
+	_moduleChanged = false;
 	return res;
 }

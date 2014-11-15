@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.04.2014
+// # Date       : 15.11.2014
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -115,6 +115,7 @@ class Settings {
 	boolean sdSettingsChanged();
 	boolean sensorPollingChanged();
 	boolean serialDebugChanged();
+	boolean moduleChanged();
        
   private:
 	void setEEPROMaddresses();
@@ -176,6 +177,8 @@ class Settings {
 	boolean _sensorPollingChanged;
 	//Serial debug toggle
 	boolean _serialDebugChanged;
+	//Module config changed
+	boolean _moduleChanged;
     
     //EEPROM addresses for all settings
     int _addressWaterTimed;
