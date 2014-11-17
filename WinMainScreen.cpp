@@ -1,11 +1,10 @@
 #include "WinMainScreen.h"
 
 WinMainScreen::WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
-: Window(lcd,touch,sensors,settings) { }
+: Window(lcd,touch,sensors,settings) {}
 
-WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) { }
-
-WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
+WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {}
+WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;

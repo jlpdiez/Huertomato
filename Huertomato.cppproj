@@ -456,6 +456,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="Buttons.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Graphic.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Graphic.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>

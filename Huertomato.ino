@@ -29,7 +29,7 @@
 // # Non-standard libraries:
 // # Streaming http://arduiniana.org/libraries/streaming/
 // # DHT11 http://playground.arduino.cc/Main/DHT11Lib
-// Replace with http://playground.arduino.cc/Main/DHTLib
+// TODO: Replace with http://playground.arduino.cc/Main/DHTLib
 // # DS1307 RTC, Time & TimeAlarms http://arduino.cc/playground/Code/Time
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
@@ -41,6 +41,7 @@
 #include "Settings.h"
 #include "RGBled.h"
 #include "Buttons.h"
+//#include "Graphic.h"
 #include "GUI.h"
 #include "Settings.h"
 #include "Sensors.h"
@@ -73,7 +74,7 @@
 #include <UTFT.h>
 #include <UTouch.h>
 #include <UTFT_Buttons.h>
-#include <EEPROMex.h>
+#include <EEPROMEx.h>
 #include <SD.h>
 //TEMP from http://arduino.cc/playground/Code/AvailableMemory
 #include <MemoryFree.h>
