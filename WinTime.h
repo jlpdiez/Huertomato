@@ -68,9 +68,6 @@ class WinTime: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _xSpacer = 25;
-		static const int _yTime = 60;
-		static const int _yDate = 135;
 		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
 		int _sysYear;
 		void print();

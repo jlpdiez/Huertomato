@@ -24,17 +24,17 @@ void WinPump::print() {
 	_pumpProtectionLvl = _settings->getPumpProtectionLvl();	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wPumpLimit,_xSpacer,_yFirstLine);
+	_lcd->print(wPumpLimit,_xConfig,_yOneLine);
 	//Numbers
 	int x = (4+strlen(wPumpLimit))*_bigFontSize;
-	_lcd->printNumI(_pumpProtectionLvl,x,_yFirstLine,3);
+	_lcd->printNumI(_pumpProtectionLvl,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	pumpProtectionButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
-	pumpProtectionButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
+	pumpProtectionButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,pumpProtectionButtonsText[0],BUTTON_SYMBOL);
+	pumpProtectionButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,pumpProtectionButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,_yFirstLine);
+	_lcd->print("%",x,_yOneLine);
 }
 
 //Draws entire screen Pump Protection
@@ -50,7 +50,7 @@ void WinPump::draw() {
 void WinPump::update() {
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(wPumpLimit))*_bigFontSize;
-	_lcd->printNumI(_pumpProtectionLvl,x,_yFirstLine,3);
+	_lcd->printNumI(_pumpProtectionLvl,x,_yOneLine,3);
 }
 
 Window::Screen WinPump::processTouch(const int x, const int y) {

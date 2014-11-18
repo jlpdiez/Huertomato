@@ -50,10 +50,6 @@ class WinMainMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _xSpacer = 15;
-		static const int _systemY = 60;
-		static const int _controllerY = 135;
-		static const int _iconSize = 64;
 		void print();
 };
 

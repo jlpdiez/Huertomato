@@ -26,22 +26,23 @@ void WinEcAlarms::print() {
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uEcLimit,_xSpacer,_yFirstLine);
-	_lcd->print(dEcLimit,_xSpacer,_ySecondLine);
+	_lcd->print(uEcLimit,_xConfig,_yTwoLnsFirst);
+	_lcd->print(dEcLimit,_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen(uEcLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,_yFirstLine,4);
-	_lcd->printNumI(_ecAlarmMin,x,_ySecondLine,4);
+	_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
+	_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	ecAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
-	ecAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
-	ecAlarmsButtons[5] = _buttons.addButton(x,_ySecondLine-_signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
-	ecAlarmsButtons[6] = _buttons.addButton(x,_ySecondLine+_signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
+	//We have already created the flow buttons in positions 0.._nFlowButtons-1  of buttons array
+	ecAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,ecAlarmsButtonsText[0],BUTTON_SYMBOL);
+	ecAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,ecAlarmsButtonsText[1],BUTTON_SYMBOL);
+	ecAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,ecAlarmsButtonsText[2],BUTTON_SYMBOL);
+	ecAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,ecAlarmsButtonsText[3],BUTTON_SYMBOL);
 	//uS Text
 	x += 3.5*_bigFontSize;
-	_lcd->print(unitEcS,x,_yFirstLine);
-	_lcd->print(unitEcS,x,_ySecondLine);
+	_lcd->print(unitEcS,x,_yTwoLnsFirst);
+	_lcd->print(unitEcS,x,_yTwoLnsSecond);
 }
 
 //Draws entire screen EC alarms
@@ -57,8 +58,8 @@ void WinEcAlarms::draw() {
 void WinEcAlarms::update() {
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(uEcLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,_yFirstLine,4);
-	_lcd->printNumI(_ecAlarmMin,x,_ySecondLine,4);
+	_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
+	_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
 }
 
 Window::Screen WinEcAlarms::processTouch(const int x, const int y) {

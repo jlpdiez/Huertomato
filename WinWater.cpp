@@ -21,12 +21,12 @@ Window::Screen WinWater::getType() const {
 }
 
 void WinWater::print() {
-	const int houU[] = {240, _ySecondLine-22};       //hour up
-	const int houD[] = {240, _ySecondLine+22};       //hour down
-	const int minU[] = {305, _ySecondLine-22};       //min up
-	const int minD[] = {305, _ySecondLine+22};       //min down
-	const int fMinU[] = {225, _yThirdLine-22};       //active for min
-	const int fMinD[] = {225, _yThirdLine+22};       //active for min
+	const int houU[] = {240, _yThreeLnsSecond-22};       //hour up
+	const int houD[] = {240, _yThreeLnsSecond+22};       //hour down
+	const int minU[] = {305, _yThreeLnsSecond-22};       //min up
+	const int minD[] = {305, _yThreeLnsSecond+22};       //min down
+	const int fMinU[] = {225, _yThreeLnsThird-22};       //active for min
+	const int fMinD[] = {225, _yThreeLnsThird+22};       //active for min
 	
 	_waterTimed = _settings->getWaterTimed();
 	_waterHour = _settings->getWaterHour();
@@ -36,44 +36,44 @@ void WinWater::print() {
 	//First Line - Triangle
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xSpacer,_yFirstLine);
+	_lcd->print(bulletStr,_xConfig,_yThreeLnsFirst);
 	//Water mode button
 	_lcd->setFont(hallfetica_normal);
-	int x = _xSpacer + 2*_bigFontSize;
-	waterCycleButtons[3] = _buttons.addButton(x,_yFirstLine,waterCycleButtonsText[0]);
+	int x = _xConfig + 2*_bigFontSize;
+	waterCycleButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsFirst,waterCycleButtonsText[0]);
 	//Continuous/timed text
 	x += (1+strlen(waterCycleButtonsText[0]))*_bigFontSize;
 	if (_waterTimed)
-		_lcd->print(modeTimedS,x,_yFirstLine);
+		_lcd->print(modeTimedS,x,_yThreeLnsFirst);
 	else
-		_lcd->print(modeContS,x,_yFirstLine);
+		_lcd->print(modeContS,x,_yThreeLnsFirst);
 	
 	//Second Line
 	_lcd->setColor(grey[0],grey[1],grey[2]);
-	x = _xSpacer;
-	_lcd->print(waterTwo,x,_ySecondLine);
+	x = _xConfig;
+	_lcd->print(waterTwo,x,_yThreeLnsSecond);
 	x += 13*_bigFontSize;
-	_lcd->printNumI(_waterHour,x,_ySecondLine,2,'0');
+	_lcd->printNumI(_waterHour,x,_yThreeLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("h",x,_ySecondLine);
+	_lcd->print("h",x,_yThreeLnsSecond);
 	x += 2*_bigFontSize;
-	_lcd->printNumI(_waterMin,x,_ySecondLine,2,'0');
+	_lcd->printNumI(_waterMin,x,_yThreeLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("m",x,_ySecondLine);
-	waterCycleButtons[4] = _buttons.addButton(houU[0],houU[1],waterCycleButtonsText[1],BUTTON_SYMBOL);
-	waterCycleButtons[5] = _buttons.addButton(houD[0],houD[1],waterCycleButtonsText[2],BUTTON_SYMBOL);
-	waterCycleButtons[6] = _buttons.addButton(minU[0],minU[1],waterCycleButtonsText[3],BUTTON_SYMBOL);
-	waterCycleButtons[7] = _buttons.addButton(minD[0],minD[1],waterCycleButtonsText[4],BUTTON_SYMBOL);
+	_lcd->print("m",x,_yThreeLnsSecond);
+	waterCycleButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],waterCycleButtonsText[1],BUTTON_SYMBOL);
+	waterCycleButtons[_nFlowButtons+2] = _buttons.addButton(houD[0],houD[1],waterCycleButtonsText[2],BUTTON_SYMBOL);
+	waterCycleButtons[_nFlowButtons+3] = _buttons.addButton(minU[0],minU[1],waterCycleButtonsText[3],BUTTON_SYMBOL);
+	waterCycleButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],waterCycleButtonsText[4],BUTTON_SYMBOL);
 	
 	//Third line
-	x = _xSpacer;
-	_lcd->print(waterThree,x,_yThirdLine);
+	x = _xConfig;
+	_lcd->print(waterThree,x,_yThreeLnsThird);
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_floodMin,x,_yThirdLine,2,'0');
+	_lcd->printNumI(_floodMin,x,_yThreeLnsThird,2,'0');
 	x += 3*_bigFontSize;
-	_lcd->print("minutes",x,_yThirdLine);
-	waterCycleButtons[8] = _buttons.addButton(fMinU[0],fMinU[1],waterCycleButtonsText[5],BUTTON_SYMBOL);
-	waterCycleButtons[9] = _buttons.addButton(fMinD[0],fMinD[1],waterCycleButtonsText[6],BUTTON_SYMBOL);
+	_lcd->print("minutes",x,_yThreeLnsThird);
+	waterCycleButtons[_nFlowButtons+5] = _buttons.addButton(fMinU[0],fMinU[1],waterCycleButtonsText[5],BUTTON_SYMBOL);
+	waterCycleButtons[_nFlowButtons+6] = _buttons.addButton(fMinD[0],fMinD[1],waterCycleButtonsText[6],BUTTON_SYMBOL);
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_waterTimed) {
@@ -102,25 +102,25 @@ void WinWater::update() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	
 	//Continuous/timed text
-	int x = _xSpacer + 2*_bigFontSize;;
+	int x = _xConfig + 2*_bigFontSize;;
 	x += (1+strlen(waterCycleButtonsText[0]))*_bigFontSize;
 	if (_waterTimed)
-	_lcd->print(modeTimedS,x,_yFirstLine);
+	_lcd->print(modeTimedS,x,_yThreeLnsFirst);
 	else
-	_lcd->print(modeContS,x,_yFirstLine);
+	_lcd->print(modeContS,x,_yThreeLnsFirst);
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Water every
-	x = _xSpacer;
+	x = _xConfig;
 	x += 13*_bigFontSize;
-	_lcd->printNumI(_waterHour,x,_ySecondLine,2,'0');
+	_lcd->printNumI(_waterHour,x,_yThreeLnsSecond,2,'0');
 	x += 2*_bigFontSize;
 	x += 2*_bigFontSize;
-	_lcd->printNumI(_waterMin,x,_ySecondLine,2,'0');
+	_lcd->printNumI(_waterMin,x,_yThreeLnsSecond,2,'0');
 	//Flood time
-	x = _xSpacer;
+	x = _xConfig;
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_floodMin,x,_yThirdLine,2,'0');
+	_lcd->printNumI(_floodMin,x,_yThreeLnsThird,2,'0');
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_waterTimed) {

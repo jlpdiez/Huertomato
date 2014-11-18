@@ -25,18 +25,18 @@ void WinPhAlarms::print() {
 	_phAlarmMin = _settings->getPHalarmDown();
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uPhLimit,_xSpacer,_yFirstLine);
-	_lcd->print(dPhLimit,_xSpacer,_ySecondLine);
+	_lcd->print(uPhLimit,_xConfig,_yTwoLnsFirst);
+	_lcd->print(dPhLimit,_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen(uPhLimit))*_bigFontSize;
-	_lcd->printNumF(_phAlarmMax,2,x,_yFirstLine,'.',5);
-	_lcd->printNumF(_phAlarmMin,2,x,_ySecondLine,'.',5);
+	_lcd->printNumF(_phAlarmMax,2,x,_yTwoLnsFirst,'.',5);
+	_lcd->printNumF(_phAlarmMin,2,x,_yTwoLnsSecond,'.',5);
 	//Buttons
 	x += 2*_bigFontSize;
-	phAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
-	phAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
-	phAlarmsButtons[5] = _buttons.addButton(x,_ySecondLine-_signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
-	phAlarmsButtons[6] = _buttons.addButton(x,_ySecondLine+_signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
+	phAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
+	phAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
+	phAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
+	phAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
 }
 
 //Draws entire screen pH Alarms
@@ -52,8 +52,8 @@ void WinPhAlarms::draw() {
 void WinPhAlarms::update() {
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(uPhLimit))*_bigFontSize;
-	_lcd->printNumF(_phAlarmMax,2,x,_yFirstLine,'.',5);
-	_lcd->printNumF(_phAlarmMin,2,x,_ySecondLine,'.',5);
+	_lcd->printNumF(_phAlarmMax,2,x,_yTwoLnsFirst,'.',5);
+	_lcd->printNumF(_phAlarmMin,2,x,_yTwoLnsSecond,'.',5);
 }
 
 Window::Screen WinPhAlarms::processTouch(const int x, const int y) {

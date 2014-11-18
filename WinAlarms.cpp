@@ -26,14 +26,14 @@ void WinAlarms::print() {
 	
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
-	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		_lcd->print(bulletStr,_xSpacer,_ySpacer+_bigFontSize*3*i);
+	for (int i = 0; i < nSensorAlarmsButtons - _nFlowButtons; i++) {
+		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
 	}
 	
 	//Make menu buttons
-	//Before 3 there are flow buttons
-	for (int i = 0; i < nSensorAlarmsButtons - 3; i++) {
-		sensorAlarmsButtons[i + 3] = _buttons.addButton(_xSpacer+_bigFontSize*2,_ySpacer+_bigFontSize*3*i,sensorAlarmsButtonsText[i]);
+	//Before the buttons were adding there are the flow buttons
+	for (int i = 0; i < nSensorAlarmsButtons - _nFlowButtons; i++) {
+		sensorAlarmsButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,sensorAlarmsButtonsText[i]);
 	}
 }
  

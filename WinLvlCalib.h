@@ -54,10 +54,9 @@ class WinLvlCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _yFirstLine = 50;
-		static const int _ySecondLine = 100;
-		static const int _yThirdLine = 150;
-		static const int _xSpacer = 25;
+		static const int _yThreeLnsFirst = 50;
+		static const int _yThreeLnsSecond = 100;
+		static const int _yThreeLnsThird = 150;
 		uint16_t _waterLvlMax, _waterLvlMin, _rawWaterLvl;
 		void print();
 };

@@ -51,9 +51,6 @@ class WinSensorPolling: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _yFirstLine = 60;
-		static const int _ySecondLine = 135;
-		static const int _xSpacer = 25;
 		uint8_t _pollSec;
 		void print();
 };

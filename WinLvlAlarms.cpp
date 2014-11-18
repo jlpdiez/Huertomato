@@ -25,17 +25,17 @@ void WinLvlAlarms::print() {
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wLimitLvlS,_xSpacer,_yFirstLine);
+	_lcd->print(wLimitLvlS,_xConfig,_yOneLine);
 	//Numbers
 	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
-	_lcd->printNumI(_waterAlarmMin,x,_yFirstLine,3);
+	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	waterAlarmsButtons[3] = _buttons.addButton(x,_yFirstLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
-	waterAlarmsButtons[4] = _buttons.addButton(x,_yFirstLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+	waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
+	waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,_yFirstLine);
+	_lcd->print("%",x,_yOneLine);
 } 
 
 //Draws entire screen Nutrient level alarms
@@ -51,7 +51,7 @@ void WinLvlAlarms::draw() {
 void WinLvlAlarms::update() {
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
-	_lcd->printNumI(_waterAlarmMin,x,_yFirstLine,3);
+	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 }
 
 Window::Screen WinLvlAlarms::processTouch(int x,int y) {

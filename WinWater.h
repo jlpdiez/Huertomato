@@ -63,10 +63,6 @@ class WinWater: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _yFirstLine = 50;
-		static const int _ySecondLine = 100;
-		static const int _yThirdLine = 160;
-		static const int _xSpacer = 25;
 		//These are temp variables used for displaying data
 		//They are read from _settings in print() funcs. Changed in processTouch()
 		//displayed again with update() and saved to eeprom when button save is pressed

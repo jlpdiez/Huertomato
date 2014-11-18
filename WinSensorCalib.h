@@ -49,10 +49,6 @@ class WinSensorCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _xSpacer = 15;
-		static const int _ySpacer = 45;
-		static const int _yFirst = 60;
-		static const int _ySecond = 135;
 		void print();
 };
 

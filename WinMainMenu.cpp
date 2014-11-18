@@ -27,14 +27,14 @@ void WinMainMenu::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//Make menu buttons. System and Controller settings
-	mainMenuButtons[3] = _buttons.addButton(_xSpacer+70,_systemY,mainMenuButtonText[0]);
-	mainMenuButtons[4] = _buttons.addButton(_xSpacer+70,_controllerY,mainMenuButtonText[1]);
+	mainMenuButtons[_nFlowButtons] = _buttons.addButton(_xMenu+70,_yTwoLnsFirst,mainMenuButtonText[0]);
+	mainMenuButtons[_nFlowButtons+1] = _buttons.addButton(_xMenu+70,_yTwoLnsSecond,mainMenuButtonText[1]);
 	//Logos
-	_lcd->drawBitmap (_xSpacer, _systemY-18, _iconSize, _iconSize, plant64);
-	_lcd->drawBitmap (_xSpacer, _controllerY-18, _iconSize, _iconSize, settings64);
+	_lcd->drawBitmap (_xMenu, _yTwoLnsFirst-18, _smallIconSize, _smallIconSize, plant64);
+	_lcd->drawBitmap (_xMenu, _yTwoLnsSecond-18, _smallIconSize, _smallIconSize, settings64);
 	//With transparent buttons
-	mainMenuButtons[5] = _buttons.addButton(_xSpacer, _systemY-18, _iconSize, _iconSize, 0);
-	mainMenuButtons[6] = _buttons.addButton(_xSpacer, _controllerY-18, _iconSize, _iconSize, 0);
+	mainMenuButtons[_nFlowButtons+2] = _buttons.addButton(_xMenu, _yTwoLnsFirst-18, _smallIconSize, _smallIconSize, 0);
+	mainMenuButtons[_nFlowButtons+3] = _buttons.addButton(_xMenu, _yTwoLnsSecond-18, _smallIconSize, _smallIconSize, 0);
 }
 
 //Draws main menu into LCD

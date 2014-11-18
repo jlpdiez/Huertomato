@@ -53,9 +53,6 @@ class WinControllerMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _xSpacer = 15;
-		static const int _ySpacer = 40;
-		
 		//Sound toggle
 		boolean _soundActive;
 		//Serial toggle

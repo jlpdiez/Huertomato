@@ -107,16 +107,37 @@ class Window {
 		virtual Screen processTouch(const int x, const int y);
 
 	protected:		
+		//Screen size
 		static const int _xSize = 399;
 		static const int _ySize= 239;
+		//Font sizes
 		static const int _bigFontSize = 16;
 		static const int _smallFontSize = 8;
+		//Icon sizes
 		static const int _bigIconSize = 126;
-		//static const int _smallIconSize = 64;
+		static const int _smallIconSize = 64;
+		//Height of header
 		static const int _headerHeight = 20;
+		//The Y coord of the flow buttons bar
 		static const int _flowButtonY = 215;
-		//static const int _xSpacerMenu = 15;
-		//static const int _xSpacerConfig = 25;
+		//The max number of flow buttons
+		static const int _nFlowButtons = 3;
+		//First coords of windows
+		static const int _xMenu = 15;
+		static const int _xConfig = 25;
+		static const int _signSpacer = 22;
+		//The Y coord where the first text row will start
+		static const int _yOneLine = 100;
+		static const int _yTwoLnsFirst = 65; //60
+		static const int _yTwoLnsSecond = 140; //135
+		static const int _yThreeLnsFirst = 50;
+		static const int _yThreeLnsSecond = 100;
+		static const int _yThreeLnsThird = 150;
+		static const int _yFiveLines = 40;
+		//These are used for menus that are drawn using a for
+		//Will be multiplied with (_bigFontSize * number of row) to get Y coord in menus
+		static const int _yFactor3lines = 3;
+		static const int _yFactor5lines = 2;
 	 	
 		virtual void print();
 		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);

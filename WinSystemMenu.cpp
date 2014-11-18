@@ -21,36 +21,18 @@ Window::Screen WinSystemMenu::getType() const {
 }
 
 void WinSystemMenu::print() {
-	_nightWater = _settings->getNightWatering();
-
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
-	//Before 3 there are the flow buttons
-	for (int i = 0; i < nSystemButtons -3; i++) {
-		_lcd->print(bulletStr,_xSpacer,_ySpacer+_bigFontSize*2*i);
+	//Before the buttons were adding there are the flow buttons
+	for (int i = 0; i < nSystemButtons - _nFlowButtons; i++) {
+		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
 	}
 	//Make menu buttons
-	//-3 because back/save/exit are already added at this stage
-	for (int i = 0; i < nSystemButtons - 3; i++) {
-		systemButtons[i + 3] = _buttons.addButton(_xSpacer+_bigFontSize*2,_ySpacer+_bigFontSize*2*i,systemButtonText[i]);
+	for (int i = 0; i < nSystemButtons - _nFlowButtons; i++) {
+		systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,systemButtonText[i]);
 	}
-	_lcd->setFont(hallfetica_normal);
-	
-	//Watering at night ON/OFF
-	if (_nightWater)
-		_lcd->print(onStr,_xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),_ySpacer+_bigFontSize*2*4);
-	else
-		_lcd->print(offStr,_xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),_ySpacer+_bigFontSize*2*4);
-	
-	//7 buttons
-	// _lcd->print(bulletStr,xSpacer,ySpacer+bigFontSize*1.5*i);
-	//systemButtons[i + 3] = _buttons.addButton(xSpacer+bigFontSize*2,ySpacer+bigFontSize*1.5*i,systemButtonText[i]);
-	//if (waterAtNight)
-	//_lcd->print(onStr,xSpacer+bigFontSize*3+bigFontSize*strlen(systemButtonText[5]),ySpacer+bigFontSize*1.5*5);
-	//if !(manualWaterPump)
-	//_lcd->print(offStr,xSpacer+bigFontSize*3+bigFontSize*strlen(systemButtonText[6]),ySpacer+bigFontSize*1.5*6);
 }
 
 //Draws entire screen System Settings
@@ -70,9 +52,9 @@ void WinSystemMenu::update() {
 	_lcd->setFont(hallfetica_normal);
 	//Watering at night ON/OFF
 	if (_nightWater)
-		_lcd->print(onStr,_xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),_ySpacer+_bigFontSize*2*4);
+		_lcd->print(onStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[_nFlowButtons+1]),_yThreeLnsFirst+_bigFontSize*_yFactor3lines*4);
 	else
-		_lcd->print(offStr,_xSpacer+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[4]),_ySpacer+_bigFontSize*2*4);
+		_lcd->print(offStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[_nFlowButtons+1]),_yThreeLnsFirst+_bigFontSize*_yFactor3lines*4);
 
 }
 

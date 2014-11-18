@@ -51,10 +51,6 @@ class WinLvlAlarms: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _yFirstLine = 100;
-		static const int _xSpacer = 25;
-		static const int _signSpacer = 22;
-		
 		uint8_t _waterAlarmMin;
 		void print();
 };

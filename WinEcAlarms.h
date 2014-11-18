@@ -55,10 +55,6 @@ class WinEcAlarms: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _yFirstLine = 65;
-		static const int _ySecondLine = 140;
-		static const int _xSpacer = 25;
-		static const int _signSpacer = 22;
 		uint16_t _ecAlarmMax, _ecAlarmMin;
 		void print();
 };

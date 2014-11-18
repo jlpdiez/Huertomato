@@ -28,22 +28,22 @@ void WinLightCalib::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = _xSpacer;
-	_lcd->print(rawLight,x,_yFirstLine);
+	int x = _xConfig;
+	_lcd->print(rawLight,x,_yTwoLnsFirst);
 	x += 16*_bigFontSize;
-	_lcd->printNumI(_rawLightLvl,x,_yFirstLine,4,' ');
+	_lcd->printNumI(_rawLightLvl,x,_yTwoLnsFirst,4,' ');
 	//x +=4*bigFontSize;
 	//_lcd->print("lux",x,yFirstLine);
 	
 	//Second Line
-	x = _xSpacer;
-	_lcd->print(lightThreshold,x,_ySecondLine);
+	x = _xConfig;
+	_lcd->print(lightThreshold,x,_yTwoLnsSecond);
 	x += 10*_bigFontSize;
-	_lcd->printNumI(_lightThreshold,x,_ySecondLine,4,' ');
+	_lcd->printNumI(_lightThreshold,x,_yTwoLnsSecond,4,' ');
 	//x += 4*bigFontSize;
 	//_lcd->print("lux",x,ySecondLine);
 	x += 5*_bigFontSize;
-	lightCalibrationButtons[3] = _buttons.addButton(x,_ySecondLine,lightCalibrationButtonsText[0]);
+	lightCalibrationButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsSecond,lightCalibrationButtonsText[0]);
 }
 
 void WinLightCalib::update() {
@@ -53,12 +53,12 @@ void WinLightCalib::update() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = _xSpacer + 16*_bigFontSize;
-	_lcd->printNumI(_rawLightLvl,x,_yFirstLine,4,' ');
+	int x = _xConfig + 16*_bigFontSize;
+	_lcd->printNumI(_rawLightLvl,x,_yTwoLnsFirst,4,' ');
 	
 	//Second Line
-	x = _xSpacer + 10*_bigFontSize;
-	_lcd->printNumI(_lightThreshold,x,_ySecondLine,4,' ');
+	x = _xConfig + 10*_bigFontSize;
+	_lcd->printNumI(_lightThreshold,x,_yTwoLnsSecond,4,' ');
 }
 
 //Draws entire screen Light Calibration

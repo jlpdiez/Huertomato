@@ -22,8 +22,8 @@ Window::Screen WinSensorPolling::getType() const {
 
 void WinSensorPolling::print() {
 	const int xSpacer2 = 72+3*_bigFontSize;	
-	const int secU[] = {xSpacer2+_bigFontSize/2, _ySecondLine-22};       //sec up
-	const int secD[] = {xSpacer2+_bigFontSize/2, _ySecondLine+22};       //sec down
+	const int secU[] = {xSpacer2+_bigFontSize/2, _yTwoLnsSecond-22};       //sec up
+	const int secD[] = {xSpacer2+_bigFontSize/2, _yTwoLnsSecond+22};       //sec down
 	
 	_pollSec = _settings->getSensorSecond();
 	
@@ -32,15 +32,15 @@ void WinSensorPolling::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//Time between readings text
-	_lcd->print(sensorPollingText1, _xSpacer, _yFirstLine);
+	_lcd->print(sensorPollingText1, _xConfig, _yTwoLnsFirst);
 	//XX
-	_lcd->printNumI(_pollSec,xSpacer2,_ySecondLine,2,'0');
+	_lcd->printNumI(_pollSec,xSpacer2,_yTwoLnsSecond,2,'0');
 	//secs
-	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_ySecondLine);
+	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	sensorPollingButtons[3] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
-	sensorPollingButtons[4] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
+	sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
+	sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
 } 
 
 //Draws entire screen Sensor Polling
@@ -59,7 +59,7 @@ void WinSensorPolling::update() {
 	const int  xSpacer2 = 72+3*_bigFontSize;
 	
 	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_pollSec,xSpacer2,_ySecondLine,2,'0');
+	_lcd->printNumI(_pollSec,xSpacer2,_yTwoLnsSecond,2,'0');
 }
 
 Window::Screen WinSensorPolling::processTouch(const int x, const int y) {

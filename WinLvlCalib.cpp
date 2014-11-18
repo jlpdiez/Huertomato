@@ -29,32 +29,32 @@ void WinLvlCalib::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = _xSpacer;
-	_lcd->print(firstLvlCalib,x,_yFirstLine);
+	int x = _xConfig;
+	_lcd->print(firstLvlCalib,x,_yThreeLnsFirst);
 	x += 16*_bigFontSize;
-	_lcd->printNumI(_rawWaterLvl,x,_yFirstLine,3,' ');
+	_lcd->printNumI(_rawWaterLvl,x,_yThreeLnsFirst,3,' ');
 	x +=3*_bigFontSize;
-	_lcd->print(unitLvl,x,_yFirstLine);
+	_lcd->print(unitLvl,x,_yThreeLnsFirst);
 	
 	//Second Line
-	x = _xSpacer;
-	_lcd->print(secondLvlCalib,x,_ySecondLine);
+	x = _xConfig;
+	_lcd->print(secondLvlCalib,x,_yThreeLnsSecond);
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMax,x,_ySecondLine,3,' ');
+	_lcd->printNumI(_waterLvlMax,x,_yThreeLnsSecond,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print(unitLvl,x,_ySecondLine);
+	_lcd->print(unitLvl,x,_yThreeLnsSecond);
 	x += 3*_bigFontSize;
-	waterLevelButtons[3] = _buttons.addButton(x,_ySecondLine,waterLevelButtonsText[0]);
+	waterLevelButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsSecond,waterLevelButtonsText[0]);
 	
 	//Third Line
-	x = _xSpacer;
-	_lcd->print(thirdLvlCalib,x,_yThirdLine);
+	x = _xConfig;
+	_lcd->print(thirdLvlCalib,x,_yThreeLnsThird);
 	x += 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMin,x,_yThirdLine,3,' ');
+	_lcd->printNumI(_waterLvlMin,x,_yThreeLnsThird,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print(unitLvl,x,_yThirdLine);
+	_lcd->print(unitLvl,x,_yThreeLnsThird);
 	x += 3*_bigFontSize;
-	waterLevelButtons[4] = _buttons.addButton(x,_yThirdLine,waterLevelButtonsText[1]);
+	waterLevelButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,waterLevelButtonsText[1]);
 }
 
 void WinLvlCalib::update() {
@@ -64,16 +64,16 @@ void WinLvlCalib::update() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//First Line
-	int x = _xSpacer + 16*_bigFontSize;
-	_lcd->printNumI(_rawWaterLvl,x,_yFirstLine,3,' ');
+	int x = _xConfig + 16*_bigFontSize;
+	_lcd->printNumI(_rawWaterLvl,x,_yThreeLnsFirst,3,' ');
 	
 	//Second Line
-	x = _xSpacer + 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMax,x,_ySecondLine,3,' ');
+	x = _xConfig + 12*_bigFontSize;
+	_lcd->printNumI(_waterLvlMax,x,_yThreeLnsSecond,3,' ');
 	
 	//Third Line
-	x = _xSpacer + 12*_bigFontSize;
-	_lcd->printNumI(_waterLvlMin,x,_yThirdLine,3,' ');
+	x = _xConfig + 12*_bigFontSize;
+	_lcd->printNumI(_waterLvlMin,x,_yThreeLnsThird,3,' ');
 }
  
 //Draws entire screen Water Level Calibration

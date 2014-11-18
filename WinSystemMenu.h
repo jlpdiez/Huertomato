@@ -29,13 +29,11 @@
 
 #include "Window.h"
 
-const int nSystemButtons = 8;
+const int nSystemButtons = 6;
 static char* systemButtonText[nSystemButtons] = {
 	"Watering Cycle",
-	"Sensor Alarms",
-	"Calibration",
-	"Pump protection",
-	"Watering at Night:"
+	"Night Watering",
+	"Reservoir Module"
 };
 static int systemButtons[nSystemButtons];
  
@@ -53,8 +51,6 @@ class WinSystemMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const int _xSpacer = 15;
-		static const int _ySpacer = 35;
 		boolean _nightWater;
 		void print();
 };
