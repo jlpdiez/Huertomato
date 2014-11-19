@@ -21,7 +21,7 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     
     _iSample = 0;
     //Initiate data arrays
-    for (int i = 0; i < numSamples; i++) {
+    for (int i = 0; i < _numSamples; i++) {
       _temps[i] = 0;
       _lights[i] = 0;
       _humidities[i] = 0;
@@ -34,7 +34,7 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
 Sensors::Sensors(const Sensors &other) {
 	_settings = other._settings;
 	_iSample = other._iSample;
-	for (int i = 0; i < numSamples; i++) {
+	for (int i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
 		_lights[i] = other._lights[i];
 		_humidities[i] = other._humidities[i];
@@ -53,7 +53,7 @@ Sensors::Sensors(const Sensors &other) {
 Sensors& Sensors::operator=(const Sensors &other) {
 	_settings = other._settings;
 	_iSample = other._iSample;
-	for (int i = 0; i < numSamples; i++) {
+	for (int i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
 		_lights[i] = other._lights[i];
 		_humidities[i] = other._humidities[i];
@@ -138,7 +138,7 @@ void Sensors::update() {
 	}
 
 	_iSample++;
-	if (_iSample >= numSamples)
+	if (_iSample >= _numSamples)
 		_iSample =0;
 	
 	smoothSensorReadings();
@@ -148,28 +148,28 @@ void Sensors::update() {
 void Sensors::smoothSensorReadings() {
 	//Temp
 	float resF = 0;
-	for (int i = 0; i < numSamples; i++) { resF += _temps[i]; }
-	_temp = (float)(resF / numSamples);
+	for (int i = 0; i < _numSamples; i++) { resF += _temps[i]; }
+	_temp = (float)(resF / _numSamples);
 	//Light
 	uint16_t res = 0;
-	for (int i = 0; i < numSamples; i++) { res += _lights[i]; }
-	_light = (uint8_t)(res / numSamples);
+	for (int i = 0; i < _numSamples; i++) { res += _lights[i]; }
+	_light = (uint8_t)(res / _numSamples);
 	//Humidity
 	res = 0;
-	for (int i = 0; i < numSamples; i++) { res += _humidities[i]; }
-	_humidity = (uint8_t)(res / numSamples);
+	for (int i = 0; i < _numSamples; i++) { res += _humidities[i]; }
+	_humidity = (uint8_t)(res / _numSamples);
 	//Electroconductivity
 	uint32_t res32 = 0;
-	for (int i = 0; i < numSamples; i++) {  res32 += _ecs[i]; }
-	_ec = (uint16_t)(res32 / numSamples);
+	for (int i = 0; i < _numSamples; i++) {  res32 += _ecs[i]; }
+	_ec = (uint16_t)(res32 / _numSamples);
 	//PH
 	resF = 0;
-	for (int i = 0; i < numSamples; i++) { resF += _phs[i]; }
-	_ph = (float)(resF / numSamples);
+	for (int i = 0; i < _numSamples; i++) { resF += _phs[i]; }
+	_ph = (float)(resF / _numSamples);
 	//Water level
 	res = 0;
-	for (int i = 0; i < numSamples; i++) { res += _waterLevels[i]; }
-	_waterLevel = (uint8_t)(res / numSamples);  
+	for (int i = 0; i < _numSamples; i++) { res += _waterLevels[i]; }
+	_waterLevel = (uint8_t)(res / _numSamples);  
 }
 
 //Returns light level 0~100%

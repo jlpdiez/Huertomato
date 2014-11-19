@@ -1,7 +1,7 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 23.04.2014
@@ -31,20 +31,8 @@
 #include <Arduino.h>
 #include <DHT11.h>
 #include <DallasTemperature.h>
-//#include <Streaming.h>
 #include <DS1307RTC.h>
 #include <Time.h>
-
-//Ideally these variables should be given to the constructor but
-//theres no way to declare a OneWire instance and initiate it afterwards that i know of
-
-// Used for smoothing sensor data.  The higher the number,
-// the more the readings will be smoothed, but the slower the variables will
-// respond to the input.
-//const uint8_t numSamples = 10;
-
-//Consts can be declared inside objects by using static const bla
-//see http://stackoverflow.com/questions/2043493/where-to-declare-define-class-scope-constants-in-c
 
 //Pin numbers
 // 16 & 17 are Serial2 Tx,Rx used for EC circuit
@@ -66,8 +54,7 @@ class Sensors {
 	Sensors(const Sensors &other);
 	Sensors& operator=(const Sensors &other);
 	//Destructor
-	~Sensors();
-  
+	~Sensors(); 
     //Getters
     float getTemp() const;
     uint8_t getLight() const;
@@ -75,20 +62,19 @@ class Sensors {
     uint16_t getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
-	
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLight();
-	
 	//Tests
 	boolean ecOffRange();
 	boolean phOffRange();
 	boolean lvlOffRange();
-	
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
     //Adjusts EC sensor readings to temperature
     void adjustECtemp();
+	//Adds a reading to a graph
+	void storeGraphPoint();
 	//pH Calibration
 	/*void setPHcontinuous();
 	void setPHstandby();
@@ -108,13 +94,8 @@ class Sensors {
   private:
 	Settings *_settings;
 	
-	//Prints to Serial (if active) pH circuit's response to commands
-	//void phToSerial();
-	//Same as above but for EC circuit
-	//void ecToSerial();
     //Smoothes readings
     void smoothSensorReadings();
-  
     //These poll hardware and return sensor info
     uint8_t light();
     float temp();
@@ -122,19 +103,19 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint16_t ec();
-	
-	//Define a const for array size  
-	static const int numSamples = 10;
+	// Used for smoothing sensor data.  The higher the number,
+	// the more the readings will be smoothed, but the slower the variables will
+	// respond to the input.
+	static const int _numSamples = 10;
     //Smoothing counter
     uint8_t _iSample;
     //Contain sensor data pre-smoothing
-    float _temps[numSamples];
-    uint8_t _lights[numSamples]; 
-    uint8_t _humidities[numSamples];
-    uint16_t _ecs[numSamples];
-    float _phs[numSamples];
-    uint8_t _waterLevels[numSamples];
-  
+    float _temps[_numSamples];
+    uint8_t _lights[_numSamples]; 
+    uint8_t _humidities[_numSamples];
+    uint16_t _ecs[_numSamples];
+    float _phs[_numSamples];
+    uint8_t _waterLevels[_numSamples];
     //Contain sensor values post smoothing
     float _temp;
     uint8_t _light;
@@ -149,16 +130,38 @@ template <class T>;
 class Sensor {
 	public:
 		//Constructors
-		Sensor(Settings *_settings);
+		Sensor(Settings *_settings, const int pin);
 		Sensor(const Sensor &other);
 		Sensor& operator=(const Sensor &other);
 		//Destructor
 		virtual ~Sensor();
-		virtual T get() const;		
+		virtual void init();
+		virtual T get() const;	
+		virtual void update();	
+		//Idea: return false if more than x time passes and no data to auto-disable reservoir module if not present
+		virtual boolean isResponsive();
 		
 	protected:
-		T _data;
-
+		int _pin;
+		//TODO:To include here Graphic class should only care for data and draw() method there should go to Window class
+		Graphic<T> _graph;
+		// Used for smoothing sensor data.  The higher the number,
+		// the more the readings will be smoothed, but the slower the variables will
+		// respond to the input.
+		static const uint8_t _numSamples = 10;
+		//Smoothing counter
+		uint8_t _iSample;
+		//Contain sensor data pre-smoothing
+		T _raw[_numSamples];
+		//Contain sensor values post smoothing
+		T _value;
+		//Poll hardware, return reading
+		T poll();
+		//Smooth reading, update _value
+		void smooth();
 };
+
+class sensorTemp public Sensor<uint8_t> {
+}
 
 */

@@ -1,12 +1,12 @@
 // #############################################################################
 //
-// # Name       : WinAlarms
-// # Version    : 1.1
+// # Name       : WinWaterNight
+// # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 19.11.2014
 //
-// # Description: Alarms menu window
+// # Description: Night Watering Settings. Toggle on/off and set threshold
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,35 +24,36 @@
 // #############################################################################
 
 
-#ifndef WINALARMS_H_
-#define WINALARMS_H_
+#ifndef WINWATERNIGHT_H_
+#define WINWATERNIGHT_H_
 
 #include "Window.h"
 
-const int nSensorAlarmsButtons = 6;
-static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
-	"pH Thresholds",
-	"EC Thresholds",
-	"Nutrient Level"
+const int nWaterNightButtons = 4;
+static char* waterNightButtonsText[nWaterNightButtons] = {
+	"Set"
 };
-static int sensorAlarmsButtons[nSensorAlarmsButtons];
+static int waterNightButtons[nWaterNightButtons];
 
-static char* nameWinAlarms = "- Sensor Alarms -";
- 
-class WinAlarms: public Window {
+static char* nameWinWaterNight = "- Night Calibration -";
+static char* rawLight = "Current Reading:";
+static char* lightThreshold = "Threshold:";
+
+//TODO: Should contain LightCalib and on/off toggle with 3 lines, with toggle first like inSD
+class WinWaterNight: public Window {
 	public:
-		WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-		WinAlarms(const WinAlarms &other);
-		WinAlarms& operator=(const WinAlarms &other);
-		~WinAlarms();
-		Screen getType() const;
-		void draw();
-		Window::Screen processTouch(const int x, const int y);
+	WinWaterNight(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+	WinWaterNight(const WinWaterNight &other);
+	WinWaterNight& operator=(const WinWaterNight &other);
+	~WinWaterNight();
+	Screen getType() const;
+	void draw();
+	void update();
+	Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		void print();
+	uint16_t _lightThreshold, _rawLightLvl;
+	void print();
 };
-
-
 
 #endif
