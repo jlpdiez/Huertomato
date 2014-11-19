@@ -76,24 +76,24 @@ static char* bulletStr = "T";
 class Window {
 	public:
 		enum Screen {
-			None=0,
-			Splash=1,
-			MainScreen=2,
-			MainMenu=3,
-			SystemSettings=4,
-			ControllerSettings=5,
-			TimeDate=6,
-			SensorPolling=7,
-			SDCard=8,
-			WateringCycle=9,
-			Alarms=10,
-			PhAlarms=11,
-			EcAlarms=12,
-			LvlAlarms=13,
-			SensorCalib=14,
-			LvlCalib=15,
-			NightWater=16,
-			Pump=17
+			None = 0,
+			Splash = 1,
+			MainScreen = 2,
+			MainMenu = 3,
+			SystemSettings = 4,
+			ControllerSettings = 5,
+			TimeDate = 6,
+			SensorPolling = 7,
+			SDCard = 8,
+			WateringCycle = 9,
+			Alarms = 10,
+			PhAlarms = 11,
+			EcAlarms = 12,
+			LvlAlarms = 13,
+			SensorCalib = 14,
+			LvlCalib = 15,
+			NightWater = 16,
+			Pump = 17
 		};
 				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);

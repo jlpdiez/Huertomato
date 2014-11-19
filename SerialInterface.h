@@ -7,8 +7,8 @@
 // # Date       : 19.11.2014
 //
 // # Description: Class in charge of attending communication with input serial commands
+// # Works at 115200. Commands must en with a carriage return to work properly.
 // # You initiate it and then just have to call processSerialCommand() from outside
-// # Commands must en with a carriage return to work!
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 //
 // #############################################################################
 
-#ifndef SERIALCOMMS_H_
-#define SERIALCOMMS_H_
+#ifndef SERIALINTERFACE_H_
+#define SERIALINTERFACE_H_
 
 #include "Sensors.h"
 #include "Settings.h"
@@ -56,13 +56,52 @@ static char* settingsCommands[nSettingsC] = {
 	"set"
 };
 
+static const int nSettings = 26;
+static char* settingsNames[nSettings] = {
+	"WaterTimed",
+	"WaterHour",
+	"WaterMinute",
+	"FloodMinute",
+	"PHalarmUp",
+	"PHalarmDown",
+	"ECalarmUp",
+	"ECalarmDown",
+	"WaterAlarm",
+	"NightWatering",
+	"LightThreshold",
+	"MaxWaterLvl",
+	"MinWaterLvl",
+	"PumpProtectionLvl",
+	"SensorSecond",
+	"SDactive",
+	"SDhour",
+	"SDminute",
+	"Sound",
+	"SerialDebug",
+	"ReservoirModule",
+	"NextWhour",
+	"NextWminute",
+	"NightWateringStopped",
+	"WateringPlants",
+	"AlarmTriggered"
+};
+
+//enum SettingsList {	
+//};
+
 class SerialInterface {
 	public:
+		enum Commands {
+			List = 0,
+			Get = 1,
+			Set = 2
+		};
 		SerialInterface(Sensors *sensors, Settings *settings);
 		SerialInterface(const SerialInterface &other);
 		SerialInterface& operator=(const SerialInterface &other);
 		~SerialInterface();
 		void init();
+		void end();
 		void processInput();
 		void timeStamp(char* txt) const;
 		void showAllStats() const;
@@ -74,8 +113,12 @@ class SerialInterface {
 		Settings *_settings;
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
-		static void printHelp();
+		static void help();
+		static void helpSensors();
+		static void helpSettings();
 		static void commandSettings();
+		static void commandGetSetting();
+		static void commandSetSetting();
 		static void commandSensors();
 		static void commandMemory();
 };

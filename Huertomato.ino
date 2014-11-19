@@ -392,15 +392,8 @@ void checkSensors() {
 
 //Checks if serial settings have been changed and updates system
 void checkSerial() {
-	if (settings.serialDebugChanged()) {
-		if (settings.getSerialDebug()) {
-			//setupSerial();
-			ui.init();
-		} else {
-			ui.timeStamp("Deactivating serial communications");
-			Serial.end();
-		}
-	}
+	if (settings.serialDebugChanged())
+		(settings.getSerialDebug()) ? ui.init() : ui.end();
 }
 
 // *********************************************
