@@ -36,6 +36,7 @@
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
 // # UTouch & UTFT_Buttons http://www.henningkarlsen.com/electronics/library.php
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
+// # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 
 #include "Sensors.h"
 #include "Settings.h"
@@ -45,11 +46,12 @@
 #include "GUI.h"
 #include "Settings.h"
 #include "Sensors.h"
+#include "SerialInterface.h"
 #include "Window.h"
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
 #include "WinEcAlarms.h"
-#include "WinLightCalib.h"
+//#include "WinLightCalib.h"
 #include "WinLvlAlarms.h"
 #include "WinLvlCalib.h"
 #include "WinMainMenu.h"
@@ -62,6 +64,7 @@
 #include "WinSystemMenu.h"
 #include "WinTime.h"
 #include "WinWater.h"
+#include "WinWaterNight.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -76,7 +79,7 @@
 #include <UTFT_Buttons.h>
 #include <EEPROMEx.h>
 #include <SD.h>
-//TEMP from http://arduino.cc/playground/Code/AvailableMemory
+#include <SerialCommand.h>
 #include <MemoryFree.h>
 
 
@@ -123,12 +126,14 @@ dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
-
+//LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
-
+//Huertomato data
 Settings settings;
 Sensors sensors(&settings);
+//Human interfaces
+SerialInterface ui(&sensors,&settings);
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //Stores timers ID's and status
@@ -150,6 +155,7 @@ boolean beeping;
 // *********************************************
 void setup() {  
 	led.setOn();
+	ui.init();
 	gui.init();
 	
 	//Actuators
@@ -160,7 +166,6 @@ void setup() {
 	//First run
 	//settings.setDefault();
 	settings.setAlarmTriggered(false);
-	setupSerial();
 	setupRTC();
 	setupSD(); 
 	setupAlarms();
@@ -170,20 +175,11 @@ void setup() {
 	gui.start();
 }
 
-//Initiates serial communication if needed
-void setupSerial() {
-	if (settings.getSerialDebug()) {
-		Serial.begin(115200);
-		Serial << endl << ".::[ Huertomato ]::." << endl;
-		Serial << "www.TheGreenAutomation.com" << endl << endl;
-	}
-}
-
 //Initiates system time from RTC
 void setupRTC() {
 	setSyncProvider(RTC.get); 
 	if(timeStatus() != timeSet) {
-		timestampToSerial("RTC init problem!!");
+		ui.timeStamp("RTC init problem!!");
 	} 
 }
 
@@ -192,7 +188,7 @@ void setupSD() {
 	if (settings.getSDactive()) {
 		pinMode(SDCardSS, OUTPUT);
 		if (SD.begin(SDCardSS))
-			timestampToSerial("SD init OK");
+			ui.timeStamp("SD init OK");
 		//Timer to log sensor data to SD Card
 		startSDlogTimer();
 	}
@@ -217,11 +213,11 @@ void setupWaterModes() {
 		settings.setWateringPlants(false);
 		startWaterTimer();
 		updateNextWateringTime();
-		timestampToSerial("Timed watering mode enabled");
+		ui.timeStamp("Timed watering mode enabled");
     } else {
 		digitalWrite(waterPump,HIGH);	
 		settings.setWateringPlants(true);
-		timestampToSerial("Continuous watering mode enabled");
+		ui.timeStamp("Continuous watering mode enabled");
 	}	
 }
 
@@ -263,21 +259,10 @@ void initMusic() {
 // LOOP
 // *********************************************
 void loop() {
+	ui.processInput();
 	gui.refresh();
-	gui.processTouch();
-	
-	//Alarm reporting
-	//Serial << "total: " << Alarm.count() << endl;
-	//Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
-	//Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
-	//Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
-	//Serial << " sensorAlarmID: " << sensorAlarm.id << "|" << sensorAlarm.enabled << endl;
-	/*for (int i = 0; i < Alarm.count(); i++) {
-		Serial << "id: " << i;
-		Serial << " time_t: " << Alarm.read(i);
-		Serial << " type: " << Alarm.readType(i) << endl;
-	}*/
-	
+	gui.processInput();
+
 	//Manage LED & Sound
 	if (settings.getWateringPlants() && settings.getWaterTimed()) {
 		led.setColour(BLUE);
@@ -331,12 +316,12 @@ void checkNightTime() {
 			if (settings.getWaterTimed() && !settings.getWateringPlants()) {
 				//We make a last watering cycle
 				startWatering();
-				timestampToSerial("a last time before stopping for night");
+				ui.timeStamp("a last time before stopping for night");
 			//System in continuous mode	
 			} else {
 				digitalWrite(waterPump,LOW);
 				settings.setWateringPlants(false);
-				timestampToSerial("Watering stopped for the night");
+				ui.timeStamp("Watering stopped for the night");
 			}
 			settings.setNightWateringStopped(true);
 			
@@ -348,7 +333,7 @@ void checkNightTime() {
 			digitalWrite(waterPump, LOW);
 			settings.setWateringPlants(false);
 			setupWaterModes();
-			timestampToSerial("Watering reactivated with daylight");
+			ui.timeStamp("Watering reactivated with daylight");
 		}
 	}
 	//This handles changes in settings while watering stopped for night
@@ -389,9 +374,9 @@ void checkSD() {
 		stopSDlogTimer();
 		if (settings.getSDactive()) {
 			setupSD();
-			timestampToSerial("SD logging turned ON");
+			ui.timeStamp("SD logging turned ON");
 		} else
-			timestampToSerial("SD logging turned OFF");
+			ui.timeStamp("SD logging turned OFF");
 	}
 }
 
@@ -401,7 +386,7 @@ void checkSensors() {
 		Alarm.free(sensorAlarm.id);
 		sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 		sensorAlarm.enabled = true;
-		timestampToSerial("Sensor polling timer updated");
+		ui.timeStamp("Sensor polling timer updated");
 	}
 }
 
@@ -409,9 +394,10 @@ void checkSensors() {
 void checkSerial() {
 	if (settings.serialDebugChanged()) {
 		if (settings.getSerialDebug()) {
-			setupSerial();
+			//setupSerial();
+			ui.init();
 		} else {
-			timestampToSerial("Deactivating serial communications");
+			ui.timeStamp("Deactivating serial communications");
 			Serial.end();
 		}
 	}
@@ -420,19 +406,6 @@ void checkSerial() {
 // *********************************************
 // TEXT OUTPUTS
 // *********************************************
-
-//Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
-void timestampToSerial(String str) {
-	if (settings.getSerialDebug()) {
-		time_t t = now();
-		int h = hour(t);
-		int m = minute(t);
-		int s = second(t);
-	
-		Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
-		Serial  << " - " << str << endl;
-	}
-}
 
 //Write input string to file and endl
 //Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << endl;
@@ -476,28 +449,13 @@ void logSensorReadings() {
 		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
 		sensorLog.close();
 		//Inform through serial
-		timestampToSerial("Logged sensor data to SD Card.");
+		ui.timeStamp("Logged sensor data to SD Card.");
 	} else
-		timestampToSerial("Error opening SD file, can't log sensor readings.");
+		ui.timeStamp("Error opening SD file, can't log sensor readings.");
 	//Set next timer
 	if (settings.getSDactive()) {
 		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 		sdAlarm.enabled = true;
-	}
-}
-
-//Sends sensor data through serial
-void showStatsSerial() { 
-	if (settings.getSerialDebug()) {
-		Serial << "Available memory: " << freeMemory() << " bytes"<< endl;
-		Serial << "Temp: " << sensors.getTemp() << "C" << endl;
-		Serial << "Humidity: " << sensors.getHumidity() << "%" << endl;
-		Serial << "Light level: " << sensors.getLight() << "%" << endl;
-		if (settings.getReservoirModule()) {
-			Serial << "EC: " << sensors.getEC() << endl;
-			Serial << "pH: " << sensors.getPH() << endl;
-			Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl;
-		}
 	}
 }
 
@@ -509,8 +467,8 @@ void showStatsSerial() {
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
-	timestampToSerial("Sensors read, data updated.");
-	showStatsSerial();
+	ui.timeStamp("Sensors read, data updated.");
+	//ui.showStatsSerial();
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -520,7 +478,7 @@ void updateSensors() {
 void adjustECtemp() {
 	if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
-		timestampToSerial("EC sensor readings adjusted for temperature.");
+		ui.timeStamp("EC sensor readings adjusted for temperature.");
 	}
 	//Set next timer
 	Alarm.timerOnce(0,1,0,adjustECtemp);
@@ -529,7 +487,7 @@ void adjustECtemp() {
 //These handle beeping when an alarm is triggered. It warns in serial too
 void beepOn() {
 	const int onSecs = 1;
-	timestampToSerial("Alarm triggered! System needs human intervention.");
+	ui.timeStamp("Alarm triggered! System needs human intervention.");
 	tone(buzzPin,440.00);
 	Alarm.timerOnce(0,0,onSecs,beepOff);
 }
@@ -593,14 +551,14 @@ void startWatering() {
 	//TODO: Add pump on,off setting for this logic
 	//Abort watering if pump protection is on & level is critical
 	if (settings.getReservoirModule() && (sensors.getWaterLevel() < settings.getPumpProtectionLvl()))
-		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
+		ui.timeStamp("Huertomato will NOT water to prevent pump damage < --");
 		//TODO: Show in GUI!
 	else {
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
 		gui.refresh();
-		timestampToSerial("Huertomato is watering plants < --");
+		ui.timeStamp("Huertomato is watering plants < --");
 		//Creates timer to stop watering
 		stopWaterOffTimer();
 		startWaterOffTimer();	
@@ -611,13 +569,13 @@ void startWatering() {
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
 		gui.refresh();
-		timestampToSerial("Huertomato is watering plants < --");
+		ui.timeStamp("Huertomato is watering plants < --");
 		//Creates timer to stop watering
 		stopWaterOffTimer();
 		startWaterOffTimer();
 	//Pump will get damaged - System will NOT water	
 	} else
-		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");*/
+		ui.timeStamp("Huertomato will NOT water to prevent pump damage < --");*/
 }
 
 //Stops watering pump and updates system status
@@ -625,5 +583,5 @@ void stopWatering() {
 	stopWaterOffTimer();
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
-	timestampToSerial("Watering cycle ended < --");
+	ui.timeStamp("Watering cycle ended < --");
 }

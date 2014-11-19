@@ -52,7 +52,7 @@ void GUI::start() {
 //Refreshes non-static windows.
 void GUI::refresh() {
 	Window::Screen actScreen = _window->getType();
-	if ((actScreen == Window::MainScreen) || (actScreen == Window::LightCalib)
+	if ((actScreen == Window::MainScreen) || (actScreen == Window::NightWater)
 		|| (actScreen == Window::LvlCalib))
 			_window->update();	
 }
@@ -109,8 +109,8 @@ void GUI::updateScreen(Window::Screen newScreen) {
 		case Window::LvlCalib:
 			_window = new WinLvlCalib(_lcd,_touch,_sensors,_settings);
 			break;
-		case Window::LightCalib:
-			_window = new WinLightCalib(_lcd,_touch,_sensors,_settings);
+		case Window::NightWater:
+			_window = new WinWaterNight(_lcd,_touch,_sensors,_settings);
 			break;
 		case Window::Pump:
 			_window = new WinPump(_lcd,_touch,_sensors,_settings);
@@ -122,7 +122,7 @@ void GUI::updateScreen(Window::Screen newScreen) {
 }
 
 //Reads x,y press and calls one function or another depending on active screen
-void GUI::processTouch() {
+void GUI::processInput() {
 	if (_touch->dataAvailable()) {
 		_touch->read();
 		int x = _touch->getX();

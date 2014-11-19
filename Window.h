@@ -92,7 +92,7 @@ class Window {
 			LvlAlarms=13,
 			SensorCalib=14,
 			LvlCalib=15,
-			LightCalib=16,
+			NightWater=16,
 			Pump=17
 		};
 				

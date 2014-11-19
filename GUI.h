@@ -34,7 +34,7 @@
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
 #include "WinEcAlarms.h"
-#include "WinLightCalib.h"
+//#include "WinLightCalib.h"
 #include "WinLvlAlarms.h"
 #include "WinLvlCalib.h"
 #include "WinMainMenu.h"
@@ -47,6 +47,7 @@
 #include "WinSystemMenu.h"
 #include "WinTime.h"
 #include "WinWater.h"
+#include "WinWaterNight.h"
 
 #include <UTFT.h>
 #include <UTouch.h>
@@ -66,7 +67,7 @@ class GUI {
 		void init();
 		//Second function. Shows Main Screen. Starts user interaction
 		void start();
-		void processTouch();
+		void processInput();
 		//Refreshes non-static windows.
 		void refresh();
 		boolean isMainScreen();

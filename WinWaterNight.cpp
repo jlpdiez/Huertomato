@@ -1,4 +1,4 @@
-#include "WinLightCalib.h"
+#include "WinWaterNight.h"
 
 WinWaterNight::WinWaterNight(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
@@ -17,7 +17,7 @@ WinWaterNight& WinWaterNight::operator=(const WinWaterNight& other) {
 WinWaterNight::~WinWaterNight() {}
 
 Window::Screen WinWaterNight::getType() const {
-	return Window::WaterNight;
+	return Window::NightWater;
 }
 
 void WinWaterNight::print() {

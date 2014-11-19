@@ -17,7 +17,8 @@ WinLightCalib& WinLightCalib::operator=(const WinLightCalib& other) {
 WinLightCalib::~WinLightCalib() {}
 	
 Window::Screen WinLightCalib::getType() const {
-	return Window::LightCalib;
+	//TODO: Ojo aqui
+	return Window::None;
 }
 
 void WinLightCalib::print() {
@@ -29,7 +30,7 @@ void WinLightCalib::print() {
 	
 	//First Line
 	int x = _xConfig;
-	_lcd->print(rawLight,x,_yTwoLnsFirst);
+	//_lcd->print(rawLight,x,_yTwoLnsFirst);
 	x += 16*_bigFontSize;
 	_lcd->printNumI(_rawLightLvl,x,_yTwoLnsFirst,4,' ');
 	//x +=4*bigFontSize;
@@ -37,7 +38,7 @@ void WinLightCalib::print() {
 	
 	//Second Line
 	x = _xConfig;
-	_lcd->print(lightThreshold,x,_yTwoLnsSecond);
+	//_lcd->print(lightThreshold,x,_yTwoLnsSecond);
 	x += 10*_bigFontSize;
 	_lcd->printNumI(_lightThreshold,x,_yTwoLnsSecond,4,' ');
 	//x += 4*bigFontSize;

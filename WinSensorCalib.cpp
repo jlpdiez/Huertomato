@@ -52,6 +52,6 @@ Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 	//Water calibration
 	else if (buttonIndex == sensorCalibrationButtons[3]) { return LvlCalib; }
 	//Light Calibration
-	else if (buttonIndex == sensorCalibrationButtons[4]) { return LightCalib; }
+	else if (buttonIndex == sensorCalibrationButtons[4]) { return NightWater; }
 	return None;
 }

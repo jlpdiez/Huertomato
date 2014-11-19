@@ -42,18 +42,19 @@ static char* lightThreshold = "Threshold:";
 //TODO: Should contain LightCalib and on/off toggle with 3 lines, with toggle first like inSD
 class WinWaterNight: public Window {
 	public:
-	WinWaterNight(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-	WinWaterNight(const WinWaterNight &other);
-	WinWaterNight& operator=(const WinWaterNight &other);
-	~WinWaterNight();
-	Screen getType() const;
-	void draw();
-	void update();
-	Window::Screen processTouch(const int x, const int y);
+		WinWaterNight(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinWaterNight(const WinWaterNight &other);
+		WinWaterNight& operator=(const WinWaterNight &other);
+		~WinWaterNight();
+		Screen getType() const;
+		void draw();
+		void update();
+		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-	uint16_t _lightThreshold, _rawLightLvl;
-	void print();
+		boolean _nightWater;
+		uint16_t _lightThreshold, _rawLightLvl;
+		void print();
 };
 
 #endif

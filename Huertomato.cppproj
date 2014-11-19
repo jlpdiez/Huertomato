@@ -79,6 +79,7 @@
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
         <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
         <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcc.compiler.symbols.DefSymbols>
@@ -123,6 +124,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -138,6 +141,7 @@
         <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
         <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.ExtraWarnings>True</avrgcc.compiler.warnings.ExtraWarnings>
         <avrgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -include=arduino.h</avrgcc.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
@@ -183,6 +187,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -201,7 +207,6 @@
         <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.</avrgcccpp.compiler.miscellaneous.OtherFlags>
-        <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
       </AvrGccCpp>
     </ToolchainSettings>
@@ -266,7 +271,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>arduino</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
-        <arduino.upload.port>COM3</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
     <PreBuildEvent>
@@ -275,135 +280,141 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGccCpp>
-  <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
-      <Value>ARDUINO_MAIN</Value>
-      <Value>F_CPU=16000000L</Value>
-      <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
-    </ListValues>
-  </avrgcc.compiler.symbols.DefSymbols>
-  <avrgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries</Value>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
-      <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-      <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
-    </ListValues>
-  </avrgcc.compiler.directories.IncludePaths>
-  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.compiler.warnings.ExtraWarnings>True</avrgcc.compiler.warnings.ExtraWarnings>
-  <avrgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -include=arduino.h</avrgcc.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcccpp.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
-      <Value>ARDUINO_MAIN</Value>
-      <Value>F_CPU=16000000L</Value>
-      <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
-    </ListValues>
-  </avrgcccpp.compiler.symbols.DefSymbols>
-  <avrgcccpp.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
-      <Value>C:\Program Files (x86)\Arduino\libraries</Value>
-      <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
-      <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-      <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
-      <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
-    </ListValues>
-  </avrgcccpp.compiler.directories.IncludePaths>
-  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
-  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
-  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
-  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-</AvrGccCpp>
+        <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>__AVR_ATmega2560__</Value>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>F_CPU=16000000L</Value>
+            <Value>__AVR__</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.warnings.ExtraWarnings>True</avrgcc.compiler.warnings.ExtraWarnings>
+        <avrgcc.compiler.miscellaneous.OtherFlags>-std=gnu99 -include=arduino.h</avrgcc.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>__AVR_ATmega2560__</Value>
+            <Value>ARDUINO=101</Value>
+            <Value>ARDUINO_MAIN</Value>
+            <Value>F_CPU=16000000L</Value>
+            <Value>__AVR__</Value>
+            <Value>__cplusplus</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
+        <avrgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Streaming\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DS1307RTC\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DHT11\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT_Buttons\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
+            <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\avr\</Value>
+            <Value>c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\</Value>
+            <Value>
+            </Value>
+          </ListValues>
+        </avrgcccpp.compiler.directories.IncludePaths>
+        <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+        <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
+        <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>-include=arduino.</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
+      </AvrGccCpp>
     </ToolchainSettings>
     <VisualMicroSettings>
       <VisualMicroSettings>
@@ -466,7 +477,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>arduino</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
-        <arduino.upload.port>COM3</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
     <UsesExternalMakeFile>False</UsesExternalMakeFile>
@@ -489,6 +500,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Graphic.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SerialInterface.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SerialInterface.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
