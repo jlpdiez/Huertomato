@@ -133,7 +133,7 @@ UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 Settings settings;
 Sensors sensors(&settings);
 //Human interfaces
-SerialInterface ui(&sensors,&settings);
+SerialInterface ui; //&sensors,&settings are also used but from global var
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //Stores timers ID's and status
@@ -165,6 +165,7 @@ void setup() {
 	//TODO:Make auto-detect
 	//First run
 	//settings.setDefault();
+	//settings.setReservoirModule(false);
 	settings.setAlarmTriggered(false);
 	setupRTC();
 	setupSD(); 

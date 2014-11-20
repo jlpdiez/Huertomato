@@ -86,17 +86,29 @@ static char* settingsNames[nSettings] = {
 	"AlarmTriggered"
 };
 
-//enum SettingsList {	
-//};
+static const int nSensors = 6;
+static char* sensorsNames[nSensors] = {
+	"Temperature",
+	"Humidity",
+	"Light",
+	"Ec",
+	"Ph",
+	"Level"
+};
+
+//This makes settings static so we can use SerialCommand.addCommand("str",function)
+extern Settings settings;
+extern Sensors sensors;
 
 class SerialInterface {
 	public:
-		enum Commands {
-			List = 0,
-			Get = 1,
-			Set = 2
+		enum Command {
+			Invalid = 0,
+			List = 1,
+			Get = 2, 
+			Set = 3
 		};
-		SerialInterface(Sensors *sensors, Settings *settings);
+		SerialInterface(); //Sensors *sensors, Settings *settings);
 		SerialInterface(const SerialInterface &other);
 		SerialInterface& operator=(const SerialInterface &other);
 		~SerialInterface();
@@ -109,17 +121,20 @@ class SerialInterface {
 	private:	
 		//Static to prevent multiple instances and is also required to handle methods
 		static SerialCommand _cmd;
-		Sensors *_sensors;
-		Settings *_settings;
+		//Sensors *_sensors;
+		//Settings *_settings;
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
 		static void help();
-		static void helpSensors();
-		static void helpSettings();
-		static void commandSettings();
-		static void commandGetSetting();
-		static void commandSetSetting();
+		static void list(int length, char* names[]);
+		static Command interpretCommand(char* keyword);
+		static Sensors::Sensor interpretSensor(char* keyword);
+		static Settings::Setting interpretSetting(char* keyword);
 		static void commandSensors();
+		static void getSensor(Sensors::Sensor sens);
+		static void commandSettings();
+		static void getSetting(Settings::Setting sett);
+		//static void listSettings();
 		static void commandMemory();
 };
 

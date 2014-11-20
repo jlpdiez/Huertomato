@@ -49,6 +49,15 @@ extern dht11 DHT11;
 //Class that handles sensor reading & smoothing
 class Sensors {
   public:
+	enum Sensor {
+		None,
+		Temperature,
+		Humidity,
+		Light,
+		Ec,
+		Ph,
+		Level
+	};
     //Constructors
     Sensors(Settings *_settings);
 	Sensors(const Sensors &other);

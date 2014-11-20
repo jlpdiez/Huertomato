@@ -229,8 +229,8 @@ void WinMainScreen::updateInfoNoModule() {
 //Loads img files from /PICTURE folder of the SD card
 //This one is shared by two windows, it places the icon in different places using _settings->getReservoirModule()
 void WinMainScreen::printIconAndStatus() {
-	const int xSpacer = 10;
-	const int ySpacer = 200;
+	int xSpacer = 10;
+	int ySpacer = 200;
 	File img;
 	char* path;
 	
@@ -287,9 +287,9 @@ void WinMainScreen::printIconAndStatus() {
 	//Read from SD line by line and display icon.
 	//Requires new function at UTFT library
 	//Slow but effective
+	xSpacer = 15;
+	ySpacer = 25 + _bigFontSize;
 	if (SD.exists(path)) {
-		int xSpacer = 15;
-		int ySpacer = 25 + _bigFontSize;
 		img = SD.open(path,FILE_READ);
 		for (int y = 0; y < _bigIconSize && img.available(); y++) {
 			uint16_t buf[_bigIconSize];

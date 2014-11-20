@@ -36,6 +36,7 @@ extern EEPROMClassEx EEPROM;
 class Settings {
   public:
 	enum Setting {
+		None,
 		WaterTimed,
 		WaterHour,
 		WaterMinute,
@@ -106,7 +107,7 @@ class Settings {
     
     //Getters
     //System Settings
-    static boolean getWaterTimed();
+    boolean getWaterTimed() const;
     uint8_t getWaterHour() const;
     uint8_t getWaterMinute() const;
     uint8_t getFloodMinute() const;
@@ -151,87 +152,87 @@ class Settings {
 	//Everything static so we prevent duplicate info [Singleton]
     //System Settings
     //Watering Cycle
-    static boolean _waterTimed;
-    static uint8_t _waterHour;
-    static uint8_t _waterMinute;
-    static uint8_t _floodMinute;
+    boolean _waterTimed;
+    uint8_t _waterHour;
+    uint8_t _waterMinute;
+    uint8_t _floodMinute;
     //Sensor Alarms
-    static float _phAlarmUp;
-    static float _phAlarmDown;
-    static uint16_t _ecAlarmUp;
-    static uint16_t _ecAlarmDown;
-    static uint8_t _waterAlarm;
+    float _phAlarmUp;
+    float _phAlarmDown;
+    uint16_t _ecAlarmUp;
+    uint16_t _ecAlarmDown;
+    uint8_t _waterAlarm;
     //Water at night - Informs the system that watering timers are stopped for the night
-    static boolean _nightWatering;
+    boolean _nightWatering;
 	//Sensor Calibrations
-	static uint16_t _lightThreshold;
-	static uint16_t _maxWaterLvl;
-	static uint16_t _minWaterLvl;
+	uint16_t _lightThreshold;
+	uint16_t _maxWaterLvl;
+	uint16_t _minWaterLvl;
 	//Pump protection threshold
-	static uint8_t _pumpProtectionLvl;
+	uint8_t _pumpProtectionLvl;
     
     //Controller settings
     //Time & Date - Handled outside in RTC Lib
     //Sensor Polling
-    static uint8_t _sensorSecond;  
+    uint8_t _sensorSecond;  
     //SD Card
-    static boolean _sdActive;
-    static uint8_t _sdHour;
-    static uint8_t _sdMinute;
+    boolean _sdActive;
+    uint8_t _sdHour;
+    uint8_t _sdMinute;
     //Sound toggle
-    static boolean _sound;
+    boolean _sound;
     //Serial Debugging
-    static boolean _serialDebug;
+    boolean _serialDebug;
 	//Module present
-	static boolean _reservoirModule;
+	boolean _reservoirModule;
     
     //Status variables - Not read from EEPROM
     //Time next watering will happen
-    static uint8_t _nextWhour;
-    static uint8_t _nextWminute;
+    uint8_t _nextWhour;
+    uint8_t _nextWminute;
     //Informs the system that watering timers are stopped for the night
-    static boolean _nightWateringStopped;
+    boolean _nightWateringStopped;
     //Turned on when plants are being watered
-    static boolean _wateringPlants;
+    boolean _wateringPlants;
     //Informs if theres an alarm triggered
-    static boolean _alarmTriggered;
+    boolean _alarmTriggered;
 	//True if state changed
-	static boolean _systemStateChanged;
+	boolean _systemStateChanged;
 	//Tells if water settings have been changed
-	static boolean _waterSettingsChanged;
+	boolean _waterSettingsChanged;
 	//SD options changed
-	static boolean _sdSettingsChanged;
+	boolean _sdSettingsChanged;
 	//Sensor polling changed
-	static boolean _sensorPollingChanged;
+	boolean _sensorPollingChanged;
 	//Serial debug toggle
-	static boolean _serialDebugChanged;
+	boolean _serialDebugChanged;
 	//Module config changed
-	static boolean _moduleChanged;
+	boolean _moduleChanged;
     
     //EEPROM addresses for all settings
-    static int _addressWaterTimed;
-    static int _addressWaterHour;
-    static int _addressWaterMinute;
-    static int _addressFloodMinute;
-    static int _addressPHalarmUp;
-    static int _addressPHalarmDown;
-    static int _addressECalarmUp;
-    static int _adressECalarmDown;
-    static int _addressWaterAlarm;
-    static int _addressNightWatering;  
-    static int _addressSensorMinute;
-    static int _addressSensorSecond;  
-    static int _addressSDactive;
-    static int _addressSDhour;
-    static int _addressSDminute;
-    static int _addressSound;
-    static int _addressSerialDebug;
-	static int _addressLightThreshold;
-	static int _addressReservoirModule;
-	static int _addressMaxWaterLvl;
-	static int _addressMinWaterLvl;
-	static int _addressPumpProtectionLvl;
-	//static int _addressVersion;
+    int _addressWaterTimed;
+    int _addressWaterHour;
+    int _addressWaterMinute;
+    int _addressFloodMinute;
+    int _addressPHalarmUp;
+    int _addressPHalarmDown;
+    int _addressECalarmUp;
+    int _adressECalarmDown;
+    int _addressWaterAlarm;
+    int _addressNightWatering;  
+    int _addressSensorMinute;
+    int _addressSensorSecond;  
+    int _addressSDactive;
+    int _addressSDhour;
+    int _addressSDminute;
+    int _addressSound;
+    int _addressSerialDebug;
+	int _addressLightThreshold;
+	int _addressReservoirModule;
+	int _addressMaxWaterLvl;
+	int _addressMinWaterLvl;
+	int _addressPumpProtectionLvl;
+	//int _addressVersion;
   
 };
 
