@@ -35,6 +35,34 @@ extern EEPROMClassEx EEPROM;
 // *********************************************
 class Settings {
   public:
+	enum Setting {
+		WaterTimed,
+		WaterHour,
+		WaterMinute,
+		FloodMinute,
+		PHalarmUp,
+		PHalarmDown,
+		ECalarmUp,
+		ECalarmDown,
+		WaterAlarm,
+		NightWatering,
+		LightThreshold,
+		MaxWaterLvl,
+		MinWaterLvl,
+		PumpProtectionLvl,
+		SensorSecond,
+		SDactive,
+		SDhour,
+		SDminute,
+		Sound,
+		SerialDebug,
+		ReservoirModule,
+		NextWhour,
+		NextWminute,
+		NightWateringStopped,
+		WateringPlants,
+		AlarmTriggered
+	};
 	//Constructors
     Settings();
 	Settings(const Settings &other);
@@ -78,7 +106,7 @@ class Settings {
     
     //Getters
     //System Settings
-    boolean getWaterTimed() const;
+    static boolean getWaterTimed();
     uint8_t getWaterHour() const;
     uint8_t getWaterMinute() const;
     uint8_t getFloodMinute() const;

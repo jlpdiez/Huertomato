@@ -134,13 +134,14 @@ void SerialInterface::commandSensors() {
 
 //In charge when first word is settings.
 void SerialInterface::commandSettings() {
+	Commands comm;
 	//Read second word
 	char *arg = _cmd.next();
 	//int aNumber;
 	//aNumber=atoi(arg);    // Converts a char string to an integer
 	//aNumber=atol(arg);
 	if (arg == NULL)
-		helpSensors();
+		helpSettings();
 	//List
 	else if (strcmp(arg,settingsCommands[List]) == 0) {
 		Serial << endl;
@@ -150,33 +151,34 @@ void SerialInterface::commandSettings() {
 		Serial << endl;
 	//Get
 	} else if (strcmp(arg,settingsCommands[Get]) == 0)
-		commandGetSetting();
+		comm = Get;
 	//Set
 	else if (strcmp(arg,settingsCommands[Set]) == 0) {
-		commandSetSetting();
+		comm = Set;
 	//Second word unrecognised	
 	} else
-		helpSensors();
-	
-		
+		helpSettings();
 }
 
 //In charge when "settings get".
-void SerialInterface::commandGetSetting() const {
+void SerialInterface::commandGetSetting() {
 	//Reads third word
 	char *arg = _cmd.next();
 	if (arg == NULL)
 		helpSensors();
 	else if (strcmp(arg,settingsNames[0]) == 0)
 		Serial << endl << "> " << _settings->getWaterTimed() << endl << endl;
+	else
+		helpSettings();
 }
 
 //In charge when "settings set". Interprets third word
 void SerialInterface::commandSetSetting() {
 	char *arg = _cmd.next();
-	if (arg == NULL) {
-		
-	}
+	if (arg == NULL)
+		helpSettings();
+	else
+		helpSettings();
 }
 
 void SerialInterface::commandMemory() {
