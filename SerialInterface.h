@@ -35,6 +35,18 @@
 #include <Time.h>  
 #include <MemoryFree.h>
 
+static char* commandsTxT = "Available commands are:";
+static char* sensorsTxT = "Available sensors are:";
+static char* settingsTxt = "Available settings are:";
+static char* doneTxt = "Done.";
+static char* boolTxt = "Expected a 'true' or 'false'";
+static char* hourTxt = "Expected an hour 0 .. 23";
+static char* minSecTxt = "Expected 0 .. 59";
+static char* phTxt = "Expected pH 0.00 .. 14.00";
+static char* ecTxt = "Expected ec 0 .. 9999";
+static char* percentTxT = "Expected 0 .. 100";
+static char* lvlTxt = "Expected 0 .. 1024";
+
 static const int nCommands = 4;
 static char* commands[nCommands] = {
 	"help",
@@ -112,30 +124,54 @@ class SerialInterface {
 		SerialInterface(const SerialInterface &other);
 		SerialInterface& operator=(const SerialInterface &other);
 		~SerialInterface();
+		//Adds commands keywords to corresponding processing functions
 		void init();
+		//Ends serial communication
 		void end();
+		//Checks in buffers and calls to handle
 		void processInput();
+		//Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
 		void timeStamp(char* txt) const;
+		//Sends sensor data through serial
 		void showAllStats() const;
 		
 	private:	
 		//Static to prevent multiple instances and is also required to handle methods
 		static SerialCommand _cmd;
-		//Sensors *_sensors;
-		//Settings *_settings;
+		
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
+		
+		//This gets set as the default handler, and gets called when no other command matches.
 		static void help();
+		//Uses external FreeMemory library
+		static void commandMemory();
+		//Printers
+		static void printLn(char* ln);
 		static void list(int length, char* names[]);
+		//Returns enum contained in input keyword or Invalid/Nobne
 		static Command interpretCommand(char* keyword);
 		static Sensors::Sensor interpretSensor(char* keyword);
 		static Settings::Setting interpretSetting(char* keyword);
+		//Gets called when "sensors" detected
 		static void commandSensors();
+		//Executes get command
 		static void getSensor(Sensors::Sensor sens);
+		//Gets called when "settings" detected
 		static void commandSettings();
+		//Executes get command
 		static void getSetting(Settings::Setting sett);
-		//static void listSettings();
-		static void commandMemory();
+		//Checks if inputs are valid and convert methods
+		static boolean isBoolean(char* str);
+		static boolean getBoolean(char* str);
+		static boolean isUint8_t(char* str);
+		static uint8_t getUint8_t(char* str);
+		static boolean isUint16_t(char* str);
+		static uint16_t getUint16_t(char* str);
+		static boolean isFloat(char* str);
+		static float getFloat(char* str);
+		//Executes the set commands
+		static void setSetting(Settings::Setting sett);
 };
 
 #endif

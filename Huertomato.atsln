@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Huertomato", "Huertomato.cppproj", "{07B459B4-8D76-4638-BC6D-A459BA2D616B}"
 EndProject
-Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "MVC", "..\MVC\MVC.cppproj", "{9276031A-A291-489B-A8FF-85150DD425B7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -15,10 +13,6 @@ Global
 		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Debug|AVR.Build.0 = Debug|AVR
 		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Release|AVR.ActiveCfg = Release|AVR
 		{07B459B4-8D76-4638-BC6D-A459BA2D616B}.Release|AVR.Build.0 = Release|AVR
-		{9276031A-A291-489B-A8FF-85150DD425B7}.Debug|AVR.ActiveCfg = Debug|AVR
-		{9276031A-A291-489B-A8FF-85150DD425B7}.Debug|AVR.Build.0 = Debug|AVR
-		{9276031A-A291-489B-A8FF-85150DD425B7}.Release|AVR.ActiveCfg = Release|AVR
-		{9276031A-A291-489B-A8FF-85150DD425B7}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

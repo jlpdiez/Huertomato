@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 15.11.2014
+// # Date       : 21.11.2014
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -74,31 +74,32 @@ class Settings {
     //Setters - These store settings to EEPROM too
 	void setDefault();
     //System Settings
-    void setWaterTimed(const boolean);
-    void setWaterHour(const uint8_t);
-    void setWaterMinute(const uint8_t);
-    void setFloodMinute(const uint8_t);
-    void setPHalarmUp(const float);
-    void setPHalarmDown(const float);
-    void setECalarmUp(const uint16_t);
-    void setECalarmDown(const uint16_t);
-    void setWaterAlarm(const uint8_t);
-    void setNightWatering(const boolean);
-	void setLightThreshold(const uint16_t);
-	void setMaxWaterLvl(const uint16_t);
-	void setMinWaterLvl(const uint16_t);
-	void setPumpProtectionLvl(const uint8_t);
+    boolean setWaterTimed(const boolean);
+    boolean setWaterHour(const uint8_t);
+    boolean setWaterMinute(const uint8_t);
+    boolean setFloodMinute(const uint8_t);
+    boolean setPHalarmUp(const float);
+    boolean setPHalarmDown(const float);
+    boolean setECalarmUp(const uint16_t);
+    boolean setECalarmDown(const uint16_t);
+    boolean setWaterAlarm(const uint8_t);
+    boolean setNightWatering(const boolean);
+	boolean setLightThreshold(const uint16_t);
+	boolean setMaxWaterLvl(const uint16_t);
+	boolean setMinWaterLvl(const uint16_t);
+	boolean setPumpProtectionLvl(const uint8_t);
     
     //Controller Settings
-    void setSensorSecond(const uint8_t);
-    void setSDactive(const boolean);
-    void setSDhour(const uint8_t);
-    void setSDminute(const uint8_t);
-    void setSound(const boolean);
-    void setSerialDebug(const boolean);
-	void setReservoirModule(const boolean);
+    boolean setSensorSecond(const uint8_t);
+    boolean setSDactive(const boolean);
+    boolean setSDhour(const uint8_t);
+    boolean setSDminute(const uint8_t);
+    boolean setSound(const boolean);
+    boolean setSerialDebug(const boolean);
+	boolean setReservoirModule(const boolean);
     
-    //Status vars - These are not written to EEPROM
+    //State vars - These are not written to EEPROM
+	//They are meant to be set only by main .ino logic, not by user!
     void setNextWhour(const uint8_t);
     void setNextWminute(const uint8_t);
     void setNightWateringStopped(const boolean);
