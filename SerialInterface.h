@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 21.11.2014
 //
 // # Description: Class in charge of attending communication with input serial commands
 // # Works at 115200. Commands must en with a carriage return to work properly.
