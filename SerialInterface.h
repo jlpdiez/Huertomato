@@ -47,12 +47,13 @@ static char* ecTxt = "Expected ec 0 .. 9999";
 static char* percentTxT = "Expected 0 .. 100";
 static char* lvlTxt = "Expected 0 .. 1024";
 
-static const int nCommands = 4;
+static const int nCommands = 5;
 static char* commands[nCommands] = {
 	"help",
 	"sensors",
 	"settings",
-	"memory"
+	"memory",
+	"status"
 };
 
 static const int nSensorsC = 2;
@@ -120,7 +121,7 @@ class SerialInterface {
 			Get = 2, 
 			Set = 3
 		};
-		SerialInterface(); //Sensors *sensors, Settings *settings);
+		SerialInterface();
 		SerialInterface(const SerialInterface &other);
 		SerialInterface& operator=(const SerialInterface &other);
 		~SerialInterface();
@@ -132,8 +133,6 @@ class SerialInterface {
 		void processInput();
 		//Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
 		void timeStamp(char* txt) const;
-		//Sends sensor data through serial
-		void showAllStats() const;
 		
 	private:	
 		//Static to prevent multiple instances and is also required to handle methods
@@ -146,6 +145,8 @@ class SerialInterface {
 		static void help();
 		//Uses external FreeMemory library
 		static void commandMemory();
+		//Sends all sensor data through serial
+		static void commandStatus();
 		//Printers
 		static void printLn(char* ln);
 		static void list(int length, char* names[]);

@@ -32,6 +32,7 @@ void SerialInterface::init() {
 		_cmd.addCommand(commands[1],SerialInterface::commandSensors);
 		_cmd.addCommand(commands[2],SerialInterface::commandSettings);
 		_cmd.addCommand(commands[3],SerialInterface::commandMemory);
+		_cmd.addCommand(commands[4],SerialInterface::commandStatus);
 		// Handler for command that isn't matched
 		_cmd.addDefaultHandler(help);
 		timeStamp("Serial input ready");
@@ -64,22 +65,6 @@ void SerialInterface::timeStamp(char* txt) const {
 	Serial.flush();
 }
 
-//Sends sensor data through serial
-void SerialInterface::showAllStats() const { 
-	if (settings.getSerialDebug()) {
-		Serial << "Available memory: " << freeMemory() << " bytes"<< endl;
-		Serial << "Temp: " << sensors.getTemp() << "C" << endl;
-		Serial << "Humidity: " << sensors.getHumidity() << "%" << endl;
-		Serial << "Light level: " << sensors.getLight() << "%" << endl;
-		if (settings.getReservoirModule()) {
-			Serial << "EC: " << sensors.getEC() << endl;
-			Serial << "pH: " << sensors.getPH() << endl;
-			Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl;
-		}
-	}
-	Serial.flush();
-}
-
 //This gets set as the default handler, and gets called when no other command matches.
 void SerialInterface::help() {
 	Serial.flush();
@@ -98,15 +83,17 @@ void SerialInterface::help() {
 	//help sensors
 	//if arg == commands[1]
 	} else if (strcmp(arg,commands[1]) == 0) {
-		Serial << endl << "> Available commands:" << endl;
+		printLn(commandsTxT);
 		list(nSensorsC,sensorCommands);
 	//help settings
 	} else if (strcmp(arg,commands[2]) == 0) {
-		Serial << endl << "> Available commands:" << endl;
+		printLn(commandsTxT);
 		list(nSettingsC,settingsCommands);
 	//help memory
 	} else if (strcmp(arg,commands[3]) == 0)
-		Serial << endl << "> Displays current system's free memory." << endl << endl;
+		printLn("Displays current system's free memory.");
+	else if (strcmp(arg,commands[4]) == 0)
+		printLn("Displays all sensor info.");
 	//not recognized
 	else 
 		Serial << endl << "> No help found for command <" << arg << ">" << endl << endl;
@@ -115,6 +102,24 @@ void SerialInterface::help() {
 //Uses external FreeMemory library
 void SerialInterface::commandMemory() {
 	Serial << endl << "> Available memory: " << freeMemory() << " bytes"<< endl << endl;
+}
+
+//Sends sensor data through serial
+void SerialInterface::commandStatus() {
+	if (settings.getSerialDebug()) {
+		Serial << endl;
+		Serial << "> Available memory: " << freeMemory() << " bytes"<< endl;
+		Serial << "> Temp: " << sensors.getTemp() << "C" << endl;
+		Serial << "> Humidity: " << sensors.getHumidity() << "%" << endl;
+		Serial << "> Light level: " << sensors.getLight() << "%" << endl;
+		if (settings.getReservoirModule()) {
+			Serial << "> EC: " << sensors.getEC() << endl;
+			Serial << "> pH: " << sensors.getPH() << endl;
+			Serial << "> Water level: " << sensors.getWaterLevel() << "%" << endl;
+		}
+		Serial << endl;
+	}
+	Serial.flush();
 }
 
 //Prints a decorated line
