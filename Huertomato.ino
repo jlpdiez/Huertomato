@@ -178,20 +178,33 @@ void setup() {
 
 //Initiates system time from RTC
 void setupRTC() {
-	setSyncProvider(RTC.get); 
-	if(timeStatus() != timeSet) {
-		ui.timeStamp("RTC init problem!!");
-	} 
+	setSyncProvider(RTC.get);
+	time_t t = now();
+	int d = day(t);
+	int mo = month(t);
+	int y = year(t);
+	int h = hour(t);
+	int m = minute(t);
+	if ((timeStatus() == timeSet) && (d == 1) && (mo == 1) && (y = 2000)) {
+		//This prevents a bug when time resets and then loops 00:00 - 00:05
+		sensors.setRTCtime(10,10,10,10,10,2010);
+		ui.timeStamp("RTC time has been recently reset. It needs manual adjustement.");
+	} else if (timeStatus() == timeSet)
+		ui.timeStamp("RTC init OK");
+	if (timeStatus() != timeSet)
+		ui.timeStamp("RTC init FAIL!");
 }
 
 //Inits SD card and creates timer for SD logs
 void setupSD() {
 	if (settings.getSDactive()) {
 		pinMode(SDCardSS, OUTPUT);
-		if (SD.begin(SDCardSS))
+		if (SD.begin(SDCardSS)) {
+			//Timer to log sensor data to SD Card
+			startSDlogTimer();
 			ui.timeStamp("SD init OK");
-		//Timer to log sensor data to SD Card
-		startSDlogTimer();
+		} else 
+			ui.timeStamp("SD init FAIL!");
 	}
 }
 
@@ -425,7 +438,7 @@ void logSensorReadings() {
 	int y = year(t);
 	int h = hour(t);
 	int m = minute(t);
-  
+	
 	//Filename must be at MAX 8chars + "." + 3chars
 	//We choose it to be YYYY+MM+DD.txt
 	String fileName = ""; 
@@ -462,7 +475,6 @@ void updateSensors() {
 	sensors.update();
 	gui.refresh();
 	ui.timeStamp("Sensors read, data updated.");
-	//ui.showStatsSerial();
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
