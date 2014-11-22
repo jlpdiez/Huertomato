@@ -436,9 +436,9 @@ boolean SerialInterface::isBoolean(char* str) {
 boolean SerialInterface::getBoolean(char* str) {
 	if (str == NULL)
 		return false;
-	else if ((strcmp(str,"true") == 0) || (strcmp(str,"1")))
+	else if ((strcmp(str,"true") == 0) || (strcmp(str,"1") == 0))
 		return true;
-	else if ((strcmp(str,"false") == 0) || (strcmp(str,"0")))
+	else if ((strcmp(str,"false") == 0) || (strcmp(str,"0") == 0))
 		return false;
 }
 

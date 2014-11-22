@@ -44,19 +44,6 @@ void WinSystemMenu::draw() {
 	print();
 	_buttons.drawButtons();
 }
- 
-//Redraws only system settings text from inner temp vars
-//Used when +- signs are pressed
-void WinSystemMenu::update() {
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
-	_lcd->setFont(hallfetica_normal);
-	//Watering at night ON/OFF
-	if (_nightWater)
-		_lcd->print(onStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[_nFlowButtons+1]),_yThreeLnsFirst+_bigFontSize*_yFactor3lines*4);
-	else
-		_lcd->print(offStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen(systemButtonText[_nFlowButtons+1]),_yThreeLnsFirst+_bigFontSize*_yFactor3lines*4);
-
-}
 
 Window::Screen WinSystemMenu::processTouch(const int x,const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
@@ -66,17 +53,9 @@ Window::Screen WinSystemMenu::processTouch(const int x,const int y) {
 	else if (buttonIndex == systemButtons[2]) { return MainScreen; }
 	//Watering Cycle
 	else if (buttonIndex == systemButtons[3]) { return WateringCycle; }
-	//Sensor Alarms
-	else if (buttonIndex == systemButtons[4]) { return Alarms; }
-	//Sensor Calibration
+	//Night Watering
+	else if (buttonIndex == systemButtons[4]) { return NightWater; }
+	//Reservoir Module
 	else if (buttonIndex == systemButtons[5]) { return SensorCalib; }
-	//Pump Protection
-	else if (buttonIndex == systemButtons[6]) { return Pump; }
-	//Water at night Toggle
-	else if (buttonIndex == systemButtons[7]) {
-		_nightWater = !_nightWater;
-		_settings->setNightWatering(_nightWater);
-		update();
-	}
 	return None;
 }

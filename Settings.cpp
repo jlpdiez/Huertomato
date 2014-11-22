@@ -161,7 +161,7 @@ void Settings::setDefault() {
 	setSound(false);
 	setSerialDebug(true);
 	setLightThreshold(30);
-	setReservoirModule(true);
+	setReservoirModule(false);
 	setMaxWaterLvl(16);
 	setMinWaterLvl(50);
 	setPumpProtectionLvl(15);
@@ -258,7 +258,7 @@ boolean Settings::setNightWatering(const boolean n) {
 }
 
 boolean Settings::setLightThreshold(const uint16_t l) {
-	if ((l >= 0) && (l < 1024)) {
+	if ((l >= 0) && (l < 9999)) {
 		_lightThreshold = l;
 		EEPROM.updateInt(_addressLightThreshold,l);
 		return true;

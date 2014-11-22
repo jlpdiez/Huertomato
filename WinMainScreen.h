@@ -54,7 +54,7 @@ static char* alarmPath = "/PICTURE/alarm126.RAW";
 static char* versionName = "Huertomato 1.3";
 static char* humidUnit = "%";
 static char* tempUnit = "C";
-static char* lightUnit = "%";
+static char* lightUnit = "Lux";
 static char* ecUnit = "uS";
 static char* lvlUnit = "%";
 //Spaces at the end are used to have all strings of same size and no thrash on screen

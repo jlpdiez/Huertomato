@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 22.11.2014
 //
 // # Description: Night Watering Settings. Toggle on/off and set threshold
 //
@@ -29,15 +29,17 @@
 
 #include "Window.h"
 
-const int nWaterNightButtons = 4;
+const int nWaterNightButtons = 5;
 static char* waterNightButtonsText[nWaterNightButtons] = {
+	"Water at night:",
 	"Set"
 };
 static int waterNightButtons[nWaterNightButtons];
 
 static char* nameWinWaterNight = "- Night Calibration -";
-static char* rawLight = "Current Reading:";
+static char* rawLight = "Actual Light:";
 static char* lightThreshold = "Threshold:";
+static char* newLightUnit = "Lux";
 
 //TODO: Should contain LightCalib and on/off toggle with 3 lines, with toggle first like inSD
 class WinWaterNight: public Window {
@@ -53,7 +55,7 @@ class WinWaterNight: public Window {
 	
 	protected:
 		boolean _nightWater;
-		uint16_t _lightThreshold, _rawLightLvl;
+		float _lightThreshold, _rawLightLvl;
 		void print();
 };
 

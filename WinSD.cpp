@@ -91,9 +91,9 @@ void WinSD::update() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	if (_sdActive)
-	_lcd->print(onStr,_xConfig+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(onStr,_xConfig+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
 	else
-	_lcd->print(offStr,_xConfig+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(offStr,_xConfig+((3+strlen(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
 
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//hours
@@ -143,7 +143,7 @@ Window::Screen WinSD::processTouch(const int x, const int y) {
 	} else if (buttonIndex == sdCardButtons[6]) {
 		(_sdHour <= 0) ? _sdHour=23 : _sdHour--;
 		update();
-	//Minute down
+	//Minute downs
 	} else if (buttonIndex == sdCardButtons[7]) {
 		(_sdMin <= 0) ? _sdMin=59 : _sdMin--;
 		update();

@@ -529,12 +529,6 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="WinEcAlarms.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="WinLightCalib.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinLightCalib.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="WinLvlAlarms.cpp">
       <SubType>compile</SubType>
     </Compile>

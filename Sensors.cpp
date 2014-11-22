@@ -76,7 +76,7 @@ Sensors::~Sensors() {}
 //Getters
 float Sensors::getTemp() const { return _temp; }
 
-uint8_t Sensors::getLight() const { return _light; }
+uint16_t Sensors::getLight() const { return _light; }
 
 uint8_t Sensors::getHumidity() const { return _humidity; }
 
@@ -95,16 +95,6 @@ uint16_t Sensors::getRawWaterLevel(){
 	digitalWrite(waterTrigger, LOW);
 
 	return (pulseIn(waterEcho, HIGH) / 29) / 2;
-}
-
-//TODO: Convert to LUX
-//#include <Streaming.h>
-//Returns light raw data
-uint16_t Sensors::getRawLight() {
-	int rawADC = analogRead(lightIn);
-	//float volts = (rawADC * 5.0) / 1023;
-	//Serial << rawADC << ", " << volts << endl;
-	return analogRead(lightIn);
 }
 
 boolean Sensors::ecOffRange() {
@@ -139,7 +129,7 @@ void Sensors::update() {
 
 	_iSample++;
 	if (_iSample >= _numSamples)
-		_iSample =0;
+		_iSample = 0;
 	
 	smoothSensorReadings();
 }
@@ -153,7 +143,7 @@ void Sensors::smoothSensorReadings() {
 	//Light
 	uint16_t res = 0;
 	for (int i = 0; i < _numSamples; i++) { res += _lights[i]; }
-	_light = (uint8_t)(res / _numSamples);
+	_light = (uint16_t)(res / _numSamples);
 	//Humidity
 	res = 0;
 	for (int i = 0; i < _numSamples; i++) { res += _humidities[i]; }
@@ -173,17 +163,22 @@ void Sensors::smoothSensorReadings() {
 }
 
 //Returns light level 0~100%
-uint8_t Sensors::light() {
-	int adc = analogRead(lightIn); 
-	return map(adc, 0, 1023, 0, 100); 
-	/* Code from Billie
-	lightADCReading = analogRead(lightSensor);
+uint16_t Sensors::light() {
+	//int adc = analogRead(lightIn); 
+	//return map(adc, 0, 1023, 0, 100); 
+	
+	int rawADC = analogRead(lightIn);
+	const int voltageLvl = 4.3;
+	//Code from Billie:
+	//https://github.com/BillieBricks/Billie-s-Hydroponic-Controller/blob/master/HydroponicControllerV1.1.0
+	int lightADCReading = analogRead(lightIn);
 	// Calculating the voltage of the ADC for light
-	lightInputVoltage = 5.0 * ((double)lightADCReading / 1024.0);
+	double lightInputVoltage = voltageLvl * ((double)lightADCReading / 1024.0);
 	// Calculating the resistance of the photoresistor in the voltage divider
-	lightResistance = (10.0 * 5.0) / lightInputVoltage - 10.0;
-	// Calculating the intensity of light in lux       
-	currentLightInLux = 255.84 * pow(lightResistance, -10/9);*/
+	double lightResistance = (10.0 * voltageLvl) / lightInputVoltage - 10.0;
+	// Calculating the intensity of light in lux
+	uint16_t currentLightInLux = (uint16_t)(255.84 * pow(lightResistance, -10/9));
+	return currentLightInLux;
 }
 
 //Returns temp in Celsius

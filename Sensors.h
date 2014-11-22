@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 21.11.2014
+// # Date       : 22.11.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -66,14 +66,13 @@ class Sensors {
 	~Sensors(); 
     //Getters
     float getTemp() const;
-    uint8_t getLight() const;
+    uint16_t getLight() const;
     uint8_t getHumidity() const;
     uint16_t getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
-	uint16_t getRawLight();
 	//Tests
 	boolean ecOffRange();
 	boolean phOffRange();
@@ -84,19 +83,6 @@ class Sensors {
     void adjustECtemp();
 	//Adds a reading to a graph
 	void storeGraphPoint();
-	//pH Calibration
-	/*void setPHcontinuous();
-	void setPHstandby();
-	void setPHfour();
-	void setPHseven();
-	void setPHten();
-	//EC Calibration
-	void setECcontinuous();
-	void setECstandby();
-	void setECprobeType();
-	void setECdry();
-	void setECtenThousand();
-	void setECfortyThousand();*/
 	//RTC adjustment
 	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
@@ -105,8 +91,9 @@ class Sensors {
 	
     //Smoothes readings
     void smoothSensorReadings();
+	void smoothRawLight();
     //These poll hardware and return sensor info
-    uint8_t light();
+    uint16_t light();
     float temp();
     uint8_t humidity();
     uint8_t waterLevel();
@@ -120,14 +107,14 @@ class Sensors {
     uint8_t _iSample;
     //Contain sensor data pre-smoothing
     float _temps[_numSamples];
-    uint8_t _lights[_numSamples]; 
+    uint16_t _lights[_numSamples]; 
     uint8_t _humidities[_numSamples];
     uint16_t _ecs[_numSamples];
     float _phs[_numSamples];
     uint8_t _waterLevels[_numSamples];
     //Contain sensor values post smoothing
     float _temp;
-    uint8_t _light;
+    uint16_t _light;
     uint8_t _humidity;
     uint16_t _ec;
     float _ph;

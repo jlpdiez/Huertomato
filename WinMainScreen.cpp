@@ -190,11 +190,11 @@ void WinMainScreen::printInfoNoModule() {
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	_lcd->print(tempUnit,xSpacer-_bigFontSize,y);
 	//Light
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[2])+4));
+	x = xSpacer-(_bigFontSize*(11 + strlen(lightUnit)));
 	y +=  _bigFontSize + 45;
 	_lcd->print(sensorText[2],x,y);
-	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
-	_lcd->print(lightUnit,xSpacer-_bigFontSize,y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
+	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen(lightUnit)),y);
 	//Humidity
 	y = ySpacer+(_bigFontSize+8)*5;
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));
@@ -216,7 +216,7 @@ void WinMainScreen::updateInfoNoModule() {
 	//Light
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[2])+4));
 	y +=  _bigFontSize + 45;
-	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
 	//Humidity
 	y = ySpacer+(_bigFontSize+8)*5;
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));

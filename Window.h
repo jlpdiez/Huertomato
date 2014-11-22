@@ -67,6 +67,7 @@ static char* saveText = " Save ";
 static char* savedText = " Saved ";
 static char* cancelText = " Exit ";
 //Common window toggles
+//Has one extra char to cover last F of OFF
 static char* onStr = "ON ";
 static char* offStr = "OFF";
 //various_symbols font is used for bulletpoints

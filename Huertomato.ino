@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.2.6
+// # Version    : 1.3.8
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 28.06.2014
+// # Date       : 22.11.2014
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -51,7 +51,6 @@
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
 #include "WinEcAlarms.h"
-//#include "WinLightCalib.h"
 #include "WinLvlAlarms.h"
 #include "WinLvlCalib.h"
 #include "WinMainMenu.h"
@@ -165,7 +164,6 @@ void setup() {
 	//TODO:Make auto-detect
 	//First run
 	//settings.setDefault();
-	//settings.setReservoirModule(false);
 	settings.setAlarmTriggered(false);
 	setupRTC();
 	setupSD(); 
@@ -323,7 +321,7 @@ void checkNightTime() {
 	//Only if night-watering is disabled
 	if (!settings.getNightWatering()) {
 		//Its night-time and watering not stopped already
-		if ((sensors.getRawLight() < settings.getLightThreshold()) && !settings.getNightWateringStopped()) {
+		if ((sensors.getLight() < settings.getLightThreshold()) && !settings.getNightWateringStopped()) {
 			stopWaterTimer();
 			stopWaterOffTimer();
 			//System in timed mode and not currently watering
@@ -340,7 +338,7 @@ void checkNightTime() {
 			settings.setNightWateringStopped(true);
 			
 		//Day-time and watering not reactivated already
-		} else if ((sensors.getRawLight() >= settings.getLightThreshold()) && settings.getNightWateringStopped()) {
+		} else if ((sensors.getLight() >= settings.getLightThreshold()) && settings.getNightWateringStopped()) {
 			settings.setNightWateringStopped(false);
 			//Just in case. Prevents overflow when there are a lot of night/day triggers in short time
 			stopWaterOffTimer();

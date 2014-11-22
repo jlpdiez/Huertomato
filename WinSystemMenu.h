@@ -47,7 +47,6 @@ class WinSystemMenu: public Window {
 		~WinSystemMenu();
 		Screen getType() const;
 		void draw();
-		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
