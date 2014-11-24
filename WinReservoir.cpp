@@ -21,7 +21,20 @@ Window::Screen WinReservoir::getType() const {
 }
 
 void WinReservoir::print() {
-	
+	static const int _yFactor4lines = 2.5;
+	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	_lcd->setBackColor(VGA_WHITE);
+	//Print bulletpoints
+	_lcd->setFont(various_symbols);
+	//Before the buttons were adding there are the flow buttons
+	for (int i = 0; i < nuttons - _nFlowButtons; i++) {
+		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+	}
+	//Make menu buttons
+	for (int i = 0; i < nSystemButtons - _nFlowButtons; i++) {
+		systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,systemButtonText[i]);
+	}
+}
 }
 
 void WinReservoir::update() {

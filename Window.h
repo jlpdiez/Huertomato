@@ -139,6 +139,7 @@ class Window {
 		//These are used for menus that are drawn using a for
 		//Will be multiplied with (_bigFontSize * number of row) to get Y coord in menus
 		static const int _yFactor3lines = 3;
+		static const int _yFactor4lines = 2.5;
 		static const int _yFactor5lines = 2;
 	 	
 		virtual void print();
