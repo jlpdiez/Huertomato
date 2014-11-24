@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 24.11.2014
 //
 // # Description: Reservoir module submenu. On/off toggle, alarms, calibration and pump protection
 //
@@ -26,6 +26,8 @@
 #ifndef WINRESERVOIR_H_
 #define WINRESERVOIR_H_
 
+#include "Window.h"
+
 //TODO: Should have: ON/OFF toggle ¿first? (then  grey out or not remaining options)
 //Should be cool to autodetect if sensors are unresponsive and change setting.reservoirModule
 //And read hgere and grey out automatically
@@ -33,6 +35,31 @@
 //Sensor Calibration
 //Pump protection
 
+const int nReservoirButtons = 7;
+static char* reservoirButtonsText[nReservoirButtons] = {
+	"Reservoir Module:",
+	"Sensor Alarms",
+	"Pump Protection",
+	"Sensor Calibration"
+};
+static int reservoirButtons[nReservoirButtons];
 
+static char* nameWinReservoir = "- Reservoir Module -";
+
+class WinReservoir: public Window {
+	public:
+		WinReservoir(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinReservoir(const WinReservoir &other);
+		WinReservoir& operator=(const WinReservoir &other);
+		~WinReservoir();
+		Screen getType() const;
+		void draw();
+		void update();
+		Window::Screen processTouch(const int x, const int y);
+		
+	protected:	
+		boolean _reservoirActive;
+		void print();
+};
 
 #endif 

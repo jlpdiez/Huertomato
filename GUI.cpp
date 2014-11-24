@@ -115,6 +115,9 @@ void GUI::updateScreen(Window::Screen newScreen) {
 		case Window::Pump:
 			_window = new WinPump(_lcd,_touch,_sensors,_settings);
 			break;
+		case Window::Reservoir:
+			_window = new WinReservoir(_lcd,_touch,_sensors,_settings);
+			break;
 		default:
 			_window = new Window(_lcd,_touch,_sensors,_settings);
 			break;

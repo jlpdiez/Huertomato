@@ -56,6 +56,6 @@ Window::Screen WinSystemMenu::processTouch(const int x,const int y) {
 	//Night Watering
 	else if (buttonIndex == systemButtons[4]) { return NightWater; }
 	//Reservoir Module
-	else if (buttonIndex == systemButtons[5]) { return SensorCalib; }
+	else if (buttonIndex == systemButtons[5]) { return Reservoir; }
 	return None;
 }

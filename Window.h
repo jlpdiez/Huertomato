@@ -94,7 +94,8 @@ class Window {
 			SensorCalib = 14,
 			LvlCalib = 15,
 			NightWater = 16,
-			Pump = 17
+			Pump = 17,
+			Reservoir = 18
 		};
 				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);

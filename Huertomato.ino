@@ -57,6 +57,7 @@
 #include "WinMainScreen.h"
 #include "WinPhAlarms.h"
 #include "WinPump.h"
+#include "WinReservoir.h"
 #include "WinSD.h"
 #include "WinSensorCalib.h"
 #include "WinSensorPolling.h"
