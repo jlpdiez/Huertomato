@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinPump
-// # Version    : 1.2
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 24.11.2014
+// # Date       : 19.11.2014
 //
 // # Description: Pump protection configuration window
 //

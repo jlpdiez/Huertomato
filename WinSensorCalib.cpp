@@ -46,14 +46,12 @@ void WinSensorCalib::draw() {
 Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorCalibrationButtons[0]) 
-		return Reservoir;
+	if (buttonIndex == sensorCalibrationButtons[0]) { return SystemSettings; }
 	//Exit
-	else if (buttonIndex == sensorCalibrationButtons[2])
-		return MainScreen;
-	else if (buttonIndex == sensorCalibrationButtons[3])
-		return LvlCalib;
-	else if (buttonIndex == sensorCalibrationButtons[4])
-		return NightWater;
+	else if (buttonIndex == sensorCalibrationButtons[2]) { return MainScreen; }
+	//Water calibration
+	else if (buttonIndex == sensorCalibrationButtons[3]) { return LvlCalib; }
+	//Light Calibration
+	else if (buttonIndex == sensorCalibrationButtons[4]) { return NightWater; }
 	return None;
 }

@@ -50,19 +50,14 @@ void WinAlarms::draw() {
 Window::Screen WinAlarms::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorAlarmsButtons[0])
-		return Reservoir;
+	if (buttonIndex == sensorAlarmsButtons[0]) { return SystemSettings; }
 	//Exit
-	else if (buttonIndex == sensorAlarmsButtons[2])
-		return MainScreen;
+	else if (buttonIndex == sensorAlarmsButtons[2]) { return MainScreen;  }
 	//pH Thresholds
-	else if (buttonIndex == sensorAlarmsButtons[3])
-		return PhAlarms;
+	else if (buttonIndex == sensorAlarmsButtons[3]) { return PhAlarms; }
 	//EC Thresholds
-	else if (buttonIndex == sensorAlarmsButtons[4])
-		return EcAlarms;
+	else if (buttonIndex == sensorAlarmsButtons[4]) { return EcAlarms; }
 	//Nutrient Level
-	else if (buttonIndex == sensorAlarmsButtons[5]) 
-		return LvlAlarms;
+	else if (buttonIndex == sensorAlarmsButtons[5]) { return LvlAlarms; }
 	return None;
 }

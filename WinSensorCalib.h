@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSensorCalib
-// # Version    : 1.2
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 24.11.2014
+// # Date       : 19.11.2014
 //
 // # Description: Sensor calibration menu window
 //
@@ -32,8 +32,7 @@
 const int nSensorCalibrationButtons = 5;
 static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
 	"Water Levels",
-	"pH Calibration",
-	"EC Calibration"
+	"Night Threshold"
 };
 static int sensorCalibrationButtons[nSensorCalibrationButtons];
 
