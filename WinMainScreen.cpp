@@ -88,11 +88,11 @@ void WinMainScreen::printInfoReservoir() {
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	_lcd->print(tempUnit,xSpacer-_bigFontSize,y);
 	//Light
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[2])+4));
+	x = xSpacer-(_bigFontSize*(11 + strlen(lightUnit)));
 	y = ySpacer+(_bigFontSize+8)*2;
 	_lcd->print(sensorText[2],x,y);
-	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
-	_lcd->print(lightUnit,xSpacer-_bigFontSize,y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
+	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen(lightUnit)),y);
 	//pH
 	x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;
@@ -141,7 +141,7 @@ void WinMainScreen::updateInfoReservoir() {
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	//Light
 	y = ySpacer+(_bigFontSize+8)*2;
-	_lcd->printNumI(_sensors->getLight(),xSpacer-_bigFontSize*4,y,3);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
 	//pH
 	int x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;

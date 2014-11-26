@@ -511,6 +511,7 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h" />
     <Compile Include="WinAlarms.cpp">
       <SubType>compile</SubType>
     </Compile>

@@ -203,7 +203,8 @@ uint8_t Sensors::waterLevel() {
 	digitalWrite(waterTrigger, HIGH);
 	delayMicroseconds(5);
 	digitalWrite(waterTrigger, LOW);
-	duration = pulseIn(waterEcho, HIGH);
+	//Calc duration. Timeout of half second
+	duration = pulseIn(waterEcho, HIGH,500000);
 	distance = (duration / 29) / 2;
 	//Serial << "Distance: " << distance << endl;	
 	distance = constrain(distance, _settings->getMaxWaterLvl(), _settings->getMinWaterLvl());
@@ -212,41 +213,49 @@ uint8_t Sensors::waterLevel() {
 
 //Returns PH level 
 //Temp-adjusted reading
+//TODO: Redo once PCB works
 float Sensors::ph() {   
-	//Convert temperature from float to char*
-	//char tempArray[4];
-	//dtostrf(_temp,4,2,tempArray);
-	//String command = (String)tempArray + "\r";
-	//Serial1.print(command);
-	//Normal reading
-	Serial1.print("R\r");
-	//Wait for transmission to end
-	Serial1.flush();
-	float res = Serial1.parseFloat();
-	//Discard carriage return '/r'
-	Serial1.read();
-	//Make sure data is valid
-	if (res < 14)
-		return res;
-	else 
-		return _ph;
+	if (Serial1.available() > 0) {
+		//Convert temperature from float to char*
+		//char tempArray[4];
+		//dtostrf(_temp,4,2,tempArray);
+		//String command = (String)tempArray + "\r";
+		//Serial1.print(command);
+		//Normal reading
+		Serial1.print("R\r");
+		//Wait for transmission to end
+		Serial1.flush();
+		float res = Serial1.parseFloat();
+		//Discard carriage return '/r'
+		Serial1.read();
+		//Make sure data is valid
+		if (res < 14)
+			return res;
+		else 
+			return _ph;
+	}
+	return 0;
 }
 
 //Returns EC in uSiemens
+//TODO: Redo once PCB works
 uint16_t Sensors::ec() {
- 	uint16_t res = Serial2.parseInt();
- 	//Serial << "EC: " << res << endl;
- 	//Clear buffer of remaining message
- 	while (Serial2.peek() != '\r') {
+	if (Serial2.available() > 0) {
+ 		uint16_t res = Serial2.parseInt();
+ 		//Serial << "EC: " << res << endl;
+ 		//Clear buffer of remaining message
+ 		while (Serial2.peek() != '\r') {
+ 			Serial2.read();
+		}
  		Serial2.read();
-	 }
- 	Serial2.read();
-	//Sometimes readings spike. We should prevent that
-	//Not sure if its from Serial buffer overflowing or noise in cables
-	if (res < 20000)
-		return res;
-	else
-		return _ec;	 
+		//Sometimes readings spike. We should prevent that
+		//Not sure if its from Serial buffer overflowing or noise in cables
+		if (res < 20000)
+			return res;
+		else
+			return _ec;	 
+	}
+	return 0;
 }
 
 //Sends command to EC sensor to adjust readings to temperature

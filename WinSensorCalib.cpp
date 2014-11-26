@@ -26,11 +26,9 @@ void WinSensorCalib::print() {
 	
 	//Bulletpoints
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xMenu,_yTwoLnsFirst);
-	_lcd->print(bulletStr,_xMenu,_yTwoLnsSecond);
+	_lcd->print(bulletStr,_xMenu,_yOneLine);
 	//Buttons
-	sensorCalibrationButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yTwoLnsFirst,sensorCalibrationButtonsText[0]);
-	sensorCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xMenu+_bigFontSize*2,_yTwoLnsSecond,sensorCalibrationButtonsText[1]);
+	sensorCalibrationButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yOneLine,sensorCalibrationButtonsText[0]);
 }
 
 //Draws entire screen Sensor Calibration

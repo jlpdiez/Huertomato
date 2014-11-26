@@ -54,6 +54,7 @@ class WinReservoir: public Window {
 		~WinReservoir();
 		Screen getType() const;
 		void draw();
+		void update();
 		Window::Screen processTouch(const int x, const int y);
 		
 	protected:	
