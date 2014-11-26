@@ -56,13 +56,15 @@ void WinPump::update() {
 Window::Screen WinPump::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == pumpProtectionButtons[0]) { return SystemSettings; }
+	if (buttonIndex == pumpProtectionButtons[0]) 
+		return Reservoir;
 	//Save
 	else if (buttonIndex == pumpProtectionButtons[1]) {
 		_settings->setPumpProtectionLvl(_pumpProtectionLvl);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == pumpProtectionButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == pumpProtectionButtons[2]) 
+		return MainScreen;
 		
 	//Up
 	else if (buttonIndex == pumpProtectionButtons[3]) {

@@ -27,11 +27,11 @@ void WinSystemMenu::print() {
 	_lcd->setFont(various_symbols);
 	//Before the buttons were adding there are the flow buttons
 	for (int i = 0; i < nSystemButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+		_lcd->print(bulletStr,_xMenu,_yFiveLines+_bigFontSize*_yFactor3lines*i);
 	}
 	//Make menu buttons
 	for (int i = 0; i < nSystemButtons - _nFlowButtons; i++) {
-		systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,systemButtonText[i]);
+		systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFiveLines+_bigFontSize*_yFactor3lines*i,systemButtonText[i]);
 	}
 }
 

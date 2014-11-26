@@ -67,10 +67,10 @@ void WinSD::print() {
 	//If first toggle is inactive we grey out buttons
 	if (!_sdActive) {
 		for (int i = 4; i < nSDcardButtons; i++)
-		_buttons.disableButton(sdCardButtons[i],true);
+			_buttons.disableButton(sdCardButtons[i],true);
 		} else {
-		for (int i = 4; i < nSDcardButtons; i++)
-		_buttons.enableButton(sdCardButtons[i],true);
+			for (int i = 4; i < nSDcardButtons; i++)
+				_buttons.enableButton(sdCardButtons[i],true);
 	}
 } 
 
