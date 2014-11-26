@@ -98,7 +98,7 @@ Window::Screen WinControllerMenu::processTouch(const int x, const int y) {
 		_soundActive = !_soundActive;
 		_settings->setSound(_soundActive);
 		update();
-		//Serial debugging toggle
+	//Serial debug toggle
 	} else if (buttonIndex == controllerButtons[7]) {
 		_serialActive = !_serialActive;
 		_settings->setSerialDebug(_serialActive);

@@ -165,6 +165,7 @@ void setup() {
 	//TODO:Make auto-detect
 	//First run
 	//settings.setDefault();
+	
 	settings.setAlarmTriggered(false);
 	setupRTC();
 	setupSD(); 

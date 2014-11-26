@@ -135,11 +135,12 @@ class Window {
 		static const int _yThreeLnsFirst = 50;
 		static const int _yThreeLnsSecond = 100;
 		static const int _yThreeLnsThird = 150;
+		static const int _yFourLines = 40;
 		static const int _yFiveLines = 40;
 		//These are used for menus that are drawn using a for
 		//Will be multiplied with (_bigFontSize * number of row) to get Y coord in menus
 		static const int _yFactor3lines = 3;
-		static const int _yFactor4lines = 2.5;
+		static const float _yFactor4lines = 2.5;
 		static const int _yFactor5lines = 2;
 	 	
 		virtual void print();
