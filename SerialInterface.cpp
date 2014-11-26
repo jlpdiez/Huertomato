@@ -107,7 +107,17 @@ void SerialInterface::commandMemory() {
 //Sends sensor data through serial
 void SerialInterface::commandStatus() {
 	if (settings.getSerialDebug()) {
+		time_t t = now();
+		uint8_t h = hour(t);
+		uint8_t m = minute(t);
+		uint8_t s = second(t);
+		uint8_t d = day(t);
+		uint8_t mo = month(t);
+		uint16_t y = year(t);
+		
 		Serial << endl;
+		Serial << "> Date: " << ((d<10)?"0":"") << d << "/" << ((mo<10)?"0":"") << mo << "/" << y << endl;
+		Serial << "> Time: " << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s << endl;
 		Serial << "> Available memory: " << freeMemory() << " bytes"<< endl;
 		Serial << "> Temp: " << sensors.getTemp() << "C" << endl;
 		Serial << "> Humidity: " << sensors.getHumidity() << "%" << endl;
