@@ -167,19 +167,34 @@ uint16_t Sensors::light() {
 	//int adc = analogRead(lightIn); 
 	//return map(adc, 0, 1023, 0, 100); 
 	
-	int rawADC = analogRead(lightIn);
-	const int voltageLvl = 4.3;
+	//int rawADC = analogRead(lightIn);
+	//const int voltageLvl = 4.3;
 	//Code from Billie:
 	//https://github.com/BillieBricks/Billie-s-Hydroponic-Controller/blob/master/HydroponicControllerV1.1.0
-	int lightADCReading = analogRead(lightIn);
+	//int lightADCReading = analogRead(lightIn);
 	// Calculating the voltage of the ADC for light
-	double lightInputVoltage = voltageLvl * ((double)lightADCReading / 1024.0);
+	//double lightInputVoltage = voltageLvl * ((double)lightADCReading / 1024.0);
 	// Calculating the resistance of the photoresistor in the voltage divider
-	double lightResistance = (10.0 * voltageLvl) / lightInputVoltage - 10.0;
+	//double lightResistance = (10.0 * voltageLvl) / lightInputVoltage - 10.0;
 	// Calculating the intensity of light in lux
-	uint16_t currentLightInLux = (uint16_t)(255.84 * pow(lightResistance, -10/9));
-	return currentLightInLux;
+	//uint16_t currentLightInLux = (uint16_t)(255.84 * pow(lightResistance, -10/9));
+	//return currentLightInLux;
+	
+	// Equation to calculate Resistance of LDR, [R-LDR =(R1 (Vin - Vout))/ Vout]
+	// Vout = Output voltage from potential Divider. [Vout = ADC * (Vin / 1024)]
+
+	//http://forum.arduino.cc/index.php?topic=141815.0
+	const float vcc = 4.3;
+	const int resInKohm = 10.0;
+	int adc = analogRead(lightIn);
+	//Vout = Output voltage from potential Divider. [Vout = adc * (Vin / 1024)]
+	float vo = adc * (vcc / 1024);
+	//Equation to calculate Resistance of LDR, [R-LDR =(R1 (Vin - Vout))/ Vout]
+	float rldr = (resInKohm * (vcc - vo)) / vo;
+	uint16_t luxes = (500 / rldr);
+	return luxes;
 }
+
 
 //Returns temp in Celsius
 float Sensors::temp() {

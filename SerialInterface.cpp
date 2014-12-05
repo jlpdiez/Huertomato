@@ -121,7 +121,7 @@ void SerialInterface::commandStatus() {
 		Serial << "> Available memory: " << freeMemory() << " bytes"<< endl;
 		Serial << "> Temp: " << sensors.getTemp() << "C" << endl;
 		Serial << "> Humidity: " << sensors.getHumidity() << "%" << endl;
-		Serial << "> Light level: " << sensors.getLight() << "%" << endl;
+		Serial << "> Light level: " << sensors.getLight() << "lux" << endl;
 		if (settings.getReservoirModule()) {
 			Serial << "> EC: " << sensors.getEC() << endl;
 			Serial << "> pH: " << sensors.getPH() << endl;
