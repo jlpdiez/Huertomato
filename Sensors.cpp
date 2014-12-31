@@ -9,15 +9,15 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     temperature.begin();
     temperature.setResolution(11);
     //Open communication with PH sensor
-    Serial1.begin(38400);
+    Serial2.begin(38400);
     //Set it into reading on-demand mode
-    Serial1.print("E\r");
+    Serial2.print("E\r");
 	
     //EC sensor
-    Serial2.begin(38400);	
-    Serial2.print("E\r");
+    Serial1.begin(38400);	
+    Serial1.print("E\r");
     //Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
-    Serial2.print("C\r");
+    Serial1.print("C\r");
     
     _iSample = 0;
     //Initiate data arrays
@@ -230,19 +230,19 @@ uint8_t Sensors::waterLevel() {
 //Temp-adjusted reading
 //TODO: Redo once PCB works
 float Sensors::ph() {   
-	if (Serial1.available() > 0) {
+	if (Serial2.available() > 0) {
 		//Convert temperature from float to char*
 		//char tempArray[4];
 		//dtostrf(_temp,4,2,tempArray);
 		//String command = (String)tempArray + "\r";
-		//Serial1.print(command);
+		//Serial2.print(command);
 		//Normal reading
-		Serial1.print("R\r");
+		Serial2.print("R\r");
 		//Wait for transmission to end
-		Serial1.flush();
-		float res = Serial1.parseFloat();
+		Serial2.flush();
+		float res = Serial2.parseFloat();
 		//Discard carriage return '/r'
-		Serial1.read();
+		Serial2.read();
 		//Make sure data is valid
 		if (res < 14)
 			return res;
@@ -255,14 +255,14 @@ float Sensors::ph() {
 //Returns EC in uSiemens
 //TODO: Redo once PCB works
 uint16_t Sensors::ec() {
-	if (Serial2.available() > 0) {
- 		uint16_t res = Serial2.parseInt();
+	if (Serial1.available() > 0) {
+ 		uint16_t res = Serial1.parseInt();
  		//Serial << "EC: " << res << endl;
  		//Clear buffer of remaining message
- 		while (Serial2.peek() != '\r') {
- 			Serial2.read();
+ 		while (Serial1.peek() != '\r') {
+ 			Serial1.read();
 		}
- 		Serial2.read();
+ 		Serial1.read();
 		//Sometimes readings spike. We should prevent that
 		//Not sure if its from Serial buffer overflowing or noise in cables
 		if (res < 20000)
@@ -282,7 +282,71 @@ void Sensors::adjustECtemp() {
 		dtostrf(_temp,4,2,tempArray);
 		String command = (String)tempArray + ",C\r";
 		//Serial << command << endl;
-		Serial2.print(command); 
+		Serial1.print(command); 
+	}
+}
+
+//pH Calibration
+void Sensors::setPHcontinuous() {
+	Serial2.print("C/r");
+	Serial.println("Continuous pH");
+}
+void Sensors::setPHstandby() {
+	Serial2.print("E/r");
+	Serial.println("Standby pH");
+}
+void Sensors::setPHfour() {
+	Serial2.print("F/r");
+}
+void Sensors::setPHseven() {
+	Serial2.print("S/r");
+}
+void Sensors::setPHten() {
+	Serial2.print("T/r");
+}
+//EC Calibration
+void Sensors::setECcontinuous() {
+	Serial1.print("C/r");
+	ecToSerial();
+	Serial.println("Continuous EC");
+}
+void Sensors::setECstandby() {
+	Serial1.print("E/r");
+	Serial.println("Standby EC");
+}
+void Sensors::setECprobeType() {
+	Serial1.print("P,2/r");
+	ecToSerial();
+}
+void Sensors::setECdry() {
+	Serial1.print("Z0/r");
+	ecToSerial();
+}
+void Sensors::setECfortyThousand() {
+	Serial1.print("Z40/r");
+	ecToSerial();
+}
+void Sensors::setECtenThousand() {
+	Serial1.print("Z10/r");
+	ecToSerial();
+}
+
+//Output EC circuit's response to serial
+void Sensors::ecToSerial() {
+	if (_settings->getSerialDebug()) {
+		if (Serial1.available() > 0) {
+			String sensorString = "";
+			sensorString.reserve(30);
+			//Read data from sensor
+			char inchar;
+			while (Serial1.peek() != '\r') {
+				inchar = (char)Serial1.read();
+				sensorString += inchar;
+			}
+			//Discard <CR>
+			Serial1.read();
+			Serial.println(sensorString);
+		}
 	}
 }
 

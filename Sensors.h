@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.3
+// # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 22.11.2014
+// # Date       : 31.12.2014
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -35,8 +35,8 @@
 #include <Time.h>
 
 //Pin numbers
-// 16 & 17 are Serial2 Tx,Rx used for EC circuit
-// 18 & 19 are Serial1 Tx,Rx used for PH circuit
+// 16 & 17 are Serial2 Tx,Rx used for pH circuit
+// 18 & 19 are Serial1 Tx,Rx used for EC circuit
 extern const int humidIn;
 extern const int lightIn;
 extern const int tempIn;
@@ -81,8 +81,19 @@ class Sensors {
     void update();
     //Adjusts EC sensor readings to temperature
     void adjustECtemp();
-	//Adds a reading to a graph
-	void storeGraphPoint();
+	//pH Calibration
+	void setPHcontinuous();
+	void setPHstandby();
+	void setPHfour();
+	void setPHseven();
+	void setPHten();
+	//EC Calibration
+	void setECcontinuous();
+	void setECstandby();
+	void setECprobeType();
+	void setECdry();
+	void setECtenThousand();
+	void setECfortyThousand();
 	//RTC adjustment
 	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
@@ -99,6 +110,8 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint16_t ec();
+	//Output EC circuit's response to serial
+	void ecToSerial();
 	// Used for smoothing sensor data.  The higher the number,
 	// the more the readings will be smoothed, but the slower the variables will
 	// respond to the input.

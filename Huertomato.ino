@@ -29,7 +29,6 @@
 // # Non-standard libraries:
 // # Streaming http://arduiniana.org/libraries/streaming/
 // # DHT11 http://playground.arduino.cc/Main/DHT11Lib
-// TODO: Replace with http://playground.arduino.cc/Main/DHTLib
 // # DS1307 RTC, Time & TimeAlarms http://arduino.cc/playground/Code/Time
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
@@ -42,7 +41,6 @@
 #include "Settings.h"
 #include "RGBled.h"
 #include "Buttons.h"
-//#include "Graphic.h"
 #include "GUI.h"
 #include "Settings.h"
 #include "Sensors.h"
@@ -87,8 +85,8 @@
 // PINOUT ASSIGN
 // *********************************************
 // Pins that cant be used;
-// 16 & 17 are Serial2 Tx,Rx used for EC circuit
-// 18 & 19 are Serial1 Tx,Rx used for PH circuit
+// 16 & 17 are Serial2 Tx,Rx used for pH circuit
+// 18 & 19 are Serial1 Tx,Rx used for EC circuit
 // 20 & 21 are IIC's SDA, SCL used for RTC
 // 50, 51 & 52 are MISO, MOSI & SCK used for SD card
 //RGB LED
@@ -129,7 +127,7 @@ DallasTemperature temperature(&oneWire);
 //LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
-//Huertomato data
+//Huertomato internal data
 Settings settings;
 Sensors sensors(&settings);
 //Human interfaces
