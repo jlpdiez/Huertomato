@@ -4,7 +4,7 @@
 // # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 31.12.2014
+// # Date       : 02.01.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -79,21 +79,30 @@ class Sensors {
 	boolean lvlOffRange();
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
-    //Adjusts EC sensor readings to temperature
-    void adjustECtemp();
-	//pH Calibration
+
+	//pH circuit commands
+	void resetPH();
+	void getPHinfo();
+	void setPHled(boolean);
 	void setPHcontinuous();
 	void setPHstandby();
 	void setPHfour();
 	void setPHseven();
 	void setPHten();
-	//EC Calibration
+	//Adjust pH readings to temperature
+	void adjustPHtemp();
+	//EC circuit commands
+	void resetEC();
+	void getECinfo();
+	void setECled(boolean);
 	void setECcontinuous();
 	void setECstandby();
 	void setECprobeType();
 	void setECdry();
 	void setECtenThousand();
 	void setECfortyThousand();
+	//Adjusts EC sensor readings to temperature
+	void adjustECtemp();
 	//RTC adjustment
 	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
@@ -112,6 +121,7 @@ class Sensors {
     uint16_t ec();
 	//Output EC circuit's response to serial
 	void ecToSerial();
+	void phToSerial();
 	// Used for smoothing sensor data.  The higher the number,
 	// the more the readings will be smoothed, but the slower the variables will
 	// respond to the input.

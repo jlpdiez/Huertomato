@@ -114,11 +114,8 @@ Window::Screen WinReservoir::processTouch(const int x, const int y) {
 	//On/Off toggle
 	else if (buttonIndex == reservoirButtons[3]) {
 		_reservoirActive = !_reservoirActive;
-		Serial.println(_reservoirActive);
 		_settings->setReservoirModule(_reservoirActive);
-		Serial.println(_reservoirActive);
 		update();
-		Serial.println("JAI");
 	} else if (buttonIndex == reservoirButtons[4])
 		return Alarms;
 	else if (buttonIndex == reservoirButtons[5])

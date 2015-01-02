@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.3.8
+// # Version    : 1.3.9
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 22.11.2014
+// # Date       : 02.01.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -160,8 +160,7 @@ void setup() {
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
 	
-	//TODO:Make auto-detect
-	//First run
+	//Uncomment for first run
 	//settings.setDefault();
 	
 	settings.setAlarmTriggered(false);
@@ -186,7 +185,7 @@ void setupRTC() {
 	if ((timeStatus() == timeSet) && (d == 1) && (mo == 1) && (y = 2000)) {
 		//This prevents a bug when time resets and then loops 00:00 - 00:05
 		sensors.setRTCtime(10,10,10,10,10,2010);
-		ui.timeStamp("RTC time has been recently reset. It needs manual adjustement.");
+		ui.timeStamp("RTC time has been recently reset. Manual adjustment needed.");
 	} else if (timeStatus() == timeSet)
 		ui.timeStamp("RTC init OK");
 	if (timeStatus() != timeSet)
@@ -212,9 +211,11 @@ void setupAlarms() {
 	//Sensor polling and smoothing
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
-	//Every min we adjust EC circuit readings to temperature
-	if (settings.getReservoirModule())
-		Alarm.timerOnce(0,1,0,adjustECtemp);		  
+	//Every 10min we adjust pH & EC circuit readings to temperature
+	if (settings.getReservoirModule()) {
+		Alarm.timerOnce(0,10,0,adjustECtemp);
+		Alarm.timerOnce(0,10,0,adjustPHtemp);
+	}
 }
 
 //Sets watering timer or starts continuous water
@@ -485,7 +486,17 @@ void adjustECtemp() {
 		ui.timeStamp("EC sensor readings adjusted for temperature.");
 	}
 	//Set next timer
-	Alarm.timerOnce(0,1,0,adjustECtemp);
+	Alarm.timerOnce(0,10,0,adjustECtemp);
+}
+
+//Adjusts pH sensor readings to temperature and sets next timer
+void adjustPHtemp() {
+	if (gui.isMainScreen()) {
+		sensors.adjustPHtemp();
+		ui.timeStamp("pH sensor readings adjusted for temperature.");
+	}
+	//Set next timer
+	Alarm.timerOnce(0,10,0,adjustPHtemp);
 }
 
 //These handle beeping when an alarm is triggered. It warns in serial too
