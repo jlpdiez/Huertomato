@@ -161,27 +161,8 @@ void Sensors::smoothSensorReadings() {
 	_waterLevel = (uint8_t)(res / _numSamples);  
 }
 
-//Returns light level 0~100%
+//Returns light level in luxes
 uint16_t Sensors::light() {
-	//int adc = analogRead(lightIn); 
-	//return map(adc, 0, 1023, 0, 100); 
-	
-	//int rawADC = analogRead(lightIn);
-	//const int voltageLvl = 4.3;
-	//Code from Billie:
-	//https://github.com/BillieBricks/Billie-s-Hydroponic-Controller/blob/master/HydroponicControllerV1.1.0
-	//int lightADCReading = analogRead(lightIn);
-	// Calculating the voltage of the ADC for light
-	//double lightInputVoltage = voltageLvl * ((double)lightADCReading / 1024.0);
-	// Calculating the resistance of the photoresistor in the voltage divider
-	//double lightResistance = (10.0 * voltageLvl) / lightInputVoltage - 10.0;
-	// Calculating the intensity of light in lux
-	//uint16_t currentLightInLux = (uint16_t)(255.84 * pow(lightResistance, -10/9));
-	//return currentLightInLux;
-	
-	// Equation to calculate Resistance of LDR, [R-LDR =(R1 (Vin - Vout))/ Vout]
-	// Vout = Output voltage from potential Divider. [Vout = ADC * (Vin / 1024)]
-
 	//http://forum.arduino.cc/index.php?topic=141815.0
 	const float vcc = 4.3;
 	const int resInKohm = 10.0;
@@ -232,11 +213,7 @@ float Sensors::ph() {
 		float res = Serial2.parseFloat();
 		//Discard carriage return '/r'
 		Serial2.read();
-		//Make sure data is valid
-		if (res < 14)
-			return res;
-		else 
-			return _ph;
+		return res;
 	}
 	//There's some kind of problem communicating with circuit
 	return 0;
@@ -246,24 +223,13 @@ float Sensors::ph() {
 uint16_t Sensors::ec() {
 	if (Serial1.available() > 0) {
  		uint16_t res = Serial1.parseInt();
- 		//Clear buffer of remaining message
- 		while (Serial1.peek() != '\r') {
- 			Serial1.read();
-		}
-		//Discard carriage return '/r'
- 		Serial1.read();
-		//TODO: Make a clever detection for buffer reading while circuit is writing
-		Serial.println(res);
-		//Sometimes buffer is read while circuit is writing to it and there's garbage
-		if (((double)res - (double)_ec) < 10000)
-			return res;
-		else {
-			Serial.println("Err");
-			return _ec;	 
-		}
+ 		//Clear buffer of remaining messages
+		while (Serial1.available() > 0)
+			Serial1.read();
+		return res;
 	}
 	//Buffer has been emptied before and circuit still hasn't put data into it again
-	return _ec;
+	return 0;
 }
 
 //pH circuit commands

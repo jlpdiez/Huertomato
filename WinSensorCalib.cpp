@@ -23,12 +23,16 @@ Window::Screen WinSensorCalib::getType() const {
 void WinSensorCalib::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
-	
-	//Bulletpoints
+	//Print bulletpoints
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xMenu,_yOneLine);
-	//Buttons
-	sensorCalibrationButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yOneLine,sensorCalibrationButtonsText[0]);
+	//Before the buttons were adding there are the flow buttons
+	for (int i = 0; i < nSensorCalibrationButtons - _nFlowButtons; i++) {
+		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+	}
+	//Make menu buttons
+	for (int i = 0; i < nSensorCalibrationButtons - _nFlowButtons; i++) {
+		sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,sensorCalibrationButtonsText[i]);
+	}
 }
 
 //Draws entire screen Sensor Calibration
@@ -53,5 +57,7 @@ Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 		return LvlCalib;
 	else if (buttonIndex == sensorCalibrationButtons[4])
 		return NightWater;
+	else if (buttonIndex == sensorCalibrationButtons[5])
+		return WateringCycle;
 	return None;
 }

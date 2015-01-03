@@ -32,7 +32,7 @@ Window::Screen Window::getType() const {
 }
 
 //Draw splash Screen
-//TODO: warn when no RTC or SD present- would be cool if we asked for a touchScreen
+//TODO: warn when no RTC or SD present - would be cool if we asked for a touchScreen
 void Window::print() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(grey[0], grey[1], grey[2]);
