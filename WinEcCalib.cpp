@@ -1,11 +1,11 @@
-#include "WinSensorCalib.h"
+#include "WinEcCalib.h"
 
-WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+WinEcCalib::WinEcCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
-WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) { }
-	
-WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
+WinEcCalib::WinEcCalib(const WinEcCalib &other) : Window(other) { }
+
+WinEcCalib& WinEcCalib::operator=(const WinEcCalib& other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;
@@ -14,13 +14,13 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	return *this;
 }
 
-WinSensorCalib::~WinSensorCalib() {}
-	
-Window::Screen WinSensorCalib::getType() const {
-	return Window::SensorCalib;
+WinEcCalib::~WinEcCalib() {}
+
+Window::Screen WinEcCalib::getType() const {
+	return Window::EcCalib;
 }
 
-void WinSensorCalib::print() {
+void WinEcCalib::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	//Print bulletpoints
@@ -36,19 +36,19 @@ void WinSensorCalib::print() {
 }
 
 //Draws entire screen Sensor Calibration
-void WinSensorCalib::draw() {
+void WinEcCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(nameWinSensorCalib);
-	addFlowButtons(true,false,true,sensorCalibrationButtons);
+	printMenuHeader(nameWinEcCalib);
+	addFlowButtons(true,false,true,ecCalibrationButtons);
 	print();
 	_buttons.drawButtons();
 }
- 
-Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
+
+Window::Screen WinEcCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorCalibrationButtons[0]) 
+	if (buttonIndex == sensorCalibrationButtons[0])
 		return Reservoir;
 	//Exit
 	else if (buttonIndex == sensorCalibrationButtons[2])

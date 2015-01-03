@@ -526,6 +526,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
     <Compile Include="WinEcAlarms.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="WinEcCalib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinEcCalib.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="WinLvlAlarms.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -596,6 +602,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinPhAlarms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPhCalib.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinPhCalib.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinPump.cpp">

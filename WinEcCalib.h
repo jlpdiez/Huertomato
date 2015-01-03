@@ -1,12 +1,12 @@
 // #############################################################################
 //
-// # Name       : WinSensorCalib
-// # Version    : 1.4
+// # Name       : WinEcCalib
+// # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 03.01.2015
 //
-// # Description: Sensor calibration menu window
+// # Description: EC circuit calibration menu window
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,27 +24,28 @@
 // #############################################################################
 
 
-#ifndef WINSENSORCALIB_H_
-#define WINSENSORCALIB_H_
+#ifndef WINECCALIB_H_
+#define WINECCALIB_H_
 
 #include "Window.h"
 
-const int nSensorCalibrationButtons = 6;
-static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
-	"Water Levels",
-	"pH Calibration",
-	"EC Calibration"
+const int nECcalibrationButtons = 7;
+static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
+	"1. Set probe type",
+	"2. Dry calibration",
+	"3. Calibrate for 40000 uS",
+	"4. Calibrate for 10500 uS"
 };
-static int sensorCalibrationButtons[nSensorCalibrationButtons];
+static int ecCalibrationButtons[nECcalibrationButtons];
 
-static char* nameWinSensorCalib = "- Calibration -";
+static char* nameWinEcCalib = "- EC Circuit Calib. -";
 
-class WinSensorCalib: public Window {
+class WinEcCalib: public Window {
 	public:
-		WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-		WinSensorCalib(const WinSensorCalib &other);
-		WinSensorCalib& operator=(const WinSensorCalib &other);
-		~WinSensorCalib();
+		WinEcCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinEcCalib(const WinEcCalib &other);
+		WinEcCalib& operator=(const WinEcCalib &other);
+		~WinEcCalib();
 		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);

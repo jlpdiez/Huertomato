@@ -1,12 +1,12 @@
 // #############################################################################
 //
-// # Name       : WinSensorCalib
-// # Version    : 1.4
+// # Name       : WinPhCalib
+// # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 03.01.2015
 //
-// # Description: Sensor calibration menu window
+// # Description: pH circuit calibration menu window
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,27 +24,27 @@
 // #############################################################################
 
 
-#ifndef WINSENSORCALIB_H_
-#define WINSENSORCALIB_H_
+#ifndef WINPHCALIB_H_
+#define WINPHCALIB_H_
 
 #include "Window.h"
 
-const int nSensorCalibrationButtons = 6;
-static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
-	"Water Levels",
-	"pH Calibration",
-	"EC Calibration"
+const int nPHcalibrationButtons = 6;
+static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
+	"1. Calibrate for pH7",
+	"2. Calibrate for pH4",
+	"3. Calibrate for pH10"
 };
-static int sensorCalibrationButtons[nSensorCalibrationButtons];
+static int phCalibrationButtons[nPHcalibrationButtons];
 
-static char* nameWinSensorCalib = "- Calibration -";
+static char* nameWinPhCalib = "- pH Circuit Calib. -";
 
-class WinSensorCalib: public Window {
+class WinPhCalib: public Window {
 	public:
-		WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-		WinSensorCalib(const WinSensorCalib &other);
-		WinSensorCalib& operator=(const WinSensorCalib &other);
-		~WinSensorCalib();
+		WinPhCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinPhCalib(const WinPhCalib &other);
+		WinPhCalib& operator=(const WinPhCalib &other);
+		~WinPhCalib();
 		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);
@@ -52,5 +52,6 @@ class WinSensorCalib: public Window {
 	protected:
 		void print();
 };
+
 
 #endif

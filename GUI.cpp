@@ -109,6 +109,12 @@ void GUI::updateScreen(Window::Screen newScreen) {
 		case Window::LvlCalib:
 			_window = new WinLvlCalib(_lcd,_touch,_sensors,_settings);
 			break;
+		case Window::PhCalib:
+			_window = new WinPhCalib(_lcd,_touch,_sensors,_settings);
+			break;
+		case Window::EcCalib:
+			_window = new WinEcCalib(_lcd,_touch,_sensors,_settings);
+			break;
 		case Window::NightWater:
 			_window = new WinWaterNight(_lcd,_touch,_sensors,_settings);
 			break;

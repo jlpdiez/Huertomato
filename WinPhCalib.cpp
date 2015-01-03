@@ -1,11 +1,11 @@
-#include "WinSensorCalib.h"
+#include "WinPhCalib.h"
 
-WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
+WinPhCalib::WinPhCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
-WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) { }
-	
-WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
+WinPhCalib::WinPhCalib(const WinPhCalib &other) : Window(other) { }
+
+WinPhCalib& WinPhCalib::operator=(const WinPhCalib& other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	_sensors = other._sensors;
@@ -14,13 +14,13 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	return *this;
 }
 
-WinSensorCalib::~WinSensorCalib() {}
-	
-Window::Screen WinSensorCalib::getType() const {
-	return Window::SensorCalib;
+WinPhCalib::~WinPhCalib() {}
+
+Window::Screen WinPhCalib::getType() const {
+	return Window::PhCalib;
 }
 
-void WinSensorCalib::print() {
+void WinPhCalib::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	//Print bulletpoints
@@ -36,19 +36,19 @@ void WinSensorCalib::print() {
 }
 
 //Draws entire screen Sensor Calibration
-void WinSensorCalib::draw() {
+void WinPhCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader(nameWinSensorCalib);
-	addFlowButtons(true,false,true,sensorCalibrationButtons);
+	printMenuHeader(nameWinPhCalib);
+	addFlowButtons(true,false,true,phCalibrationButtons);
 	print();
 	_buttons.drawButtons();
 }
- 
-Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
+
+Window::Screen WinPhCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorCalibrationButtons[0]) 
+	if (buttonIndex == sensorCalibrationButtons[0])
 		return Reservoir;
 	//Exit
 	else if (buttonIndex == sensorCalibrationButtons[2])

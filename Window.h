@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 03.01.2015
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -93,9 +93,11 @@ class Window {
 			LvlAlarms = 13,
 			SensorCalib = 14,
 			LvlCalib = 15,
-			NightWater = 16,
-			Pump = 17,
-			Reservoir = 18
+			PhCalib = 16,
+			EcCalib = 17,
+			NightWater = 18,
+			Pump = 19,
+			Reservoir = 20
 		};
 				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
