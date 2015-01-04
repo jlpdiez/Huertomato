@@ -38,7 +38,7 @@ static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
 };
 static int ecCalibrationButtons[nECcalibrationButtons];
 
-static char* nameWinEcCalib = "- EC Circuit Calib. -";
+static char* nameWinEcCalib = "- EC Circuit -";
 
 class WinEcCalib: public Window {
 	public:

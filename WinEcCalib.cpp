@@ -26,12 +26,12 @@ void WinEcCalib::print() {
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
 	//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < nSensorCalibrationButtons - _nFlowButtons; i++) {
+	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
 		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
 	}
 	//Make menu buttons
-	for (int i = 0; i < nSensorCalibrationButtons - _nFlowButtons; i++) {
-		sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,sensorCalibrationButtonsText[i]);
+	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
+		ecCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,ecCalibrationButtonsText[i]);
 	}
 }
 
@@ -48,16 +48,16 @@ void WinEcCalib::draw() {
 Window::Screen WinEcCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorCalibrationButtons[0])
-		return Reservoir;
+	if (buttonIndex == ecCalibrationButtons[0])
+		return SensorCalib;
 	//Exit
-	else if (buttonIndex == sensorCalibrationButtons[2])
+	else if (buttonIndex == ecCalibrationButtons[2])
 		return MainScreen;
-	else if (buttonIndex == sensorCalibrationButtons[3])
+	else if (buttonIndex == ecCalibrationButtons[3])
 		return LvlCalib;
-	else if (buttonIndex == sensorCalibrationButtons[4])
+	else if (buttonIndex == ecCalibrationButtons[4])
 		return PhCalib;
-	else if (buttonIndex == sensorCalibrationButtons[5])
+	else if (buttonIndex == ecCalibrationButtons[5])
 		return EcCalib;
 	return None;
 }

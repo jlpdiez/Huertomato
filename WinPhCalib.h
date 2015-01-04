@@ -37,7 +37,17 @@ static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
 };
 static int phCalibrationButtons[nPHcalibrationButtons];
 
-static char* nameWinPhCalib = "- pH Circuit Calib. -";
+static char* nameWinPhCalib = "- pH Circuit -";
+
+static char* startCalibStr1 = "Start calibration";
+static char* startCalibStr2 = "procedure now?";
+static char* yesStr = "Yes";
+
+static char* phText1 = "Rinse & dry probe,";
+static char* phText2 = "submerge in pH4 and";
+static char* phText3 = "wait 5 mins.";
+static char* phText4 = "Continue";
+
 
 class WinPhCalib: public Window {
 	public:
@@ -50,6 +60,9 @@ class WinPhCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		//Stores screen state:
+		//0: start screen, 1: pH7, 2: pH4, 3: pH10
+		uint8_t _actScreen;
 		void print();
 };
 
