@@ -25,14 +25,14 @@ void WinEcCalib::print() {
 	_lcd->setBackColor(VGA_WHITE);
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
-	//Before the buttons were adding there are the flow buttons
+	/*//Before the buttons were adding there are the flow buttons
 	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
 		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
 	}
 	//Make menu buttons
 	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
 		ecCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,ecCalibrationButtonsText[i]);
-	}
+	}*/
 }
 
 //Draws entire screen Sensor Calibration

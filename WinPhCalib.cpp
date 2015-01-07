@@ -31,23 +31,23 @@ void WinPhCalib::print() {
 	
 	//Start screen
 	if (_actScreen == 0) {
-		_lcd->print(startCalibStr1,_xConfig,_yTwoLnsFirst);
-		_lcd->print(startCalibStr2,_xConfig,_yTwoLnsSecond);
-		phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen(startCalibStr2)+1)*_bigFontSize,_yTwoLnsSecond,yesStr);
+		_lcd->print(pmStr(startCalibStr1),_xConfig,_yTwoLnsFirst);
+		_lcd->print(pmStr(startCalibStr2),_xConfig,_yTwoLnsSecond);
+		phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen_P(startCalibStr2)+1)*_bigFontSize,_yTwoLnsSecond,pmStr(yesStr));
 	
 	//pH 7 screen
 	} else if (_actScreen == 1) {
-		_lcd->print(phText1,_xConfig,_yThreeLnsFirst);
-		_lcd->print(phText2,_xConfig,_yThreeLnsSecond);
-		_lcd->print(phText3,_xConfig,_yThreeLnsThird);
-		phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen(phText3)+1)*_bigFontSize,_yThreeLnsThird,phText4);
+		_lcd->print(pmStr(phText1),_xConfig,_yThreeLnsFirst);
+		_lcd->print(pmStr(phText2),_xConfig,_yThreeLnsSecond);
+		_lcd->print(pmStr(phText3),_xConfig,_yThreeLnsThird);
+		phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen_P(phText3)+1)*_bigFontSize,_yThreeLnsThird,pmStr(phText4));
 		
 	//pH 4 screen	
 	} else if (_actScreen == 2) {
 		
 	//pH 10 screen
 	} else if (_actScreen == 3) {
-		
+	
 	}
 	
 	//Print bulletpoints

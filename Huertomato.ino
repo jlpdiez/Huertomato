@@ -81,6 +81,7 @@
 #include <SD.h>
 #include <SerialCommand.h>
 #include <MemoryFree.h>
+#include <string.h>
 
 
 // *********************************************
@@ -444,7 +445,7 @@ void logSensorReadings() {
 	//We choose it to be YYYY+MM+DD.txt
 	String fileName = ""; 
 	fileName.reserve(12);
-	fileName = (String)y + (String)mo + (String)d + ".txt";
+	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".txt";
 	char fileNameArray[fileName.length() + 1];
 	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
 	File sensorLog = SD.open(fileNameArray, FILE_WRITE); 

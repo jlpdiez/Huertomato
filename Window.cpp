@@ -111,3 +111,18 @@ void Window::printSavedButton() {
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->print(savedText,saveX,_flowButtonY);
 }
+
+//Reads a PROGMEM char* and returns it as a String
+//Modified from: https://github.com/prawnhead/ArduinoDateTime/blob/master/DateTime.cpp
+//More info: http://arduinoetcetera.blogspot.com.es/2013/07/using-program-memory-progmem.html
+String& Window::pmStr(const char *progArray, byte index) {
+	// This function would be far simpler if the String() constructor
+	// could accept a pointer to program memory!
+	char ramBuffer[_strSize];
+	char* progMemCString = (char*)(progArray + (index));
+	strcpy_P(ramBuffer, progMemCString);
+	static String* output;
+	delete(output);
+	output = new String(ramBuffer);
+	return *output;
+}

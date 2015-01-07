@@ -35,20 +35,20 @@
 #include <Time.h>  
 #include <MemoryFree.h>
 
-static char* commandsTxT = "Available commands are:";
-static char* sensorsTxT = "Available sensors are:";
-static char* settingsTxt = "Available settings are:";
-static char* doneTxt = "Done.";
-static char* boolTxt = "Expected a 'true' or 'false'";
-static char* hourTxt = "Expected an hour 0 .. 23";
-static char* minSecTxt = "Expected 0 .. 59";
-static char* phTxt = "Expected pH 0.00 .. 14.00";
-static char* ecTxt = "Expected ec 0 .. 9999";
-static char* percentTxT = "Expected 0 .. 100";
-static char* lvlTxt = "Expected 0 .. 1024";
+static char* commandsTxT PROGMEM = "Available commands are:";
+static char* sensorsTxT PROGMEM = "Available sensors are:";
+static char* settingsTxt PROGMEM = "Available settings are:";
+static char* doneTxt PROGMEM = "Done.";
+static char* boolTxt PROGMEM = "Expected a 'true' or 'false'";
+static char* hourTxt PROGMEM = "Expected an hour 0 .. 23";
+static char* minSecTxt PROGMEM = "Expected 0 .. 59";
+static char* phTxt PROGMEM = "Expected pH 0.00 .. 14.00";
+static char* ecTxt PROGMEM = "Expected ec 0 .. 9999";
+static char* percentTxT PROGMEM = "Expected 0 .. 100";
+static char* lvlTxt PROGMEM = "Expected 0 .. 1024";
 
 static const int nCommands = 5;
-static char* commands[nCommands] = {
+static char* commands[nCommands] PROGMEM = {
 	"help",
 	"sensors",
 	"settings",
@@ -57,20 +57,20 @@ static char* commands[nCommands] = {
 };
 
 static const int nSensorsC = 2;
-static char* sensorCommands[nSensorsC] = {
+static char* sensorCommands[nSensorsC] PROGMEM = {
 	"list",
 	"get"
 };
 
 static const int nSettingsC = 3;
-static char* settingsCommands[nSettingsC] = {
+static char* settingsCommands[nSettingsC] PROGMEM = {
 	"list",
 	"get",
 	"set"
 };
 
 static const int nSettings = 26;
-static char* settingsNames[nSettings] = {
+static char* settingsNames[nSettings] PROGMEM = {
 	"WaterTimed",
 	"WaterHour",
 	"WaterMinute",
@@ -100,7 +100,7 @@ static char* settingsNames[nSettings] = {
 };
 
 static const int nSensors = 6;
-static char* sensorsNames[nSensors] = {
+static char* sensorsNames[nSensors] PROGMEM = {
 	"Temperature",
 	"Humidity",
 	"Light",

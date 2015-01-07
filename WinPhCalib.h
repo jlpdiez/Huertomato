@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinPhCalib
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 03.01.2015
+// # Date       : 07.01.2015
 //
 // # Description: pH circuit calibration menu window
 //
@@ -30,23 +30,23 @@
 #include "Window.h"
 
 const int nPHcalibrationButtons = 6;
-static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
+/*static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
 	"1. Calibrate for pH7",
 	"2. Calibrate for pH4",
 	"3. Calibrate for pH10"
-};
+};*/
 static int phCalibrationButtons[nPHcalibrationButtons];
 
 static char* nameWinPhCalib = "- pH Circuit -";
 
-static char* startCalibStr1 = "Start calibration";
-static char* startCalibStr2 = "procedure now?";
-static char* yesStr = "Yes";
+const char startCalibStr1[] PROGMEM = "Start calibration";
+const char startCalibStr2[] PROGMEM = "procedure now?";
+const char yesStr[] PROGMEM = "Yes";
 
-static char* phText1 = "Rinse & dry probe,";
-static char* phText2 = "submerge in pH4 and";
-static char* phText3 = "wait 5 mins.";
-static char* phText4 = "Continue";
+const char phText1[] PROGMEM = "Rinse & dry probe,";
+const char phText2[] PROGMEM = "submerge in pH4 and";
+const char phText3[] PROGMEM = "wait 5 mins.";
+const char phText4[] PROGMEM = "Continue";
 
 
 class WinPhCalib: public Window {

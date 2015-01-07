@@ -30,12 +30,12 @@
 #include "Window.h"
 
 const int nECcalibrationButtons = 7;
-static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
+/*static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
 	"1. Set probe type",
 	"2. Dry calibration",
 	"3. Calibrate for 40000 uS",
 	"4. Calibrate for 10500 uS"
-};
+};*/
 static int ecCalibrationButtons[nECcalibrationButtons];
 
 static char* nameWinEcCalib = "- EC Circuit -";

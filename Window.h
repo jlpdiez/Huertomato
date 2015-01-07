@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 03.01.2015
+// # Date       : 07.01.2015
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -114,6 +114,8 @@ class Window {
 		//Screen size
 		static const int _xSize = 399;
 		static const int _ySize= 239;
+		//Biggest string size, used in pmStr() function
+		static const uint8_t _strSize = 30;
 		//Font sizes
 		static const int _bigFontSize = 16;
 		static const int _smallFontSize = 8;
@@ -150,6 +152,9 @@ class Window {
 		void printHeaderBackground();
 		void printMenuHeader(char* c);
 		void printSavedButton();
+		
+		//Reads a char* and returns it as a String
+		String& pmStr(const char *progArray, byte index = 0);
 
 		UTFT *_lcd;
 		UTouch *_touch;

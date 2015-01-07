@@ -1,8 +1,34 @@
+// #############################################################################
+//
+// # Name       : Borderless_Buttons
+// # Version    : 1.1
+//
+// # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
+// # Date       : 07.01.2015
+//
+// # Description: Makes buttons with no border. There's also a function added to pass Strings as text to them
+//
+// #  This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// #############################################################################
+
 #ifndef BORDERLESS_BUTTONS_H
 #define BORDERLESS_BUTTONS_H
 
 #include <Arduino.h>
 #include <UTFT_Buttons.h>
+#include <string.h>
 
 
 //Draws a borderless button where colors of UTFT_Buttons are used as follows:
@@ -22,6 +48,7 @@ class Borderless_Buttons : public UTFT_Buttons {
 	~Borderless_Buttons();
 	    
     int	addButton(uint16_t x, uint16_t y, char *label, uint16_t flags=0);
+	int addButton(uint16_t x, uint16_t y, String label, uint16_t flags=0);
     int addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);
     void drawButtons();
     void drawButton(int buttonID);
