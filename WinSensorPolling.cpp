@@ -3,7 +3,11 @@
 WinSensorPolling::WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 : Window(lcd,touch,sensors,settings) { }
 
-WinSensorPolling::WinSensorPolling(const WinSensorPolling &other) : Window(other) { }
+WinSensorPolling::WinSensorPolling(const WinSensorPolling &other) : Window(other) {
+	for (int i = 0; i < _nSensorPollingButtons; i++) {
+		_sensorPollingButtons[i] = other._sensorPollingButtons[i];
+	}
+}
 	
 WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 	_lcd = other._lcd;
@@ -11,6 +15,9 @@ WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
+	for (int i = 0; i < _nSensorPollingButtons; i++) {
+		_sensorPollingButtons[i] = other._sensorPollingButtons[i];
+	}
 	return *this;
 }
 
@@ -39,8 +46,8 @@ void WinSensorPolling::print() {
 	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
-	sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
 } 
 
 //Draws entire screen Sensor Polling
@@ -48,7 +55,7 @@ void WinSensorPolling::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader(nameWinSensorPolling);
-	addFlowButtons(true,true,true,sensorPollingButtons);
+	addFlowButtons(true,true,true,_sensorPollingButtons);
 	print();
 	_buttons.drawButtons();
 }
@@ -65,20 +72,20 @@ void WinSensorPolling::update() {
 Window::Screen WinSensorPolling::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorPollingButtons[0]) { return ControllerSettings; }
+	if (buttonIndex == _sensorPollingButtons[0]) { return ControllerSettings; }
 	//Save
-	else if (buttonIndex == sensorPollingButtons[1]) {
+	else if (buttonIndex == _sensorPollingButtons[1]) {
 		_settings->setSensorSecond(_pollSec);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == sensorPollingButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _sensorPollingButtons[2]) { return MainScreen; }
 		
 	//Sec up
-	else if (buttonIndex == sensorPollingButtons[3]) {
+	else if (buttonIndex == _sensorPollingButtons[3]) {
 		(_pollSec >= 59) ? _pollSec=1 : _pollSec++;
 		update();
 	//Sec down
-	} else if (buttonIndex == sensorPollingButtons[4]) {
+	} else if (buttonIndex == _sensorPollingButtons[4]) {
 		(_pollSec <= 1) ? _pollSec=59 : _pollSec--;
 		update();
 	}

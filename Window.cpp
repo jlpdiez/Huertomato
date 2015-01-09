@@ -57,29 +57,29 @@ Window::Screen Window::processTouch(const int x, const int y) { return Splash; }
 	
 //These function should be the first to get its buttons into the array buttons
 //It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2
-void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]) {
+void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, uint8_t buttonArray[]) {
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		
 	if (backButton) {
 		const int backX = 15;
-		_lcd->drawLine(backX-1,_flowButtonY-5,backX+_bigFontSize*strlen(backText),_flowButtonY-5);
-		buttonArray[0] = _buttons.addButton(backX, _flowButtonY, backText);
+		_lcd->drawLine(backX-1,_flowButtonY-5,backX+_bigFontSize*strlen_P(backText),_flowButtonY-5);
+		buttonArray[0] = _buttons.addButton(backX, _flowButtonY, pmChar(backText));
 	} else
 		buttonArray[0] = -1;
 		
 	if (saveButton) {
-		const int saveX = _xSize/2 - _bigFontSize*strlen(saveText)/2;
-		_lcd->drawLine(saveX-1,_flowButtonY-5,saveX+_bigFontSize*strlen(saveText),_flowButtonY-5);
-		buttonArray[1] = _buttons.addButton(saveX, _flowButtonY, saveText);
+		const int saveX = _xSize/2 - _bigFontSize*strlen_P(saveText)/2;
+		_lcd->drawLine(saveX-1,_flowButtonY-5,saveX+_bigFontSize*strlen_P(saveText),_flowButtonY-5);
+		buttonArray[1] = _buttons.addButton(saveX, _flowButtonY, pmChar(saveText));
 	} else
 		buttonArray[1] = -1;
 		
 	if (exitButton) {
-		const int cancelX = _xSize - 15 - _bigFontSize*strlen(cancelText);
-		_lcd->drawLine(cancelX-1,_flowButtonY-5,cancelX+_bigFontSize*strlen(cancelText),_flowButtonY-5);
-		buttonArray[2] = _buttons.addButton(cancelX, _flowButtonY, cancelText);
+		const int cancelX = _xSize - 15 - _bigFontSize*strlen_P(cancelText);
+		_lcd->drawLine(cancelX-1,_flowButtonY-5,cancelX+_bigFontSize*strlen_P(cancelText),_flowButtonY-5);
+		buttonArray[2] = _buttons.addButton(cancelX, _flowButtonY, pmChar(cancelText));
 	} else
 		buttonArray[2] = -1;
 }
@@ -95,34 +95,25 @@ void Window::printHeaderBackground() {
 }
 
 //Prints header with centered text
-void Window::printMenuHeader(char* c) {
+void Window::printMenuHeader(const char* c) {
 	printHeaderBackground();
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	//Print title centered
-	_lcd->print(c,_xSize/2-(_bigFontSize*(strlen(c)/2)),2);
+	_lcd->print(pmChar(c),_xSize/2-(_bigFontSize*(strlen_P(c)/2)),2);
 }
 
 //Overlays "Saved" text over save button
 //Used when button is pressed to inform the user values have been stored
 void Window::printSavedButton() {
-	const int saveX = _xSize/2 - _bigFontSize*strlen(savedText)/2;
+	const int saveX = _xSize/2 - _bigFontSize*strlen_P(savedText)/2;
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->print(savedText,saveX,_flowButtonY);
 }
 
-//Reads a PROGMEM char* and returns it as a String
-//Modified from: https://github.com/prawnhead/ArduinoDateTime/blob/master/DateTime.cpp
-//More info: http://arduinoetcetera.blogspot.com.es/2013/07/using-program-memory-progmem.html
-String& Window::pmStr(const char *progArray, byte index) {
-	// This function would be far simpler if the String() constructor
-	// could accept a pointer to program memory!
-	char ramBuffer[_strSize];
-	char* progMemCString = (char*)(progArray + (index));
-	strcpy_P(ramBuffer, progMemCString);
-	static String* output;
-	delete(output);
-	output = new String(ramBuffer);
-	return *output;
+//Converts a char array from PROGMEM to variable in SRAM
+char* Window::pmChar(const char *pmArray) {
+	strcpy_P(_stringBuffer, (char*)pmArray);
+	return _stringBuffer;
 }

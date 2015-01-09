@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSystemMenu
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 02.01.2015
+// # Date       : 09.01.2015
 //
 // # Description: System menu window
 //
@@ -28,16 +28,13 @@
 #define WINSYSTEMMENU_H_
 
 #include "Window.h"
-
-const int nSystemButtons = 6;
-static char* systemButtonText[nSystemButtons] = {
-	"Watering Cycle",
-	"Night Watering",
-	"Reservoir Module"
-};
-static int systemButtons[nSystemButtons];
  
-static char* nameWinSystemMenu = "- System Settings -";
+const char nameWinSystemMenu[] PROGMEM = "- System Settings -";
+
+const char sysMenuStr0[] PROGMEM = "Watering Cycle";
+const char sysMenuStr1[] PROGMEM = "Night Watering";
+const char sysMenuStr2[] PROGMEM = "Reservoir Module";
+const char* const systemButtonText[] PROGMEM = { sysMenuStr0, sysMenuStr1, sysMenuStr2 };
 
 class WinSystemMenu: public Window {
 	public:
@@ -50,6 +47,8 @@ class WinSystemMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nSystemButtons = _nFlowButtons + 3;
+		uint8_t _systemButtons[_nSystemButtons];
 		boolean _nightWater;
 		void print();
 };

@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.3
+// # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.01.2015
+// # Date       : 09.01.2015
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -59,20 +59,20 @@ static uint8_t grey[3] = {100,100,100};
 static uint8_t white[3] = {255,255,255};
 static uint8_t red[3] = {200,0,0};
 static uint8_t blue[3] = {0,135,199};
-//static uint8_t yellow[3] = {255,242,32};
 
 //Common window buttons text
-static char* backText = " Back ";
-static char* saveText = " Save ";
-static char* savedText = " Saved ";
-static char* cancelText = " Exit ";
+const char backText[] PROGMEM = " Back ";
+const char saveText[] PROGMEM = " Save ";
+const char savedText[] PROGMEM = " Saved ";
+const char cancelText[] PROGMEM = " Exit ";
 //Common window toggles
 //Has one extra char to cover last F of OFF
-static char* onStr = "ON ";
-static char* offStr = "OFF";
-//various_symbols font is used for bulletpoints
-static char* bulletStr = "T";
-
+const char onStr[] PROGMEM = "ON ";
+const char offStr[] PROGMEM = "OFF";
+//various_symbols font is used for these
+const char bulletStr[] PROGMEM = "T";
+const char plusStr[] PROGMEM = "=";
+const char minusStr[] PROGMEM = ">";
 
 class Window {
 	public:
@@ -114,8 +114,6 @@ class Window {
 		//Screen size
 		static const int _xSize = 399;
 		static const int _ySize= 239;
-		//Biggest string size, used in pmStr() function
-		static const uint8_t _strSize = 30;
 		//Font sizes
 		static const int _bigFontSize = 16;
 		static const int _smallFontSize = 8;
@@ -148,14 +146,15 @@ class Window {
 		static const int _yFactor5lines = 2;
 	 	
 		virtual void print();
-		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
+		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, uint8_t buttonArray[]);
 		void printHeaderBackground();
-		void printMenuHeader(char* c);
+		void printMenuHeader(const char* c);
 		void printSavedButton();
 		
-		//Reads a char* and returns it as a String
-		String& pmStr(const char *progArray, byte index = 0);
-
+		//These are used to read data from PROGMEM and store them into SRAM
+		char _stringBuffer[30];
+		char* pmChar(const char* pmArray);
+	
 		UTFT *_lcd;
 		UTouch *_touch;
 		Sensors *_sensors;

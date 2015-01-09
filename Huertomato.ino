@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.3.9
+// # Version    : 1.4.0
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 02.01.2015
+// # Date       : 08.01.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like

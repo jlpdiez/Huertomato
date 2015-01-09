@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinPhCalib
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.01.2015
+// # Date       : 09.01.2015
 //
 // # Description: pH circuit calibration menu window
 //
@@ -29,25 +29,23 @@
 
 #include "Window.h"
 
-const int nPHcalibrationButtons = 6;
-/*static char* phCalibrationButtonsText[nPHcalibrationButtons] = {
+/*const char phCalibrationButtonsText[nPHcalibrationButtons] = {
 	"1. Calibrate for pH7",
 	"2. Calibrate for pH4",
 	"3. Calibrate for pH10"
 };*/
-static int phCalibrationButtons[nPHcalibrationButtons];
 
-static char* nameWinPhCalib = "- pH Circuit -";
+const char nameWinPhCalib[] PROGMEM = "- pH Circuit -";
 
 const char startCalibStr1[] PROGMEM = "Start calibration";
 const char startCalibStr2[] PROGMEM = "procedure now?";
 const char yesStr[] PROGMEM = "Yes";
 
 const char phText1[] PROGMEM = "Rinse & dry probe,";
-const char phText2[] PROGMEM = "submerge in pH4 and";
-const char phText3[] PROGMEM = "wait 5 mins.";
-const char phText4[] PROGMEM = "Continue";
-
+const char phText2[] PROGMEM = "submerge in pH";
+const char phText3[] PROGMEM = "and";
+const char phText4[] PROGMEM = "wait 5 mins.";
+const char continueStr[] PROGMEM = "Continue";
 
 class WinPhCalib: public Window {
 	public:
@@ -60,6 +58,8 @@ class WinPhCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nPHcalibrationButtons = _nFlowButtons + 1;
+		uint8_t _phCalibrationButtons[_nPHcalibrationButtons];
 		//Stores screen state:
 		//0: start screen, 1: pH7, 2: pH4, 3: pH10
 		uint8_t _actScreen;

@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSensorCalib
-// # Version    : 1.4
+// # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 03.01.2015
+// # Date       : 09.01.2015
 //
 // # Description: Sensor calibration menu window
 //
@@ -29,15 +29,12 @@
 
 #include "Window.h"
 
-const int nSensorCalibrationButtons = 6;
-static char* sensorCalibrationButtonsText[nSensorCalibrationButtons] = {
-	"Water Levels",
-	"pH Calibration",
-	"EC Calibration"
-};
-static int sensorCalibrationButtons[nSensorCalibrationButtons];
+const char nameWinSensorCalib[] PROGMEM = "- Calibration -";
 
-static char* nameWinSensorCalib = "- Calibration -";
+const char sCalibStr0[] PROGMEM = "Water Levels";
+const char sCalibStr1[] PROGMEM = "pH Calibration";
+const char sCalibStr2[] PROGMEM = "EC Calibration";
+const char* const sensorCalibrationButtonsText[] PROGMEM = { sCalibStr0, sCalibStr1, sCalibStr2 };
 
 class WinSensorCalib: public Window {
 	public:
@@ -50,6 +47,8 @@ class WinSensorCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nSensorCalibrationButtons = _nFlowButtons + 3;
+		uint8_t _sensorCalibrationButtons[_nSensorCalibrationButtons];
 		void print();
 };
 

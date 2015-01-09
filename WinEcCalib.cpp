@@ -3,7 +3,11 @@
 WinEcCalib::WinEcCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
-WinEcCalib::WinEcCalib(const WinEcCalib &other) : Window(other) { }
+WinEcCalib::WinEcCalib(const WinEcCalib &other) : Window(other) {
+	for (int i = 0; i < _nECcalibrationButtons; i++) {
+		_ecCalibrationButtons[i] = other._ecCalibrationButtons[i];
+	}
+}
 
 WinEcCalib& WinEcCalib::operator=(const WinEcCalib& other) {
 	_lcd = other._lcd;
@@ -40,7 +44,7 @@ void WinEcCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader(nameWinEcCalib);
-	addFlowButtons(true,false,true,ecCalibrationButtons);
+	addFlowButtons(true,false,true,_ecCalibrationButtons);
 	print();
 	_buttons.drawButtons();
 }
@@ -48,16 +52,16 @@ void WinEcCalib::draw() {
 Window::Screen WinEcCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == ecCalibrationButtons[0])
+	if (buttonIndex == _ecCalibrationButtons[0])
 		return SensorCalib;
 	//Exit
-	else if (buttonIndex == ecCalibrationButtons[2])
+	else if (buttonIndex == _ecCalibrationButtons[2])
 		return MainScreen;
-	else if (buttonIndex == ecCalibrationButtons[3])
+	else if (buttonIndex == _ecCalibrationButtons[3])
 		return LvlCalib;
-	else if (buttonIndex == ecCalibrationButtons[4])
+	else if (buttonIndex == _ecCalibrationButtons[4])
 		return PhCalib;
-	else if (buttonIndex == ecCalibrationButtons[5])
+	else if (buttonIndex == _ecCalibrationButtons[5])
 		return EcCalib;
 	return None;
 }

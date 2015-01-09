@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinControllerMenu
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Controller settings menu
 //
@@ -29,17 +29,15 @@
 
 #include "Window.h"
  
-const int nControllerButtons = 8;
-static char* controllerButtonText[nControllerButtons] = {
-	"Time & Date",
-	"Sensor Polling",
-	"SD Card",
-	"Sound:",
-	"Serial Debugging:"
-};
-static int controllerButtons[nControllerButtons];
+const char nameWinControllerMenu[] PROGMEM = "- Controller Settings -";
 
-static char* nameWinControllerMenu = "- Controller Settings -";
+const char controllerStr0[] PROGMEM = "Time & Date";
+const char controllerStr1[] PROGMEM = "Sensor Polling";
+const char controllerStr2[] PROGMEM = "SD Card";
+const char controllerStr3[] PROGMEM = "Sound:";
+const char controllerStr4[] PROGMEM = "Serial Debugging:";
+const char* const controllerButtonText[] PROGMEM = { controllerStr0, controllerStr1, controllerStr2,
+	controllerStr3, controllerStr4 };
 
 class WinControllerMenu: public Window {
 	public:
@@ -53,6 +51,11 @@ class WinControllerMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nControllerButtons = _nFlowButtons + 5;
+		uint8_t _controllerButtons[_nControllerButtons];
+		//These are temp variables used for displaying data
+		//They are read from _settings in print() funcs. Changed in processTouch()
+		//displayed again with update() and saved to eeprom when button save is pressed
 		//Sound toggle
 		boolean _soundActive;
 		//Serial toggle

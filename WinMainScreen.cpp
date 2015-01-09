@@ -77,24 +77,24 @@ void WinMainScreen::printInfoReservoir() {
 	_lcd->setBackColor(VGA_WHITE);
 	//For x coord we take maxSize and extract letterSize*letters plus arbitrary spacing
 	//Humidity
-	int x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));
+	int x = xSpacer-(_bigFontSize*(strlen_P(sensorText[0])+4));
 	_lcd->print(sensorText[0],x,ySpacer);
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,ySpacer,3,' ');
 	_lcd->print(humidUnit,xSpacer-_bigFontSize,ySpacer);
 	//Temp
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[1])+7));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[1])+7));
 	int y = ySpacer+(_bigFontSize+8);
 	_lcd->print(sensorText[1],x,y);
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	_lcd->print(tempUnit,xSpacer-_bigFontSize,y);
 	//Light
-	x = xSpacer-(_bigFontSize*(11 + strlen(lightUnit)));
+	x = xSpacer-(_bigFontSize*(11 + strlen_P(lightUnit)));
 	y = ySpacer+(_bigFontSize+8)*2;
 	_lcd->print(sensorText[2],x,y);
-	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
-	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen(lightUnit)),y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen_P(lightUnit))),y,4);
+	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen_P(lightUnit)),y);
 	//pH
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (_sensors->phOffRange())
@@ -104,7 +104,7 @@ void WinMainScreen::printInfoReservoir() {
 		_lcd->print(sensorText[3],x,y);
 		_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);
 	//EC
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[4])+7));
 	y = ySpacer+(_bigFontSize+8)*4;
 	uint16_t ec = _sensors->getEC();
 	if (_sensors->ecOffRange())
@@ -115,7 +115,7 @@ void WinMainScreen::printInfoReservoir() {
 	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
 	_lcd->print(ecUnit,xSpacer-_bigFontSize*2,y);
 	//Deposit level
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[5])+4));
 	y = ySpacer+(_bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (_sensors->lvlOffRange())
@@ -141,9 +141,9 @@ void WinMainScreen::updateInfoReservoir() {
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	//Light
 	y = ySpacer+(_bigFontSize+8)*2;
-	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen_P(lightUnit))),y,4);
 	//pH
-	int x = xSpacer-(_bigFontSize*(strlen(sensorText[3])+6));
+	int x = xSpacer-(_bigFontSize*(strlen_P(sensorText[3])+6));
 	y = ySpacer+(_bigFontSize+8)*3;
 	float ph = _sensors->getPH();
 	if (_sensors->phOffRange())
@@ -154,7 +154,7 @@ void WinMainScreen::updateInfoReservoir() {
 	_lcd->print(sensorText[3],x,y);
 	_lcd->printNumF(ph,2,xSpacer-_bigFontSize*5,y,'.',5);	
 	//EC
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[4])+7));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[4])+7));
 	y = ySpacer+(_bigFontSize+8)*4;
 	uint16_t ec = _sensors->getEC();
 	if (_sensors->ecOffRange())
@@ -165,7 +165,7 @@ void WinMainScreen::updateInfoReservoir() {
 	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
 	_lcd->print("uS",xSpacer-_bigFontSize*2,y);	
 	//Deposit level
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[5])+4));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[5])+4));
 	y = ySpacer+(_bigFontSize+8)*5;
 	uint8_t lvl = _sensors->getWaterLevel();
 	if (_sensors->lvlOffRange())
@@ -185,19 +185,19 @@ void WinMainScreen::printInfoNoModule() {
 	_lcd->setBackColor(VGA_WHITE);
 	//Temp
 	int y = 35;
-	int x = xSpacer-(_bigFontSize*(strlen(sensorText[1])+7));
+	int x = xSpacer-(_bigFontSize*(strlen_P(sensorText[1])+7));
 	_lcd->print(sensorText[1],x,y);
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	_lcd->print(tempUnit,xSpacer-_bigFontSize,y);
 	//Light
-	x = xSpacer-(_bigFontSize*(11 + strlen(lightUnit)));
+	x = xSpacer-(_bigFontSize*(11 + strlen_P(lightUnit)));
 	y +=  _bigFontSize + 45;
 	_lcd->print(sensorText[2],x,y);
-	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
-	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen(lightUnit)),y);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen_P(lightUnit))),y,4);
+	_lcd->print(lightUnit,xSpacer-(_bigFontSize * strlen_P(lightUnit)),y);
 	//Humidity
 	y = ySpacer+(_bigFontSize+8)*5;
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[0])+4));
 	_lcd->print(sensorText[0],x,y);
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,y,3,' ');
 	_lcd->print(humidUnit,xSpacer-_bigFontSize,y);
@@ -211,15 +211,15 @@ void WinMainScreen::updateInfoNoModule() {
 	_lcd->setBackColor(VGA_WHITE);
 	//Temp
 	int y = 35;
-	int x = xSpacer-(_bigFontSize*(strlen(sensorText[1])+7));
+	int x = xSpacer-(_bigFontSize*(strlen_P(sensorText[1])+7));
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
 	//Light
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[2])+4));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[2])+4));
 	y +=  _bigFontSize + 45;
-	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen(lightUnit))),y,4);
+	_lcd->printNumI(_sensors->getLight(),xSpacer-(_bigFontSize * (4 + strlen_P(lightUnit))),y,4);
 	//Humidity
 	y = ySpacer+(_bigFontSize+8)*5;
-	x = xSpacer-(_bigFontSize*(strlen(sensorText[0])+4));
+	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[0])+4));
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,y,3,' ');
 }
 
@@ -252,7 +252,7 @@ void WinMainScreen::printIconAndStatus() {
 		_lcd->setFont(hallfetica_normal); 
 		int x = xSpacer + _bigFontSize*2;
 		_lcd->print(htmtWatering,x,ySpacer);
-		x += _bigFontSize*strlen(htmtWatering);
+		x += _bigFontSize*strlen_P(htmtWatering);
 		path = logoPath;
 	//Normal or alarm modes
 	} else {
@@ -269,7 +269,7 @@ void WinMainScreen::printIconAndStatus() {
 		//Timed mode
 		if (_settings->getWaterTimed()) {
 			_lcd->print(nextWater,x,ySpacer);
-			x += _bigFontSize*(strlen(nextWater));
+			x += _bigFontSize*(strlen_P(nextWater));
 			_lcd->printNumI(wHour,x,ySpacer,2,'0');
 			x += _bigFontSize*2;
 			_lcd->print(":",x,ySpacer);
@@ -333,7 +333,7 @@ void WinMainScreen::updateIconAndStatus() {
 		_lcd->setFont(hallfetica_normal);
 		int x = xSpacer + _bigFontSize*2;
 		_lcd->print(nextWater,x,ySpacer);
-		x += _bigFontSize*(strlen(nextWater));
+		x += _bigFontSize*(strlen_P(nextWater));
 		_lcd->printNumI(wHour,x,ySpacer,2,'0');
 		x += _bigFontSize*2;
 		_lcd->print(":",x,ySpacer);
@@ -344,4 +344,6 @@ void WinMainScreen::updateIconAndStatus() {
 	}
 }
 
-Window::Screen WinMainScreen::processTouch(const int x, const int y) { return MainMenu; }
+Window::Screen WinMainScreen::processTouch(const int x, const int y) { 
+	return MainMenu; 
+}

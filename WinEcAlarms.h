@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinEcAlarms
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Ec alarms configuration window.
 //
@@ -29,19 +29,11 @@
 
 #include "Window.h"
 
-const int nECalarmsButtons = 7;
-static char* ecAlarmsButtonsText[nECalarmsButtons] = {
-	"=",
-	">",
-	"=",
-	">"
-};
-static int ecAlarmsButtons[nECalarmsButtons];
+const char nameWinEcAlarms[] PROGMEM = "- EC Alarms -";
 
-static char* nameWinEcAlarms = "- EC Alarms -";
-static char* unitEcS = "uS";
-static char* uEcLimit = "Upper Limit:";
-static char* dEcLimit = "Lower Limit:";
+const char unitEcS[] PROGMEM = "uS";
+const char uEcLimit[] PROGMEM = "Upper Limit:";
+const char dEcLimit[] PROGMEM = "Lower Limit:";
  
 class WinEcAlarms: public Window {
 	public:
@@ -55,10 +47,10 @@ class WinEcAlarms: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nECalarmsButtons = _nFlowButtons + 4;
+		uint8_t _ecAlarmsButtons[_nECalarmsButtons]; 
 		uint16_t _ecAlarmMax, _ecAlarmMin;
 		void print();
 };
-
-
 
 #endif

@@ -1,13 +1,13 @@
 // #############################################################################
 //
 // # Name       : SerialComms
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 21.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Class in charge of attending communication with input serial commands
-// # Works at 115200. Commands must en with a carriage return to work properly.
+// # Works at 115200. Commands must end with a carriage return to work properly.
 // # You initiate it and then just have to call processSerialCommand() from outside
 //
 // #  This program is free software: you can redistribute it and/or modify
@@ -35,79 +35,79 @@
 #include <Time.h>  
 #include <MemoryFree.h>
 
-static char* commandsTxT PROGMEM = "Available commands are:";
-static char* sensorsTxT PROGMEM = "Available sensors are:";
-static char* settingsTxt PROGMEM = "Available settings are:";
-static char* doneTxt PROGMEM = "Done.";
-static char* boolTxt PROGMEM = "Expected a 'true' or 'false'";
-static char* hourTxt PROGMEM = "Expected an hour 0 .. 23";
-static char* minSecTxt PROGMEM = "Expected 0 .. 59";
-static char* phTxt PROGMEM = "Expected pH 0.00 .. 14.00";
-static char* ecTxt PROGMEM = "Expected ec 0 .. 9999";
-static char* percentTxT PROGMEM = "Expected 0 .. 100";
-static char* lvlTxt PROGMEM = "Expected 0 .. 1024";
+const char commandsTxT[] PROGMEM = "Available commands are:";
+const char sensorsTxT[] PROGMEM = "Available sensors are:";
+const char settingsTxt[] PROGMEM = "Available settings are:";
+const char doneTxt[] PROGMEM = "Done.";
+const char boolTxt[] PROGMEM = "Expected a 'true' or 'false'";
+const char hourTxt[] PROGMEM = "Expected an hour 0 .. 23";
+const char minSecTxt[] PROGMEM = "Expected 0 .. 59";
+const char phTxt[] PROGMEM = "Expected pH 0.00 .. 14.00";
+const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
+const char percentTxT[] PROGMEM = "Expected 0 .. 100";
+const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
 
+const char commandStr0[] PROGMEM = "help";
+const char commandStr1[] PROGMEM = "sensors";
+const char commandStr2[] PROGMEM = "settings";
+const char commandStr3[] PROGMEM = "memory";
+const char commandStr4[] PROGMEM = "status";
 static const int nCommands = 5;
-static char* commands[nCommands] PROGMEM = {
-	"help",
-	"sensors",
-	"settings",
-	"memory",
-	"status"
-};
+const char* const commands[nCommands] PROGMEM = {commandStr0, commandStr1, commandStr2,
+	commandStr3, commandStr4};
 
+const char sensorStr0[] PROGMEM = "list";
+const char sensorStr1[] PROGMEM = "get";
 static const int nSensorsC = 2;
-static char* sensorCommands[nSensorsC] PROGMEM = {
-	"list",
-	"get"
-};
+const char* const sensorCommands[nSensorsC] PROGMEM = {sensorStr0, sensorStr1};
 
+const char settingsStr2[] PROGMEM = "set";
 static const int nSettingsC = 3;
-static char* settingsCommands[nSettingsC] PROGMEM = {
-	"list",
-	"get",
-	"set"
-};
+const char* const settingsCommands[nSettingsC] PROGMEM = {sensorStr0, sensorStr1, settingsStr2};
 
+const char settingsNameStr0[] PROGMEM = "WaterTimed";
+const char settingsNameStr1[] PROGMEM = "WaterHour";
+const char settingsNameStr2[] PROGMEM = "WaterMinute";
+const char settingsNameStr3[] PROGMEM = "FloodMinute";
+const char settingsNameStr4[] PROGMEM = "PHalarmUp";
+const char settingsNameStr5[] PROGMEM = "PHalarmDown";
+const char settingsNameStr6[] PROGMEM = "ECalarmUp";
+const char settingsNameStr7[] PROGMEM = "ECalarmDown";
+const char settingsNameStr8[] PROGMEM = "WaterAlarm";
+const char settingsNameStr9[] PROGMEM = "NightWatering";
+const char settingsNameStr10[] PROGMEM = "LightThreshold";
+const char settingsNameStr11[] PROGMEM = "MaxWaterLvl";
+const char settingsNameStr12[] PROGMEM = "MinWaterLvl";
+const char settingsNameStr13[] PROGMEM = "PumpProtectionLvl";
+const char settingsNameStr14[] PROGMEM = "SensorSecond";
+const char settingsNameStr15[] PROGMEM = "SDactive";
+const char settingsNameStr16[] PROGMEM = "SDhour";
+const char settingsNameStr17[] PROGMEM = "SDminute";
+const char settingsNameStr18[] PROGMEM = "Sound";
+const char settingsNameStr19[] PROGMEM = "SerialDebug";
+const char settingsNameStr20[] PROGMEM = "ReservoirModule";
+const char settingsNameStr21[] PROGMEM = "NextWhour";
+const char settingsNameStr22[] PROGMEM = "NextWminute";
+const char settingsNameStr23[] PROGMEM = "NightWateringStopped";
+const char settingsNameStr24[] PROGMEM = "WateringPlants";
+const char settingsNameStr25[] PROGMEM = "AlarmTriggered";
 static const int nSettings = 26;
-static char* settingsNames[nSettings] PROGMEM = {
-	"WaterTimed",
-	"WaterHour",
-	"WaterMinute",
-	"FloodMinute",
-	"PHalarmUp",
-	"PHalarmDown",
-	"ECalarmUp",
-	"ECalarmDown",
-	"WaterAlarm",
-	"NightWatering",
-	"LightThreshold",
-	"MaxWaterLvl",
-	"MinWaterLvl",
-	"PumpProtectionLvl",
-	"SensorSecond",
-	"SDactive",
-	"SDhour",
-	"SDminute",
-	"Sound",
-	"SerialDebug",
-	"ReservoirModule",
-	"NextWhour",
-	"NextWminute",
-	"NightWateringStopped",
-	"WateringPlants",
-	"AlarmTriggered"
-};
+const char* const settingsNames[nSettings] PROGMEM = {settingsNameStr0, settingsNameStr1, settingsNameStr2,
+	settingsNameStr3, settingsNameStr4, settingsNameStr5, settingsNameStr6, settingsNameStr7,
+	settingsNameStr8, settingsNameStr9, settingsNameStr10, settingsNameStr11, settingsNameStr12,
+	settingsNameStr13, settingsNameStr14, settingsNameStr15, settingsNameStr16, settingsNameStr17,
+	settingsNameStr18, settingsNameStr19, settingsNameStr20, settingsNameStr21, settingsNameStr22,
+	settingsNameStr23, settingsNameStr24, settingsNameStr25};
 
+const char sensorNameStr0[] PROGMEM = "Temperature";
+const char sensorNameStr1[] PROGMEM = "Humidity";
+const char sensorNameStr2[] PROGMEM = "Light";
+const char sensorNameStr3[] PROGMEM = "Ec";
+const char sensorNameStr4[] PROGMEM = "Ph";
+const char sensorNameStr5[] PROGMEM = "Level";
 static const int nSensors = 6;
-static char* sensorsNames[nSensors] PROGMEM = {
-	"Temperature",
-	"Humidity",
-	"Light",
-	"Ec",
-	"Ph",
-	"Level"
-};
+const char* const sensorsNames[nSensors] PROGMEM = {sensorNameStr0, sensorNameStr1, sensorNameStr2,
+	sensorNameStr3, sensorNameStr4, sensorNameStr5};
 
 //This makes settings static so we can use SerialCommand.addCommand("str",function)
 extern Settings settings;
@@ -132,11 +132,16 @@ class SerialInterface {
 		//Checks in buffers and calls to handle
 		void processInput();
 		//Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
-		void timeStamp(char* txt) const;
+		void timeStamp(const char* txt) const;
 		
 	private:	
 		//Static to prevent multiple instances and is also required to handle methods
 		static SerialCommand _cmd;
+		
+		//These are used to read data from PROGMEM and store them into SRAM
+		static char _stringBuffer[30];
+		static char* pmChar(const char* pmArray);
+		
 		
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
@@ -148,8 +153,8 @@ class SerialInterface {
 		//Sends all sensor data through serial
 		static void commandStatus();
 		//Printers
-		static void printLn(char* ln);
-		static void list(int length, char* names[]);
+		static void printLn(const char* ln);
+		static void list(int length, const char* const names[]);
 		//Returns enum contained in input keyword or Invalid/Nobne
 		static Command interpretCommand(char* keyword);
 		static Sensors::Sensor interpretSensor(char* keyword);

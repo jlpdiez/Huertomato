@@ -48,7 +48,7 @@ class Borderless_Buttons : public UTFT_Buttons {
 	~Borderless_Buttons();
 	    
     int	addButton(uint16_t x, uint16_t y, char *label, uint16_t flags=0);
-	int addButton(uint16_t x, uint16_t y, String label, uint16_t flags=0);
+	//int addButton(uint16_t x, uint16_t y, String label, uint16_t flags=0);
     int addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);
     void drawButtons();
     void drawButton(int buttonID);

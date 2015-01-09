@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinTime
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Time configuration window
 //
@@ -29,10 +29,7 @@
 
 #include "Window.h"
 #include <Time.h>
-
-//These buttons use symbol font hence the strange texts
-const int nTimeButtons = 15;
-static char* timeButtonText[nTimeButtons] = {
+/*const char* timeButtonText[_nTimeButtons] = {
 	"=",
 	"=",
 	"=",
@@ -45,16 +42,15 @@ static char* timeButtonText[nTimeButtons] = {
 	">",
 	">",
 	">"
-};
-static int timeButtons[nTimeButtons];
+};*/
  
-static char* nameWinTime = "- Time & Date -";
-static char* timeS = "Time";
-static char* timeFormatS = "(HH:MM:SS)";
-static char* timeSeparator = ":";
-static char* dateS = "Date";
-static char* dateFormatS = "(DD/MM/YYYY)";
-static char* dateSeparator = "/";
+const char nameWinTime[] PROGMEM = "- Time & Date -";
+const char timeS[] PROGMEM = "Time";
+const char timeFormatS[] PROGMEM = "(HH:MM:SS)";
+const char timeSeparator[] PROGMEM = ":";
+const char dateS[] PROGMEM = "Date";
+const char dateFormatS[] PROGMEM = "(DD/MM/YYYY)";
+const char dateSeparator[] PROGMEM = "/";
 
 class WinTime: public Window {
 	public:
@@ -68,6 +64,8 @@ class WinTime: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nTimeButtons = _nFlowButtons + 12;
+		uint8_t _timeButtons[_nTimeButtons];
 		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
 		int _sysYear;
 		void print();

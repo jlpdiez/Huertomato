@@ -3,7 +3,11 @@
 WinLvlAlarms::WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 : Window(lcd,touch,sensors,settings)  { }
 
-WinLvlAlarms::WinLvlAlarms(const WinLvlAlarms &other) : Window(other) { }
+WinLvlAlarms::WinLvlAlarms(const WinLvlAlarms &other) : Window(other) {
+	for (int i = 0; i < _nWaterAlarmsButtons; i++) {
+		_waterAlarmsButtons[i] = other._waterAlarmsButtons[i];
+	}
+}
 	
 WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 	_lcd = other._lcd;
@@ -11,6 +15,9 @@ WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
+	for (int i = 0; i < _nWaterAlarmsButtons; i++) {
+		_waterAlarmsButtons[i] = other._waterAlarmsButtons[i];
+	}
 	return *this;
 }
 
@@ -27,12 +34,12 @@ void WinLvlAlarms::print() {
 	//Text
 	_lcd->print(wLimitLvlS,_xConfig,_yOneLine);
 	//Numbers
-	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
+	int x = (4+strlen_P(wLimitLvlS))*_bigFontSize;
 	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
-	waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,_yOneLine);
@@ -43,34 +50,34 @@ void WinLvlAlarms::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
 	printMenuHeader(nameWinLvlAlarms);
-	addFlowButtons(true,true,true,waterAlarmsButtons);
+	addFlowButtons(true,true,true,_waterAlarmsButtons);
 	print();
 	_buttons.drawButtons();
 }
 
 void WinLvlAlarms::update() {
 	_lcd->setFont(hallfetica_normal);
-	int x = (4+strlen(wLimitLvlS))*_bigFontSize;
+	int x = (4+strlen_P(wLimitLvlS))*_bigFontSize;
 	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 }
 
 Window::Screen WinLvlAlarms::processTouch(int x,int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == waterAlarmsButtons[0]) { return Alarms; }
+	if (buttonIndex == _waterAlarmsButtons[0]) { return Alarms; }
 	//Save
-	else if (buttonIndex == waterAlarmsButtons[1]) {
+	else if (buttonIndex == _waterAlarmsButtons[1]) {
 		_settings->setWaterAlarm(_waterAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == waterAlarmsButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _waterAlarmsButtons[2]) { return MainScreen; }
 		
 	//Up
-	else if (buttonIndex == waterAlarmsButtons[3]) {
+	else if (buttonIndex == _waterAlarmsButtons[3]) {
 		(_waterAlarmMin >= 100) ? _waterAlarmMin=0 : _waterAlarmMin++;
 		update();
 	//Down
-	} else if (buttonIndex == waterAlarmsButtons[4]) {
+	} else if (buttonIndex == _waterAlarmsButtons[4]) {
 		(_waterAlarmMin <= 0) ? _waterAlarmMin=100 : _waterAlarmMin--;
 		update();
 	}

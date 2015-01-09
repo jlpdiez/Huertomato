@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSD
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: SD configuration window
 //
@@ -31,18 +31,18 @@
 #include "Settings.h"
 #include <SD.h>                                                       
 
-const int nSDcardButtons = 8;
-static char* sdCardButtonsText[nSDcardButtons] = {
+/*const char* sdCardButtonsText[_nSDcardButtons] = {
 	"SD Card Log:",
 	"=",
 	"=",
 	">",
 	">"
-};
-static int sdCardButtons[nSDcardButtons];
+};*/
 
-static char* nameWinSD = "- SD Card -";
-static char* sdCardText1 = "Save every";
+const char nameWinSD[] PROGMEM = "- SD Card -";
+
+const char sdCardText0[] PROGMEM = "SD Card Log:";
+const char sdCardText1[] PROGMEM = "Save every";
 
 class WinSD: public Window {
 	public:
@@ -56,11 +56,11 @@ class WinSD: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nSDcardButtons = _nFlowButtons + 5;
+		uint8_t _sdCardButtons[_nSDcardButtons];
 		boolean _sdActive;
 		uint8_t _sdHour, _sdMin;
 		void print();
 };
-
-
 
 #endif

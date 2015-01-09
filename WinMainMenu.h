@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainMenu
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 19.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Main menu window
 //
@@ -29,15 +29,12 @@
 #include "Sensors.h"
 #include "Settings.h"
 #include "Window.h"
-
-const int nMainMenuButtons = 7;
-static char* mainMenuButtonText[nMainMenuButtons] = {
-	"System Settings",
-	"Controller Settings"
-};
-static int mainMenuButtons[nMainMenuButtons];
   
-static char* nameWinMainMenu = "- Main Menu -";
+const char nameWinMainMenu[] PROGMEM = "- Main Menu -";
+
+const char menuStr0[] PROGMEM = "System Settings";
+const char menuStr1[] PROGMEM = "Controller Settings";
+//const char* const mainMenuButtonText[] PROGMEM = { menuStr0, menuStr1 };
 
 class WinMainMenu: public Window {
 	public:
@@ -50,6 +47,8 @@ class WinMainMenu: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nMainMenuButtons = _nFlowButtons + 4;
+		uint8_t _mainMenuButtons[_nMainMenuButtons];
 		void print();
 };
 

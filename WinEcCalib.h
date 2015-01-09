@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinEcCalib
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 03.01.2015
+// # Date       : 09.01.2015
 //
 // # Description: EC circuit calibration menu window
 //
@@ -29,16 +29,14 @@
 
 #include "Window.h"
 
-const int nECcalibrationButtons = 7;
-/*static char* ecCalibrationButtonsText[nECcalibrationButtons] = {
+/*const char ecCalibrationButtonsText[nECcalibrationButtons] = {
 	"1. Set probe type",
 	"2. Dry calibration",
 	"3. Calibrate for 40000 uS",
 	"4. Calibrate for 10500 uS"
 };*/
-static int ecCalibrationButtons[nECcalibrationButtons];
 
-static char* nameWinEcCalib = "- EC Circuit -";
+const char nameWinEcCalib[] PROGMEM = "- EC Circuit -";
 
 class WinEcCalib: public Window {
 	public:
@@ -51,6 +49,8 @@ class WinEcCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nECcalibrationButtons = _nFlowButtons + 4;		
+		uint8_t _ecCalibrationButtons[_nECcalibrationButtons];
 		void print();
 };
 

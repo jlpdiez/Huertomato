@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinReservoir
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 24.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Reservoir module submenu. On/off toggle, alarms, calibration and pump protection
 //
@@ -34,17 +34,13 @@
 //Alarms menu
 //Sensor Calibration
 //Pump protection
+const char nameWinReservoir[] PROGMEM = "- Reservoir Module -";
 
-const int nReservoirButtons = 7;
-static char* reservoirButtonsText[nReservoirButtons] = {
-	"Reservoir Module:",
-	"Sensor Alarms",
-	"Pump Protection",
-	"Sensor Calibration"
-};
-static int reservoirButtons[nReservoirButtons];
-
-static char* nameWinReservoir = "- Reservoir Module -";
+const char reservoirStr0[] PROGMEM = "Reservoir Module:";
+const char reservoirStr1[] PROGMEM = "Sensor Alarms";
+const char reservoirStr2[] PROGMEM = "Pump Protection";
+const char reservoirStr3[] PROGMEM = "Sensor Calibration";
+const char* const reservoirButtonsText[] PROGMEM = { reservoirStr0, reservoirStr1, reservoirStr2, reservoirStr3};
 
 class WinReservoir: public Window {
 	public:
@@ -58,6 +54,8 @@ class WinReservoir: public Window {
 		Window::Screen processTouch(const int x, const int y);
 		
 	protected:	
+		static const uint8_t _nReservoirButtons = _nFlowButtons + 4;
+		uint8_t _reservoirButtons[_nReservoirButtons];
 		boolean _reservoirActive;
 		void print();
 };

@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainScreen
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 15.11.2014
+// # Date       : 09.01.2015
 //
 // # Description: Main idle screen window
 //
@@ -33,36 +33,39 @@
 #include <SD.h>   
 #include <Time.h>
 
-//Holds text strings for each sensor
-const int nSensorText = 6;
-static char* sensorText[nSensorText] = {
-	"Humidity:",
-	"Temp:",
-	"Light:",
-	"pH:",
-	"EC:",
-	"Deposit:"
-};
 //Name is not used really. Its here because its neccesary for other windows
-static char* nameWinMainScreen = "- Main Screen -";
+const char nameWinMainScreen[] PROGMEM = "- Main Screen -";
+
+//Holds text strings for each sensor
+//const int _nSensorText = 6;
+
+const char sensorTextStr0[] PROGMEM = "Humidity:";
+const char sensorTextStr1[] PROGMEM = "Temp:";
+const char sensorTextStr2[] PROGMEM = "Light:";
+const char sensorTextStr3[] PROGMEM = "pH:";
+const char sensorTextStr4[] PROGMEM = "EC:";
+const char sensorTextStr5[] PROGMEM = "Deposit:";
+const char* const sensorText[] = { sensorTextStr0, sensorTextStr1, sensorTextStr2,
+	sensorTextStr3, sensorTextStr4, sensorTextStr5 };
+
 //Paths for finding icons in SD card
-static char* plantPath = "/PICTURE/plant126.RAW";
-static char* nightPath  = "/PICTURE/moon126.RAW";
-static char* logoPath = "/PICTURE/logo126.RAW";
-static char* alarmPath = "/PICTURE/alarm126.RAW";
+const char plantPath[] PROGMEM = "/PICTURE/plant126.RAW";
+const char nightPath[] PROGMEM  = "/PICTURE/moon126.RAW";
+const char logoPath[] PROGMEM = "/PICTURE/logo126.RAW";
+const char alarmPath[] PROGMEM = "/PICTURE/alarm126.RAW";
 //Misc texts
-static char* versionName = "Huertomato 1.3";
-static char* humidUnit = "%";
-static char* tempUnit = "C";
-static char* lightUnit = "Lux";
-static char* ecUnit = "uS";
-static char* lvlUnit = "%";
+const char versionName[] PROGMEM = "Huertomato 1.4";
+const char humidUnit[] PROGMEM = "%";
+const char tempUnit[] PROGMEM = "C";
+const char lightUnit[] PROGMEM = "Lux";
+const char ecUnit[] PROGMEM = "uS";
+const char lvlUnit[] PROGMEM = "%";
 //Spaces at the end are used to have all strings of same size and no thrash on screen
-static char* nextWater = "Next Watering @ ";
-static char* noNight = "No Watering @ Night   ";
-static char* htmtWatering = "Huertomato Watering   ";
-static char* alarmCont = "Alarm - Check Solution";
-static char* normalCont = "System working fine  ";
+const char nextWater[] PROGMEM = "Next Watering @ ";
+const char noNight[] PROGMEM = "No Watering @ Night   ";
+const char htmtWatering[] PROGMEM = "Huertomato Watering   ";
+const char alarmCont[] PROGMEM = "Alarm - Check Solution";
+const char normalCont[] PROGMEM = "System working fine  ";
 
 //Contains two main screens. One when reservoir module is on, another when off
 class WinMainScreen: public Window {
