@@ -38,8 +38,8 @@ void WinLvlAlarms::print() {
 	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	_waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,waterAlarmsButtonsText[0],BUTTON_SYMBOL);
-	_waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,waterAlarmsButtonsText[1],BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
 	_lcd->print("%",x,_yOneLine);

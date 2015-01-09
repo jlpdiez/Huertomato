@@ -38,7 +38,7 @@ void WinSystemMenu::print() {
 	}
 	//Make menu buttons
 	for (int i = 0; i < _nSystemButtons - _nFlowButtons; i++) {
-		_systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,systemButtonText[i]);
+		_systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,pmChar(systemButtonText[i]));
 	}
 }
 

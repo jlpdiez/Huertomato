@@ -54,19 +54,19 @@ void WinTime::print() {
 	_lcd->setBackColor(VGA_WHITE);
 	
 	//Make +/- buttons
-	_timeButtons[_nFlowButtons] = _buttons.addButton(houU[0],houU[1],timeButtonText[0],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+1] = _buttons.addButton(minU[0],minU[1],timeButtonText[1],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+2] = _buttons.addButton(secU[0],secU[1],timeButtonText[2],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],timeButtonText[3],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],timeButtonText[4],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+5] = _buttons.addButton(secD[0],secD[1],timeButtonText[5],BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons] = _buttons.addButton(houU[0],houU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+1] = _buttons.addButton(minU[0],minU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+2] = _buttons.addButton(secU[0],secU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+5] = _buttons.addButton(secD[0],secD[1],pmChar(minusStr),BUTTON_SYMBOL);
 	
-	_timeButtons[_nFlowButtons+6] = _buttons.addButton(dayU[0],dayU[1],timeButtonText[6],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+7] = _buttons.addButton(monU[0],monU[1],timeButtonText[7],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+8] = _buttons.addButton(yeaU[0],yeaU[1],timeButtonText[8],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+9] = _buttons.addButton(dayD[0],dayD[1],timeButtonText[9],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+10] = _buttons.addButton(monD[0],monD[1],timeButtonText[10],BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+11] = _buttons.addButton(yeaD[0],yeaD[1],timeButtonText[11],BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+6] = _buttons.addButton(dayU[0],dayU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+7] = _buttons.addButton(monU[0],monU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+8] = _buttons.addButton(yeaU[0],yeaU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+9] = _buttons.addButton(dayD[0],dayD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+10] = _buttons.addButton(monD[0],monD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+11] = _buttons.addButton(yeaD[0],yeaD[1],pmChar(minusStr),BUTTON_SYMBOL);
 	
 	//TIME
 	_lcd->setFont(hallfetica_normal);

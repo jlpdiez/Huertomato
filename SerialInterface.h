@@ -35,6 +35,11 @@
 #include <Time.h>  
 #include <MemoryFree.h>
 
+//General strings
+const char helpTxt0[] PROGMEM = "Huertomato version 1.4";
+const char helpTxt1[] PROGMEM = "Type <help name> to find out more about the function <name>.";
+const char memHelpTxt[] PROGMEM = "Displays current system's free memory.";
+const char statusHelpTxt[] PROGMEM = "Displays all sensor info.";
 const char commandsTxT[] PROGMEM = "Available commands are:";
 const char sensorsTxT[] PROGMEM = "Available sensors are:";
 const char settingsTxt[] PROGMEM = "Available settings are:";
@@ -47,24 +52,39 @@ const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
 const char percentTxT[] PROGMEM = "Expected 0 .. 100";
 const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
 
+//Command Strings
 const char commandStr0[] PROGMEM = "help";
 const char commandStr1[] PROGMEM = "sensors";
 const char commandStr2[] PROGMEM = "settings";
 const char commandStr3[] PROGMEM = "memory";
 const char commandStr4[] PROGMEM = "status";
 static const int nCommands = 5;
-const char* const commands[nCommands] PROGMEM = {commandStr0, commandStr1, commandStr2,
-	commandStr3, commandStr4};
+const char* const commands[] PROGMEM = { commandStr0, commandStr1, commandStr2,
+	commandStr3, commandStr4 };
 
+//Sensor commands strings
 const char sensorStr0[] PROGMEM = "list";
 const char sensorStr1[] PROGMEM = "get";
 static const int nSensorsC = 2;
-const char* const sensorCommands[nSensorsC] PROGMEM = {sensorStr0, sensorStr1};
+const char* const sensorCommands[] PROGMEM = { sensorStr0, sensorStr1 };
 
+//Settings commands strings
 const char settingsStr2[] PROGMEM = "set";
 static const int nSettingsC = 3;
-const char* const settingsCommands[nSettingsC] PROGMEM = {sensorStr0, sensorStr1, settingsStr2};
+const char* const settingsCommands[] PROGMEM = { sensorStr0, sensorStr1, settingsStr2 };
 
+//Sensor strings
+const char sensorNameStr0[] PROGMEM = "Temperature";
+const char sensorNameStr1[] PROGMEM = "Humidity";
+const char sensorNameStr2[] PROGMEM = "Light";
+const char sensorNameStr3[] PROGMEM = "Ec";
+const char sensorNameStr4[] PROGMEM = "Ph";
+const char sensorNameStr5[] PROGMEM = "Level";
+static const int nSensors = 6;
+const char* const sensorsNames[] PROGMEM = { sensorNameStr0, sensorNameStr1, sensorNameStr2,
+sensorNameStr3, sensorNameStr4, sensorNameStr5 };
+
+//Settings strings
 const char settingsNameStr0[] PROGMEM = "WaterTimed";
 const char settingsNameStr1[] PROGMEM = "WaterHour";
 const char settingsNameStr2[] PROGMEM = "WaterMinute";
@@ -92,26 +112,18 @@ const char settingsNameStr23[] PROGMEM = "NightWateringStopped";
 const char settingsNameStr24[] PROGMEM = "WateringPlants";
 const char settingsNameStr25[] PROGMEM = "AlarmTriggered";
 static const int nSettings = 26;
-const char* const settingsNames[nSettings] PROGMEM = {settingsNameStr0, settingsNameStr1, settingsNameStr2,
+const char* const settingsNames[] PROGMEM = { settingsNameStr0, settingsNameStr1, settingsNameStr2,
 	settingsNameStr3, settingsNameStr4, settingsNameStr5, settingsNameStr6, settingsNameStr7,
 	settingsNameStr8, settingsNameStr9, settingsNameStr10, settingsNameStr11, settingsNameStr12,
 	settingsNameStr13, settingsNameStr14, settingsNameStr15, settingsNameStr16, settingsNameStr17,
 	settingsNameStr18, settingsNameStr19, settingsNameStr20, settingsNameStr21, settingsNameStr22,
-	settingsNameStr23, settingsNameStr24, settingsNameStr25};
+	settingsNameStr23, settingsNameStr24, settingsNameStr25 };
 
-const char sensorNameStr0[] PROGMEM = "Temperature";
-const char sensorNameStr1[] PROGMEM = "Humidity";
-const char sensorNameStr2[] PROGMEM = "Light";
-const char sensorNameStr3[] PROGMEM = "Ec";
-const char sensorNameStr4[] PROGMEM = "Ph";
-const char sensorNameStr5[] PROGMEM = "Level";
-static const int nSensors = 6;
-const char* const sensorsNames[nSensors] PROGMEM = {sensorNameStr0, sensorNameStr1, sensorNameStr2,
-	sensorNameStr3, sensorNameStr4, sensorNameStr5};
-
-//This makes settings static so we can use SerialCommand.addCommand("str",function)
+//This makes things static so we can use SerialCommand.addCommand("str",function)
 extern Settings settings;
 extern Sensors sensors;
+
+static char charBuffer[64];
 
 class SerialInterface {
 	public:
@@ -139,22 +151,22 @@ class SerialInterface {
 		static SerialCommand _cmd;
 		
 		//These are used to read data from PROGMEM and store them into SRAM
-		static char _stringBuffer[30];
 		static char* pmChar(const char* pmArray);
-		
+		//Printers
+		static void printLn(const char* ln, boolean leadingBlankLine = true, boolean trailingBlankLine = true);
+		static void list(int length, const char* const names[]);
 		
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
 		
 		//This gets set as the default handler, and gets called when no other command matches.
+		static void notFound();
+		//Help command function
 		static void help();
 		//Uses external FreeMemory library
 		static void commandMemory();
 		//Sends all sensor data through serial
 		static void commandStatus();
-		//Printers
-		static void printLn(const char* ln);
-		static void list(int length, const char* const names[]);
 		//Returns enum contained in input keyword or Invalid/Nobne
 		static Command interpretCommand(char* keyword);
 		static Sensors::Sensor interpretSensor(char* keyword);

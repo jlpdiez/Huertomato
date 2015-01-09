@@ -41,19 +41,19 @@ void WinSD::print() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xConfig,_yTwoLnsFirst);
+	_lcd->print(pmChar(bulletStr),_xConfig,_yTwoLnsFirst);
 	//First line button
-	_sdCardButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yTwoLnsFirst,sdCardButtonsText[0]);
+	_sdCardButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yTwoLnsFirst,pmChar(sdCardText0));
 	//On - off symbol -
 	_lcd->setFont(hallfetica_normal);
 	if (_sdActive)
-		_lcd->print(onStr,_xConfig+((3+strlen_P(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(onStr))*_bigFontSize),_yTwoLnsFirst);
 	else
-		_lcd->print(offStr,_xConfig+((3+strlen_P(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(offStr))*_bigFontSize),_yTwoLnsFirst);
 	
 	//Second line
 	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->print(sdCardText1,_xConfig,_yTwoLnsSecond);
+	_lcd->print(pmChar(sdCardText1),_xConfig,_yTwoLnsSecond);
 	//hours
 	int x = houU[0]+_bigFontSize/2-_bigFontSize+2;
 	_lcd->printNumI(_sdHour,x,_yTwoLnsSecond,2,'0');
@@ -63,13 +63,13 @@ void WinSD::print() {
 	x += 2*_bigFontSize;
 	_lcd->printNumI(_sdMin,x,_yTwoLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("m",x,_yTwoLnsSecond);
+	_lcd->print(PSTR("m"),x,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	_sdCardButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],sdCardButtonsText[1],BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+2] = _buttons.addButton(minU[0],minU[1],sdCardButtonsText[2],BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],sdCardButtonsText[3],BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],sdCardButtonsText[4],BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+2] = _buttons.addButton(minU[0],minU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],pmChar(minusStr),BUTTON_SYMBOL);
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_sdActive) {
@@ -98,9 +98,9 @@ void WinSD::update() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	if (_sdActive)
-		_lcd->print(onStr,_xConfig+((3+strlen_P(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(onStr))*_bigFontSize),_yTwoLnsFirst);
 	else
-		_lcd->print(offStr,_xConfig+((3+strlen_P(sdCardButtonsText[0]))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(offStr))*_bigFontSize),_yTwoLnsFirst);
 
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//hours

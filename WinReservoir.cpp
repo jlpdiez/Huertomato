@@ -36,12 +36,12 @@ void WinReservoir::print() {
 	_lcd->print(bulletStr,_xMenu,_yFourLines);
 	//First textline
 	_lcd->setFont(hallfetica_normal);
-	_reservoirButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines,reservoirButtonsText[0]);
+	_reservoirButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines,pmChar(reservoirButtonsText[0]));
 	//First toggle
 	if (_reservoirActive)
-		_lcd->print(onStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
+		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
 	else
-		_lcd->print(offStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
+		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
 	
 	//Rest of lines
 	//Change color depending on active/inactive
@@ -52,12 +52,12 @@ void WinReservoir::print() {
 	_lcd->setFont(various_symbols);
 	//Bullets - Start in 1 because nReservoirButtons[0] already added
 	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
+		_lcd->print(pmChar(bulletStr),_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
 	}
 	//Make menu buttons
 	_lcd->setFont(hallfetica_normal);
 	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
-		_reservoirButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines+_bigFontSize*_yFactor4lines*i,reservoirButtonsText[i]);
+		_reservoirButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines+_bigFontSize*_yFactor4lines*i,pmChar(reservoirButtonsText[i]));
 	}
 	//Disable buttons depending on active/inactive
 	if (!_reservoirActive) {
@@ -88,7 +88,7 @@ void WinReservoir::update() {
 	_lcd->setFont(various_symbols);
 	//Bullets - Start in 1 because nReservoirButtons[0] already added
 	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
+		_lcd->print(pmChar(bulletStr),_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
 	}
 	//Disable buttons depending on active/inactive
 	if (!_reservoirActive) {

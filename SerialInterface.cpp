@@ -23,28 +23,30 @@ void SerialInterface::init() {
 		Serial << endl << F(".::[ Huertomato ]::.") << endl;
 		Serial << F("www.TheGreenAutomation.com") << endl << endl;
 		// Setup callbacks for SerialCommand commands
-		_cmd.addCommand(commands[0],SerialInterface::help);
-		_cmd.addCommand(commands[1],SerialInterface::commandSensors);
-		_cmd.addCommand(commands[2],SerialInterface::commandSettings);
-		_cmd.addCommand(commands[3],SerialInterface::commandMemory);
-		_cmd.addCommand(commands[4],SerialInterface::commandStatus);
-		// Handler for command that isn't matched
-		_cmd.addDefaultHandler(help);
-		timeStamp(PSTR("Serial input ready"));
+		_cmd.addCommand(pmChar(commands[0]),SerialInterface::help);
+		_cmd.addCommand(pmChar(commands[1]),SerialInterface::commandSensors);
+		_cmd.addCommand(pmChar(commands[2]),SerialInterface::commandSettings);
+		_cmd.addCommand(pmChar(commands[3]),SerialInterface::commandMemory);
+		_cmd.addCommand(pmChar(commands[4]),SerialInterface::commandStatus);
+		// Handler for command that isn't found
+		_cmd.addDefaultHandler(notFound);
+		timeStamp("Serial input ready");
 	}
-	  
 }
 
 //Ends serial communication
 void SerialInterface::end() {
-	timeStamp(PSTR("Deactivating serial communications"));
+	timeStamp("Deactivating serial communications");
 	Serial.end();
 }
 
-//Checks in buffers and calls to handle
+//Checks in buffers and calls appropriate handle
 void SerialInterface::processInput() {
 	_cmd.readSerial();
 	_cmd.clearBuffer();
+	//Clears incoming Serial buffer
+	while (Serial.available() > 0)
+		Serial.read();
 }
 
 //Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
@@ -54,26 +56,47 @@ void SerialInterface::timeStamp(const char* txt) const {
 		uint8_t h = hour(t);
 		uint8_t m = minute(t);
 		uint8_t s = second(t);
-		Serial << ((h<10)?F("0"):"") << h << F(":") << ((m<10)?F("0"):"") << m << F(":") << ((s<10)?F("0"):"") << s;
+		Serial << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s;
 		Serial  << F(" - ") << txt << endl;
 	}
-	Serial.flush();
+}
+
+//Converts a char array from PROGMEM to variable in SRAM
+char* SerialInterface::pmChar(const char *pmArray) {
+	strcpy_P(charBuffer, (char*)pmArray);
+	return charBuffer;
+}
+
+//Prints a decorated line with optional leading and trailing blank lines
+void SerialInterface::printLn(const char* ln, boolean leadingBlankLine, boolean trailingBlankLine) {
+	(leadingBlankLine) ? Serial.println() : 0;
+	Serial << F("> ") << pmChar(ln) << endl;
+	(trailingBlankLine) ? Serial.println() : 0;
+}
+
+//Lists an array ending in an additional blank line
+void SerialInterface::list(int length, const char* const names[]) {
+	for (uint8_t i = 0; i < length; i++) {
+		printLn((char*)pgm_read_word(&names[i]),false,false);
+	}
+	Serial << endl;
+}
+
+void SerialInterface::notFound() {
+	printLn(helpTxt0,true,false);
+	printLn(helpTxt1,false,true);
+	list(nCommands,commands);
 }
 
 //This gets set as the default handler, and gets called when no other command matches.
 void SerialInterface::help() {
-	Serial.flush();
 	//Read argument following "help"
 	char *arg = _cmd.next();
 	//Not more words
 	if (arg == NULL) {
-		Serial << endl;
-		Serial << F("> Huertomato version 1.4") << endl;
-		Serial << F("> Type <help name> to find out more about the function <name>.") << endl << endl;
-		for (int i = 0; i < nCommands; i++) {
-			Serial << F("> ") << commands[i] << endl;
-		}
-		Serial << endl;
+		printLn(helpTxt0,true,false);
+		printLn(helpTxt1,false,true);
+		list(nCommands,commands);
 	//help sensors
 	//if arg == commands[1]
 	} else if (strcmp_P(arg,commands[1]) == 0) {
@@ -85,9 +108,9 @@ void SerialInterface::help() {
 		list(nSettingsC,settingsCommands);
 	//help memory
 	} else if (strcmp_P(arg,commands[3]) == 0)
-		printLn(PSTR("Displays current system's free memory."));
+		printLn(memHelpTxt);
 	else if (strcmp_P(arg,commands[4]) == 0)
-		printLn(PSTR("Displays all sensor info."));
+		printLn(statusHelpTxt);
 	//not recognized
 	else 
 		Serial << endl << F("> No help found for command <") << arg << F(">") << endl << endl;
@@ -110,8 +133,8 @@ void SerialInterface::commandStatus() {
 		uint16_t y = year(t);
 		
 		Serial << endl;
-		Serial << F("> Date: ") << ((d<10)?F("0"):"") << d << F("/") << ((mo<10)?F("0"):"") << mo << F("/") << y << endl;
-		Serial << F("> Time: ") << ((h<10)?F("0"):"") << h << F(":") << ((m<10)?F("0"):"") << m << F(":") << ((s<10)?F("0"):"") << s << endl;
+		Serial << F("> Date: ") << ((d<10)?"0":"") << d << F("/") << ((mo<10)?"0":"") << mo << F("/") << y << endl;
+		Serial << F("> Time: ") << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s << endl;
 		Serial << F("> Available memory: ") << freeMemory() << F(" bytes") << endl;
 		Serial << F("> Temp: ") << sensors.getTemp() << F("C") << endl;
 		Serial << F("> Humidity: ") << sensors.getHumidity() << F("%") << endl;
@@ -123,21 +146,6 @@ void SerialInterface::commandStatus() {
 		}
 		Serial << endl;
 	}
-	Serial.flush();
-}
-
-//Prints a decorated line
-void SerialInterface::printLn(const char* ln) {
-	Serial << endl << F("> ") << pmChar(ln) << endl << endl;
-}
-
-//Lists an array with blank lines before and after and a ">" symbol first in each line
-void SerialInterface::list(int length, const char* const names[]) {
-	Serial << endl;
-	for (int i = 0; i < length; i++) {
-		Serial << F("> ") << pmChar(names[i]) << endl;
-	}
-	Serial <<endl;
 }
 
 //Returns command contained in input keyword or Invalid
@@ -273,7 +281,6 @@ void SerialInterface::commandSensors() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSensor(Sensors::Sensor sens) {
-	Serial.flush();
 	Serial << endl;
 	switch (sens) {
 		case Sensors::None:
@@ -342,7 +349,6 @@ void SerialInterface::commandSettings() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSetting(Settings::Setting sett) {
-		Serial.flush();
 		Serial << endl;
 		switch (sett) {
 			case Settings::None:
@@ -432,16 +438,16 @@ void SerialInterface::getSetting(Settings::Setting sett) {
 
 //Checks if inputs are valid and convert methods
 boolean SerialInterface::isBoolean(char* str) {
-	return ((strcmp_P(str, PSTR("true")) == 0) || (strcmp_P(str, PSTR("1")) == 0) 
-			|| (strcmp_P(str, PSTR("false")) == 0) || (strcmp_P(str, PSTR("0")) == 0));
+	return ((strcmp(str, "true") == 0) || (strcmp(str, "1") == 0) 
+			|| (strcmp(str, "false") == 0) || (strcmp(str, "0") == 0));
 }
 
 boolean SerialInterface::getBoolean(char* str) {
 	if (str == NULL)
 		return false;
-	else if ((strcmp_P(str, PSTR("true")) == 0) || (strcmp_P(str, PSTR("1")) == 0))
+	else if ((strcmp(str, "true") == 0) || (strcmp(str, "1") == 0))
 		return true;
-	else if ((strcmp_P(str, PSTR("false")) == 0) || (strcmp_P(str, PSTR("0")) == 0))
+	else if ((strcmp(str, "false") == 0) || (strcmp(str, "0") == 0))
 		return false;
 }
 
@@ -484,7 +490,6 @@ float SerialInterface::getFloat(char* str) {
 
 //Gets info from input, checks validity and modifies data
 void SerialInterface::setSetting(Settings::Setting sett) {
-	Serial.flush();
 	Serial << endl;
 	char* arg = _cmd.next();
 	switch (sett) {
@@ -676,7 +681,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SerialDebug:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
-				printLn(PSTR("Done"));
+				printLn(doneTxt);
 			} else
 				printLn(boolTxt);
 			break;
@@ -684,7 +689,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::ReservoirModule:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setReservoirModule(true) : settings.setReservoirModule(false);
-				printLn(PSTR("Done");
+				printLn(doneTxt);
 			} else
 				printLn(boolTxt);
 			break;
@@ -699,10 +704,4 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			break;
 	}
 	Serial << endl;
-}
-
-//Converts a char array from PROGMEM to variable in SRAM
-char* SerialInterface::pmChar(const char *pmArray) {
-	strcpy_P(_stringBuffer, (char*)pmArray);
-	return _stringBuffer;
 }

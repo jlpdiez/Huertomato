@@ -40,12 +40,12 @@ void WinWaterNight::print() {
 	_lcd->print(bulletStr,_xConfig,_yThreeLnsFirst);
 	//First line button
 	_lcd->setFont(hallfetica_normal);
-	_waterNightButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yThreeLnsFirst,_waterNightButtonsText[0]);
+	_waterNightButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yThreeLnsFirst,pmChar(waterNightButtonsText[0]));
 	//Watering at night ON/OFF
 	if (_nightWater)
-		_lcd->print(onStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(_waterNightButtonsText[0]),_yThreeLnsFirst);
+		_lcd->print(onStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(waterNightButtonsText[0]),_yThreeLnsFirst);
 	else
-		_lcd->print(offStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(_waterNightButtonsText[0]),_yThreeLnsFirst);
+		_lcd->print(offStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(waterNightButtonsText[0]),_yThreeLnsFirst);
 	
 	
 	//Second Line
@@ -63,7 +63,7 @@ void WinWaterNight::print() {
 	x += _bigFontSize * (strlen_P(lightThreshold) + 1);
 	_lcd->printNumI(_lightThreshold,x,_yThreeLnsThird,4);
 	x += 5*_bigFontSize;
-	_waterNightButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,_waterNightButtonsText[1]);
+	_waterNightButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,pmChar(waterNightButtonsText[1]));
 }
 
 void WinWaterNight::update() {
@@ -74,9 +74,9 @@ void WinWaterNight::update() {
 	_lcd->setBackColor(VGA_WHITE);
 	//Watering at night ON/OFF
 	if (_nightWater)
-		_lcd->print(onStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(_waterNightButtonsText[0]),_yThreeLnsFirst);
+		_lcd->print(onStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(waterNightButtonsText[0]),_yThreeLnsFirst);
 	else
-		_lcd->print(offStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(_waterNightButtonsText[0]),_yThreeLnsFirst);
+		_lcd->print(offStr,_xConfig+_bigFontSize*2+_bigFontSize*strlen_P(waterNightButtonsText[0]),_yThreeLnsFirst);
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Second Line

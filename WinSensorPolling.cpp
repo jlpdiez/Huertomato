@@ -46,8 +46,8 @@ void WinSensorPolling::print() {
 	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	_sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],sensorPollingButtonText[0],BUTTON_SYMBOL);
-	_sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],sensorPollingButtonText[1],BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],pmChar(plusStr),BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],pmChar(minusStr),BUTTON_SYMBOL);
 } 
 
 //Draws entire screen Sensor Polling

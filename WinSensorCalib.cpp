@@ -38,7 +38,7 @@ void WinSensorCalib::print() {
 	}
 	//Make menu buttons
 	for (int i = 0; i < _nSensorCalibrationButtons - _nFlowButtons; i++) {
-		_sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,sensorCalibrationButtonsText[i]);
+		_sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,pmChar(sensorCalibrationButtonsText[i]));
 	}
 }
 

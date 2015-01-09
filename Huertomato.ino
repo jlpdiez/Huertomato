@@ -299,7 +299,7 @@ void loop() {
 	checkNightTime();
 	//Checks if settings have changed and system needs updating
 	checkSettingsChanged();
-
+	
 	//Delays are needed for alarms to work
 	Alarm.delay(10);
 }

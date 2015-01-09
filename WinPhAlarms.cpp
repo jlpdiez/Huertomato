@@ -40,10 +40,10 @@ void WinPhAlarms::print() {
 	_lcd->printNumF(_phAlarmMin,2,x,_yTwoLnsSecond,'.',5);
 	//Buttons
 	x += 2*_bigFontSize;
-	_phAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,phAlarmsButtonsText[0],BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,phAlarmsButtonsText[1],BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,phAlarmsButtonsText[2],BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,phAlarmsButtonsText[3],BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
 }
 
 //Draws entire screen pH Alarms

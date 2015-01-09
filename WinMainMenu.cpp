@@ -34,8 +34,8 @@ void WinMainMenu::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//Make menu buttons. System and Controller settings
-	_mainMenuButtons[_nFlowButtons] = _buttons.addButton(_xMenu+70,_yTwoLnsFirst,mainMenuButtonText[0]);
-	_mainMenuButtons[_nFlowButtons+1] = _buttons.addButton(_xMenu+70,_yTwoLnsSecond,mainMenuButtonText[1]);
+	_mainMenuButtons[_nFlowButtons] = _buttons.addButton(_xMenu+70,_yTwoLnsFirst,pmChar(menuStr0));
+	_mainMenuButtons[_nFlowButtons+1] = _buttons.addButton(_xMenu+70,_yTwoLnsSecond,pmChar(menuStr1));
 	//Logos
 	_lcd->drawBitmap (_xMenu, _yTwoLnsFirst-18, _smallIconSize, _smallIconSize, plant64);
 	_lcd->drawBitmap (_xMenu, _yTwoLnsSecond-18, _smallIconSize, _smallIconSize, settings64);
