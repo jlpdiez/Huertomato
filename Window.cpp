@@ -5,7 +5,7 @@ Window::Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : _lcd(lcd), _touch(touch), _sensors(sensors),_settings(settings),_buttons(lcd,touch) {
 	_buttons.setTextFont(hallfetica_normal);
 	_buttons.setSymbolFont(various_symbols);
-	_buttons.setButtonColors(lightGreen, grey, white, grey, white);
+	_buttons.setButtonColors(lightGreen, grey, grey, white);
 }
 
 Window::Window(const Window &other) : _buttons(other._buttons) {
@@ -65,21 +65,21 @@ void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exit
 	if (backButton) {
 		const int backX = 15;
 		_lcd->drawLine(backX-1,_flowButtonY-5,backX+_bigFontSize*strlen_P(backText),_flowButtonY-5);
-		buttonArray[0] = _buttons.addButton(backX, _flowButtonY, pmChar(backText));
+		buttonArray[0] = _buttons.addButton(backX, _flowButtonY, backText);
 	} else
 		buttonArray[0] = -1;
 		
 	if (saveButton) {
 		const int saveX = _xSize/2 - _bigFontSize*strlen_P(saveText)/2;
 		_lcd->drawLine(saveX-1,_flowButtonY-5,saveX+_bigFontSize*strlen_P(saveText),_flowButtonY-5);
-		buttonArray[1] = _buttons.addButton(saveX, _flowButtonY, pmChar(saveText));
+		buttonArray[1] = _buttons.addButton(saveX, _flowButtonY, saveText);
 	} else
 		buttonArray[1] = -1;
 		
 	if (exitButton) {
 		const int cancelX = _xSize - 15 - _bigFontSize*strlen_P(cancelText);
 		_lcd->drawLine(cancelX-1,_flowButtonY-5,cancelX+_bigFontSize*strlen_P(cancelText),_flowButtonY-5);
-		buttonArray[2] = _buttons.addButton(cancelX, _flowButtonY, pmChar(cancelText));
+		buttonArray[2] = _buttons.addButton(cancelX, _flowButtonY, cancelText);
 	} else
 		buttonArray[2] = -1;
 }
