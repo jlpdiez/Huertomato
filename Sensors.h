@@ -1,7 +1,7 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.5
+// # Version    : 1.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 13.01.2015
@@ -80,6 +80,9 @@ class Sensors {
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
 
+	//This should be set while calibrating to prevent messing up circuits if update() called
+	void calibratingPH(boolean c);
+	void calibratingEC(boolean c);
 	//pH circuit commands
 	void resetPH();
 	void getPHinfo();
@@ -108,6 +111,9 @@ class Sensors {
 
   private:
 	Settings *_settings;
+	//To stop EC & pH routines if sensors are being calibrated
+	boolean _calibratingPh;
+	boolean _calibratingEc;
 	
     //Smoothes readings
     void smoothSensorReadings();
@@ -119,9 +125,14 @@ class Sensors {
     uint8_t waterLevel();
     float ph();
     uint16_t ec();
+	
+	//Clears incoming buffers
+	void clearPHbuffer();
+	void clearECbuffer();
 	//Output EC circuit's response to serial
 	void ecToSerial();
 	void phToSerial();
+	
 	// Used for smoothing sensor data.  The higher the number,
 	// the more the readings will be smoothed, but the slower the variables will
 	// respond to the input.
@@ -143,6 +154,7 @@ class Sensors {
     float _ph;
     uint8_t _waterLevel;
 };
+
 #endif
 /*
 template <class T>; 

@@ -44,25 +44,20 @@ void WinPhCalib::print() {
 	} else {
 		_lcd->print(pmChar(phText1),centerX(phText1),_yThreeLnsFirst);
 		_lcd->print(pmChar(phText2),centerX(phText2),_yThreeLnsSecond);
-		uint16_t x = _xConfig + strlen_P(phText2)*_bigFontSize;
+		uint16_t x = centerX(phText2) + 14*_bigFontSize;
 		if (_actScreen == 1)
 			_lcd->printNumI(7,x,_yThreeLnsSecond);
 		if (_actScreen == 2)
 			_lcd->printNumI(4,x,_yThreeLnsSecond);
-		if (_actScreen == 3) {
+		if (_actScreen == 3)
 			_lcd->printNumI(10,x,_yThreeLnsSecond);
-			x += _bigFontSize;
-		}
-		x += 2 * _bigFontSize;
-		_lcd->print(pmChar(phText3),x,_yThreeLnsSecond);
-		_lcd->print(pmChar(phText4),_xConfig,_yThreeLnsThird);
+		_lcd->print(pmChar(phText4),centerX(phText4),_yThreeLnsThird);
 		if ((_actScreen == 1) || (_actScreen == 2))
-			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(continueStr),_flowButtonY,continueStr);
+			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(continueStr),200,continueStr);
 		else if (_actScreen == 3)
-			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(endStr),_flowButtonY,endStr);
+			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(endStr),200,endStr);
 	}
 }
-
 
 //Draws entire screen Sensor Calibration
 void WinPhCalib::draw() {
@@ -87,23 +82,28 @@ Window::Screen WinPhCalib::processTouch(const int x, const int y) {
 			return MainScreen;
 		//Start calibration button
 		else if (buttonIndex == _phCalibrationButtons[3]) {
-			//Command to pH circuit
+			_sensors->calibratingPH(true);
+			_sensors->getPHinfo();
+			_sensors->resetPH();
+			_sensors->setPHcontinuous();
 			_actScreen = 1;
 			draw();
 			return None;
 		}
 	} else if ((_actScreen == 1) && (buttonIndex == _phCalibrationButtons[3])) {
-		//Command to pH circuit
+		_sensors->setPHseven();
 		_actScreen = 2;
 		draw();
 		return None;
 	} else if ((_actScreen == 2) && (buttonIndex == _phCalibrationButtons[3])) {
-		//Command to pH circuit
+		_sensors->setPHfour();
 		_actScreen = 3;
 		draw();
 		return None;
 	} else if ((_actScreen == 3) && (buttonIndex == _phCalibrationButtons[3])) {
-		//Command to pH circuit
+		_sensors->setPHten();
+		_sensors->setPHstandby();
+		_sensors->calibratingPH(false);
 		return SensorCalib;
 	}
 	return None;

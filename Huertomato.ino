@@ -471,7 +471,7 @@ void logSensorReadings() {
 		//Inform through serial
 		ui.timeStamp(sdLogOk);
 	} else
-	ui.timeStamp(sdLogFail);
+		ui.timeStamp(sdLogFail);
 	//Set next timer
 	if (settings.getSDactive()) {
 		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);

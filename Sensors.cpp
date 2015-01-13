@@ -208,66 +208,105 @@ uint8_t Sensors::waterLevel() {
 
 //Returns a PH reading. Reading takes 378ms
 float Sensors::ph() {   
-	Serial2.print("R\r");
-	if (Serial2.available() > 0) {
-		float res = Serial2.parseFloat();
-		//Discard carriage return '/r'
-		Serial2.read();
-		return res;
-	}
-	//There's some kind of problem communicating with circuit
-	return 0;
+	if (!_calibratingPh) {
+		Serial2.print("R\r");
+		if (Serial2.available() > 0) {
+			float res = Serial2.parseFloat();
+			//Discard carriage return '/r'
+			Serial2.read();
+			return res;
+		}
+		//There's some kind of problem communicating with circuit
+		return 0;
+	} else
+		return _ph;
+	
 }
 
 //Returns EC in uSiemens. Reading takes 1000ms
 uint16_t Sensors::ec() {
-	if (Serial1.available() > 0) {
- 		uint16_t res = Serial1.parseInt();
- 		//Clear buffer of remaining messages
-		while (Serial1.available() > 0)
-			Serial1.read();
-		return res;
-	}
-	//Buffer has been emptied before and circuit still hasn't put data into it again
-	return 0;
+	//If sensors being calibrated we return previous values
+	if (!_calibratingEc) {
+		if (Serial1.available() > 0) {
+ 			uint16_t res = Serial1.parseInt();
+ 			//Clear buffer of remaining messages
+			while (Serial1.available() > 0)
+				Serial1.read();
+			return res;
+		}
+		//Buffer has been emptied before and circuit still hasn't put data into it again
+		return 0;
+	} else
+		return _ec;
+}
+
+//This should be set while calibrating to prevent messing up circuits if update() called
+void Sensors::calibratingPH(boolean c) {
+	_calibratingPh = c;
+}
+
+void Sensors::calibratingEC(boolean c) {
+	_calibratingEc = c;
+}
+
+void Sensors::clearPHbuffer() {
+ 	while (Serial2.available() > 0)
+ 		Serial2.read();
+}
+
+void Sensors::clearECbuffer() {
+	while (Serial1.available() > 0)
+		Serial1.read();
 }
 
 //pH circuit commands
 void Sensors::resetPH() {
-	Serial2.print("X/r");
+	clearPHbuffer();
+	Serial2.print("X\r");
+	//Leave some time for circuit reset and for data to be received
+	delay(100);
 	phToSerial();
 }
 void Sensors::getPHinfo() {
-	Serial2.print("I/r");
+	clearPHbuffer();
+	Serial2.print("I\r");
+	//Leave some time for data to be received
+	delay(10);
 	phToSerial();
 }
 void Sensors::setPHled(boolean state) {
-	if (state) {
-		Serial2.print("L1/r");
-	} else
-		Serial2.print("L0/r");
+	if (state)
+		Serial2.print("L1\r");
+	else
+		Serial2.print("L0\r");
 }
 void Sensors::setPHcontinuous() {
-	Serial2.print("C/r");
+	Serial2.print("C\r");
 }
 void Sensors::setPHstandby() {
-	Serial2.print("E/r");
+	Serial2.print("E\r");
 }
+//In newer circuit versions, the circuit does output "4.00" by itself
 void Sensors::setPHfour() {
-	Serial2.print("F/r");
-	phToSerial();
+	Serial2.print("F\r");
+	if (_settings->getSerialDebug())
+		Serial.println("4.00");
 }
+//In newer circuit versions, the circuit does output "7.00" by itself
 void Sensors::setPHseven() {
-	Serial2.print("S/r");
-	phToSerial();
+	Serial2.print("S\r");
+	if (_settings->getSerialDebug())
+		Serial.println("7.00");
 }
+//In newer circuit versions, the circuit does output "10.00" by itself
 void Sensors::setPHten() {
-	Serial2.print("T/r");
-	phToSerial();
+	Serial2.print("T\r");
+	if (_settings->getSerialDebug())
+		Serial.println("10.00");
 }
-//Sends command to pH sensor to adjust readings to temperature
+//Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
 void Sensors::adjustPHtemp() {
-	if (_temp != 0) {
+	if ((_temp != 0) && (!_calibratingPh)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(_temp,4,2,tempArray);
@@ -277,45 +316,56 @@ void Sensors::adjustPHtemp() {
 }
 //EC circuit commands
 void Sensors::resetEC() {
-	Serial1.print("X/r");
+	clearECbuffer();
+	Serial1.print("X\r");
+	delay(100);
 	ecToSerial();
 }
 void Sensors::getECinfo() {
-	Serial1.print("I/r");
+	clearECbuffer();
+	Serial1.print("I\r");
+	delay(10);
 	ecToSerial();
 }
 void Sensors::setECled(boolean state) {
-	if (state) {
-		Serial1.print("L1/r");
-	} else
-		Serial1.print("L0/r");
+	if (state)
+		Serial1.print("L1\r");
+	else
+		Serial1.print("L0\r");
 }
 void Sensors::setECcontinuous() {
-	Serial1.print("C/r");
-	ecToSerial();
+	Serial1.print("C\r");
 }
 void Sensors::setECstandby() {
-	Serial1.print("E/r");
+	Serial1.print("E\r");
 }
 void Sensors::setECprobeType() {
-	Serial1.print("P,2/r");
+	clearECbuffer();
+	Serial1.print("P,2\r");
+	delay(100);
 	ecToSerial();
 }
 void Sensors::setECdry() {
-	Serial1.print("Z0/r");
+	clearECbuffer();
+	Serial1.print("Z0\r");
+	delay(100);
 	ecToSerial();
 }
 void Sensors::setECfortyThousand() {
-	Serial1.print("Z40/r");
+	clearECbuffer();
+	Serial1.print("Z40\r");
+	delay(100);
 	ecToSerial();
 }
 void Sensors::setECtenThousand() {
-	Serial1.print("Z10/r");
+	clearECbuffer();
+	Serial1.print("Z10\r");
+	delay(100);
 	ecToSerial();
 }
-//Sends command to EC sensor to adjust readings to temperature
+//Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
 void Sensors::adjustECtemp() {
-	if (_temp != 0) {
+	if ((_temp != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(_temp,4,2,tempArray);
@@ -352,7 +402,7 @@ void Sensors::phToSerial() {
 			//Read data from sensor
 			char inchar;
 			while (Serial2.peek() != '\r') {
-				inchar = (char)Serial1.read();
+				inchar = (char)Serial2.read();
 				sensorString += inchar;
 			}
 			//Discard <CR>
