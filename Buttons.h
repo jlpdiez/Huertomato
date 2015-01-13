@@ -1,6 +1,6 @@
 // #############################################################################
 //
-// # Name       : Borderless_Buttons
+// # Name       : WinButtons
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
@@ -16,8 +16,8 @@
 //
 // #############################################################################
 
-#ifndef BORDERLESS_BUTTONS_H
-#define BORDERLESS_BUTTONS_H
+#ifndef WINBUTTONS_H
+#define WINBUTTONS_H
 
 #include <Arduino.h>
 #include <UTFT.h>
@@ -44,14 +44,14 @@ typedef struct {
 //inactive: used for button text and symbols on disabled buttons
 //highlight: used for button text and symbols when selected
 //background: used for button background
-class Borderless_Buttons {
+class WinButtons {
 	public:
 		//Constructors
-		Borderless_Buttons(UTFT *ptrUTFT, UTouch *ptrUTouch);
-		Borderless_Buttons(const Borderless_Buttons &other);
-		Borderless_Buttons& operator=(const Borderless_Buttons &other);
+		WinButtons(UTFT *ptrUTFT, UTouch *ptrUTouch);
+		WinButtons(const WinButtons &other);
+		WinButtons& operator=(const WinButtons &other);
 		//Destructor
-		~Borderless_Buttons();
+		~WinButtons();
 	    
 		int8_t	addButton(uint16_t x, uint16_t y, const char* label, uint16_t flags=0);
 		int8_t addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);

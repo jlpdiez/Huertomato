@@ -1,7 +1,7 @@
 #include "Buttons.h"
 
 //Constructors
-Borderless_Buttons::Borderless_Buttons(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch) {
+WinButtons::WinButtons(UTFT *lcd, UTouch *touch) : _lcd(lcd), _touch(touch) {
 	deleteAllButtons();
 	for (uint8_t i = 0; i < 3; i++) {
 		_color_text[i] = 255;
@@ -13,7 +13,7 @@ Borderless_Buttons::Borderless_Buttons(UTFT *lcd, UTouch *touch) : _lcd(lcd), _t
 	_font_symbol = NULL;
 }
 		
-Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other) {
+WinButtons::WinButtons(const WinButtons &other) {
 	_lcd = other._lcd;
 	_touch = other._touch;
 	for (uint8_t i = 0; i < 3; i++) {
@@ -24,7 +24,7 @@ Borderless_Buttons::Borderless_Buttons(const Borderless_Buttons &other) {
 	}
 }
  
-Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &other) {
+WinButtons& WinButtons::operator=(const WinButtons &other) {
 	//Should call operator= of the superclass but its not available
 	_lcd = other._lcd;
 	_touch = other._touch;
@@ -39,10 +39,10 @@ Borderless_Buttons& Borderless_Buttons::operator=(const Borderless_Buttons &othe
 }
 
 //Destructor
-Borderless_Buttons::~Borderless_Buttons() {}
+WinButtons::~WinButtons() {}
 
 //Iterates through button list and draws them into screen
-void Borderless_Buttons::drawButtons() {
+void WinButtons::drawButtons() {
   for (uint8_t i = 0; i < _maxButtons; i++) {
     if ((buttons[i].flags & BUTTON_UNUSED) == 0)
       drawButton(i);
@@ -50,7 +50,7 @@ void Borderless_Buttons::drawButtons() {
 }
 
 //Add button to list. In this version width and height are auto-calculated
-int8_t Borderless_Buttons::addButton(uint16_t x, uint16_t y, const char *label, uint16_t flags) {
+int8_t WinButtons::addButton(uint16_t x, uint16_t y, const char *label, uint16_t flags) {
   int8_t btcnt = 0;
   
   while (((buttons[btcnt].flags & BUTTON_UNUSED) == 0) and (btcnt<_maxButtons))
@@ -73,7 +73,7 @@ int8_t Borderless_Buttons::addButton(uint16_t x, uint16_t y, const char *label, 
 }
 
 //Adds button
-int8_t Borderless_Buttons::addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags) {
+int8_t WinButtons::addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags) {
   int8_t btcnt = 0;
   
   while (((buttons[btcnt].flags & BUTTON_UNUSED) == 0) and (btcnt<_maxButtons))
@@ -95,7 +95,7 @@ int8_t Borderless_Buttons::addButton(uint16_t x, uint16_t y, uint16_t width, uin
 }
 
 //Draws a button with its ID. Its called from drawButtons()
-void Borderless_Buttons::drawButton(int buttonID) {
+void WinButtons::drawButton(int buttonID) {
   uint8_t *_font_current = _lcd->getFont();
   word _current_color = _lcd->getColor();
   word _current_back = _lcd->getBackColor();
@@ -128,7 +128,7 @@ void Borderless_Buttons::drawButton(int buttonID) {
 }
 
 //Enables button
-void Borderless_Buttons::enableButton(int buttonID, boolean redraw) {
+void WinButtons::enableButton(int buttonID, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
     buttons[buttonID].flags = buttons[buttonID].flags & ~BUTTON_DISABLED;
     if (redraw)
@@ -137,7 +137,7 @@ void Borderless_Buttons::enableButton(int buttonID, boolean redraw) {
 }
 
 //Disables button
-void Borderless_Buttons::disableButton(int buttonID, boolean redraw) {
+void WinButtons::disableButton(int buttonID, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
     buttons[buttonID].flags = buttons[buttonID].flags | BUTTON_DISABLED;
     if (redraw)
@@ -146,7 +146,7 @@ void Borderless_Buttons::disableButton(int buttonID, boolean redraw) {
 }
 
 //Relabels a button
-void Borderless_Buttons::relabelButton(int buttonID, char *label, boolean redraw) {
+void WinButtons::relabelButton(int buttonID, char *label, boolean redraw) {
   if (!(buttons[buttonID].flags & BUTTON_UNUSED)) {
 	buttons[buttonID].label = label;
     if (redraw)
@@ -154,16 +154,16 @@ void Borderless_Buttons::relabelButton(int buttonID, char *label, boolean redraw
   }
 }
 
-boolean Borderless_Buttons::buttonEnabled(int buttonID) {
+boolean WinButtons::buttonEnabled(int buttonID) {
 	return !(buttons[buttonID].flags & BUTTON_DISABLED);
 }
 
-void Borderless_Buttons::deleteButton(int buttonID) {
+void WinButtons::deleteButton(int buttonID) {
 	if (!(buttons[buttonID].flags & BUTTON_UNUSED))
 		buttons[buttonID].flags = BUTTON_UNUSED;
 }
 
-void Borderless_Buttons::deleteAllButtons() {
+void WinButtons::deleteAllButtons() {
 	for (uint8_t i=0;i<_maxButtons;i++)	{
 		buttons[i].pos_x = 0;
 		buttons[i].pos_y = 0;
@@ -175,7 +175,7 @@ void Borderless_Buttons::deleteAllButtons() {
 }
 
 //Given x,y coords of a touch, returns ID of which button is pressed
-int8_t Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
+int8_t WinButtons::checkButtons(int touch_x, int touch_y) {
     int8_t	result = -1;
     word _current_color = _lcd->getColor();
     
@@ -216,16 +216,16 @@ int8_t Borderless_Buttons::checkButtons(int touch_x, int touch_y) {
     return result;
 }
 
-void Borderless_Buttons::setTextFont(uint8_t* font) {
+void WinButtons::setTextFont(uint8_t* font) {
 	_font_text = font;
 }
 
-void Borderless_Buttons::setSymbolFont(uint8_t* font) {
+void WinButtons::setSymbolFont(uint8_t* font) {
 	_font_symbol = font;
 }
 
 //Sets colours for buttons
-void Borderless_Buttons::setButtonColors(const uint8_t atxt[3], const uint8_t iatxt[3], const uint8_t brdhi[3], const uint8_t back[3]) {
+void WinButtons::setButtonColors(const uint8_t atxt[3], const uint8_t iatxt[3], const uint8_t brdhi[3], const uint8_t back[3]) {
   for (uint8_t i = 0; i < 3; i++) {	
     _color_text[i] = atxt[i];
     _color_text_inactive[i] = iatxt[i];
@@ -235,7 +235,7 @@ void Borderless_Buttons::setButtonColors(const uint8_t atxt[3], const uint8_t ia
 }
 
 //Converts a char array from PROGMEM to variable in SRAM
-char* Borderless_Buttons::pmChar(const char *pmArray) {
+char* WinButtons::pmChar(const char *pmArray) {
 	strcpy_P(_stringBuffer, (char*)pmArray);
 	return _stringBuffer;
 }

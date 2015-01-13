@@ -168,7 +168,7 @@ class Window {
 		UTouch *_touch;
 		Sensors *_sensors;
 		Settings *_settings;
-		Borderless_Buttons _buttons;
+		WinButtons _buttons;
 };
 
 #endif
