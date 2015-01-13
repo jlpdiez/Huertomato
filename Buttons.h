@@ -8,7 +8,7 @@
 //
 // # Description: Makes buttons with no border. 
 //   The label field is treated as a char pointer to PROGMEM
-//	 Based on the UTFT_Buttons library by Henning Karlsen: http://electronics.henningkarlsen.com/
+//	 Based on the UTFT_Buttons library by Henning Karlsen: http://www.henningkarlsen.com/electronics/library.php
 //
 // # This library is free software; you can redistribute it and/or
 //   modify it under the terms of the CC BY-NC-SA 3.0 license.

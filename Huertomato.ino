@@ -33,7 +33,7 @@
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
-// # UTouch & UTFT_Buttons http://www.henningkarlsen.com/electronics/library.php
+// # UTouch http://www.henningkarlsen.com/electronics/library.php
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 
