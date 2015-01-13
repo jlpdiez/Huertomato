@@ -1,7 +1,7 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.4.1
+// # Version    : 1.4.2
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 13.01.2015
 // 
@@ -117,36 +117,35 @@ const char waterStopTxt[] PROGMEM = "Watering cycle ended. < --";
 // 20 & 21 are IIC's SDA, SCL used for RTC
 // 50, 51 & 52 are MISO, MOSI & SCK used for SD card
 //RGB LED
-const int redPin = 12;
-const int greenPin = 11;
-const int bluePin = 13;
+const uint8_t redPin = 12;
+const uint8_t greenPin = 11;
+const uint8_t bluePin = 13;
 //SENSORS
-const int humidIn = A1;
-const int lightIn = A2;
-const int tempIn = A0;
-const int waterEcho = 8;
-const int waterTrigger = 9;
+const uint8_t humidIn = A1;
+const uint8_t lightIn = A2;
+const uint8_t tempIn = A0;
+const uint8_t waterEcho = 8;
+const uint8_t waterTrigger = 9;
 //ACTUATORS
-const int buzzPin = 10;
-const int waterPump = A9;
+const uint8_t buzzPin = 10;
+const uint8_t waterPump = A9;
 //LCD
-const int lcdRS = 38;
-const int lcdWR = 39;
-const int lcdCS = 40;
-const int lcdRST = 41;
-const int lcdTCLK = 6;
-const int lcdTCS = 5;
-const int lcdTDIN = 4;
-const int lcdTDOUT = 3;
-const int lcdIRQ = 2;
+const uint8_t lcdRS = 38;
+const uint8_t lcdWR = 39;
+const uint8_t lcdCS = 40;
+const uint8_t lcdRST = 41;
+const uint8_t lcdTCLK = 6;
+const uint8_t lcdTCS = 5;
+const uint8_t lcdTDIN = 4;
+const uint8_t lcdTDOUT = 3;
+const uint8_t lcdIRQ = 2;
 //SD card select
-const int SDCardSS = 53;
+const uint8_t SDCardSS = 53;
 
 // *********************************************
 // OBJECT DECLARATIONS
 // *********************************************
 RGBled led(redPin, greenPin, bluePin);
-
 dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 OneWire oneWire(tempIn);
@@ -173,7 +172,9 @@ alarm waterOffAlarm = {};
 alarm sdAlarm = {};
 
 //True when system has beeping timers activated
-boolean beeping;
+boolean beeping = false;
+//True if SD has been initiated
+boolean sdInit = false;
 
 // *********************************************
 // SETUP
@@ -223,7 +224,8 @@ void setupRTC() {
 void setupSD() {
 	if (settings.getSDactive()) {
 		pinMode(SDCardSS, OUTPUT);
-		if (SD.begin(SDCardSS)) {
+		if (SD.begin(SDCardSS) || sdInit) {
+			sdInit = true;
 			//Timer to log sensor data to SD Card
 			startSDlogTimer();
 			ui.timeStamp(sdInitOkTxt);
@@ -454,7 +456,7 @@ void logSensorReadings() {
 	//We choose it to be YYYY+MM+DD.txt
 	String fileName = "";
 	fileName.reserve(12);
-	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".txt";
+	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".csv";
 	char fileNameArray[fileName.length() + 1];
 	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
 	File sensorLog = SD.open(fileNameArray, FILE_WRITE);

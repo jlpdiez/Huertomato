@@ -37,11 +37,11 @@
 //Pin numbers
 // 16 & 17 are Serial2 Tx,Rx used for pH circuit
 // 18 & 19 are Serial1 Tx,Rx used for EC circuit
-extern const int humidIn;
-extern const int lightIn;
-extern const int tempIn;
-extern const int waterEcho;
-extern const int waterTrigger;
+extern const uint8_t humidIn;
+extern const uint8_t lightIn;
+extern const uint8_t tempIn;
+extern const uint8_t waterEcho;
+extern const uint8_t waterTrigger;
 
 extern DallasTemperature temperature;
 extern dht11 DHT11;

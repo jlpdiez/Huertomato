@@ -289,7 +289,7 @@ void WinMainScreen::printIconAndStatus() {
 	//Slow but effective
 	xSpacer = 15;
 	ySpacer = 25 + _bigFontSize;
-	if (SD.exists(path)) {
+	if (SD.exists(path) && _settings->getSDactive()) {
 		img = SD.open(path,FILE_READ);
 		for (int y = 0; y < _bigIconSize && img.available(); y++) {
 			uint16_t buf[_bigIconSize];
@@ -313,7 +313,7 @@ void WinMainScreen::updateIconAndStatus() {
 	
 	//Updates next watering time if needed
 	else if (!_settings->getNightWateringStopped() && !_settings->getWateringPlants()
-	&& _settings->getWaterTimed()) {
+		&& _settings->getWaterTimed()) {
 		
 		const int xSpacer = 10;
 		const int ySpacer = 200;
