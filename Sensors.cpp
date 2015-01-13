@@ -240,7 +240,7 @@ uint16_t Sensors::ec() {
 		return _ec;
 }
 
-//This should be set while calibrating to prevent messing up circuits if update() called
+//This should be set while calibrating to prevent messing up circuits if update() or adjustTemp() called
 void Sensors::calibratingPH(boolean c) {
 	_calibratingPh = c;
 }
@@ -267,6 +267,7 @@ void Sensors::resetPH() {
 	delay(100);
 	phToSerial();
 }
+
 void Sensors::getPHinfo() {
 	clearPHbuffer();
 	Serial2.print("I\r");
@@ -274,36 +275,43 @@ void Sensors::getPHinfo() {
 	delay(10);
 	phToSerial();
 }
+
 void Sensors::setPHled(boolean state) {
 	if (state)
 		Serial2.print("L1\r");
 	else
 		Serial2.print("L0\r");
 }
+
 void Sensors::setPHcontinuous() {
 	Serial2.print("C\r");
 }
+
 void Sensors::setPHstandby() {
 	Serial2.print("E\r");
 }
-//In newer circuit versions, the circuit does output "4.00" by itself
+
+//In newer circuit versions, it does output "4.00" by itself
 void Sensors::setPHfour() {
 	Serial2.print("F\r");
 	if (_settings->getSerialDebug())
 		Serial.println("4.00");
 }
-//In newer circuit versions, the circuit does output "7.00" by itself
+
+//In newer circuit versions, it does output "7.00" by itself
 void Sensors::setPHseven() {
 	Serial2.print("S\r");
 	if (_settings->getSerialDebug())
 		Serial.println("7.00");
 }
-//In newer circuit versions, the circuit does output "10.00" by itself
+
+//In newer circuit versions, it does output "10.00" by itself
 void Sensors::setPHten() {
 	Serial2.print("T\r");
 	if (_settings->getSerialDebug())
 		Serial.println("10.00");
 }
+
 //Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
 void Sensors::adjustPHtemp() {
 	if ((_temp != 0) && (!_calibratingPh)) {
@@ -314,6 +322,7 @@ void Sensors::adjustPHtemp() {
 		Serial2.print(command);
 	}
 }
+
 //EC circuit commands
 void Sensors::resetEC() {
 	clearECbuffer();
@@ -321,48 +330,57 @@ void Sensors::resetEC() {
 	delay(100);
 	ecToSerial();
 }
+
 void Sensors::getECinfo() {
 	clearECbuffer();
 	Serial1.print("I\r");
 	delay(10);
 	ecToSerial();
 }
+
 void Sensors::setECled(boolean state) {
 	if (state)
 		Serial1.print("L1\r");
 	else
 		Serial1.print("L0\r");
 }
+
 void Sensors::setECcontinuous() {
 	Serial1.print("C\r");
 }
+
 void Sensors::setECstandby() {
 	Serial1.print("E\r");
 }
+
 void Sensors::setECprobeType() {
 	clearECbuffer();
 	Serial1.print("P,2\r");
 	delay(100);
 	ecToSerial();
 }
+
 void Sensors::setECdry() {
 	clearECbuffer();
 	Serial1.print("Z0\r");
 	delay(100);
 	ecToSerial();
 }
+
 void Sensors::setECfortyThousand() {
 	clearECbuffer();
 	Serial1.print("Z40\r");
 	delay(100);
 	ecToSerial();
 }
+
 void Sensors::setECtenThousand() {
 	clearECbuffer();
 	Serial1.print("Z10\r");
 	delay(100);
 	ecToSerial();
 }
+
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
 void Sensors::adjustECtemp() {
 	if ((_temp != 0) && (!_calibratingEc)) {
