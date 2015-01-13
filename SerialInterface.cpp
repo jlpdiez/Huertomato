@@ -30,13 +30,13 @@ void SerialInterface::init() {
 		_cmd.addCommand(pmChar(commands[4]),SerialInterface::commandStatus);
 		// Handler for command that isn't found
 		_cmd.addDefaultHandler(notFound);
-		timeStamp("Serial input ready");
+		timeStamp(serialRdyTxt);
 	}
 }
 
 //Ends serial communication
 void SerialInterface::end() {
-	timeStamp("Deactivating serial communications");
+	timeStamp(serialOffTxt);
 	Serial.end();
 }
 
@@ -50,6 +50,7 @@ void SerialInterface::processInput() {
 }
 
 //Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
+//Assumes a PROGMEM char* as input
 void SerialInterface::timeStamp(const char* txt) const {
 	if (settings.getSerialDebug()) {
 		time_t t = now();
@@ -57,7 +58,7 @@ void SerialInterface::timeStamp(const char* txt) const {
 		uint8_t m = minute(t);
 		uint8_t s = second(t);
 		Serial << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s;
-		Serial  << F(" - ") << txt << endl;
+		Serial  << F(" - ") << pmChar(txt) << endl;
 	}
 }
 
@@ -68,13 +69,15 @@ char* SerialInterface::pmChar(const char *pmArray) {
 }
 
 //Prints a decorated line with optional leading and trailing blank lines
+//Assumes a PROGMEM char* as input
 void SerialInterface::printLn(const char* ln, boolean leadingBlankLine, boolean trailingBlankLine) {
 	(leadingBlankLine) ? Serial.println() : 0;
-	Serial << F("> ") << pmChar(ln) << endl;
+	Serial << pmChar(lineDeco) << pmChar(ln) << endl;
 	(trailingBlankLine) ? Serial.println() : 0;
 }
 
 //Lists an array ending in an additional blank line
+//Assumes a PROGMEM char* array as input
 void SerialInterface::list(int length, const char* const names[]) {
 	for (uint8_t i = 0; i < length; i++) {
 		printLn((char*)pgm_read_word(&names[i]),false,false);
@@ -286,22 +289,22 @@ void SerialInterface::getSensor(Sensors::Sensor sens) {
 		case Sensors::None:
 			break;
 		case Sensors::Temperature:
-			Serial << F("> ") << pmChar(sensorsNames[0]) << F(": ") << sensors.getTemp() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[0]) << pmChar(textSeparator) << sensors.getTemp() << endl;
 			break;
 		case Sensors::Humidity:
-			Serial << F("> ") << pmChar(sensorsNames[1]) << F(": ") << sensors.getHumidity() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[1]) << pmChar(textSeparator) << sensors.getHumidity() << endl;
 			break;
 		case Sensors::Light:
-			Serial << F("> ") << pmChar(sensorsNames[2]) << F(": ") << sensors.getLight() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[2]) << pmChar(textSeparator) << sensors.getLight() << endl;
 			break;
 		case Sensors::Ec:
-			Serial << F("> ") << pmChar(sensorsNames[3]) << F(": ") << sensors.getEC() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[3]) << pmChar(textSeparator) << sensors.getEC() << endl;
 			break;
 		case Sensors::Ph:
-			Serial << F("> ") << pmChar(sensorsNames[4]) << F(": ") << sensors.getPH() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[4]) << pmChar(textSeparator) << sensors.getPH() << endl;
 			break;
 		case Sensors::Level:
-			Serial << F("> ") << pmChar(sensorsNames[5]) << F(": ") << sensors.getWaterLevel() << endl;
+			Serial << pmChar(lineDeco) << pmChar(sensorsNames[5]) << pmChar(textSeparator) << sensors.getWaterLevel() << endl;
 			break;
 	}
 	Serial << endl;
@@ -354,82 +357,82 @@ void SerialInterface::getSetting(Settings::Setting sett) {
 			case Settings::None:
 				break;
 			case Settings::WaterTimed:
-				Serial << F("> ") << pmChar(settingsNames[0]) << F(": ") << settings.getWaterTimed() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[0]) << pmChar(textSeparator) << settings.getWaterTimed() << endl;
 				break;
 			case Settings::WaterHour:
-				Serial << F("> ") << pmChar(settingsNames[1]) << F(": ") << settings.getWaterHour() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[1]) << pmChar(textSeparator) << settings.getWaterHour() << endl;
 				break;
 			case Settings::WaterMinute:
-				Serial << F("> ") << pmChar(settingsNames[2]) << F(": ") << settings.getWaterMinute() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[2]) << pmChar(textSeparator) << settings.getWaterMinute() << endl;
 				break;
 			case Settings::FloodMinute:
-				Serial << F("> ") << pmChar(settingsNames[3]) << F(": ") << settings.getFloodMinute() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[3]) << pmChar(textSeparator) << settings.getFloodMinute() << endl;
 				break;
 			case Settings::PHalarmUp:
-				Serial << F("> ") << pmChar(settingsNames[4]) << F(": ") << settings.getPHalarmUp() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[4]) << pmChar(textSeparator) << settings.getPHalarmUp() << endl;
 				break;
 			case Settings::PHalarmDown:
-				Serial << F("> ") << pmChar(settingsNames[5]) << F(": ") << settings.getPHalarmDown() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[5]) << pmChar(textSeparator) << settings.getPHalarmDown() << endl;
 				break;
 			case Settings::ECalarmUp:
-				Serial << F("> ") << pmChar(settingsNames[6]) << F(": ") << settings.getECalarmUp() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[6]) << pmChar(textSeparator) << settings.getECalarmUp() << endl;
 				break;
 			case Settings::ECalarmDown:
-				Serial << F("> ") << pmChar(settingsNames[7]) << F(": ") << settings.getECalarmDown() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[7]) << pmChar(textSeparator) << settings.getECalarmDown() << endl;
 				break;
 			case Settings::WaterAlarm:
-				Serial << F("> ") << pmChar(settingsNames[8]) << F(": ") << settings.getWaterAlarm() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[8]) << pmChar(textSeparator) << settings.getWaterAlarm() << endl;
 				break;
 			case Settings::NightWatering:
-				Serial << F("> ") << pmChar(settingsNames[9]) << F(": ") << settings.getNightWatering() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[9]) << pmChar(textSeparator) << settings.getNightWatering() << endl;
 				break;
 			case Settings::LightThreshold:
-				Serial << F("> ") << pmChar(settingsNames[10]) << F(": ") << settings.getLightThreshold() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[10]) << pmChar(textSeparator) << settings.getLightThreshold() << endl;
 				break;
 			case Settings::MaxWaterLvl:
-				Serial << F("> ") << pmChar(settingsNames[11]) << F(": ") << settings.getMaxWaterLvl() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[11]) << pmChar(textSeparator) << settings.getMaxWaterLvl() << endl;
 				break;
 			case Settings::MinWaterLvl:
-				Serial << F("> ") << pmChar(settingsNames[12]) << F(": ") << settings.getMinWaterLvl() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[12]) << pmChar(textSeparator) << settings.getMinWaterLvl() << endl;
 				break;
 			case Settings::PumpProtectionLvl:
-				Serial << F("> ") << pmChar(settingsNames[13]) << F(": ") << settings.getPumpProtectionLvl() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[13]) << pmChar(textSeparator) << settings.getPumpProtectionLvl() << endl;
 				break;
 			case Settings::SensorSecond:
-				Serial << F("> ") << pmChar(settingsNames[14]) << F(": ") << settings.getSensorSecond() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[14]) << pmChar(textSeparator) << settings.getSensorSecond() << endl;
 				break;
 			case Settings::SDactive:
-				Serial << F("> ") << pmChar(settingsNames[15]) << F(": ") << settings.getSDactive() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[15]) << pmChar(textSeparator) << settings.getSDactive() << endl;
 				break;
 			case Settings::SDhour:
-				Serial << F("> ") << pmChar(settingsNames[16]) << F(": ") << settings.getSDhour() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[16]) << pmChar(textSeparator) << settings.getSDhour() << endl;
 				break;
 			case Settings::SDminute:
-				Serial << F("> ") << pmChar(settingsNames[17]) << F(": ") << settings.getSDminute() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[17]) << pmChar(textSeparator) << settings.getSDminute() << endl;
 				break;
 			case Settings::Sound:
-				Serial << F("> ") << pmChar(settingsNames[18]) << F(": ") << settings.getSound() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[18]) << pmChar(textSeparator) << settings.getSound() << endl;
 				break;
 			case Settings::SerialDebug:
-				Serial << F("> ") << pmChar(settingsNames[19]) << F(": ") << settings.getSerialDebug() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[19]) << pmChar(textSeparator) << settings.getSerialDebug() << endl;
 				break;
 			case Settings::ReservoirModule:
-				Serial << F("> ") << pmChar(settingsNames[20]) << F(": ") << settings.getReservoirModule() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[20]) << pmChar(textSeparator) << settings.getReservoirModule() << endl;
 				break;
 			case Settings::NextWhour:
-				Serial << F("> ") << pmChar(settingsNames[21]) << F(": ") << settings.getNextWhour() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[21]) << pmChar(textSeparator) << settings.getNextWhour() << endl;
 				break;
 			case Settings::NextWminute:
-				Serial << F("> ") << pmChar(settingsNames[22]) << F(": ") << settings.getNextWminute() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[22]) << pmChar(textSeparator) << settings.getNextWminute() << endl;
 				break;
 			case Settings::NightWateringStopped:
-				Serial << F("> ") << pmChar(settingsNames[23]) << F(": ") << settings.getNightWateringStopped() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[23]) << pmChar(textSeparator) << settings.getNightWateringStopped() << endl;
 				break;
 			case Settings::WateringPlants:
-				Serial << F("> ") << pmChar(settingsNames[24]) << F(": ") << settings.getWateringPlants() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[24]) << pmChar(textSeparator) << settings.getWateringPlants() << endl;
 				break;
 			case Settings::AlarmTriggered:
-				Serial << F("> ") << pmChar(settingsNames[25]) << F(": ") << settings.getAlarmTriggered() << endl;
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[25]) << pmChar(textSeparator) << settings.getAlarmTriggered() << endl;
 				break;
 		}
 		Serial << endl;

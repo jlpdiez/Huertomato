@@ -4,7 +4,7 @@ WinLvlCalib::WinLvlCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *s
 : Window(lcd,touch,sensors,settings) { }
 
 WinLvlCalib::WinLvlCalib(const WinLvlCalib &other) : Window(other) { 
-	for (int i = 0; i < _nWaterLevelButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterLevelButtons; i++) {
 		_waterLevelButtons[i] = other._waterLevelButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinLvlCalib& WinLvlCalib::operator=(const WinLvlCalib& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nWaterLevelButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterLevelButtons; i++) {
 		_waterLevelButtons[i] = other._waterLevelButtons[i];
 	}
 	return *this;
@@ -37,31 +37,31 @@ void WinLvlCalib::print() {
 	
 	//First Line
 	int x = _xConfig;
-	_lcd->print(firstLvlCalib,x,_yThreeLnsFirst);
+	_lcd->print(pmChar(firstLvlCalib),x,_yThreeLnsFirst);
 	x += 16*_bigFontSize;
 	_lcd->printNumI(_rawWaterLvl,x,_yThreeLnsFirst,3,' ');
 	x +=3*_bigFontSize;
-	_lcd->print(unitLvl,x,_yThreeLnsFirst);
+	_lcd->print(pmChar(unitLvl),x,_yThreeLnsFirst);
 	
 	//Second Line
 	x = _xConfig;
-	_lcd->print(secondLvlCalib,x,_yThreeLnsSecond);
+	_lcd->print(pmChar(secondLvlCalib),x,_yThreeLnsSecond);
 	x += 12*_bigFontSize;
 	_lcd->printNumI(_waterLvlMax,x,_yThreeLnsSecond,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print(unitLvl,x,_yThreeLnsSecond);
+	_lcd->print(pmChar(unitLvl),x,_yThreeLnsSecond);
 	x += 3*_bigFontSize;
-	_waterLevelButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsSecond,pmChar(setStr));
+	_waterLevelButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsSecond,setStr);
 	
 	//Third Line
 	x = _xConfig;
-	_lcd->print(thirdLvlCalib,x,_yThreeLnsThird);
+	_lcd->print(pmChar(thirdLvlCalib),x,_yThreeLnsThird);
 	x += 12*_bigFontSize;
 	_lcd->printNumI(_waterLvlMin,x,_yThreeLnsThird,3,' ');
 	x += 3*_bigFontSize;
-	_lcd->print(unitLvl,x,_yThreeLnsThird);
+	_lcd->print(pmChar(unitLvl),x,_yThreeLnsThird);
 	x += 3*_bigFontSize;
-	_waterLevelButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,pmChar(setStr));
+	_waterLevelButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,setStr);
 }
 
 void WinLvlCalib::update() {
@@ -96,14 +96,16 @@ void WinLvlCalib::draw() {
 Window::Screen WinLvlCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _waterLevelButtons[0]) { return SensorCalib; }
+	if (buttonIndex == _waterLevelButtons[0]) 
+		return SensorCalib;
 	//Save
 	else if (buttonIndex == _waterLevelButtons[1]) {
 		_settings->setMaxWaterLvl(_waterLvlMax);
 		_settings->setMinWaterLvl(_waterLvlMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _waterLevelButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _waterLevelButtons[2]) 
+		return MainScreen;
 	
 	//Top, bottom calib buttons
 	else if (buttonIndex == _waterLevelButtons[3]) {

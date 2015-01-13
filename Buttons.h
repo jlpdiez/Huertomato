@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 12.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Makes buttons with no border. 
 //   The label field is treated as a char pointer to PROGMEM
@@ -53,8 +53,8 @@ class Borderless_Buttons {
 		//Destructor
 		~Borderless_Buttons();
 	    
-		int	addButton(uint16_t x, uint16_t y, const char* label, uint16_t flags=0);
-		int addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);
+		int8_t	addButton(uint16_t x, uint16_t y, const char* label, uint16_t flags=0);
+		int8_t addButton(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bitmapdatatype data, uint16_t flags=0);
 		void drawButtons();
 		void drawButton(int buttonID);
 		void enableButton(int buttonID, boolean redraw=false);
@@ -63,7 +63,7 @@ class Borderless_Buttons {
 		boolean	buttonEnabled(int buttonID); 
 		void deleteButton(int buttonID); 
 		void deleteAllButtons(); 
-		int checkButtons(int touch_x, int touch_y);
+		int8_t checkButtons(int touch_x, int touch_y);
 		void setTextFont(uint8_t* font);
 		void setSymbolFont(uint8_t* font);
 		void setButtonColors(const uint8_t atxt[3], const uint8_t iatxt[3], const uint8_t brdhi[3], const uint8_t back[3]);

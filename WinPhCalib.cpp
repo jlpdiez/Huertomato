@@ -7,7 +7,7 @@ WinPhCalib::WinPhCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *set
 
 WinPhCalib::WinPhCalib(const WinPhCalib &other) : Window(other) {
 	_actScreen = 0;
-	for (int i = 0; i < _nPHcalibrationButtons; i++) {
+	for (uint8_t i = 0; i < _nPHcalibrationButtons; i++) {
 		_phCalibrationButtons[i] = other._phCalibrationButtons[i];
 	}
 }
@@ -19,7 +19,7 @@ WinPhCalib& WinPhCalib::operator=(const WinPhCalib& other) {
 	_settings = other._settings;
 	_buttons = other._buttons;
 	_actScreen = 0;
-	for (int i = 0; i < _nPHcalibrationButtons; i++) {
+	for (uint8_t i = 0; i < _nPHcalibrationButtons; i++) {
 		_phCalibrationButtons[i] = other._phCalibrationButtons[i];
 	}
 	return *this;
@@ -34,42 +34,33 @@ Window::Screen WinPhCalib::getType() const {
 void WinPhCalib::print() {
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->setBackColor(VGA_WHITE);
-	
 	//Start screen
 	if (_actScreen == 0) {
-		_lcd->print(pmChar(startCalibStr1),_xConfig,_yTwoLnsFirst);
-		_lcd->print(pmChar(startCalibStr2),_xConfig,_yTwoLnsSecond);
-		_phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen_P(startCalibStr2)+1)*_bigFontSize,_yTwoLnsSecond,pmChar(yesStr));
+		_lcd->print(pmChar(startCalibStr1),centerX(startCalibStr1),_yThreeLnsFirst);
+		_lcd->print(pmChar(startCalibStr2),centerX(startCalibStr2),_yThreeLnsSecond);
+		_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(yesStr),_yThreeLnsThird,yesStr);
 	
-	//pH 7 screen
-	} else if (_actScreen == 1) {
-		_lcd->print(pmChar(phText1),_xConfig,_yThreeLnsFirst);
-		_lcd->print(pmChar(phText2),_xConfig,_yThreeLnsSecond);
-		uint8_t x = _xConfig + strlen_P(phText2)*_bigFontSize;
-		_lcd->print("7",x,_yThreeLnsSecond);
+	//pH 7,4 and 10 screens
+	} else {
+		_lcd->print(pmChar(phText1),centerX(phText1),_yThreeLnsFirst);
+		_lcd->print(pmChar(phText2),centerX(phText2),_yThreeLnsSecond);
+		uint16_t x = _xConfig + strlen_P(phText2)*_bigFontSize;
+		if (_actScreen == 1)
+			_lcd->printNumI(7,x,_yThreeLnsSecond);
+		if (_actScreen == 2)
+			_lcd->printNumI(4,x,_yThreeLnsSecond);
+		if (_actScreen == 3) {
+			_lcd->printNumI(10,x,_yThreeLnsSecond);
+			x += _bigFontSize;
+		}
 		x += 2 * _bigFontSize;
 		_lcd->print(pmChar(phText3),x,_yThreeLnsSecond);
 		_lcd->print(pmChar(phText4),_xConfig,_yThreeLnsThird);
-		_phCalibrationButtons[_nFlowButtons+1] = _buttons.addButton(_xConfig+(strlen_P(phText4)+1)*_bigFontSize,_yThreeLnsThird,pmChar(continueStr));
-		
-	//pH 4 screen	
-	} else if (_actScreen == 2) {
-		
-	//pH 10 screen
-	} else if (_actScreen == 3) {
-	
+		if ((_actScreen == 1) || (_actScreen == 2))
+			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(continueStr),_flowButtonY,continueStr);
+		else if (_actScreen == 3)
+			_phCalibrationButtons[_nFlowButtons] = _buttons.addButton(centerX(endStr),_flowButtonY,endStr);
 	}
-	
-	//Print bulletpoints
-	/*_lcd->setFont(various_symbols);
-	//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < nPHcalibrationButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
-	}
-	//Make menu buttons
-	for (int i = 0; i < nPHcalibrationButtons - _nFlowButtons; i++) {
-		phCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,phCalibrationButtonsText[i]);
-	}*/
 }
 
 
@@ -90,22 +81,30 @@ Window::Screen WinPhCalib::processTouch(const int x, const int y) {
 	if (_actScreen == 0) {
 		//Back
 		if (buttonIndex == _phCalibrationButtons[0])
-		return SensorCalib;
+			return SensorCalib;
 		//Exit
 		else if (buttonIndex == _phCalibrationButtons[2])
-		return MainScreen;
+			return MainScreen;
 		//Start calibration button
-		else if (buttonIndex == _phCalibrationButtons[4]) {
+		else if (buttonIndex == _phCalibrationButtons[3]) {
 			//Command to pH circuit
 			_actScreen = 1;
 			draw();
 			return None;
 		}
-	} else if ((_actScreen == 1) && (buttonIndex == _phCalibrationButtons[4])) {
+	} else if ((_actScreen == 1) && (buttonIndex == _phCalibrationButtons[3])) {
 		//Command to pH circuit
 		_actScreen = 2;
 		draw();
 		return None;
+	} else if ((_actScreen == 2) && (buttonIndex == _phCalibrationButtons[3])) {
+		//Command to pH circuit
+		_actScreen = 3;
+		draw();
+		return None;
+	} else if ((_actScreen == 3) && (buttonIndex == _phCalibrationButtons[3])) {
+		//Command to pH circuit
+		return SensorCalib;
 	}
 	return None;
 }

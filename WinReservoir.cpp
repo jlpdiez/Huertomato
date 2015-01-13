@@ -4,7 +4,7 @@ WinReservoir::WinReservoir(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings 
 : Window(lcd,touch,sensors,settings) { }
 	
 WinReservoir::WinReservoir(const WinReservoir &other) : Window(other) {
-	for (int i = 0; i < _nReservoirButtons; i++) {
+	for (uint8_t i = 0; i < _nReservoirButtons; i++) {
 		_reservoirButtons[i] = other._reservoirButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinReservoir& WinReservoir::operator=(const WinReservoir &other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nReservoirButtons; i++) {
+	for (uint8_t i = 0; i < _nReservoirButtons; i++) {
 		_reservoirButtons[i] = other._reservoirButtons[i];
 	}
 	return *this;
@@ -33,10 +33,10 @@ void WinReservoir::print() {
 	_lcd->setBackColor(VGA_WHITE);
 	//Print first bulletpoint
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xMenu,_yFourLines);
+	_lcd->print(pmChar(bulletStr),_xMenu,_yFourLines);
 	//First textline
 	_lcd->setFont(hallfetica_normal);
-	_reservoirButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines,pmChar(reservoirButtonsText[0]));
+	_reservoirButtons[_nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines,reservoirButtonsText[0]);
 	//First toggle
 	if (_reservoirActive)
 		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
@@ -51,20 +51,16 @@ void WinReservoir::print() {
 		_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->setFont(various_symbols);
 	//Bullets - Start in 1 because nReservoirButtons[0] already added
-	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
+	for (uint8_t i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
 		_lcd->print(pmChar(bulletStr),_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
-	}
-	//Make menu buttons
-	_lcd->setFont(hallfetica_normal);
-	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
-		_reservoirButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines+_bigFontSize*_yFactor4lines*i,pmChar(reservoirButtonsText[i]));
+		_reservoirButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFourLines+_bigFontSize*_yFactor4lines*i,(char*)pgm_read_word(&reservoirButtonsText[i]));
 	}
 	//Disable buttons depending on active/inactive
 	if (!_reservoirActive) {
-		for (int i = 4; i < _nReservoirButtons; i++)
+		for (uint8_t i = 4; i < _nReservoirButtons; i++)
 			_buttons.disableButton(_reservoirButtons[i],true);
 	} else {
-		for (int i = 4; i < _nReservoirButtons; i++)
+		for (uint8_t i = 4; i < _nReservoirButtons; i++)
 			_buttons.enableButton(_reservoirButtons[i],true);
 	}
 }
@@ -75,9 +71,9 @@ void WinReservoir::update() {
 	_lcd->setFont(hallfetica_normal);
 	//First toggle
 	if (_reservoirActive)
-		_lcd->print(onStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
+		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
 	else
-		_lcd->print(offStr,_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
+		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(reservoirButtonsText[0]),_yFourLines);
 	
 	//Rest of lines
 	//Change color depending on active/inactive
@@ -87,15 +83,15 @@ void WinReservoir::update() {
 		_lcd->setColor(grey[0],grey[1],grey[2]);
 	_lcd->setFont(various_symbols);
 	//Bullets - Start in 1 because nReservoirButtons[0] already added
-	for (int i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
+	for (uint8_t i = 1; i < _nReservoirButtons - _nFlowButtons; i++) {
 		_lcd->print(pmChar(bulletStr),_xMenu,_yFourLines+_bigFontSize*_yFactor4lines*i);
 	}
 	//Disable buttons depending on active/inactive
 	if (!_reservoirActive) {
-		for (int i = 4; i < _nReservoirButtons; i++)
+		for (uint8_t i = 4; i < _nReservoirButtons; i++)
 			_buttons.disableButton(_reservoirButtons[i],true);
-		} else {
-		for (int i = 4; i < _nReservoirButtons; i++)
+	} else {
+		for (uint8_t i = 4; i < _nReservoirButtons; i++)
 			_buttons.enableButton(_reservoirButtons[i],true);
 	}
 }

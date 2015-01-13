@@ -4,7 +4,7 @@ WinSystemMenu::WinSystemMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Setting
 : Window(lcd,touch,sensors,settings) { }
 
 WinSystemMenu::WinSystemMenu(const WinSystemMenu &other) : Window(other) {
-	for (int i = 0; i < _nSystemButtons; i++) {
+	for (uint8_t i = 0; i < _nSystemButtons; i++) {
 		_systemButtons[i] = other._systemButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinSystemMenu& WinSystemMenu::operator=(const WinSystemMenu& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nSystemButtons; i++) {
+	for (uint8_t i = 0; i < _nSystemButtons; i++) {
 		_systemButtons[i] = other._systemButtons[i];
 	}
 	return *this;
@@ -33,12 +33,9 @@ void WinSystemMenu::print() {
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
 	//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < _nSystemButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
-	}
-	//Make menu buttons
-	for (int i = 0; i < _nSystemButtons - _nFlowButtons; i++) {
-		_systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,pmChar(systemButtonText[i]));
+	for (uint8_t i = 0; i < _nSystemButtons - _nFlowButtons; i++) {
+		_lcd->print(pmChar(bulletStr),_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+		_systemButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,(char*)pgm_read_word(&systemButtonText[i]));
 	}
 }
 

@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Ph alarms configuration window
 //
@@ -29,14 +29,7 @@
 
 #include "Window.h"
 
-/*const char* phAlarmsButtonsText[nPHalarmsButtons] = {
-	"=",
-	">",
-	"=",
-	">"
-};*/
-
-const char nameWinPhAlarms[] PROGMEM = "- pH Alarms -";
+const char nameWinPhAlarms[] PROGMEM = "pH Alarms";
 
 const char uPhLimit[] PROGMEM = "Upper Limit:";
 const char dPhLimit[] PROGMEM = "Lower Limit:";
@@ -54,7 +47,7 @@ class WinPhAlarms: public Window {
 	
 	protected:
 		static const uint8_t _nPHalarmsButtons = _nFlowButtons + 4;		
-		uint8_t _phAlarmsButtons[_nPHalarmsButtons];
+		int8_t _phAlarmsButtons[_nPHalarmsButtons];
 		float _phAlarmMax, _phAlarmMin;
 		void print();
 };

@@ -38,7 +38,7 @@ void WinMainScreen::update() {
  
 //Prints mainscreen header text and clock
 void WinMainScreen::printMainHeader() {
-	const int ySpacer = 2;
+	const uint8_t ySpacer = 2;
 	printHeaderBackground();
 	//Header title text
 	_lcd->setFont(hallfetica_normal);
@@ -50,7 +50,7 @@ void WinMainScreen::printMainHeader() {
 
 //Updates main header's clock
 void WinMainScreen::updateMainHeader() {
-	const int ySpacer = 2;
+	const uint8_t ySpacer = 2;
 	
 	//Get actual time
 	time_t t = now();
@@ -64,7 +64,7 @@ void WinMainScreen::updateMainHeader() {
 	//Clock display HH:MM
 	//X is calculated from the end of size
 	_lcd->printNumI(hou,_xSize-(5*_bigFontSize)-2,ySpacer,2,'0');
-	_lcd->print(":",_xSize-(3*_bigFontSize)-2,ySpacer);
+	_lcd->print(pmChar(timeSeparator),_xSize-(3*_bigFontSize)-2,ySpacer);
 	_lcd->printNumI(min,_xSize-(2*_bigFontSize)-2,ySpacer,2,'0');
 }
 
@@ -80,7 +80,7 @@ void WinMainScreen::printInfoReservoir() {
 	int x = xSpacer-(_bigFontSize*(strlen_P(sensorText[0])+4));
 	_lcd->print(pmChar(sensorText[0]),x,ySpacer);
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,ySpacer,3,' ');
-	_lcd->print(pmChar(humidUnit),xSpacer-_bigFontSize,ySpacer);
+	_lcd->print(pmChar(percentSign),xSpacer-_bigFontSize,ySpacer);
 	//Temp
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[1])+7));
 	int y = ySpacer+(_bigFontSize+8);
@@ -124,7 +124,7 @@ void WinMainScreen::printInfoReservoir() {
 		_lcd->setColor(grey[0], grey[1], grey[2]);
 		_lcd->print(pmChar(sensorText[5]),x,y);
 		_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
-		_lcd->print(pmChar(lvlUnit),xSpacer-_bigFontSize,y);
+		_lcd->print(pmChar(percentSign),xSpacer-_bigFontSize,y);
 }
 
 //Redraws only sensor numbers and changes colour if needed (alarm triggered)
@@ -163,7 +163,7 @@ void WinMainScreen::updateInfoReservoir() {
 		_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(pmChar(sensorText[4]),x,y);
 	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
-	_lcd->print("uS",xSpacer-_bigFontSize*2,y);	
+	_lcd->print(pmChar(ecUnit),xSpacer-_bigFontSize*2,y);	
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[5])+4));
 	y = ySpacer+(_bigFontSize+8)*5;
@@ -174,7 +174,7 @@ void WinMainScreen::updateInfoReservoir() {
 		_lcd->setColor(grey[0], grey[1], grey[2]);	
 	_lcd->print(pmChar(sensorText[5]),x,y);
 	_lcd->printNumI(lvl,xSpacer-_bigFontSize*4,y,3);
-	_lcd->print("%",xSpacer-_bigFontSize,y);
+	_lcd->print(pmChar(percentSign),xSpacer-_bigFontSize,y);
 }
 
 void WinMainScreen::printInfoNoModule() {
@@ -200,7 +200,7 @@ void WinMainScreen::printInfoNoModule() {
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorText[0])+4));
 	_lcd->print(pmChar(sensorText[0]),x,y);
 	_lcd->printNumI(_sensors->getHumidity(),xSpacer-_bigFontSize*4,y,3,' ');
-	_lcd->print(pmChar(humidUnit),xSpacer-_bigFontSize,y);
+	_lcd->print(pmChar(percentSign),xSpacer-_bigFontSize,y);
 }
 
 void WinMainScreen::updateInfoNoModule() {
@@ -272,11 +272,11 @@ void WinMainScreen::printIconAndStatus() {
 			x += _bigFontSize*(strlen_P(nextWater));
 			_lcd->printNumI(wHour,x,ySpacer,2,'0');
 			x += _bigFontSize*2;
-			_lcd->print(":",x,ySpacer);
+			_lcd->print(pmChar(timeSeparator),x,ySpacer);
 			x += _bigFontSize;
 			_lcd->printNumI(wMin,x,ySpacer,2,'0');
 			x += 2*_bigFontSize;
-			_lcd->print(" ",x,ySpacer);		
+			_lcd->print(pmChar(spaceChar),x,ySpacer);		
 		//Continuous
 		} else
 			(alarm) ? _lcd->print(pmChar(alarmCont),x,ySpacer) : _lcd->print(pmChar(normalCont),x,ySpacer);
@@ -336,11 +336,11 @@ void WinMainScreen::updateIconAndStatus() {
 		x += _bigFontSize*(strlen_P(nextWater));
 		_lcd->printNumI(wHour,x,ySpacer,2,'0');
 		x += _bigFontSize*2;
-		_lcd->print(":",x,ySpacer);
+		_lcd->print(pmChar(timeSeparator),x,ySpacer);
 		x += _bigFontSize;
 		_lcd->printNumI(wMin,x,ySpacer,2,'0');
 		x += 2*_bigFontSize;
-		_lcd->print(" ",x,ySpacer);
+		_lcd->print(pmChar(spaceChar),x,ySpacer);
 	}
 }
 

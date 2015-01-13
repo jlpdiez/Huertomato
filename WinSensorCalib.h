@@ -4,7 +4,7 @@
 // # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Sensor calibration menu window
 //
@@ -29,7 +29,7 @@
 
 #include "Window.h"
 
-const char nameWinSensorCalib[] PROGMEM = "- Calibration -";
+const char nameWinSensorCalib[] PROGMEM = "Calibration";
 
 const char sCalibStr0[] PROGMEM = "Water Levels";
 const char sCalibStr1[] PROGMEM = "pH Calibration";
@@ -48,7 +48,7 @@ class WinSensorCalib: public Window {
 	
 	protected:
 		static const uint8_t _nSensorCalibrationButtons = _nFlowButtons + 3;
-		uint8_t _sensorCalibrationButtons[_nSensorCalibrationButtons];
+		int8_t _sensorCalibrationButtons[_nSensorCalibrationButtons];
 		void print();
 };
 

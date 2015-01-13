@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Nutrient level max/min calibration window
 //
@@ -29,12 +29,7 @@
 
 #include "Window.h" 
 
-/*const char* waterLevelButtonsText[_nWaterLevelButtons] = {
-	"Set",
-	"Set"
-};*/
-
-const char nameWinLvlCalib[] PROGMEM = "- Nutrient Levels -";
+const char nameWinLvlCalib[] PROGMEM = "Nutrient Levels";
 
 const char firstLvlCalib[] PROGMEM = "Current Reading:";
 const char secondLvlCalib[] PROGMEM = "Current Top:";
@@ -55,7 +50,7 @@ class WinLvlCalib: public Window {
 	
 	protected:
 		static const uint8_t _nWaterLevelButtons = _nFlowButtons + 2;
-		uint8_t _waterLevelButtons[_nWaterLevelButtons];
+		int8_t _waterLevelButtons[_nWaterLevelButtons];
 		uint16_t _waterLvlMax, _waterLvlMin, _rawWaterLvl;
 		void print();
 };

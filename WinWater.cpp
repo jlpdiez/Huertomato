@@ -4,7 +4,7 @@ WinWater::WinWater(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *setting
 : Window(lcd,touch,sensors,settings) { }
 
 WinWater::WinWater(const WinWater &other) : Window(other) {
-	for (int i = 0; i < _nWaterCycleButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterCycleButtons; i++) {
 		_waterCycleButtons[i] = other._waterCycleButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinWater& WinWater::operator=(const WinWater& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nWaterCycleButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterCycleButtons; i++) {
 		_waterCycleButtons[i] = other._waterCycleButtons[i];
 	}
 	return *this;
@@ -43,52 +43,52 @@ void WinWater::print() {
 	//First Line - Triangle
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setFont(various_symbols);
-	_lcd->print(bulletStr,_xConfig,_yThreeLnsFirst);
+	_lcd->print(pmChar(bulletStr),_xConfig,_yThreeLnsFirst);
 	//Water mode button
 	_lcd->setFont(hallfetica_normal);
 	int x = _xConfig + 2*_bigFontSize;
-	_waterCycleButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsFirst,pmChar(modeStr));
+	_waterCycleButtons[_nFlowButtons] = _buttons.addButton(x,_yThreeLnsFirst,modeStr);
 	//Continuous/timed text
 	x += (1+strlen_P(modeStr))*_bigFontSize;
 	if (_waterTimed)
-		_lcd->print(modeTimedS,x,_yThreeLnsFirst);
+		_lcd->print(pmChar(modeTimedS),x,_yThreeLnsFirst);
 	else
-		_lcd->print(modeContS,x,_yThreeLnsFirst);
+		_lcd->print(pmChar(modeContS),x,_yThreeLnsFirst);
 	
 	//Second Line
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	x = _xConfig;
-	_lcd->print(waterTwo,x,_yThreeLnsSecond);
+	_lcd->print(pmChar(waterTwo),x,_yThreeLnsSecond);
 	x += 13*_bigFontSize;
 	_lcd->printNumI(_waterHour,x,_yThreeLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("h",x,_yThreeLnsSecond);
+	_lcd->print(pmChar(hoursChar),x,_yThreeLnsSecond);
 	x += 2*_bigFontSize;
 	_lcd->printNumI(_waterMin,x,_yThreeLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("m",x,_yThreeLnsSecond);
-	_waterCycleButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_waterCycleButtons[_nFlowButtons+2] = _buttons.addButton(houD[0],houD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_waterCycleButtons[_nFlowButtons+3] = _buttons.addButton(minU[0],minU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_waterCycleButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_lcd->print(pmChar(minutesChar),x,_yThreeLnsSecond);
+	_waterCycleButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],plusStr,BUTTON_SYMBOL);
+	_waterCycleButtons[_nFlowButtons+2] = _buttons.addButton(houD[0],houD[1],minusStr,BUTTON_SYMBOL);
+	_waterCycleButtons[_nFlowButtons+3] = _buttons.addButton(minU[0],minU[1],plusStr,BUTTON_SYMBOL);
+	_waterCycleButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],minusStr,BUTTON_SYMBOL);
 	
 	//Third line
 	x = _xConfig;
-	_lcd->print(waterThree,x,_yThreeLnsThird);
+	_lcd->print(pmChar(waterThree),x,_yThreeLnsThird);
 	x += 12*_bigFontSize;
 	_lcd->printNumI(_floodMin,x,_yThreeLnsThird,2,'0');
 	x += 3*_bigFontSize;
-	_lcd->print("minutes",x,_yThreeLnsThird);
-	_waterCycleButtons[_nFlowButtons+5] = _buttons.addButton(fMinU[0],fMinU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_waterCycleButtons[_nFlowButtons+6] = _buttons.addButton(fMinD[0],fMinD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_lcd->print(pmChar(minutesTxT),x,_yThreeLnsThird);
+	_waterCycleButtons[_nFlowButtons+5] = _buttons.addButton(fMinU[0],fMinU[1],plusStr,BUTTON_SYMBOL);
+	_waterCycleButtons[_nFlowButtons+6] = _buttons.addButton(fMinD[0],fMinD[1],minusStr,BUTTON_SYMBOL);
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_waterTimed) {
-		for (int i = 4; i < _nWaterCycleButtons; i++)
-		_buttons.disableButton(_waterCycleButtons[i],true);
-		} else {
-		for (int i = 4; i < _nWaterCycleButtons; i++)
-		_buttons.enableButton(_waterCycleButtons[i],true);
+		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
+			_buttons.disableButton(_waterCycleButtons[i],true);
+	} else {
+		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
+			_buttons.enableButton(_waterCycleButtons[i],true);
 	}
 } 
 
@@ -112,9 +112,9 @@ void WinWater::update() {
 	int x = _xConfig + 2*_bigFontSize;;
 	x += (1+strlen_P(modeStr))*_bigFontSize;
 	if (_waterTimed)
-		_lcd->print(modeTimedS,x,_yThreeLnsFirst);
+		_lcd->print(pmChar(modeTimedS),x,_yThreeLnsFirst);
 	else
-		_lcd->print(modeContS,x,_yThreeLnsFirst);
+		_lcd->print(pmChar(modeContS),x,_yThreeLnsFirst);
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Water every
@@ -131,18 +131,19 @@ void WinWater::update() {
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_waterTimed) {
-		for (int i = 4; i < _nWaterCycleButtons; i++)
-		_buttons.disableButton(_waterCycleButtons[i],true);
+		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
+			_buttons.disableButton(_waterCycleButtons[i],true);
 	} else {
-		for (int i = 4; i < _nWaterCycleButtons; i++)
-		_buttons.enableButton(_waterCycleButtons[i],true);
+		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
+			_buttons.enableButton(_waterCycleButtons[i],true);
 	}
 }
 
 Window::Screen WinWater::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _waterCycleButtons[0]) { return SystemSettings; }
+	if (buttonIndex == _waterCycleButtons[0]) 
+		return SystemSettings;
 	//Save
 	else if (buttonIndex == _waterCycleButtons[1]) {
 		//Prevents flood time > time inactive as it will mess up alarms
@@ -157,7 +158,8 @@ Window::Screen WinWater::processTouch(const int x, const int y) {
 		_settings->setFloodMinute(_floodMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _waterCycleButtons[2]) { return MainScreen; }	
+	} else if (buttonIndex == _waterCycleButtons[2]) 
+		return MainScreen;	
 	//Water mode
 	else if (buttonIndex == _waterCycleButtons[3]) {
 		_waterTimed = !_waterTimed;

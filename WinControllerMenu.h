@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Controller settings menu
 //
@@ -29,7 +29,7 @@
 
 #include "Window.h"
  
-const char nameWinControllerMenu[] PROGMEM = "- Controller Settings -";
+const char nameWinControllerMenu[] PROGMEM = "Controller Settings";
 
 const char controllerStr0[] PROGMEM = "Time & Date";
 const char controllerStr1[] PROGMEM = "Sensor Polling";
@@ -52,7 +52,7 @@ class WinControllerMenu: public Window {
 	
 	protected:
 		static const uint8_t _nControllerButtons = _nFlowButtons + 5;
-		uint8_t _controllerButtons[_nControllerButtons];
+		int8_t _controllerButtons[_nControllerButtons];
 		//These are temp variables used for displaying data
 		//They are read from _settings in print() funcs. Changed in processTouch()
 		//displayed again with update() and saved to eeprom when button save is pressed

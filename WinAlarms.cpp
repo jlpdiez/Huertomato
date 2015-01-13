@@ -4,7 +4,7 @@ WinAlarms::WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *setti
 : Window(lcd,touch,sensors,settings) { }
 
 WinAlarms::WinAlarms(const WinAlarms &other) : Window(other) {
-	for (int i = 0; i < _nSensorAlarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorAlarmsButtons; i++) {
 		_sensorAlarmsButtons[i] = other._sensorAlarmsButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinAlarms& WinAlarms::operator=(const WinAlarms& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nSensorAlarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorAlarmsButtons; i++) {
 		_sensorAlarmsButtons[i] = other._sensorAlarmsButtons[i];
 	}
 	return *this;
@@ -33,9 +33,9 @@ void WinAlarms::print() {
 	_lcd->setFont(various_symbols);
 	//Make menu buttons with it's bulletpoints
 	//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < _nSensorAlarmsButtons - _nFlowButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorAlarmsButtons - _nFlowButtons; i++) {
 		_lcd->print(pmChar(bulletStr),_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
-		_sensorAlarmsButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,pmChar(sensorAlarmsButtonsText[i]));
+		_sensorAlarmsButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,(char*)pgm_read_word(&sensorAlarmsButtonsText[i]));
 	}
 }
  

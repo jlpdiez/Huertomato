@@ -4,7 +4,7 @@
 // # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Pump protection configuration window
 //
@@ -29,12 +29,7 @@
 
 #include "Window.h"
 
-/*const char* pumpProtectionButtonsText[nPumpProtectionButtons] = {
-	"=",
-	">"
-};*/
-
-const char nameWinPump[] PROGMEM = "- Pump Protection -";
+const char nameWinPump[] PROGMEM = "Pump Protection";
 
 const char wPumpLimit[] PROGMEM = "Min Water Lvl:";
  
@@ -51,7 +46,7 @@ class WinPump: public Window {
 	
 	protected:
 		static const uint8_t _nPumpProtectionButtons = _nFlowButtons + 2;
-		uint8_t _pumpProtectionButtons[_nPumpProtectionButtons];
+		int8_t _pumpProtectionButtons[_nPumpProtectionButtons];
 		uint8_t _pumpProtectionLvl;
 		void print();
 };

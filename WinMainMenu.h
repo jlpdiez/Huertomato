@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Main menu window
 //
@@ -30,11 +30,10 @@
 #include "Settings.h"
 #include "Window.h"
   
-const char nameWinMainMenu[] PROGMEM = "- Main Menu -";
+const char nameWinMainMenu[] PROGMEM = "Main Menu";
 
 const char menuStr0[] PROGMEM = "System Settings";
 const char menuStr1[] PROGMEM = "Controller Settings";
-//const char* const mainMenuButtonText[] PROGMEM = { menuStr0, menuStr1 };
 
 class WinMainMenu: public Window {
 	public:
@@ -48,7 +47,7 @@ class WinMainMenu: public Window {
 	
 	protected:
 		static const uint8_t _nMainMenuButtons = _nFlowButtons + 4;
-		uint8_t _mainMenuButtons[_nMainMenuButtons];
+		int8_t _mainMenuButtons[_nMainMenuButtons];
 		void print();
 };
 

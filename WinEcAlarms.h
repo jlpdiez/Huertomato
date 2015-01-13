@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Ec alarms configuration window.
 //
@@ -29,7 +29,7 @@
 
 #include "Window.h"
 
-const char nameWinEcAlarms[] PROGMEM = "- EC Alarms -";
+const char nameWinEcAlarms[] PROGMEM = "EC Alarms";
 
 const char unitEcS[] PROGMEM = "uS";
 const char uEcLimit[] PROGMEM = "Upper Limit:";
@@ -48,7 +48,7 @@ class WinEcAlarms: public Window {
 	
 	protected:
 		static const uint8_t _nECalarmsButtons = _nFlowButtons + 4;
-		uint8_t _ecAlarmsButtons[_nECalarmsButtons]; 
+		int8_t _ecAlarmsButtons[_nECalarmsButtons]; 
 		uint16_t _ecAlarmMax, _ecAlarmMin;
 		void print();
 };

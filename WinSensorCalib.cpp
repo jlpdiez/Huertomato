@@ -4,7 +4,7 @@ WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Setti
 : Window(lcd,touch,sensors,settings) { }
 
 WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) {
-	for (int i = 0; i < _nSensorCalibrationButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons; i++) {
 		_sensorCalibrationButtons[i] = other._sensorCalibrationButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nSensorCalibrationButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons; i++) {
 		_sensorCalibrationButtons[i] = other._sensorCalibrationButtons[i];
 	}
 	return *this;
@@ -33,12 +33,9 @@ void WinSensorCalib::print() {
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
 	//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < _nSensorCalibrationButtons - _nFlowButtons; i++) {
-		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
-	}
-	//Make menu buttons
-	for (int i = 0; i < _nSensorCalibrationButtons - _nFlowButtons; i++) {
-		_sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,pmChar(sensorCalibrationButtonsText[i]));
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons - _nFlowButtons; i++) {
+		_lcd->print(pmChar(bulletStr),_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+		_sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,(char*)pgm_read_word(&sensorCalibrationButtonsText[i]));
 	}
 }
 

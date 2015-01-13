@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.4.0
+// # Version    : 1.4.1
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.01.2015
+// # Date       : 13.01.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -82,6 +82,31 @@
 #include <MemoryFree.h>
 #include <string.h>
 
+// *********************************************
+// TEXTS STORED IN FLASH MEMORY
+// *********************************************
+const char rtcResetTxt[] PROGMEM = "RTC time has been recently reset. Manual adjustment needed.";
+const char rtcInitOkTxt[] PROGMEM = "RTC init OK.";
+const char rtcInitFailTxt[] PROGMEM = "RTC init FAIL!";
+const char sdInitOkTxt[] PROGMEM = "SD init OK.";
+const char sdInitFailTxt[] PROGMEM = "SD init FAIL!";
+const char waterTimedTxt[] PROGMEM = "Timed watering mode enabled.";
+const char waterContinuousTxt[] PROGMEM = "Continuous watering mode enabled.";
+const char waterWarnTxt[] PROGMEM = "a last time before stopping for night.";
+const char nightStoppedTxt[] PROGMEM = "Watering stopped for the night.";
+const char nightStartTxt[] PROGMEM = "Watering reactivated with daylight.";
+const char sdLogOnTxt[] PROGMEM = "SD logging turned ON.";
+const char sdLogOffTxt[] PROGMEM = "SD logging turned OFF.";
+const char pollingUpdateTxt[] PROGMEM = "Sensor polling timer updated.";
+const char sdLogOk[] PROGMEM = "Logged sensor data to SD Card.";
+const char sdLogFail[] PROGMEM = "Error opening SD file, can't log sensor readings.";
+const char sensorsReadTxt[] PROGMEM = "Sensors read, data updated.";
+const char ecAdjTxt[] PROGMEM = "EC sensor readings adjusted for temperature.";
+const char phAdjTxt[] PROGMEM = "pH sensor readings adjusted for temperature.";
+const char alarmTxT[] PROGMEM = "Alarm triggered! System needs human intervention.";
+const char noWaterTxt[] PROGMEM = "Huertomato will NOT water to prevent pump damage. < --";
+const char waterStartTxt[] PROGMEM = "Huertomato is watering plants. < --";
+const char waterStopTxt[] PROGMEM = "Watering cycle ended. < --";
 
 // *********************************************
 // PINOUT ASSIGN
@@ -187,11 +212,11 @@ void setupRTC() {
 	if ((timeStatus() == timeSet) && (d == 1) && (mo == 1) && (y = 2000)) {
 		//This prevents a bug when time resets and then loops 00:00 - 00:05
 		sensors.setRTCtime(10,10,10,10,10,2010);
-		ui.timeStamp("RTC time has been recently reset. Manual adjustment needed.");
+		ui.timeStamp(rtcResetTxt);
 	} else if (timeStatus() == timeSet)
-		ui.timeStamp("RTC init OK");
+		ui.timeStamp(rtcInitOkTxt);
 	if (timeStatus() != timeSet)
-		ui.timeStamp("RTC init FAIL!");
+		ui.timeStamp(rtcInitFailTxt);
 }
 
 //Inits SD card and creates timer for SD logs
@@ -201,9 +226,9 @@ void setupSD() {
 		if (SD.begin(SDCardSS)) {
 			//Timer to log sensor data to SD Card
 			startSDlogTimer();
-			ui.timeStamp("SD init OK");
+			ui.timeStamp(sdInitOkTxt);
 		} else 
-			ui.timeStamp("SD init FAIL!");
+			ui.timeStamp(sdInitFailTxt);
 	}
 }
 
@@ -228,11 +253,11 @@ void setupWaterModes() {
 		settings.setWateringPlants(false);
 		startWaterTimer();
 		updateNextWateringTime();
-		ui.timeStamp("Timed watering mode enabled");
+		ui.timeStamp(waterTimedTxt);
     } else {
 		digitalWrite(waterPump,HIGH);	
 		settings.setWateringPlants(true);
-		ui.timeStamp("Continuous watering mode enabled");
+		ui.timeStamp(waterContinuousTxt);
 	}	
 }
 
@@ -331,12 +356,12 @@ void checkNightTime() {
 			if (settings.getWaterTimed() && !settings.getWateringPlants()) {
 				//We make a last watering cycle
 				startWatering();
-				ui.timeStamp("a last time before stopping for night");
+				ui.timeStamp(waterWarnTxt);
 			//System in continuous mode	
 			} else {
 				digitalWrite(waterPump,LOW);
 				settings.setWateringPlants(false);
-				ui.timeStamp("Watering stopped for the night");
+				ui.timeStamp(nightStoppedTxt);
 			}
 			settings.setNightWateringStopped(true);
 			
@@ -348,7 +373,7 @@ void checkNightTime() {
 			digitalWrite(waterPump, LOW);
 			settings.setWateringPlants(false);
 			setupWaterModes();
-			ui.timeStamp("Watering reactivated with daylight");
+			ui.timeStamp(nightStartTxt);
 		}
 	}
 	//This handles changes in settings while watering stopped for night
@@ -389,9 +414,9 @@ void checkSD() {
 		stopSDlogTimer();
 		if (settings.getSDactive()) {
 			setupSD();
-			ui.timeStamp("SD logging turned ON");
+			ui.timeStamp(sdLogOnTxt);
 		} else
-			ui.timeStamp("SD logging turned OFF");
+			ui.timeStamp(sdLogOffTxt);
 	}
 }
 
@@ -401,7 +426,7 @@ void checkSensors() {
 		Alarm.free(sensorAlarm.id);
 		sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 		sensorAlarm.enabled = true;
-		ui.timeStamp("Sensor polling timer updated");
+		ui.timeStamp(pollingUpdateTxt);
 	}
 }
 
@@ -412,23 +437,8 @@ void checkSerial() {
 }
 
 // *********************************************
-// TEXT OUTPUTS
+// OTHER
 // *********************************************
-
-//Write input string to file and endl
-//Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << endl;
-/*void writeLog(char* t) {
-    int h = hour();
-    int m = minute();
-    int s = second();
-    stateLog = SD.open(stateLogFile, FILE_WRITE); 
-    stateLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
-    stateLog << t << endl;
-    //stateLog << time(now()) << s << endl;
-    //twoD(hour(t)) + ":" + twoD(minute(t)) + ":" + twoD(second(t));
-    stateLog.close();
-}*/
-
 //Log data to SDCard and set next timer
 //File name is : YYYMMDD.txt
 //Format is: Date,Time,Temp,Humidity,Light,EC,PH,WaterLevel
@@ -442,13 +452,13 @@ void logSensorReadings() {
 	
 	//Filename must be at MAX 8chars + "." + 3chars
 	//We choose it to be YYYY+MM+DD.txt
-	String fileName = ""; 
+	String fileName = "";
 	fileName.reserve(12);
 	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".txt";
 	char fileNameArray[fileName.length() + 1];
 	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
-	File sensorLog = SD.open(fileNameArray, FILE_WRITE); 
-   
+	File sensorLog = SD.open(fileNameArray, FILE_WRITE);
+	
 	if (sensorLog) {
 		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
 		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
@@ -457,9 +467,9 @@ void logSensorReadings() {
 		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
 		sensorLog.close();
 		//Inform through serial
-		ui.timeStamp("Logged sensor data to SD Card.");
+		ui.timeStamp(sdLogOk);
 	} else
-		ui.timeStamp("Error opening SD file, can't log sensor readings.");
+	ui.timeStamp(sdLogFail);
 	//Set next timer
 	if (settings.getSDactive()) {
 		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
@@ -467,15 +477,11 @@ void logSensorReadings() {
 	}
 }
 
-// *********************************************
-// OTHER
-// *********************************************
-
 //Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
-	ui.timeStamp("Sensors read, data updated.");
+	ui.timeStamp(sensorsReadTxt);
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -485,7 +491,7 @@ void updateSensors() {
 void adjustECtemp() {
 	if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
-		ui.timeStamp("EC sensor readings adjusted for temperature.");
+		ui.timeStamp(ecAdjTxt);
 	}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustECtemp);
@@ -495,7 +501,7 @@ void adjustECtemp() {
 void adjustPHtemp() {
 	if (gui.isMainScreen()) {
 		sensors.adjustPHtemp();
-		ui.timeStamp("pH sensor readings adjusted for temperature.");
+		ui.timeStamp(phAdjTxt);
 	}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustPHtemp);
@@ -504,7 +510,7 @@ void adjustPHtemp() {
 //These handle beeping when an alarm is triggered. It warns in serial too
 void beepOn() {
 	const int onSecs = 1;
-	ui.timeStamp("Alarm triggered! System needs human intervention.");
+	ui.timeStamp(alarmTxT);
 	tone(buzzPin,440.00);
 	Alarm.timerOnce(0,0,onSecs,beepOff);
 }
@@ -568,14 +574,14 @@ void startWatering() {
 	//TODO: Add pump on,off setting for this logic
 	//Abort watering if pump protection is on & level is critical
 	if (settings.getReservoirModule() && (sensors.getWaterLevel() < settings.getPumpProtectionLvl()))
-		ui.timeStamp("Huertomato will NOT water to prevent pump damage < --");
+		ui.timeStamp(noWaterTxt);
 		//TODO: Show in GUI!
 	else {
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
 		gui.refresh();
-		ui.timeStamp("Huertomato is watering plants < --");
+		ui.timeStamp(waterStartTxt);
 		//Creates timer to stop watering
 		stopWaterOffTimer();
 		startWaterOffTimer();	
@@ -600,5 +606,5 @@ void stopWatering() {
 	stopWaterOffTimer();
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
-	ui.timeStamp("Watering cycle ended < --");
+	ui.timeStamp(waterStopTxt);
 }

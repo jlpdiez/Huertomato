@@ -4,7 +4,7 @@
 // # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Alarms menu window
 //
@@ -30,7 +30,7 @@
 #include "Window.h"
 
 //Window name
-const char nameWinAlarms[] PROGMEM = "- Sensor Alarms -";
+const char nameWinAlarms[] PROGMEM = "Sensor Alarms";
 
 //Window buttons texts
 const char alarmsStr0[] PROGMEM = "pH Thresholds";
@@ -53,7 +53,7 @@ class WinAlarms: public Window {
 		//We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
 		static const uint8_t _nSensorAlarmsButtons = _nFlowButtons + 3;
 		//Array that will contain the buttons
-		uint8_t _sensorAlarmsButtons[_nSensorAlarmsButtons];
+		int8_t _sensorAlarmsButtons[_nSensorAlarmsButtons];
 		void print();
 };
 

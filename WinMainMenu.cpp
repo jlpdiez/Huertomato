@@ -4,9 +4,9 @@ WinMainMenu::WinMainMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *s
 : Window(lcd,touch,sensors,settings) { }
 
 WinMainMenu::WinMainMenu(const WinMainMenu &other) : Window(other) {
-		for (int i = 0; i < _nMainMenuButtons; i++) {
-			_mainMenuButtons[i] = other._mainMenuButtons[i];
-		}
+	for (uint8_t i = 0; i < _nMainMenuButtons; i++) {
+		_mainMenuButtons[i] = other._mainMenuButtons[i];
+	}
 }
 	
 WinMainMenu& WinMainMenu::operator=(const WinMainMenu& other) {
@@ -15,7 +15,7 @@ WinMainMenu& WinMainMenu::operator=(const WinMainMenu& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nMainMenuButtons; i++) {
+	for (uint8_t i = 0; i < _nMainMenuButtons; i++) {
 		_mainMenuButtons[i] = other._mainMenuButtons[i];
 	}
 	return *this;
@@ -60,8 +60,10 @@ Window::Screen WinMainMenu::processTouch(const int x, const int y) {
 	//Exit
 	if (buttonIndex == _mainMenuButtons[2]) { return MainScreen; }
 	//System Settings
-	else if ((buttonIndex == _mainMenuButtons[3]) || (buttonIndex == _mainMenuButtons[5])) { return SystemSettings; }
+	else if ((buttonIndex == _mainMenuButtons[3]) || (buttonIndex == _mainMenuButtons[5]))
+		return SystemSettings;
 	//Controller Settings
-	else if ((buttonIndex == _mainMenuButtons[4]) || (buttonIndex == _mainMenuButtons[6])) { return ControllerSettings; }
+	else if ((buttonIndex == _mainMenuButtons[4]) || (buttonIndex == _mainMenuButtons[6])) 
+		return ControllerSettings;
 	return None;
 }

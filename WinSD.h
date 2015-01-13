@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: SD configuration window
 //
@@ -31,15 +31,7 @@
 #include "Settings.h"
 #include <SD.h>                                                       
 
-/*const char* sdCardButtonsText[_nSDcardButtons] = {
-	"SD Card Log:",
-	"=",
-	"=",
-	">",
-	">"
-};*/
-
-const char nameWinSD[] PROGMEM = "- SD Card -";
+const char nameWinSD[] PROGMEM = "SD Card";
 
 const char sdCardText0[] PROGMEM = "SD Card Log:";
 const char sdCardText1[] PROGMEM = "Save every";
@@ -57,7 +49,7 @@ class WinSD: public Window {
 	
 	protected:
 		static const uint8_t _nSDcardButtons = _nFlowButtons + 5;
-		uint8_t _sdCardButtons[_nSDcardButtons];
+		int8_t _sdCardButtons[_nSDcardButtons];
 		boolean _sdActive;
 		uint8_t _sdHour, _sdMin;
 		void print();

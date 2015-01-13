@@ -4,7 +4,7 @@ WinPhAlarms::WinPhAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *s
 : Window(lcd,touch,sensors,settings) { }
 
 WinPhAlarms::WinPhAlarms(const WinPhAlarms &other) : Window(other) {
-	for (int i = 0; i < _nPHalarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nPHalarmsButtons; i++) {
 		_phAlarmsButtons[i] = other._phAlarmsButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinPhAlarms& WinPhAlarms::operator=(const WinPhAlarms& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nPHalarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nPHalarmsButtons; i++) {
 		_phAlarmsButtons[i] = other._phAlarmsButtons[i];
 	}
 	return *this;
@@ -32,18 +32,18 @@ void WinPhAlarms::print() {
 	_phAlarmMin = _settings->getPHalarmDown();
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uPhLimit,_xConfig,_yTwoLnsFirst);
-	_lcd->print(dPhLimit,_xConfig,_yTwoLnsSecond);
+	_lcd->print(pmChar(uPhLimit),_xConfig,_yTwoLnsFirst);
+	_lcd->print(pmChar(dPhLimit),_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen_P(uPhLimit))*_bigFontSize;
 	_lcd->printNumF(_phAlarmMax,2,x,_yTwoLnsFirst,'.',5);
 	_lcd->printNumF(_phAlarmMin,2,x,_yTwoLnsSecond,'.',5);
 	//Buttons
 	x += 2*_bigFontSize;
-	_phAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_phAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,minusStr,BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_phAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,minusStr,BUTTON_SYMBOL);
 }
 
 //Draws entire screen pH Alarms
@@ -66,14 +66,16 @@ void WinPhAlarms::update() {
 Window::Screen WinPhAlarms::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _phAlarmsButtons[0]) { return Alarms; }
+	if (buttonIndex == _phAlarmsButtons[0]) 
+		return Alarms;
 	//Save
 	else if (buttonIndex == _phAlarmsButtons[1]) {
 		_settings->setPHalarmUp(_phAlarmMax);
 		_settings->setPHalarmDown(_phAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _phAlarmsButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _phAlarmsButtons[2]) 
+		return MainScreen;
 		
 	//Max up
 	else if(buttonIndex == _phAlarmsButtons[3]) {

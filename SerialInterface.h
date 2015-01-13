@@ -36,6 +36,9 @@
 #include <MemoryFree.h>
 
 //General strings
+const char serialRdyTxt[] PROGMEM = "Serial input ready.";
+const char serialOffTxt[] PROGMEM = "Deactivating serial communications.";
+
 const char helpTxt0[] PROGMEM = "Huertomato version 1.4";
 const char helpTxt1[] PROGMEM = "Type <help name> to find out more about the function <name>.";
 const char memHelpTxt[] PROGMEM = "Displays current system's free memory.";
@@ -43,7 +46,7 @@ const char statusHelpTxt[] PROGMEM = "Displays all sensor info.";
 const char commandsTxT[] PROGMEM = "Available commands are:";
 const char sensorsTxT[] PROGMEM = "Available sensors are:";
 const char settingsTxt[] PROGMEM = "Available settings are:";
-const char doneTxt[] PROGMEM = "Done.";
+
 const char boolTxt[] PROGMEM = "Expected a 'true' or 'false'";
 const char hourTxt[] PROGMEM = "Expected an hour 0 .. 23";
 const char minSecTxt[] PROGMEM = "Expected 0 .. 59";
@@ -51,6 +54,10 @@ const char phTxt[] PROGMEM = "Expected pH 0.00 .. 14.00";
 const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
 const char percentTxT[] PROGMEM = "Expected 0 .. 100";
 const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
+
+const char doneTxt[] PROGMEM = "Done.";
+const char lineDeco[] PROGMEM = "> ";
+const char textSeparator[] PROGMEM = ": ";
 
 //Command Strings
 const char commandStr0[] PROGMEM = "help";

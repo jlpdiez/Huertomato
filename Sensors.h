@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.4
+// # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 02.01.2015
+// # Date       : 13.01.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -125,7 +125,7 @@ class Sensors {
 	// Used for smoothing sensor data.  The higher the number,
 	// the more the readings will be smoothed, but the slower the variables will
 	// respond to the input.
-	static const int _numSamples = 10;
+	static const uint8_t _numSamples = 10;
     //Smoothing counter
     uint8_t _iSample;
     //Contain sensor data pre-smoothing

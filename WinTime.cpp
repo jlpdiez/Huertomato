@@ -4,7 +4,7 @@ WinTime::WinTime(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
 WinTime::WinTime(const WinTime &other) : Window(other) {
-	for (int i = 0; i < _nTimeButtons; i++) {
+	for (uint8_t i = 0; i < _nTimeButtons; i++) {
 		_timeButtons[i] = other._timeButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinTime& WinTime::operator=(const WinTime& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nTimeButtons; i++) {
+	for (uint8_t i = 0; i < _nTimeButtons; i++) {
 		_timeButtons[i] = other._timeButtons[i];
 	}
 	return *this;
@@ -54,45 +54,45 @@ void WinTime::print() {
 	_lcd->setBackColor(VGA_WHITE);
 	
 	//Make +/- buttons
-	_timeButtons[_nFlowButtons] = _buttons.addButton(houU[0],houU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+1] = _buttons.addButton(minU[0],minU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+2] = _buttons.addButton(secU[0],secU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+5] = _buttons.addButton(secD[0],secD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons] = _buttons.addButton(houU[0],houU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+1] = _buttons.addButton(minU[0],minU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+2] = _buttons.addButton(secU[0],secU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],minusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],minusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+5] = _buttons.addButton(secD[0],secD[1],minusStr,BUTTON_SYMBOL);
 	
-	_timeButtons[_nFlowButtons+6] = _buttons.addButton(dayU[0],dayU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+7] = _buttons.addButton(monU[0],monU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+8] = _buttons.addButton(yeaU[0],yeaU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+9] = _buttons.addButton(dayD[0],dayD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+10] = _buttons.addButton(monD[0],monD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+11] = _buttons.addButton(yeaD[0],yeaD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+6] = _buttons.addButton(dayU[0],dayU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+7] = _buttons.addButton(monU[0],monU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+8] = _buttons.addButton(yeaU[0],yeaU[1],plusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+9] = _buttons.addButton(dayD[0],dayD[1],minusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+10] = _buttons.addButton(monD[0],monD[1],minusStr,BUTTON_SYMBOL);
+	_timeButtons[_nFlowButtons+11] = _buttons.addButton(yeaD[0],yeaD[1],minusStr,BUTTON_SYMBOL);
 	
 	//TIME
 	_lcd->setFont(hallfetica_normal);
-	_lcd->print(timeS, _xConfig, _yTwoLnsFirst);
+	_lcd->print(pmChar(timeS), _xConfig, _yTwoLnsFirst);
 	_lcd->setFont(Sinclair_S);
 	//(strlen_P(timeS)*bigFontSize)/2 is middle point of "Time". (strlen_P(hhmmss)*smallFontSize)/2 is middle point of "(HH:MM:SS)"
 	//So the x coord is xTime + middle "Time" - middle of "(HH:MM:SS)"
-	_lcd->print(timeFormatS, _xConfig+(strlen_P(timeS)*_bigFontSize)/2-(strlen_P(timeFormatS)*_smallFontSize)/2, _yTwoLnsFirst+_bigFontSize+2);
+	_lcd->print(pmChar(timeFormatS), _xConfig+(strlen_P(timeS)*_bigFontSize)/2-(strlen_P(timeFormatS)*_smallFontSize)/2, _yTwoLnsFirst+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
 	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->print(timeSeparator,houU[0]+39,_yTwoLnsFirst);
+	_lcd->print(pmChar(timeSeparator),houU[0]+39,_yTwoLnsFirst);
 	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->print(timeSeparator,minU[0]+39,_yTwoLnsFirst);
+	_lcd->print(pmChar(timeSeparator),minU[0]+39,_yTwoLnsFirst);
 	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
 
 	//DATE
-	_lcd->print(dateS, _xConfig, _yTwoLnsSecond);
+	_lcd->print(pmChar(dateS), _xConfig, _yTwoLnsSecond);
 	_lcd->setFont(Sinclair_S);
-	_lcd->print(dateFormatS, _xConfig+(strlen_P(dateS)*_bigFontSize)/2-(strlen_P(dateFormatS)*_smallFontSize)/2, _yTwoLnsSecond+_bigFontSize+2);
+	_lcd->print(pmChar(dateFormatS), _xConfig+(strlen_P(dateS)*_bigFontSize)/2-(strlen_P(dateFormatS)*_smallFontSize)/2, _yTwoLnsSecond+_bigFontSize+2);
 	
 	_lcd->setFont(hallfetica_normal);
 	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->print(dateSeparator, dayU[0]+39, _yTwoLnsSecond);
+	_lcd->print(pmChar(dateSeparator), dayU[0]+39, _yTwoLnsSecond);
 	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->print(dateSeparator, monU[0]+39, _yTwoLnsSecond);
+	_lcd->print(pmChar(dateSeparator), monU[0]+39, _yTwoLnsSecond);
 	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,4);
 	
 }
@@ -130,13 +130,15 @@ void WinTime::update() {
 Window::Screen WinTime::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _timeButtons[0]) { return ControllerSettings; }
+	if (buttonIndex == _timeButtons[0]) 
+		return ControllerSettings;
 	//Save
 	else if (buttonIndex == _timeButtons[1]) {
 		_sensors->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _timeButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _timeButtons[2]) 
+		return MainScreen;
 		
 	//Hour up
 	else if (buttonIndex == _timeButtons[3]) {

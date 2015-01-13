@@ -4,7 +4,7 @@ WinSensorPolling::WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, S
 : Window(lcd,touch,sensors,settings) { }
 
 WinSensorPolling::WinSensorPolling(const WinSensorPolling &other) : Window(other) {
-	for (int i = 0; i < _nSensorPollingButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorPollingButtons; i++) {
 		_sensorPollingButtons[i] = other._sensorPollingButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinSensorPolling& WinSensorPolling::operator=(const WinSensorPolling& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nSensorPollingButtons; i++) {
+	for (uint8_t i = 0; i < _nSensorPollingButtons; i++) {
 		_sensorPollingButtons[i] = other._sensorPollingButtons[i];
 	}
 	return *this;
@@ -39,15 +39,15 @@ void WinSensorPolling::print() {
 	_lcd->setFont(hallfetica_normal);
 	
 	//Time between readings text
-	_lcd->print(sensorPollingText1, _xConfig, _yTwoLnsFirst);
+	_lcd->print(pmChar(sensorPollingText1), _xConfig, _yTwoLnsFirst);
 	//XX
 	_lcd->printNumI(_pollSec,xSpacer2,_yTwoLnsSecond,2,'0');
 	//secs
-	_lcd->print(sensorPollingText2,xSpacer2+3*_bigFontSize,_yTwoLnsSecond);
+	_lcd->print(pmChar(sensorPollingText2),xSpacer2+3*_bigFontSize,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	_sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons] = _buttons.addButton(secU[0],secU[1],plusStr,BUTTON_SYMBOL);
+	_sensorPollingButtons[_nFlowButtons+1] = _buttons.addButton(secD[0],secD[1],minusStr,BUTTON_SYMBOL);
 } 
 
 //Draws entire screen Sensor Polling

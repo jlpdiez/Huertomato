@@ -4,7 +4,7 @@ WinEcCalib::WinEcCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *set
 : Window(lcd,touch,sensors,settings) { }
 
 WinEcCalib::WinEcCalib(const WinEcCalib &other) : Window(other) {
-	for (int i = 0; i < _nECcalibrationButtons; i++) {
+	for (uint8_t i = 0; i < _nECcalibrationButtons; i++) {
 		_ecCalibrationButtons[i] = other._ecCalibrationButtons[i];
 	}
 }
@@ -30,11 +30,11 @@ void WinEcCalib::print() {
 	//Print bulletpoints
 	_lcd->setFont(various_symbols);
 	/*//Before the buttons were adding there are the flow buttons
-	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
+	for (uint8_t i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
 		_lcd->print(bulletStr,_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
 	}
 	//Make menu buttons
-	for (int i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
+	for (uint8_t i = 0; i < nECcalibrationButtons - _nFlowButtons; i++) {
 		ecCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,ecCalibrationButtonsText[i]);
 	}*/
 }

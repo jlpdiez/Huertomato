@@ -4,7 +4,7 @@ WinEcAlarms::WinEcAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *s
 : Window(lcd,touch,sensors,settings) { }
 
 WinEcAlarms::WinEcAlarms(const WinEcAlarms &other) : Window(other) {
-	for (int i = 0; i < _nECalarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nECalarmsButtons; i++) {
 		_ecAlarmsButtons[i] = other._ecAlarmsButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinEcAlarms& WinEcAlarms::operator=(const WinEcAlarms& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nECalarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nECalarmsButtons; i++) {
 		_ecAlarmsButtons[i] = other._ecAlarmsButtons[i];
 	}
 	return *this;
@@ -33,8 +33,8 @@ void WinEcAlarms::print() {
 	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(uEcLimit,_xConfig,_yTwoLnsFirst);
-	_lcd->print(dEcLimit,_xConfig,_yTwoLnsSecond);
+	_lcd->print(pmChar(uEcLimit),_xConfig,_yTwoLnsFirst);
+	_lcd->print(pmChar(dEcLimit),_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen_P(uEcLimit))*_bigFontSize;
 	_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
@@ -42,14 +42,14 @@ void WinEcAlarms::print() {
 	//Buttons
 	x += 1.5*_bigFontSize;
 	//We have already created the flow buttons in positions 0.._nFlowButtons-1  of buttons array
-	_ecAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_ecAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
-	_ecAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_ecAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
+	_ecAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_ecAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,minusStr,BUTTON_SYMBOL);
+	_ecAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_ecAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,minusStr,BUTTON_SYMBOL);
 	//uS Text
 	x += 3.5*_bigFontSize;
-	_lcd->print(unitEcS,x,_yTwoLnsFirst);
-	_lcd->print(unitEcS,x,_yTwoLnsSecond);
+	_lcd->print(pmChar(unitEcS),x,_yTwoLnsFirst);
+	_lcd->print(pmChar(unitEcS),x,_yTwoLnsSecond);
 }
 
 //Draws entire screen EC alarms
@@ -79,7 +79,8 @@ Window::Screen WinEcAlarms::processTouch(const int x, const int y) {
 		_settings->setECalarmDown(_ecAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _ecAlarmsButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _ecAlarmsButtons[2]) 
+		return MainScreen;
 		
 	//Max up
 	else if(buttonIndex == _ecAlarmsButtons[3]) {

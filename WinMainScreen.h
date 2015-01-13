@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Main idle screen window
 //
@@ -33,12 +33,6 @@
 #include <SD.h>   
 #include <Time.h>
 
-//Name is not used really. Its here because its neccesary for other windows
-const char nameWinMainScreen[] PROGMEM = "- Main Screen -";
-
-//Holds text strings for each sensor
-//const int _nSensorText = 6;
-
 const char sensorTextStr0[] PROGMEM = "Humidity:";
 const char sensorTextStr1[] PROGMEM = "Temp:";
 const char sensorTextStr2[] PROGMEM = "Light:";
@@ -55,11 +49,9 @@ const char logoPath[] PROGMEM = "/PICTURE/logo126.RAW";
 const char alarmPath[] PROGMEM = "/PICTURE/alarm126.RAW";
 //Misc texts
 const char versionName[] PROGMEM = "Huertomato 1.4";
-const char humidUnit[] PROGMEM = "%";
 const char tempUnit[] PROGMEM = "C";
 const char lightUnit[] PROGMEM = "Lux";
 const char ecUnit[] PROGMEM = "uS";
-const char lvlUnit[] PROGMEM = "%";
 //Spaces at the end are used to have all strings of same size and no thrash on screen
 const char nextWater[] PROGMEM = "Next Watering @ ";
 const char noNight[] PROGMEM = "No Watering @ Night   ";

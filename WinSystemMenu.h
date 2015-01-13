@@ -4,7 +4,7 @@
 // # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: System menu window
 //
@@ -29,7 +29,7 @@
 
 #include "Window.h"
  
-const char nameWinSystemMenu[] PROGMEM = "- System Settings -";
+const char nameWinSystemMenu[] PROGMEM = "System Settings";
 
 const char sysMenuStr0[] PROGMEM = "Watering Cycle";
 const char sysMenuStr1[] PROGMEM = "Night Watering";
@@ -48,11 +48,9 @@ class WinSystemMenu: public Window {
 	
 	protected:
 		static const uint8_t _nSystemButtons = _nFlowButtons + 3;
-		uint8_t _systemButtons[_nSystemButtons];
+		int8_t _systemButtons[_nSystemButtons];
 		boolean _nightWater;
 		void print();
 };
-
-
 
 #endif

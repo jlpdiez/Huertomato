@@ -4,7 +4,7 @@
 // # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: EC circuit calibration menu window
 //
@@ -36,7 +36,7 @@
 	"4. Calibrate for 10500 uS"
 };*/
 
-const char nameWinEcCalib[] PROGMEM = "- EC Circuit -";
+const char nameWinEcCalib[] PROGMEM = "EC Circuit";
 
 class WinEcCalib: public Window {
 	public:
@@ -50,7 +50,7 @@ class WinEcCalib: public Window {
 	
 	protected:
 		static const uint8_t _nECcalibrationButtons = _nFlowButtons + 4;		
-		uint8_t _ecCalibrationButtons[_nECcalibrationButtons];
+		int8_t _ecCalibrationButtons[_nECcalibrationButtons];
 		void print();
 };
 

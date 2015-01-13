@@ -4,7 +4,7 @@ WinSD::WinSD(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
 WinSD::WinSD(const WinSD &other) : Window(other) {
-	for (int i = 0; i < _nSDcardButtons; i++) {
+	for (uint8_t i = 0; i < _nSDcardButtons; i++) {
 		_sdCardButtons[i] = other._sdCardButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinSD& WinSD::operator=(const WinSD& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nSDcardButtons; i++) {
+	for (uint8_t i = 0; i < _nSDcardButtons; i++) {
 		_sdCardButtons[i] = other._sdCardButtons[i];
 	}
 	return *this;
@@ -43,13 +43,13 @@ void WinSD::print() {
 	_lcd->setFont(various_symbols);
 	_lcd->print(pmChar(bulletStr),_xConfig,_yTwoLnsFirst);
 	//First line button
-	_sdCardButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yTwoLnsFirst,pmChar(sdCardText0));
+	_sdCardButtons[_nFlowButtons] = _buttons.addButton(_xConfig+2*_bigFontSize,_yTwoLnsFirst,sdCardText0);
 	//On - off symbol -
 	_lcd->setFont(hallfetica_normal);
 	if (_sdActive)
-		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(onStr))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(sdCardText0))*_bigFontSize),_yTwoLnsFirst);
 	else
-		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(offStr))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(sdCardText0))*_bigFontSize),_yTwoLnsFirst);
 	
 	//Second line
 	_lcd->setColor(grey[0],grey[1],grey[2]);
@@ -58,26 +58,26 @@ void WinSD::print() {
 	int x = houU[0]+_bigFontSize/2-_bigFontSize+2;
 	_lcd->printNumI(_sdHour,x,_yTwoLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print("h",x,_yTwoLnsSecond);
+	_lcd->print(pmChar(hoursChar),x,_yTwoLnsSecond);
 	//Mins
 	x += 2*_bigFontSize;
 	_lcd->printNumI(_sdMin,x,_yTwoLnsSecond,2,'0');
 	x += 2*_bigFontSize;
-	_lcd->print(PSTR("m"),x,_yTwoLnsSecond);
+	_lcd->print(pmChar(minutesChar),x,_yTwoLnsSecond);
 	
 	//Make +/- buttons
-	_sdCardButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+2] = _buttons.addButton(minU[0],minU[1],pmChar(plusStr),BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],pmChar(minusStr),BUTTON_SYMBOL);
-	_sdCardButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],pmChar(minusStr),BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+1] = _buttons.addButton(houU[0],houU[1],plusStr,BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+2] = _buttons.addButton(minU[0],minU[1],plusStr,BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],minusStr,BUTTON_SYMBOL);
+	_sdCardButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],minusStr,BUTTON_SYMBOL);
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_sdActive) {
-		for (int i = 4; i < _nSDcardButtons; i++)
+		for (uint8_t i = 4; i < _nSDcardButtons; i++)
 			_buttons.disableButton(_sdCardButtons[i],true);
-		} else {
-			for (int i = 4; i < _nSDcardButtons; i++)
-				_buttons.enableButton(_sdCardButtons[i],true);
+	} else {
+		for (uint8_t i = 4; i < _nSDcardButtons; i++)
+			_buttons.enableButton(_sdCardButtons[i],true);
 	}
 } 
 
@@ -98,9 +98,9 @@ void WinSD::update() {
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	if (_sdActive)
-		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(onStr))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(onStr),_xConfig+((3+strlen_P(sdCardText0))*_bigFontSize),_yTwoLnsFirst);
 	else
-		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(offStr))*_bigFontSize),_yTwoLnsFirst);
+		_lcd->print(pmChar(offStr),_xConfig+((3+strlen_P(sdCardText0))*_bigFontSize),_yTwoLnsFirst);
 
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//hours
@@ -113,18 +113,19 @@ void WinSD::update() {
 	
 	//If first toggle is inactive we grey out buttons
 	if (!_sdActive) {
-		for (int i = 4; i < _nSDcardButtons; i++)
-		_buttons.disableButton(_sdCardButtons[i],true);
+		for (uint8_t i = 4; i < _nSDcardButtons; i++)
+			_buttons.disableButton(_sdCardButtons[i],true);
 		} else {
-		for (int i = 4; i < _nSDcardButtons; i++)
-		_buttons.enableButton(_sdCardButtons[i],true);
+		for (uint8_t i = 4; i < _nSDcardButtons; i++)
+			_buttons.enableButton(_sdCardButtons[i],true);
 	}
 }
 
 Window::Screen WinSD::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _sdCardButtons[0]) { return ControllerSettings; }
+	if (buttonIndex == _sdCardButtons[0]) 
+		return ControllerSettings;
 	//Save
 	else if (buttonIndex == _sdCardButtons[1]) {
 		_settings->setSDactive(_sdActive);
@@ -132,7 +133,8 @@ Window::Screen WinSD::processTouch(const int x, const int y) {
 		_settings->setSDminute(_sdMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _sdCardButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _sdCardButtons[2]) 
+		return MainScreen;
 				
 	//Card active toggle
 	else if (buttonIndex == _sdCardButtons[3]) {

@@ -20,7 +20,7 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     
     _iSample = 0;
     //Initiate data arrays
-    for (int i = 0; i < _numSamples; i++) {
+    for (uint8_t i = 0; i < _numSamples; i++) {
       _temps[i] = 0;
       _lights[i] = 0;
       _humidities[i] = 0;
@@ -33,7 +33,7 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
 Sensors::Sensors(const Sensors &other) {
 	_settings = other._settings;
 	_iSample = other._iSample;
-	for (int i = 0; i < _numSamples; i++) {
+	for (uint8_t i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
 		_lights[i] = other._lights[i];
 		_humidities[i] = other._humidities[i];
@@ -52,7 +52,7 @@ Sensors::Sensors(const Sensors &other) {
 Sensors& Sensors::operator=(const Sensors &other) {
 	_settings = other._settings;
 	_iSample = other._iSample;
-	for (int i = 0; i < _numSamples; i++) {
+	for (uint8_t i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
 		_lights[i] = other._lights[i];
 		_humidities[i] = other._humidities[i];
@@ -137,27 +137,27 @@ void Sensors::update() {
 void Sensors::smoothSensorReadings() {
 	//Temp
 	float resF = 0;
-	for (int i = 0; i < _numSamples; i++) { resF += _temps[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) { resF += _temps[i]; }
 	_temp = (float)(resF / _numSamples);
 	//Light
 	uint16_t res = 0;
-	for (int i = 0; i < _numSamples; i++) { res += _lights[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) { res += _lights[i]; }
 	_light = (uint16_t)(res / _numSamples);
 	//Humidity
 	res = 0;
-	for (int i = 0; i < _numSamples; i++) { res += _humidities[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) { res += _humidities[i]; }
 	_humidity = (uint8_t)(res / _numSamples);
 	//Electroconductivity
 	uint32_t res32 = 0;
-	for (int i = 0; i < _numSamples; i++) {  res32 += _ecs[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) {  res32 += _ecs[i]; }
 	_ec = (uint16_t)(res32 / _numSamples);
 	//PH
 	resF = 0;
-	for (int i = 0; i < _numSamples; i++) { resF += _phs[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) { resF += _phs[i]; }
 	_ph = (float)(resF / _numSamples);
 	//Water level
 	res = 0;
-	for (int i = 0; i < _numSamples; i++) { res += _waterLevels[i]; }
+	for (uint8_t i = 0; i < _numSamples; i++) { res += _waterLevels[i]; }
 	_waterLevel = (uint8_t)(res / _numSamples);  
 }
 

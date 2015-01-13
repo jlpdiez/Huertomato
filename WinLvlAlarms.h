@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Nutrient level alarms menu window
 //
@@ -29,12 +29,7 @@
  
 #include "Window.h"
 
-/*const char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
-	"=",
-	">"
-};*/
-
-const char nameWinLvlAlarms[] PROGMEM = "- Nutrient Alarms -";
+const char nameWinLvlAlarms[] PROGMEM = "Nutrient Alarms";
 
 const char wLimitLvlS[] PROGMEM = "Lower Limit:";
 
@@ -51,7 +46,7 @@ class WinLvlAlarms: public Window {
 	
 	protected:
 		static const uint8_t _nWaterAlarmsButtons = _nFlowButtons + 2;
-		uint8_t _waterAlarmsButtons[_nWaterAlarmsButtons];
+		int8_t _waterAlarmsButtons[_nWaterAlarmsButtons];
 		uint8_t _waterAlarmMin;
 		void print();
 };

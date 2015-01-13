@@ -4,7 +4,7 @@
 // # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 13.01.2015
 //
 // # Description: Reservoir module submenu. On/off toggle, alarms, calibration and pump protection
 //
@@ -28,13 +28,7 @@
 
 #include "Window.h"
 
-//TODO: Should have: ON/OFF toggle ¿first? (then  grey out or not remaining options)
-//Should be cool to autodetect if sensors are unresponsive and change setting.reservoirModule
-//And read hgere and grey out automatically
-//Alarms menu
-//Sensor Calibration
-//Pump protection
-const char nameWinReservoir[] PROGMEM = "- Reservoir Module -";
+const char nameWinReservoir[] PROGMEM = "Reservoir Module";
 
 const char reservoirStr0[] PROGMEM = "Reservoir Module:";
 const char reservoirStr1[] PROGMEM = "Sensor Alarms";
@@ -55,7 +49,7 @@ class WinReservoir: public Window {
 		
 	protected:	
 		static const uint8_t _nReservoirButtons = _nFlowButtons + 4;
-		uint8_t _reservoirButtons[_nReservoirButtons];
+		int8_t _reservoirButtons[_nReservoirButtons];
 		boolean _reservoirActive;
 		void print();
 };

@@ -4,7 +4,7 @@ WinPump::WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings)
 : Window(lcd,touch,sensors,settings) { }
 
 WinPump::WinPump(const WinPump &other) : Window(other) {
-	for (int i = 0; i < _nPumpProtectionButtons; i++) {
+	for (uint8_t i = 0; i < _nPumpProtectionButtons; i++) {
 		_pumpProtectionButtons[i] = other._pumpProtectionButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinPump& WinPump::operator=(const WinPump& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nPumpProtectionButtons; i++) {
+	for (uint8_t i = 0; i < _nPumpProtectionButtons; i++) {
 		_pumpProtectionButtons[i] = other._pumpProtectionButtons[i];
 	}
 	return *this;
@@ -31,17 +31,17 @@ void WinPump::print() {
 	_pumpProtectionLvl = _settings->getPumpProtectionLvl();	
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wPumpLimit,_xConfig,_yOneLine);
+	_lcd->print(pmChar(wPumpLimit),_xConfig,_yOneLine);
 	//Numbers
 	int x = (4+strlen_P(wPumpLimit))*_bigFontSize;
 	_lcd->printNumI(_pumpProtectionLvl,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	_pumpProtectionButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_pumpProtectionButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
+	_pumpProtectionButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_pumpProtectionButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,minusStr,BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,_yOneLine);
+	_lcd->print(pmChar(percentSign),x,_yOneLine);
 }
 
 //Draws entire screen Pump Protection

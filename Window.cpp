@@ -40,8 +40,7 @@ void Window::print() {
 	//Shows centered icon
 	_lcd->drawBitmap(_xSize/2-(_bigIconSize/2),10,_bigIconSize,_bigIconSize,logo126);
 	//Shows centered text
-	char* message = "Huertomato is loading...";
-	_lcd->print(message,_xSize/2-(_bigFontSize*(strlen(message)/2)),50+_bigIconSize);
+	_lcd->print(pmChar(loadingText),centerX(loadingText),50+_bigIconSize);
 }
 
 void Window::draw() {
@@ -57,9 +56,8 @@ Window::Screen Window::processTouch(const int x, const int y) { return Splash; }
 	
 //These function should be the first to get its buttons into the array buttons
 //It gets input button array and adds appropriate back/save/cancel to positions 0, 1 & 2
-void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, uint8_t buttonArray[]) {
+void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int8_t buttonArray[]) {
 	_lcd->setBackColor(VGA_WHITE);
-	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		
 	if (backButton) {
@@ -70,7 +68,7 @@ void Window::addFlowButtons(boolean backButton, boolean saveButton, boolean exit
 		buttonArray[0] = -1;
 		
 	if (saveButton) {
-		const int saveX = _xSize/2 - _bigFontSize*strlen_P(saveText)/2;
+		const int saveX = centerX(saveText);
 		_lcd->drawLine(saveX-1,_flowButtonY-5,saveX+_bigFontSize*strlen_P(saveText),_flowButtonY-5);
 		buttonArray[1] = _buttons.addButton(saveX, _flowButtonY, saveText);
 	} else
@@ -94,22 +92,30 @@ void Window::printHeaderBackground() {
 	_lcd->drawLine(0, _headerHeight, _xSize, _headerHeight);
 }
 
-//Prints header with centered text
+//Prints header with centered text. Adds headerDecoration to start and end of title
 void Window::printMenuHeader(const char* c) {
 	printHeaderBackground();
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->setBackColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	//Prepare header string and convert to char array
+	String title = (String)pmChar(headerDecoration) + (String)pmChar(spaceChar) + (String)pmChar(c) + (String)pmChar(spaceChar) + (String)pmChar(headerDecoration);
+	char titleArray[title.length() + 1];
+	title.toCharArray(titleArray, sizeof(titleArray));
 	//Print title centered
-	_lcd->print(pmChar(c),_xSize/2-(_bigFontSize*(strlen_P(c)/2)),2);
+	_lcd->print(titleArray,(_xSize/2)-(_bigFontSize*(strlen(titleArray)/2)),2);
 }
 
 //Overlays "Saved" text over save button
 //Used when button is pressed to inform the user values have been stored
 void Window::printSavedButton() {
-	const int saveX = _xSize/2 - _bigFontSize*strlen_P(savedText)/2;
 	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->print(savedText,saveX,_flowButtonY);
+	_lcd->print(pmChar(savedText),centerX(savedText),_flowButtonY);
+}
+
+//Returns the x where the PROGMEM char* should be printed for it to get centered in screen
+int Window::centerX(const char* c) {
+	return (_xSize / 2) - (_bigFontSize * (strlen_P(c) / 2));
 }
 
 //Converts a char array from PROGMEM to variable in SRAM

@@ -64,6 +64,7 @@ class Settings {
 		WateringPlants,
 		AlarmTriggered
 	};
+	
 	//Constructors
     Settings();
 	Settings(const Settings &other);
@@ -150,7 +151,6 @@ class Settings {
   private:
 	void setEEPROMaddresses();
     void readEEPROMvars();
-	//Everything static so we prevent duplicate info [Singleton]
     //System Settings
     //Watering Cycle
     boolean _waterTimed;
@@ -234,7 +234,6 @@ class Settings {
 	int _addressMinWaterLvl;
 	int _addressPumpProtectionLvl;
 	//int _addressVersion;
-  
 };
 
 #endif

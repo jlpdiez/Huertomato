@@ -4,7 +4,7 @@ WinLvlAlarms::WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings 
 : Window(lcd,touch,sensors,settings)  { }
 
 WinLvlAlarms::WinLvlAlarms(const WinLvlAlarms &other) : Window(other) {
-	for (int i = 0; i < _nWaterAlarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterAlarmsButtons; i++) {
 		_waterAlarmsButtons[i] = other._waterAlarmsButtons[i];
 	}
 }
@@ -15,7 +15,7 @@ WinLvlAlarms& WinLvlAlarms::operator=(const WinLvlAlarms& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
-	for (int i = 0; i < _nWaterAlarmsButtons; i++) {
+	for (uint8_t i = 0; i < _nWaterAlarmsButtons; i++) {
 		_waterAlarmsButtons[i] = other._waterAlarmsButtons[i];
 	}
 	return *this;
@@ -29,20 +29,20 @@ Window::Screen WinLvlAlarms::getType() const {
 
 void WinLvlAlarms::print() {
 	_waterAlarmMin = _settings->getWaterAlarm();
-	
+
 	_lcd->setColor(grey[0],grey[1],grey[2]);
 	//Text
-	_lcd->print(wLimitLvlS,_xConfig,_yOneLine);
+	_lcd->print(pmChar(wLimitLvlS),_xConfig,_yOneLine);
 	//Numbers
 	int x = (4+strlen_P(wLimitLvlS))*_bigFontSize;
 	_lcd->printNumI(_waterAlarmMin,x,_yOneLine,3);
 	//Buttons
 	x += 1.5*_bigFontSize;
-	_waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,pmChar(plusStr),BUTTON_SYMBOL);
-	_waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,pmChar(minusStr),BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yOneLine-_signSpacer,plusStr,BUTTON_SYMBOL);
+	_waterAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yOneLine+_signSpacer,minusStr,BUTTON_SYMBOL);
 	//percent sign
 	x += 2.5*_bigFontSize;
-	_lcd->print("%",x,_yOneLine);
+	_lcd->print(pmChar(percentSign),x,_yOneLine);
 } 
 
 //Draws entire screen Nutrient level alarms
@@ -64,13 +64,15 @@ void WinLvlAlarms::update() {
 Window::Screen WinLvlAlarms::processTouch(int x,int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _waterAlarmsButtons[0]) { return Alarms; }
+	if (buttonIndex == _waterAlarmsButtons[0]) 
+		return Alarms;
 	//Save
 	else if (buttonIndex == _waterAlarmsButtons[1]) {
 		_settings->setWaterAlarm(_waterAlarmMin);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _waterAlarmsButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _waterAlarmsButtons[2]) 
+		return MainScreen;
 		
 	//Up
 	else if (buttonIndex == _waterAlarmsButtons[3]) {
