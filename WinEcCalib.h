@@ -4,7 +4,7 @@
 // # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 14.01.2015
 //
 // # Description: EC circuit calibration menu window
 //
@@ -29,14 +29,18 @@
 
 #include "Window.h"
 
-/*const char ecCalibrationButtonsText[nECcalibrationButtons] = {
-	"1. Set probe type",
-	"2. Dry calibration",
-	"3. Calibrate for 40000 uS",
-	"4. Calibrate for 10500 uS"
-};*/
-
 const char nameWinEcCalib[] PROGMEM = "EC Circuit";
+
+const char ecText1[] PROGMEM = "Do not submerge probe.";
+const char ecText2[] PROGMEM = "Calibrating for a";
+const char ecText3[] PROGMEM = "dry condition";
+
+const char ecText4[] PROGMEM = "Submerge probe in";
+const char ecText5[] PROGMEM = "40,000uS liquid and";
+const char ecText6[] PROGMEM = "wait 5 mins.";
+
+const char ecText7[] PROGMEM = "Rinse & dry probe,";
+const char ecText8[] PROGMEM = "submerge in 10,500uS and";
 
 class WinEcCalib: public Window {
 	public:
@@ -49,8 +53,11 @@ class WinEcCalib: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const uint8_t _nECcalibrationButtons = _nFlowButtons + 4;		
+		static const uint8_t _nECcalibrationButtons = _nFlowButtons + 1;		
 		int8_t _ecCalibrationButtons[_nECcalibrationButtons];
+		//Stores screen state:
+		//0: start screen, 1: dry cal, 2: 40000uS, 3: 10500uS
+		uint8_t _actScreen;
 		void print();
 };
 

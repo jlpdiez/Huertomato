@@ -8,7 +8,8 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     pinMode(waterEcho, INPUT);
     temperature.begin();
     temperature.setResolution(11);
-    //Open communication with PH sensor
+	
+	//Open communication with PH sensor
 	Serial2.begin(38400);
     //Set it into reading on-demand mode
     Serial2.print("E\r");
@@ -291,25 +292,22 @@ void Sensors::setPHstandby() {
 	Serial2.print("E\r");
 }
 
-//In newer circuit versions, it does output "4.00" by itself
 void Sensors::setPHfour() {
 	Serial2.print("F\r");
 	if (_settings->getSerialDebug())
-		Serial.println("4.00");
+		Serial.println(4.00);
 }
 
-//In newer circuit versions, it does output "7.00" by itself
 void Sensors::setPHseven() {
 	Serial2.print("S\r");
 	if (_settings->getSerialDebug())
-		Serial.println("7.00");
+		Serial.println(7.00);
 }
 
-//In newer circuit versions, it does output "10.00" by itself
 void Sensors::setPHten() {
 	Serial2.print("T\r");
 	if (_settings->getSerialDebug())
-		Serial.println("10.00");
+		Serial.println(10.00);
 }
 
 //Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
@@ -327,14 +325,14 @@ void Sensors::adjustPHtemp() {
 void Sensors::resetEC() {
 	clearECbuffer();
 	Serial1.print("X\r");
-	delay(100);
+	delay(3000);
 	ecToSerial();
 }
 
 void Sensors::getECinfo() {
 	clearECbuffer();
 	Serial1.print("I\r");
-	delay(10);
+	delay(1450);
 	ecToSerial();
 }
 
@@ -354,31 +352,27 @@ void Sensors::setECstandby() {
 }
 
 void Sensors::setECprobeType() {
-	clearECbuffer();
 	Serial1.print("P,2\r");
-	delay(100);
-	ecToSerial();
+	if (_settings->getSerialDebug())
+		Serial.println("k1.0");
 }
 
 void Sensors::setECdry() {
-	clearECbuffer();
 	Serial1.print("Z0\r");
-	delay(100);
-	ecToSerial();
+	if (_settings->getSerialDebug())
+		Serial.println("dry cal");
 }
 
 void Sensors::setECfortyThousand() {
-	clearECbuffer();
 	Serial1.print("Z40\r");
-	delay(100);
-	ecToSerial();
+	if (_settings->getSerialDebug())
+		Serial.println("40,000 uS cal");
 }
 
 void Sensors::setECtenThousand() {
-	clearECbuffer();
 	Serial1.print("Z10\r");
-	delay(100);
-	ecToSerial();
+	if (_settings->getSerialDebug())
+		Serial.println("10,500 uS cal");
 }
 
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor

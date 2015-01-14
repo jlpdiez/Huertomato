@@ -68,6 +68,8 @@ void WinPhCalib::draw() {
 		addFlowButtons(true,false,true,_phCalibrationButtons);
 	print();
 	_buttons.drawButtons();
+	if (_actScreen == 0)
+			_sensors->getPHinfo();
 }
 
 Window::Screen WinPhCalib::processTouch(const int x, const int y) {
@@ -83,7 +85,6 @@ Window::Screen WinPhCalib::processTouch(const int x, const int y) {
 		//Start calibration button
 		else if (buttonIndex == _phCalibrationButtons[3]) {
 			_sensors->calibratingPH(true);
-			_sensors->getPHinfo();
 			_sensors->resetPH();
 			_sensors->setPHcontinuous();
 			_actScreen = 1;

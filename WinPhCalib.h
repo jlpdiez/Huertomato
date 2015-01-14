@@ -31,15 +31,9 @@
 
 const char nameWinPhCalib[] PROGMEM = "pH Circuit";
 
-const char startCalibStr1[] PROGMEM = "Start calibration";
-const char startCalibStr2[] PROGMEM = "procedure now?";
-const char yesStr[] PROGMEM = "Yes";
-
 const char phText1[] PROGMEM = "Rinse & dry probe,";
 const char phText2[] PROGMEM = "submerge in pH   and";
 const char phText4[] PROGMEM = "wait 5 mins.";
-const char continueStr[] PROGMEM = "Continue";
-const char endStr[] PROGMEM = "End";
 
 class WinPhCalib: public Window {
 	public:

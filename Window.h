@@ -81,6 +81,12 @@ const char dateSeparator[] PROGMEM = "/";
 const char percentSign[] PROGMEM = "%";
 const char hoursChar[] PROGMEM = "h";
 const char minutesChar[] PROGMEM = "m";
+//Calibration texts
+const char startCalibStr1[] PROGMEM = "Start calibration";
+const char startCalibStr2[] PROGMEM = "procedure now?";
+const char yesStr[] PROGMEM = "Yes";
+const char continueStr[] PROGMEM = "Continue";
+const char endStr[] PROGMEM = "End";
 
 class Window {
 	public:
