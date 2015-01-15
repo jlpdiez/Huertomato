@@ -257,9 +257,10 @@ void WinMainScreen::printIconAndStatus() {
 	//Normal or alarm modes
 	} else {
 		boolean alarm = _settings->getAlarmTriggered();
+		boolean pump = _settings->getPumpProtected();
 		int wHour = _settings->getNextWhour();
 		int wMin = _settings->getNextWminute();
-		(alarm) ? _lcd->setColor(red[0],red[1],red[2]) : _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
+		(alarm || pump) ? _lcd->setColor(red[0],red[1],red[2]) : _lcd->setColor(darkGreen[0],darkGreen[1],darkGreen[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);
 		_lcd->print(pmChar(bulletStr),xSpacer,ySpacer);
@@ -268,20 +269,30 @@ void WinMainScreen::printIconAndStatus() {
 		
 		//Timed mode
 		if (_settings->getWaterTimed()) {
-			_lcd->print(pmChar(nextWater),x,ySpacer);
-			x += _bigFontSize*(strlen_P(nextWater));
-			_lcd->printNumI(wHour,x,ySpacer,2,'0');
-			x += _bigFontSize*2;
-			_lcd->print(pmChar(timeSeparator),x,ySpacer);
-			x += _bigFontSize;
-			_lcd->printNumI(wMin,x,ySpacer,2,'0');
-			x += 2*_bigFontSize;
-			_lcd->print(pmChar(spaceChar),x,ySpacer);		
+			if (!pump) {
+				_lcd->print(pmChar(nextWater),x,ySpacer);
+				x += _bigFontSize*(strlen_P(nextWater));
+				_lcd->printNumI(wHour,x,ySpacer,2,'0');
+				x += _bigFontSize*2;
+				_lcd->print(pmChar(timeSeparator),x,ySpacer);
+				x += _bigFontSize;
+				_lcd->printNumI(wMin,x,ySpacer,2,'0');
+				x += 2*_bigFontSize;
+				_lcd->print(pmChar(spaceChar),x,ySpacer);	
+			} else {
+				_lcd->print(pmChar(pumpCont),x,ySpacer);
+			}
 		//Continuous
-		} else
-			(alarm) ? _lcd->print(pmChar(alarmCont),x,ySpacer) : _lcd->print(pmChar(normalCont),x,ySpacer);
+		} else {
+			if (alarm) 
+				_lcd->print(pmChar(alarmCont),x,ySpacer);
+			else if (pump)
+				_lcd->print(pmChar(pumpCont),x,ySpacer);
+			else 
+				_lcd->print(pmChar(normalCont),x,ySpacer);
+		}
 		//Path to image
-		(alarm) ? path = pmChar(alarmPath) : path = pmChar(plantPath);
+		(alarm || pump) ? path = pmChar(alarmPath) : path = pmChar(plantPath);
 	}
 	
 	//Read from SD line by line and display icon.
@@ -313,7 +324,7 @@ void WinMainScreen::updateIconAndStatus() {
 	
 	//Updates next watering time if needed
 	else if (!_settings->getNightWateringStopped() && !_settings->getWateringPlants()
-		&& _settings->getWaterTimed()) {
+		&& _settings->getWaterTimed() && !_settings->getPumpProtected()) {
 		
 		const int xSpacer = 10;
 		const int ySpacer = 200;

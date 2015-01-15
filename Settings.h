@@ -112,6 +112,7 @@ class Settings {
     void setNightWateringStopped(const boolean);
     void setWateringPlants(const boolean);
     void setAlarmTriggered(const boolean);
+	void setPumpProtected(const boolean);
     
     //Getters
     //System Settings
@@ -147,6 +148,7 @@ class Settings {
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
+	boolean getPumpProtected() const;
 	
 	//These return value and go to false
 	boolean systemStateChanged();
@@ -210,6 +212,8 @@ class Settings {
     boolean _wateringPlants;
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
+	//True if pump is off for protection
+	boolean _pumpProtected;
 	//True if state changed
 	boolean _systemStateChanged;
 	//Tells if water settings have been changed

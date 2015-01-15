@@ -115,7 +115,7 @@ void WinSD::update() {
 	if (!_sdActive) {
 		for (uint8_t i = 4; i < _nSDcardButtons; i++)
 			_buttons.disableButton(_sdCardButtons[i],true);
-		} else {
+	} else {
 		for (uint8_t i = 4; i < _nSDcardButtons; i++)
 			_buttons.enableButton(_sdCardButtons[i],true);
 	}

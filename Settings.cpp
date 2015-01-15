@@ -392,6 +392,12 @@ void Settings::setAlarmTriggered(const boolean a) {
 	_systemStateChanged = true;
 }
 
+void Settings::setPumpProtected(const boolean p) {
+	_pumpProtected = p;
+	_systemStateChanged = true;	
+	_waterSettingsChanged = true;
+}
+
 //Getters
 //System Settings
 boolean Settings::getWaterTimed() const { return _waterTimed; }
@@ -451,6 +457,8 @@ boolean Settings::getNightWateringStopped() const { return _nightWateringStopped
 boolean Settings::getWateringPlants() const { return _wateringPlants; }
 
 boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
+	
+boolean Settings::getPumpProtected() const { return _pumpProtected; }
 	
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;

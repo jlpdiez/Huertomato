@@ -31,6 +31,7 @@
 
 const char nameWinPump[] PROGMEM = "Pump Protection";
 
+const char pumpProtTxt[] PROGMEM = "Protect Pump:";
 const char wPumpLimit[] PROGMEM = "Min Water Lvl:";
  
 class WinPump: public Window {
@@ -45,8 +46,9 @@ class WinPump: public Window {
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const uint8_t _nPumpProtectionButtons = _nFlowButtons + 2;
+		static const uint8_t _nPumpProtectionButtons = _nFlowButtons + 3;
 		int8_t _pumpProtectionButtons[_nPumpProtectionButtons];
+		boolean _pumpProtection;
 		uint8_t _pumpProtectionLvl;
 		void print();
 };

@@ -58,6 +58,7 @@ const char noNight[] PROGMEM = "No Watering @ Night   ";
 const char htmtWatering[] PROGMEM = "Huertomato Watering   ";
 const char alarmCont[] PROGMEM = "Alarm - Check Solution";
 const char normalCont[] PROGMEM = "System working fine  ";
+const char pumpCont[] PROGMEM = "Watering OFF for pump";
 
 //Contains two main screens. One when reservoir module is on, another when off
 class WinMainScreen: public Window {

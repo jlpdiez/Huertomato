@@ -256,9 +256,18 @@ void setupWaterModes() {
 		updateNextWateringTime();
 		ui.timeStamp(waterTimedTxt);
     } else {
-		digitalWrite(waterPump,HIGH);	
-		settings.setWateringPlants(true);
-		ui.timeStamp(waterContinuousTxt);
+		//Abort watering if pump protection toggled
+		if (settings.getPumpProtected()) {
+			digitalWrite(waterPump, LOW);
+			settings.setWateringPlants(false);
+			Serial.println("LOW");
+			ui.timeStamp(noWaterTxt);
+		} else {
+			digitalWrite(waterPump,HIGH);	
+			Serial.println("HAI");
+			settings.setWateringPlants(true);
+			ui.timeStamp(waterContinuousTxt);
+		}
 	}	
 }
 
@@ -307,7 +316,7 @@ void loop() {
 	//Manage LED & Sound
 	if (settings.getWateringPlants() && settings.getWaterTimed()) {
 		led.setColour(BLUE);
-	} else if (settings.getAlarmTriggered()) {
+	} else if (settings.getAlarmTriggered() || settings.getPumpProtected()) {
 		led.setColour(RED);
 		//Sound alarm in main screen only
 		if (gui.isMainScreen() && settings.getSound() && !beeping && 
@@ -318,6 +327,8 @@ void loop() {
 	} else
 		led.setColour(GREEN);
 	
+	//Stop pump if needed
+	checkPump();
 	//Trigger alarm if needed
 	checkAlarms();
 	//Stop/start watering if day/night changed
@@ -327,6 +338,18 @@ void loop() {
 	
 	//Delays are needed for alarms to work
 	Alarm.delay(10);
+}
+
+//Checks if pump protection has been activated - System will stop watering!
+void checkPump() {
+	if ((!settings.getPumpProtected()) && (settings.getReservoirModule()) && (settings.getPumpProtection())  
+			&& (sensors.getWaterLevel() < settings.getPumpProtectionLvl())) {
+		settings.setPumpProtected(true);
+		
+	} else if (settings.getPumpProtected() && ((!settings.getReservoirModule()) || (!settings.getPumpProtection()) 
+			|| (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()))) {
+		settings.setPumpProtected(false);
+	}
 }
 
 //Checks if any alarm has been triggered and changes alarm setting if needed
@@ -572,12 +595,8 @@ void stopWaterOffTimer() {
 //TIMED WATERING ROUTINES
 void startWatering() {
 	updateNextWateringTime();	
-	//TODO: Add pump on,off setting for this logic
-	//Abort watering if pump protection is on & level is critical
-	if (settings.getReservoirModule() && (sensors.getWaterLevel() < settings.getPumpProtectionLvl()))
-		ui.timeStamp(noWaterTxt);
-		//TODO: Show in GUI!
-	else {
+	//Only water if pump protection is off
+	if (!settings.getPumpProtected()) {
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
 		led.setColour(BLUE);
@@ -587,19 +606,6 @@ void startWatering() {
 		stopWaterOffTimer();
 		startWaterOffTimer();	
 	}
-	//If theres enough water to activate pump
-	/*if ((sensors.getWaterLevel() >= settings.getPumpProtectionLvl())) {	
-		digitalWrite(waterPump, HIGH);
-		settings.setWateringPlants(true);
-		led.setColour(BLUE);
-		gui.refresh();
-		ui.timeStamp("Huertomato is watering plants < --");
-		//Creates timer to stop watering
-		stopWaterOffTimer();
-		startWaterOffTimer();
-	//Pump will get damaged - System will NOT water	
-	} else
-		ui.timeStamp("Huertomato will NOT water to prevent pump damage < --");*/
 }
 
 //Stops watering pump and updates system status
