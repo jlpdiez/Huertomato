@@ -4,7 +4,7 @@
 // # Version    : 1.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 15.01.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -73,6 +73,7 @@ class Sensors {
     uint8_t getWaterLevel() const;
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
+	uint16_t getRawLightLevel();
 	//Tests
 	boolean ecOffRange();
 	boolean phOffRange();
@@ -117,7 +118,6 @@ class Sensors {
 	
     //Smoothes readings
     void smoothSensorReadings();
-	void smoothRawLight();
     //These poll hardware and return sensor info
     uint16_t light();
     float temp();

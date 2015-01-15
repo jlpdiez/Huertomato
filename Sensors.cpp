@@ -86,8 +86,8 @@ float Sensors::getPH() const { return _ph; }
 
 uint8_t Sensors::getWaterLevel() const { return _waterLevel; }
 	
-//Polls sonic range sensor and returns raw reading
-uint16_t Sensors::getRawWaterLevel(){
+//Polls sonic range sensor and returns raw reading in cm
+uint16_t Sensors::getRawWaterLevel() {
 	digitalWrite(waterTrigger, LOW);
 	delayMicroseconds(2);
 	digitalWrite(waterTrigger, HIGH);
@@ -95,6 +95,20 @@ uint16_t Sensors::getRawWaterLevel(){
 	digitalWrite(waterTrigger, LOW);
 
 	return (pulseIn(waterEcho, HIGH) / 29) / 2;
+}
+
+//Returns light in lux
+uint16_t Sensors::getRawLightLevel() {
+	//http://forum.arduino.cc/index.php?topic=141815.0
+	const float vcc = 4.3;
+	const int resInKohm = 10.0;
+	int adc = analogRead(lightIn);
+	//Vout = Output voltage from potential Divider. [Vout = adc * (Vin / 1024)]
+	float vo = adc * (vcc / 1024);
+	//Equation to calculate Resistance of LDR, [R-LDR =(R1 (Vin - Vout))/ Vout]
+	float rldr = (resInKohm * (vcc - vo)) / vo;
+	uint16_t luxes = (500 / rldr);
+	return luxes;
 }
 
 boolean Sensors::phOffRange() {
@@ -164,16 +178,7 @@ void Sensors::smoothSensorReadings() {
 
 //Returns light level in luxes
 uint16_t Sensors::light() {
-	//http://forum.arduino.cc/index.php?topic=141815.0
-	const float vcc = 4.3;
-	const int resInKohm = 10.0;
-	int adc = analogRead(lightIn);
-	//Vout = Output voltage from potential Divider. [Vout = adc * (Vin / 1024)]
-	float vo = adc * (vcc / 1024);
-	//Equation to calculate Resistance of LDR, [R-LDR =(R1 (Vin - Vout))/ Vout]
-	float rldr = (resInKohm * (vcc - vo)) / vo;
-	uint16_t luxes = (500 / rldr);
-	return luxes;
+	return getRawLightLevel();
 }
 
 
@@ -325,7 +330,8 @@ void Sensors::adjustPHtemp() {
 void Sensors::resetEC() {
 	clearECbuffer();
 	Serial1.print("X\r");
-	delay(3000);
+	//Give time for reset
+	delay(2750);
 	ecToSerial();
 }
 

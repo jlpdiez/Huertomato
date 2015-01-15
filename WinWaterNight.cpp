@@ -28,7 +28,7 @@ Window::Screen WinWaterNight::getType() const {
 }
 
 void WinWaterNight::print() {
-	_rawLightLvl = _sensors->getLight();
+	_rawLightLvl = _sensors->getRawLightLevel();
 	_lightThreshold = _settings->getLightThreshold();
 	_nightWater = _settings->getNightWatering();
 	
@@ -64,10 +64,16 @@ void WinWaterNight::print() {
 	_lcd->printNumI(_lightThreshold,x,_yThreeLnsThird,4);
 	x += 5*_bigFontSize;
 	_waterNightButtons[_nFlowButtons+1] = _buttons.addButton(x,_yThreeLnsThird,waterNightStr1);
+	
+	//If first toggle is active we grey out button
+	if (_nightWater)
+		_buttons.disableButton(_waterNightButtons[_nFlowButtons+1],true);
+	else
+		_buttons.enableButton(_waterNightButtons[_nFlowButtons+1],true);
 }
 
 void WinWaterNight::update() {
-	_rawLightLvl = _sensors->getLight();
+	_rawLightLvl = _sensors->getRawLightLevel();
 	
 	_lcd->setFont(hallfetica_normal);
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
@@ -85,6 +91,11 @@ void WinWaterNight::update() {
 	//Third Line
 	x = _xConfig + _bigFontSize * (strlen_P(lightThreshold) + 1);
 	_lcd->printNumI(_lightThreshold,x,_yThreeLnsThird,4);
+	//If first toggle is active we grey out button
+	if (_nightWater)
+		_buttons.disableButton(_waterNightButtons[_nFlowButtons+1],true);
+	else
+		_buttons.enableButton(_waterNightButtons[_nFlowButtons+1],true);
 }
 
 //Draws entire screen Light Calibration

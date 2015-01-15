@@ -249,7 +249,6 @@ Settings::Setting SerialInterface::interpretSetting(char* keyword) {
 		return Settings::None;
 }
 
-//TODO: Add set Time!
 //In charge when first word is sensors
 void SerialInterface::commandSensors() {
 	Command comm;

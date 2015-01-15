@@ -36,7 +36,7 @@
 #include <MemoryFree.h>
 
 //General strings
-const char serialRdyTxt[] PROGMEM = "Serial input ready.";
+const char serialRdyTxt[] PROGMEM = "Serial I/O ready.";
 const char serialOffTxt[] PROGMEM = "Deactivating serial communications.";
 
 const char helpTxt0[] PROGMEM = "Huertomato version 1.4";

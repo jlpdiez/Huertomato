@@ -227,15 +227,14 @@ void WinMainScreen::updateInfoNoModule() {
 
 //Shows system status in main screen
 //Loads img files from /PICTURE folder of the SD card
-//This one is shared by two windows, it places the icon in different places using _settings->getReservoirModule()
 void WinMainScreen::printIconAndStatus() {
 	int xSpacer = 10;
 	int ySpacer = 200;
 	File img;
 	char* path;
 	
-	//Watering Stopped
-	if (_settings->getNightWateringStopped()) {
+	//Night watering stopped & no pump protection triggered
+	if (_settings->getNightWateringStopped() && !_settings->getPumpProtected()) {
 		_lcd->setColor(grey[0],grey[1],grey[2]);
 		_lcd->setBackColor(VGA_WHITE);
 		_lcd->setFont(various_symbols);

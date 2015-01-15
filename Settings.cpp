@@ -6,6 +6,7 @@ Settings::Settings() {
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
   
 	setEEPROMaddresses();
 	readEEPROMvars();
@@ -17,6 +18,7 @@ Settings::Settings(const Settings &other) {
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
 	  
 	//System Settings
 	_waterTimed = other._waterTimed;
@@ -52,6 +54,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
 		  
 	//System Settings
 	_waterTimed = other._waterTimed;
@@ -161,7 +164,7 @@ void Settings::setDefault() {
 	EEPROM.updateByte(_addressWaterAlarm,0);
 	EEPROM.updateByte(_addressNightWatering,1);  
 	//Controller Settings
-	EEPROM.updateByte(_addressSensorSecond,2);
+	EEPROM.updateByte(_addressSensorSecond,10);
 	EEPROM.updateByte(_addressSDactive,1);
 	EEPROM.updateByte(_addressSDhour,1);
 	EEPROM.updateByte(_addressSDminute,0);
@@ -380,6 +383,7 @@ void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 void Settings::setNightWateringStopped(const boolean n) { 
 	_nightWateringStopped = n; 
 	_systemStateChanged = true;
+	_waterSettingsChanged = true;
 }
 
 void Settings::setWateringPlants(const boolean w) { 
