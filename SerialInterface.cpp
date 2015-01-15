@@ -116,7 +116,7 @@ void SerialInterface::help() {
 		printLn(statusHelpTxt);
 	//not recognized
 	else 
-		Serial << endl << F("> No help found for command <") << arg << F(">") << endl << endl;
+		Serial << endl << F("> No help found for command <") << arg << F(">") << endl << endl;	
 }
 
 //Uses external FreeMemory library
@@ -133,12 +133,13 @@ void SerialInterface::commandStatus() {
 		uint8_t s = second(t);
 		uint8_t d = day(t);
 		uint8_t mo = month(t);
-		uint16_t y = year(t);
+		uint16_t y = year(t);		
+		int mem = freeMemory();
 		
 		Serial << endl;
 		Serial << F("> Date: ") << ((d<10)?"0":"") << d << F("/") << ((mo<10)?"0":"") << mo << F("/") << y << endl;
 		Serial << F("> Time: ") << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s << endl;
-		Serial << F("> Available memory: ") << freeMemory() << F(" bytes") << endl;
+		Serial << F("> Available memory: ") << mem << F(" bytes") << endl;
 		Serial << F("> Temp: ") << sensors.getTemp() << F("C") << endl;
 		Serial << F("> Humidity: ") << sensors.getHumidity() << F("%") << endl;
 		Serial << F("> Light level: ") << sensors.getLight() << F("lux") << endl;

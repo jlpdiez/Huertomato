@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 21.11.2014
+// # Date       : 15.01.2015
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -32,6 +32,8 @@
 
 extern EEPROMClassEx EEPROM;
 
+extern const float versionNumber;
+
 // *********************************************
 class Settings {
   public:
@@ -50,19 +52,22 @@ class Settings {
 		LightThreshold,
 		MaxWaterLvl,
 		MinWaterLvl,
+		PumpProtection,
 		PumpProtectionLvl,
 		SensorSecond,
 		SDactive,
 		SDhour,
 		SDminute,
 		Sound,
+		Leds,
 		SerialDebug,
 		ReservoirModule,
 		NextWhour,
 		NextWminute,
 		NightWateringStopped,
 		WateringPlants,
-		AlarmTriggered
+		AlarmTriggered,
+		Version
 	};
 	
 	//Constructors
@@ -73,7 +78,6 @@ class Settings {
 	~Settings();
     
     //Setters - These store settings to EEPROM too
-	void setDefault();
     //System Settings
     boolean setWaterTimed(const boolean);
     boolean setWaterHour(const uint8_t);
@@ -88,6 +92,7 @@ class Settings {
 	boolean setLightThreshold(const uint16_t);
 	boolean setMaxWaterLvl(const uint16_t);
 	boolean setMinWaterLvl(const uint16_t);
+	boolean setPumpProtection(const boolean);
 	boolean setPumpProtectionLvl(const uint8_t);
     
     //Controller Settings
@@ -96,6 +101,7 @@ class Settings {
     boolean setSDhour(const uint8_t);
     boolean setSDminute(const uint8_t);
     boolean setSound(const boolean);
+	boolean setLeds(const boolean);
     boolean setSerialDebug(const boolean);
 	boolean setReservoirModule(const boolean);
     
@@ -122,6 +128,7 @@ class Settings {
 	uint16_t getLightThreshold() const;
 	uint16_t getMaxWaterLvl() const;
 	uint16_t getMinWaterLvl() const;
+	boolean getPumpProtection() const;
 	uint8_t getPumpProtectionLvl() const;
     
     //Controller Settings
@@ -130,6 +137,7 @@ class Settings {
     uint8_t getSDhour() const;
     uint8_t getSDminute() const;
     boolean getSound() const;
+	boolean getLeds() const;
     boolean getSerialDebug() const;
 	boolean getReservoirModule() const;
     
@@ -151,6 +159,8 @@ class Settings {
   private:
 	void setEEPROMaddresses();
     void readEEPROMvars();
+	void setDefault();
+	
     //System Settings
     //Watering Cycle
     boolean _waterTimed;
@@ -169,7 +179,8 @@ class Settings {
 	uint16_t _lightThreshold;
 	uint16_t _maxWaterLvl;
 	uint16_t _minWaterLvl;
-	//Pump protection threshold
+	//Pump protection
+	boolean _pumpProtection;
 	uint8_t _pumpProtectionLvl;
     
     //Controller settings
@@ -182,6 +193,8 @@ class Settings {
     uint8_t _sdMinute;
     //Sound toggle
     boolean _sound;
+	//Leds toggle
+	boolean _leds;
     //Serial Debugging
     boolean _serialDebug;
 	//Module present
@@ -227,13 +240,15 @@ class Settings {
     int _addressSDhour;
     int _addressSDminute;
     int _addressSound;
+	int _addressLeds;
     int _addressSerialDebug;
 	int _addressLightThreshold;
 	int _addressReservoirModule;
 	int _addressMaxWaterLvl;
 	int _addressMinWaterLvl;
 	int _addressPumpProtectionLvl;
-	//int _addressVersion;
+	int _addressPumpProtection;
+	int _addressVersion;
 };
 
 #endif

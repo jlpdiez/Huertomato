@@ -1,8 +1,5 @@
 #include "Settings.h"
 
-//TODO: Only load if there is data:
-//http://playground.arduino.cc/Code/EEPROMLoadAndSaveSettings
-
 //Constructors
 Settings::Settings() {
 	//Status variables - Not read from EEPROM
@@ -35,6 +32,7 @@ Settings::Settings(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtection = other._pumpProtection;
 	_pumpProtectionLvl = other._pumpProtectionLvl;
 	  
 	//Controller Settings
@@ -43,6 +41,7 @@ Settings::Settings(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
+	_leds = other._leds;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 }
@@ -68,6 +67,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtection = other._pumpProtection;
 	_pumpProtectionLvl = other._pumpProtectionLvl;
 		  
 	//Controller Settings
@@ -76,6 +76,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
+	_leds = other._leds;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
@@ -108,15 +109,17 @@ void Settings::setEEPROMaddresses() {
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
-	//_addressVersion == EEPROM.getAddress((sizeof(char[4])));
+	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
+	_addressLeds = EEPROM.getAddress(sizeof(byte));
+	_addressVersion = EEPROM.getAddress(sizeof(float));	
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
-	//TODO: Auto load defaults if needed
-	// if (EEPROM.read(_addressVersion) != MYVERSION))
-	//	setDefault();
-	//else 
+	//If version number isn't the same we reset to default settings
+	if (EEPROM.readFloat(_addressVersion) != versionNumber)
+		setDefault();	
+		
 	_waterTimed = EEPROM.readByte(_addressWaterTimed);
 	_waterHour = EEPROM.readByte(_addressWaterHour);
 	_waterMinute = EEPROM.readByte(_addressWaterMinute);
@@ -126,45 +129,51 @@ void Settings::readEEPROMvars() {
 	_ecAlarmUp = EEPROM.readInt(_addressECalarmUp);
 	_ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
 	_waterAlarm = EEPROM.readByte(_addressWaterAlarm);
-	_nightWatering = EEPROM.readByte(_addressNightWatering);  
-	_sensorSecond = EEPROM.readByte(_addressSensorSecond);  
+	_nightWatering = EEPROM.readByte(_addressNightWatering);
+	_sensorSecond = EEPROM.readByte(_addressSensorSecond);
 	_sdActive = EEPROM.readByte(_addressSDactive);
 	_sdHour = EEPROM.readByte(_addressSDhour);
 	_sdMinute = EEPROM.readByte(_addressSDminute);
-	_sound = EEPROM.readByte(_addressSound );
+	_sound = EEPROM.readByte(_addressSound);
+	_leds = EEPROM.readByte(_addressLeds);
 	_serialDebug = EEPROM.readByte(_addressSerialDebug);
 	_lightThreshold = EEPROM.readInt(_addressLightThreshold);
 	_reservoirModule = EEPROM.readByte(_addressReservoirModule);
 	_maxWaterLvl = EEPROM.readInt(_addressMaxWaterLvl);
 	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
+	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 }
 
 //Setters - These store their value on EEPROM too
 void Settings::setDefault() {	
+	//Saves current version number to EEPROM
+	EEPROM.updateFloat(_addressVersion,versionNumber);
 	//System Settings
-	setWaterTimed(true);
-	setWaterHour(1);
-	setWaterMinute(30);
-	setFloodMinute(1);
-	setPHalarmUp(14);
-	setPHalarmDown(0);
-	setECalarmUp(9990);
-	setECalarmDown(0);
-	setWaterAlarm(0);
-	setNightWatering(true);    
+	EEPROM.updateByte(_addressWaterTimed,1);
+	EEPROM.updateByte(_addressWaterHour,1);	
+	EEPROM.updateByte(_addressWaterMinute,30);
+	EEPROM.updateByte(_addressFloodMinute,1);
+	EEPROM.updateFloat(_addressPHalarmUp,14.0);
+	EEPROM.updateFloat(_addressPHalarmDown,0.0);
+	EEPROM.updateInt(_addressECalarmUp,9990);
+	EEPROM.updateInt(_adressECalarmDown,0);
+	EEPROM.updateByte(_addressWaterAlarm,0);
+	EEPROM.updateByte(_addressNightWatering,1);  
 	//Controller Settings
-	setSensorSecond(2);
-	setSDactive(true);
-	setSDhour(1);
-	setSDminute(0);
-	setSound(false);
-	setSerialDebug(true);
-	setLightThreshold(30);
-	setReservoirModule(false);
-	setMaxWaterLvl(16);
-	setMinWaterLvl(50);
-	setPumpProtectionLvl(15);
+	EEPROM.updateByte(_addressSensorSecond,2);
+	EEPROM.updateByte(_addressSDactive,1);
+	EEPROM.updateByte(_addressSDhour,1);
+	EEPROM.updateByte(_addressSDminute,0);
+	EEPROM.updateByte(_addressSound,0);
+	EEPROM.updateByte(_addressLeds,1);
+	EEPROM.updateByte(_addressSerialDebug,1);
+	EEPROM.updateInt(_addressLightThreshold,30);
+	EEPROM.updateByte(_addressReservoirModule,0);
+	EEPROM.updateInt(_addressMaxWaterLvl,16);
+	EEPROM.updateInt(_addressMinWaterLvl,50);
+	EEPROM.updateByte(_addressPumpProtection,0);
+	EEPROM.updateByte(_addressPumpProtectionLvl,15);
 }
 
 //System Settings
@@ -284,6 +293,12 @@ boolean Settings::setMinWaterLvl(const uint16_t n) {
 		return false;
 }
 
+boolean Settings::setPumpProtection(const boolean p) {
+	_pumpProtection = p;
+	EEPROM.updateByte(_addressPumpProtection,p);
+	return true;
+}
+
 boolean Settings::setPumpProtectionLvl(const uint8_t p) {
 	if ((p >= 0) && (p < 101)) {
 		_pumpProtectionLvl = p;
@@ -334,6 +349,12 @@ boolean Settings::setSDminute(const uint8_t s) {
 boolean Settings::setSound(const boolean s) { 
 	_sound = s; 
 	EEPROM.updateByte(_addressSound,s);
+	return true;
+}
+
+boolean Settings::setLeds(const boolean l) {
+	_leds = l;
+	EEPROM.updateByte(_addressLeds,l);
 	return true;
 }
 
@@ -398,6 +419,8 @@ uint16_t Settings::getLightThreshold() const { return _lightThreshold; }
 uint16_t Settings::getMaxWaterLvl() const { return _maxWaterLvl; }
 	
 uint16_t Settings::getMinWaterLvl() const { return _minWaterLvl; }
+	
+boolean Settings::getPumpProtection() const { return _pumpProtection; }
 
 uint8_t Settings::getPumpProtectionLvl() const { return _pumpProtectionLvl; }
 
@@ -411,6 +434,8 @@ uint8_t Settings::getSDhour() const { return _sdHour; }
 uint8_t Settings::getSDminute() const { return _sdMinute; }
 
 boolean Settings::getSound() const { return _sound; }
+	
+boolean Settings::getLeds() const { return _leds; }
 
 boolean Settings::getSerialDebug() const { return _serialDebug; }
 	

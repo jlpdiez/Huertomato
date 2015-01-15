@@ -35,7 +35,7 @@ const char nameWinAlarms[] PROGMEM = "Sensor Alarms";
 //Window buttons texts
 const char alarmsStr0[] PROGMEM = "pH Thresholds";
 const char alarmsStr1[] PROGMEM = "EC Thresholds";
-const char alarmsStr2[] PROGMEM = "Nutrient Level";
+const char alarmsStr2[] PROGMEM = "Nutrient Levels";
 const char* const sensorAlarmsButtonsText[] PROGMEM = { alarmsStr0, alarmsStr1, alarmsStr2 };
 	 
 class WinAlarms: public Window {

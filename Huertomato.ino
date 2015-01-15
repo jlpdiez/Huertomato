@@ -82,6 +82,8 @@
 #include <MemoryFree.h>
 #include <string.h>
 
+const float versionNumber = 1.42;
+
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
 // *********************************************
@@ -187,9 +189,6 @@ void setup() {
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
-	
-	//Uncomment for first run
-	//settings.setDefault();
 	
 	settings.setAlarmTriggered(false);
 	setupRTC();
