@@ -20,15 +20,14 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
     Serial1.print("C\r");
     
     _iSample = 0;
-    //Initiate data arrays
-    for (uint8_t i = 0; i < _numSamples; i++) {
-      _temps[i] = 0;
-      _lights[i] = 0;
-      _humidities[i] = 0;
-      _ecs[i] = 0;
-      _phs[i] = 0;
-      _waterLevels[i] = 0;
-    }
+	for (uint8_t i = 0; i < _numSamples; i++) {
+		_temps[i] = 0;
+		_lights[i] = 0;
+		_humidities[i] = 0;
+		_ecs[i] = 0;
+		_phs[i] = 0;
+		_waterLevels[i] = 0;
+	}
 }
 
 Sensors::Sensors(const Sensors &other) {
@@ -148,6 +147,30 @@ void Sensors::update() {
 	smoothSensorReadings();
 }
 
+//Reads once from each sensor and fills the array with this measurement
+void Sensors::fastUpdate() {
+	float t = temp();
+	uint16_t l = light();
+	uint8_t h = humidity();
+	uint16_t e = 0;
+	float p = 0.0;
+	uint8_t w = 0;
+	if (_settings->getReservoirModule()) {
+		e = ec();
+		p = ph();
+		w = waterLevel();
+	}
+	//Initiate data arrays
+	for (uint8_t i = 0; i < _numSamples; i++) {
+		_temps[i] = t;
+		_lights[i] = l;
+		_humidities[i] = h;
+		_ecs[i] = e;
+		_phs[i] = p;
+		_waterLevels[i] = w;
+	}
+	smoothSensorReadings();
+}
 //For each sensor data array calculates the average and stores it
 void Sensors::smoothSensorReadings() {
 	//Temp

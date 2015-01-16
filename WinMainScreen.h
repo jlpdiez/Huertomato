@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainScreen
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 16.01.2015
 //
 // # Description: Main idle screen window
 //
@@ -33,31 +33,29 @@
 #include <SD.h>   
 #include <Time.h>
 
+//Sensor names
 const char sensorTextStr0[] PROGMEM = "Humidity:";
 const char sensorTextStr1[] PROGMEM = "Temp:";
 const char sensorTextStr2[] PROGMEM = "Light:";
 const char sensorTextStr3[] PROGMEM = "pH:";
 const char sensorTextStr4[] PROGMEM = "EC:";
 const char sensorTextStr5[] PROGMEM = "Deposit:";
-const char* const sensorText[] = { sensorTextStr0, sensorTextStr1, sensorTextStr2,
-	sensorTextStr3, sensorTextStr4, sensorTextStr5 };
-
 //Paths for finding icons in SD card
 const char plantPath[] PROGMEM = "/PICTURE/plant126.RAW";
 const char nightPath[] PROGMEM  = "/PICTURE/moon126.RAW";
 const char logoPath[] PROGMEM = "/PICTURE/logo126.RAW";
 const char alarmPath[] PROGMEM = "/PICTURE/alarm126.RAW";
 //Misc texts
-const char versionName[] PROGMEM = "Huertomato 1.4";
+const char htmtTxt[] PROGMEM = "Huertomato";
 const char tempUnit[] PROGMEM = "C";
 const char lightUnit[] PROGMEM = "Lux";
 const char ecUnit[] PROGMEM = "uS";
-//Spaces at the end are used to have all strings of same size and no thrash on screen
-const char nextWater[] PROGMEM = "Next Watering @ ";
-const char noNight[] PROGMEM = "No Watering @ Night   ";
-const char htmtWatering[] PROGMEM = "Huertomato Watering   ";
+//Status strings
+const char nextWater[] PROGMEM = "Next Watering @";
+const char noNight[] PROGMEM = "No Watering @ Night";
+const char htmtWatering[] PROGMEM = "Huertomato Watering";
 const char alarmCont[] PROGMEM = "Alarm - Check Solution";
-const char normalCont[] PROGMEM = "System working fine  ";
+const char normalCont[] PROGMEM = "System working fine";
 const char pumpCont[] PROGMEM = "Watering OFF for pump";
 
 //Contains two main screens. One when reservoir module is on, another when off
@@ -73,6 +71,10 @@ class WinMainScreen: public Window {
 		Window::Screen processTouch(const int x, const int y);
 		 
 	protected:	
+		static const uint8_t _headerTextY = 2;
+		static const uint8_t _statusTextY = 200;
+		static const uint8_t _statusTextX = 10;
+		static const uint8_t _statusLength = 22;
 		void printMainHeader();
 		void updateMainHeader();
 				
@@ -80,7 +82,9 @@ class WinMainScreen: public Window {
 		void updateInfoReservoir();
 		void printInfoNoModule();
 		void updateInfoNoModule();
-	
+		
+		void printStatus(const char* msg);
+		void printNextWaterHour();
 		void printIconAndStatus();
 		void updateIconAndStatus();
 };

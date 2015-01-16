@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.6
+// # Version    : 1.7
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 15.01.2015
+// # Date       : 16.01.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -80,7 +80,9 @@ class Sensors {
 	boolean lvlOffRange();
     //Updates sample arrays with readings from sensors and smoothes data
     void update();
-
+	//Reads once from each sensor, fills the array with this measurement and smoothes
+	void fastUpdate();
+	
 	//This should be set while calibrating to prevent messing up circuits if update() called
 	void calibratingPH(boolean c);
 	void calibratingEC(boolean c);

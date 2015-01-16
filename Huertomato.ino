@@ -3,7 +3,7 @@
 // # Name       : Huertomato
 // # Version    : 1.4.3
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 15.01.2015
+// # Date       : 16.01.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -89,25 +89,28 @@ const float versionNumber = 1.43;
 // *********************************************
 const char rtcResetTxt[] PROGMEM = "RTC time has been recently reset. Manual adjustment needed.";
 const char rtcInitOkTxt[] PROGMEM = "RTC init OK.";
-const char rtcInitFailTxt[] PROGMEM = "RTC init FAIL!";
+const char rtcInitFailTxt[] PROGMEM = "RTC init FAIL! < --";
 const char sdInitOkTxt[] PROGMEM = "SD init OK.";
-const char sdInitFailTxt[] PROGMEM = "SD init FAIL!";
-const char waterTimedTxt[] PROGMEM = "Timed watering mode enabled. < --";
-const char waterContinuousTxt[] PROGMEM = "Continuous watering mode enabled. < --";
+const char sdInitFailTxt[] PROGMEM = "SD init FAIL! < --";
+const char waterTimedTxt[] PROGMEM = "Timed watering mode enabled.";
+const char waterContinuousTxt[] PROGMEM = "Continuous watering mode enabled.";
 const char nightStoppedTxt[] PROGMEM = "Watering stopped for the night.";
 const char nightStartTxt[] PROGMEM = "Watering reactivated with daylight.";
 const char sdLogOnTxt[] PROGMEM = "SD logging turned ON.";
 const char sdLogOffTxt[] PROGMEM = "SD logging turned OFF.";
 const char pollingUpdateTxt[] PROGMEM = "Sensor polling timer updated.";
 const char sdLogOk[] PROGMEM = "Logged sensor data to SD Card.";
-const char sdLogFail[] PROGMEM = "Error opening SD file, can't log sensor readings.";
+const char sdLogFail[] PROGMEM = "Error opening SD file, can't log sensor readings. < --";
 const char sensorsReadTxt[] PROGMEM = "Sensors read, data updated.";
 const char ecAdjTxt[] PROGMEM = "EC sensor readings adjusted for temperature.";
 const char phAdjTxt[] PROGMEM = "pH sensor readings adjusted for temperature.";
-const char alarmTxT[] PROGMEM = "Alarm triggered! System needs human intervention.";
+const char alarmTxT[] PROGMEM = "Alarm triggered! System needs human intervention. < --";
+const char alarmOffTxt[] PROGMEM = "Huertomato recovered from an alarming situation! < -- ";
 const char noWaterTxt[] PROGMEM = "Huertomato will NOT water to prevent pump damage. < --";
-const char waterStartTxt[] PROGMEM = "Huertomato is watering plants. < --";
-const char waterStopTxt[] PROGMEM = "Watering cycle ended. < --";
+const char pumpOnTxt[] PROGMEM = "Nutrient level topped. Watering is safe again. < --";
+const char waterStartTxt[] PROGMEM = "Huertomato is watering plants.";
+const char waterStopTxt[] PROGMEM = "Watering cycle ended.";
+
 
 // *********************************************
 // PINOUT ASSIGN
@@ -193,6 +196,7 @@ void setup() {
 	setupSD(); 
 	setupAlarms();
 	setupWaterModes();
+	sensors.fastUpdate();
 	initMusic();
 	Alarm.delay(10);
 	gui.start();
@@ -356,6 +360,8 @@ void checkPump() {
 		|| (sensors.getWaterLevel() > settings.getPumpProtectionLvl()))) {
 			settings.setPumpProtected(false);
 			stopSerialPumpProtTimer();
+			if (settings.getSerialDebug())
+				ui.timeStamp(pumpOnTxt);
 	}
 }
 
@@ -368,13 +374,17 @@ void checkAlarms() {
 		if ((!settings.getAlarmTriggered()) 
 			&& (sensors.ecOffRange() || sensors.phOffRange() || sensors.lvlOffRange())) {
 				settings.setAlarmTriggered(true);
-				if (settings.getSerialDebug())
+				if (settings.getSerialDebug()) {
+					printAlarm();
 					startSerialAlarmTimer();
+				}
 		//Theres an alarm triggered but everything is ok
 		} else if ((settings.getAlarmTriggered()) 
 			&& (!sensors.ecOffRange() && !sensors.phOffRange() && !sensors.lvlOffRange())) {		
 				settings.setAlarmTriggered(false);
 				stopSerialAlarmTimer();
+				if (settings.getSerialDebug())
+					ui.timeStamp(alarmOffTxt);
 		}
 		checkSoundAlarm();
 	}
@@ -493,12 +503,12 @@ void logSensorReadings() {
 }
 
 //Timestamps to Serial that there's an alarm triggered
-void logAlarm() {
+void printAlarm() {
 	ui.timeStamp(alarmTxT);
 }
 
 //Timestamps to Serial if pump protection toggled
-void logPumpProt() {
+void printPump() {
 	ui.timeStamp(noWaterTxt);
 }
 
@@ -509,7 +519,7 @@ void logPumpProt() {
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
-	ui.timeStamp(sensorsReadTxt);
+	//ui.timeStamp(sensorsReadTxt);
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -558,7 +568,7 @@ void beepOff() {
 //Timers for informing of an alarm through Serial
 void startSerialAlarmTimer() {
 	if (!serialAlarm.enabled) {
-		serialAlarm.id = Alarm.timerRepeat(0,5,0,logAlarm);
+		serialAlarm.id = Alarm.timerRepeat(0,15,0,printAlarm);
 		serialAlarm.enabled = true;
 	}	
 }
@@ -573,7 +583,7 @@ void stopSerialAlarmTimer() {
 //Timers for informing of a pump protection state through Serial
 void startSerialPumpProtTimer() {
 	if (!pumpProtAlarm.enabled) {
-		pumpProtAlarm.id = Alarm.timerRepeat(0,5,0,logPumpProt);
+		pumpProtAlarm.id = Alarm.timerRepeat(0,15,0,printPump);
 		pumpProtAlarm.enabled = true;
 	}
 }
