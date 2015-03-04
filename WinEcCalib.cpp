@@ -87,6 +87,7 @@ Window::Screen WinEcCalib::processTouch(const int x, const int y) {
 		else if (buttonIndex == _ecCalibrationButtons[3]) {
 			_sensors->calibratingEC(true);
 			_sensors->resetEC();
+			_sensors->setECstandby();
 			_sensors->setECprobeType();
 			_actScreen = 1;
 			draw();
@@ -94,7 +95,7 @@ Window::Screen WinEcCalib::processTouch(const int x, const int y) {
 		}
 	} else if ((_actScreen == 1) && (buttonIndex == _ecCalibrationButtons[3])) {
 		_sensors->setECdry();
-		//_sensors->setECcontinuous();
+		_sensors->setECcontinuous();
 		_actScreen = 2;
 		draw();
 		return None;

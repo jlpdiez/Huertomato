@@ -196,9 +196,9 @@ void setup() {
 	setupSD(); 
 	setupAlarms();
 	setupWaterModes();
-	sensors.fastUpdate();
 	initMusic();
 	Alarm.delay(10);
+	sensors.fastUpdate();
 	gui.start();
 }
 

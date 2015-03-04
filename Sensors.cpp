@@ -13,6 +13,8 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
 	Serial2.begin(38400);
     //Set it into reading on-demand mode
     Serial2.print("E\r");
+	//Make a reading or fastUpdate() won't work
+	Serial2.print("R\r");
     //EC sensor
     Serial1.begin(38400);	
     Serial1.print("E\r");
@@ -28,6 +30,8 @@ Sensors::Sensors(Settings *settings) : _settings(settings){
 		_phs[i] = 0;
 		_waterLevels[i] = 0;
 	}
+	_calibratingPh = false;
+	_calibratingEc = false;
 }
 
 Sensors::Sensors(const Sensors &other) {
@@ -47,6 +51,8 @@ Sensors::Sensors(const Sensors &other) {
 	_ec = other._ec;
 	_ph = other._ph;
 	_waterLevel = other._waterLevel;	
+	_calibratingPh = other._calibratingPh;
+	_calibratingEc = other._calibratingEc;
 }
 
 Sensors& Sensors::operator=(const Sensors &other) {
@@ -66,7 +72,9 @@ Sensors& Sensors::operator=(const Sensors &other) {
 	_ec = other._ec;
 	_ph = other._ph;
 	_waterLevel = other._waterLevel;
-	
+	_calibratingPh = other._calibratingPh;
+	_calibratingEc = other._calibratingEc;
+		
 	return *this;	
 }
 
@@ -148,6 +156,7 @@ void Sensors::update() {
 }
 
 //Reads once from each sensor and fills the array with this measurement
+//Used at setup() to have some sensor data to display at init
 void Sensors::fastUpdate() {
 	float t = temp();
 	uint16_t l = light();
