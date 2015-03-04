@@ -507,25 +507,9 @@ void printAlarm() {
 	ui.timeStamp(alarmTxT);
 }
 
-<<<<<<< HEAD
-//Sends sensor data through serial
-void showStatsSerial() { 
-	if (settings.getSerialDebug()) {
-		Serial << "Available memory: " << freeMemory() << " bytes"<< endl;
-		Serial << "Temp: " << sensors.getTemp() << "C" << endl;
-		Serial << "Humidity: " << sensors.getHumidity() << "%" << endl;
-		Serial << "Light level: " << sensors.getLight() << "%" << endl;
-		if (settings.getReservoirModule()) {
-			Serial << "EC: " << sensors.getEC() << endl;
-			Serial << "pH: " << sensors.getPH() << endl;
-			Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl;
-		}
-	}
-=======
 //Timestamps to Serial if pump protection toggled
 void printPump() {
 	ui.timeStamp(noWaterTxt);
->>>>>>> wip
 }
 
 // *********************************************
@@ -535,12 +519,7 @@ void printPump() {
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
-<<<<<<< HEAD
-	timestampToSerial("Sensors read, data updated.");
-	showStatsSerial();
-=======
 	//ui.timeStamp(sensorsReadTxt);
->>>>>>> wip
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
