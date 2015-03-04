@@ -1,14 +1,12 @@
 #include "Settings.h"
 
-//TODO: Only load if there is data:
-//http://playground.arduino.cc/Code/EEPROMLoadAndSaveSettings
-
 //Constructors
 Settings::Settings() {
 	//Status variables - Not read from EEPROM
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
   
 	setEEPROMaddresses();
 	readEEPROMvars();
@@ -20,6 +18,7 @@ Settings::Settings(const Settings &other) {
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
 	  
 	//System Settings
 	_waterTimed = other._waterTimed;
@@ -35,6 +34,7 @@ Settings::Settings(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtection = other._pumpProtection;
 	_pumpProtectionLvl = other._pumpProtectionLvl;
 	  
 	//Controller Settings
@@ -43,6 +43,7 @@ Settings::Settings(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
+	_leds = other._leds;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 }
@@ -53,6 +54,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_nightWateringStopped = false;
 	_wateringPlants = false;
 	_alarmTriggered = false;
+	_pumpProtected = false;
 		  
 	//System Settings
 	_waterTimed = other._waterTimed;
@@ -68,6 +70,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_lightThreshold = other._lightThreshold;
 	_maxWaterLvl = other._maxWaterLvl;
 	_minWaterLvl= other._minWaterLvl;
+	_pumpProtection = other._pumpProtection;
 	_pumpProtectionLvl = other._pumpProtectionLvl;
 		  
 	//Controller Settings
@@ -76,6 +79,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
+	_leds = other._leds;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
@@ -108,15 +112,17 @@ void Settings::setEEPROMaddresses() {
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
-	//_addressVersion == EEPROM.getAddress((sizeof(char[4])));
+	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
+	_addressLeds = EEPROM.getAddress(sizeof(byte));
+	_addressVersion = EEPROM.getAddress(sizeof(float));	
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
-	//TODO: Auto load defaults if needed
-	// if (EEPROM.read(_addressVersion) != MYVERSION))
-	//	setDefault();
-	//else 
+	//If version number isn't the same we reset to default settings
+	if (EEPROM.readFloat(_addressVersion) != versionNumber)
+		setDefault();	
+		
 	_waterTimed = EEPROM.readByte(_addressWaterTimed);
 	_waterHour = EEPROM.readByte(_addressWaterHour);
 	_waterMinute = EEPROM.readByte(_addressWaterMinute);
@@ -126,162 +132,247 @@ void Settings::readEEPROMvars() {
 	_ecAlarmUp = EEPROM.readInt(_addressECalarmUp);
 	_ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
 	_waterAlarm = EEPROM.readByte(_addressWaterAlarm);
-	_nightWatering = EEPROM.readByte(_addressNightWatering);  
-	_sensorSecond = EEPROM.readByte(_addressSensorSecond);  
+	_nightWatering = EEPROM.readByte(_addressNightWatering);
+	_sensorSecond = EEPROM.readByte(_addressSensorSecond);
 	_sdActive = EEPROM.readByte(_addressSDactive);
 	_sdHour = EEPROM.readByte(_addressSDhour);
 	_sdMinute = EEPROM.readByte(_addressSDminute);
-	_sound = EEPROM.readByte(_addressSound );
+	_sound = EEPROM.readByte(_addressSound);
+	_leds = EEPROM.readByte(_addressLeds);
 	_serialDebug = EEPROM.readByte(_addressSerialDebug);
 	_lightThreshold = EEPROM.readInt(_addressLightThreshold);
 	_reservoirModule = EEPROM.readByte(_addressReservoirModule);
 	_maxWaterLvl = EEPROM.readInt(_addressMaxWaterLvl);
 	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
+	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 }
 
 //Setters - These store their value on EEPROM too
 void Settings::setDefault() {	
+	//Saves current version number to EEPROM
+	EEPROM.updateFloat(_addressVersion,versionNumber);
 	//System Settings
-	setWaterTimed(true);
-	setWaterHour(1);
-	setWaterMinute(30);
-	setFloodMinute(1);
-	setPHalarmUp(14);
-	setPHalarmDown(0);
-	setECalarmUp(9990);
-	setECalarmDown(0);
-	setWaterAlarm(0);
-	setNightWatering(true);    
+	EEPROM.updateByte(_addressWaterTimed,1);
+	EEPROM.updateByte(_addressWaterHour,1);	
+	EEPROM.updateByte(_addressWaterMinute,30);
+	EEPROM.updateByte(_addressFloodMinute,1);
+	EEPROM.updateFloat(_addressPHalarmUp,14.0);
+	EEPROM.updateFloat(_addressPHalarmDown,0.0);
+	EEPROM.updateInt(_addressECalarmUp,9990);
+	EEPROM.updateInt(_adressECalarmDown,0);
+	EEPROM.updateByte(_addressWaterAlarm,0);
+	EEPROM.updateByte(_addressNightWatering,1);  
 	//Controller Settings
-	setSensorSecond(2);
-	setSDactive(true);
-	setSDhour(1);
-	setSDminute(0);
-	setSound(false);
-	setSerialDebug(true);
-	setLightThreshold(30);
-	setReservoirModule(true);
-	setMaxWaterLvl(16);
-	setMinWaterLvl(50);
-	setPumpProtectionLvl(15);
+	EEPROM.updateByte(_addressSensorSecond,10);
+	EEPROM.updateByte(_addressSDactive,1);
+	EEPROM.updateByte(_addressSDhour,1);
+	EEPROM.updateByte(_addressSDminute,0);
+	EEPROM.updateByte(_addressSound,0);
+	EEPROM.updateByte(_addressLeds,1);
+	EEPROM.updateByte(_addressSerialDebug,1);
+	EEPROM.updateInt(_addressLightThreshold,30);
+	EEPROM.updateByte(_addressReservoirModule,0);
+	EEPROM.updateInt(_addressMaxWaterLvl,16);
+	EEPROM.updateInt(_addressMinWaterLvl,50);
+	EEPROM.updateByte(_addressPumpProtection,0);
+	EEPROM.updateByte(_addressPumpProtectionLvl,15);
 }
 
 //System Settings
 //Also sets _waterModeChanged to true
-void Settings::setWaterTimed(const boolean w) { 
+boolean Settings::setWaterTimed(const boolean w) { 
 	_waterTimed = w; 
 	EEPROM.updateByte(_addressWaterTimed,w);
 	_waterSettingsChanged = true;
+	return true;
 }
 
-void Settings::setWaterHour(const uint8_t w) { 
-	_waterHour = w; 
-	EEPROM.updateByte(_addressWaterHour,w);	
-	_waterSettingsChanged = true;
+boolean Settings::setWaterHour(const uint8_t w) { 
+	if ((w >= 0) & (w < 24)) {
+		_waterHour = w; 
+		EEPROM.updateByte(_addressWaterHour,w);	
+		_waterSettingsChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setWaterMinute(const uint8_t w) { 
-	_waterMinute = w; 
-	EEPROM.updateByte(_addressWaterMinute,w);
-	_waterSettingsChanged = true;
+boolean Settings::setWaterMinute(const uint8_t w) { 
+	if ((w >= 0) & (w < 60)) {
+		_waterMinute = w; 
+		EEPROM.updateByte(_addressWaterMinute,w);
+		_waterSettingsChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setFloodMinute(const uint8_t f) { 
-	_floodMinute = f; 
-	EEPROM.updateByte(_addressFloodMinute,f);
-	_waterSettingsChanged = true;
+boolean Settings::setFloodMinute(const uint8_t f) { 
+	if ((f >= 0) & (f < 60)) {
+		_floodMinute = f; 
+		EEPROM.updateByte(_addressFloodMinute,f);
+		_waterSettingsChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setPHalarmUp(const float p) { 
-	_phAlarmUp = p; 
-	EEPROM.updateFloat(_addressPHalarmUp,p);
+boolean Settings::setPHalarmUp(const float p) { 
+	if ((p >= 0) && (p < 14.00)) {
+		_phAlarmUp = p; 
+		EEPROM.updateFloat(_addressPHalarmUp,p);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setPHalarmDown(const float p) { 
-	_phAlarmDown = p; 
-	EEPROM.updateFloat(_addressPHalarmDown,p);
+boolean Settings::setPHalarmDown(const float p) { 
+	if ((p >= 0) && (p < 14.00)) {
+		_phAlarmDown = p; 
+		EEPROM.updateFloat(_addressPHalarmDown,p);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setECalarmUp(const uint16_t e) { 
-	_ecAlarmUp = e; 
-	EEPROM.updateInt(_addressECalarmUp,e);
+boolean Settings::setECalarmUp(const uint16_t e) { 
+	if ((e >= 0) && (e < 9999)) {
+		_ecAlarmUp = e; 
+		EEPROM.updateInt(_addressECalarmUp,e);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setECalarmDown(const uint16_t e) { 
-	_ecAlarmDown = e; 
-	EEPROM.updateInt(_adressECalarmDown,e);
+boolean Settings::setECalarmDown(const uint16_t e) { 
+	if ((e >= 0) && (e < 9999)) {
+		_ecAlarmDown = e;
+		EEPROM.updateInt(_adressECalarmDown,e);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setWaterAlarm(const uint8_t w) { 
-	_waterAlarm = w; 
-	EEPROM.updateByte(_addressWaterAlarm,w);
+boolean Settings::setWaterAlarm(const uint8_t w) { 
+	if ((w >= 0) && (w < 101)) {
+		_waterAlarm = w; 
+		EEPROM.updateByte(_addressWaterAlarm,w);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setNightWatering(const boolean n) { 
+boolean Settings::setNightWatering(const boolean n) { 
 	_nightWatering = n; 
 	EEPROM.updateByte(_addressNightWatering,n);
+	return true;
 }
 
-void Settings::setLightThreshold(const uint16_t l) {
-	_lightThreshold = l;
-	EEPROM.updateInt(_addressLightThreshold,l);
+boolean Settings::setLightThreshold(const uint16_t l) {
+	if ((l >= 0) && (l < 9999)) {
+		_lightThreshold = l;
+		EEPROM.updateInt(_addressLightThreshold,l);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setMaxWaterLvl(const uint16_t x) {
-	_maxWaterLvl = x;
-	EEPROM.updateInt(_addressMaxWaterLvl,x);
+boolean Settings::setMaxWaterLvl(const uint16_t x) {
+	if ((x >= 0) && (x < 101)) {
+		_maxWaterLvl = x;
+		EEPROM.updateInt(_addressMaxWaterLvl,x);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setMinWaterLvl(const uint16_t n) {
-	_minWaterLvl = n;
-	EEPROM.updateInt(_addressMinWaterLvl,n);
+boolean Settings::setMinWaterLvl(const uint16_t n) {
+	if ((n >= 0) && (n < 101)) {
+		_minWaterLvl = n;
+		EEPROM.updateInt(_addressMinWaterLvl,n);
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setPumpProtectionLvl(const uint8_t p) {
-	_pumpProtectionLvl = p;
-	EEPROM.updateByte(_addressPumpProtectionLvl,p);
+boolean Settings::setPumpProtection(const boolean p) {
+	_pumpProtection = p;
+	EEPROM.updateByte(_addressPumpProtection,p);
+	return true;
+}
+
+boolean Settings::setPumpProtectionLvl(const uint8_t p) {
+	if ((p >= 0) && (p < 101)) {
+		_pumpProtectionLvl = p;
+		EEPROM.updateByte(_addressPumpProtectionLvl,p);
+		return true;
+	} else
+		return false;
 }
 
 //Controller Settings
-void Settings::setSensorSecond(const uint8_t s) { 
-	_sensorSecond = s; 
-	EEPROM.updateByte(_addressSensorSecond,s);
-	_sensorPollingChanged = true;
+boolean Settings::setSensorSecond(const uint8_t s) { 
+	if ((s >= 0) & (s < 60)) {
+		_sensorSecond = s; 
+		EEPROM.updateByte(_addressSensorSecond,s);
+		_sensorPollingChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setSDactive(const boolean s) { 
+boolean Settings::setSDactive(const boolean s) { 
 	_sdActive = s; 
 	EEPROM.updateByte(_addressSDactive,s);
 	_sdSettingsChanged = true;
+	return true;
 }
 
-void Settings::setSDhour(const uint8_t s) { 
-	_sdHour = s; 
-	EEPROM.updateByte(_addressSDhour,s);
-	_sdSettingsChanged = true;
+boolean Settings::setSDhour(const uint8_t s) { 
+	if ((s >= 0) & (s < 24)) {
+		_sdHour = s;
+		EEPROM.updateByte(_addressSDhour,s);
+		_sdSettingsChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setSDminute(const uint8_t s) { 
-	_sdMinute = s; 
-	EEPROM.updateByte(_addressSDminute,s);
-	_sdSettingsChanged = true;
+boolean Settings::setSDminute(const uint8_t s) { 
+	if ((s >= 0) & (s < 60)) {
+		_sdMinute = s;
+		EEPROM.updateByte(_addressSDminute,s);
+		_sdSettingsChanged = true;
+		return true;
+	} else
+		return false;
 }
 
-void Settings::setSound(const boolean s) { 
+boolean Settings::setSound(const boolean s) { 
 	_sound = s; 
 	EEPROM.updateByte(_addressSound,s);
+	return true;
 }
 
-void Settings::setSerialDebug(const boolean s) { 
+boolean Settings::setLeds(const boolean l) {
+	_leds = l;
+	EEPROM.updateByte(_addressLeds,l);
+	return true;
+}
+
+boolean Settings::setSerialDebug(const boolean s) { 
 	_serialDebug = s; 
 	EEPROM.updateByte(_addressSerialDebug,s);
 	_serialDebugChanged = true;
+	return true;
 }
 
-void Settings::setReservoirModule(const boolean r) {
+boolean Settings::setReservoirModule(const boolean r) {
 	_reservoirModule = r;
 	EEPROM.updateByte(_addressReservoirModule,r);
+	_moduleChanged = true;
+	return true;
 }
 
 //Status vars - These are not stored in EEPROM
@@ -292,6 +383,7 @@ void Settings::setNextWminute(const uint8_t n) { _nextWminute = n; }
 void Settings::setNightWateringStopped(const boolean n) { 
 	_nightWateringStopped = n; 
 	_systemStateChanged = true;
+	_waterSettingsChanged = true;
 }
 
 void Settings::setWateringPlants(const boolean w) { 
@@ -302,6 +394,12 @@ void Settings::setWateringPlants(const boolean w) {
 void Settings::setAlarmTriggered(const boolean a) { 
 	_alarmTriggered = a; 
 	_systemStateChanged = true;
+}
+
+void Settings::setPumpProtected(const boolean p) {
+	_pumpProtected = p;
+	_systemStateChanged = true;	
+	_waterSettingsChanged = true;
 }
 
 //Getters
@@ -331,6 +429,8 @@ uint16_t Settings::getLightThreshold() const { return _lightThreshold; }
 uint16_t Settings::getMaxWaterLvl() const { return _maxWaterLvl; }
 	
 uint16_t Settings::getMinWaterLvl() const { return _minWaterLvl; }
+	
+boolean Settings::getPumpProtection() const { return _pumpProtection; }
 
 uint8_t Settings::getPumpProtectionLvl() const { return _pumpProtectionLvl; }
 
@@ -344,6 +444,8 @@ uint8_t Settings::getSDhour() const { return _sdHour; }
 uint8_t Settings::getSDminute() const { return _sdMinute; }
 
 boolean Settings::getSound() const { return _sound; }
+	
+boolean Settings::getLeds() const { return _leds; }
 
 boolean Settings::getSerialDebug() const { return _serialDebug; }
 	
@@ -359,6 +461,8 @@ boolean Settings::getNightWateringStopped() const { return _nightWateringStopped
 boolean Settings::getWateringPlants() const { return _wateringPlants; }
 
 boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
+	
+boolean Settings::getPumpProtected() const { return _pumpProtected; }
 	
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;
@@ -387,5 +491,11 @@ boolean Settings::sensorPollingChanged() {
 boolean Settings::serialDebugChanged() {
 	boolean res = _serialDebugChanged;
 	_serialDebugChanged = false;
+	return res;
+}
+
+boolean Settings::moduleChanged() {
+	boolean res = _moduleChanged;
+	_moduleChanged = false;
 	return res;
 }

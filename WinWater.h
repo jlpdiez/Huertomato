@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinWater
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Water cycle configuration window
 //
@@ -29,38 +29,29 @@
 
 #include "Window.h"
 
-//Here lies the button info for each window
-//We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
-//static in this context means vars will only be accesible in this file
-//http://www.cprogramming.com/tutorial/statickeyword.html
-const int nWaterCycleButtons = 10;
-static char* waterCycleButtonsText[nWaterCycleButtons] = {
-	"Mode:",
-	"=",
-	">",
-	"=",
-	">",
-	"=",
-	">",
-};
-static int  waterCycleButtons[nWaterCycleButtons];
+const char nameWinWater[] PROGMEM = "Watering Cycle";
 
+const char modeStr[] PROGMEM = "Mode:";
+const char modeTimedS[] PROGMEM = "Timed     ";
+const char modeContS[] PROGMEM = "Continuous";
+const char waterTwo[] PROGMEM = "Water every:";
+const char waterThree[] PROGMEM = "Active for:";
+const char minutesTxT[] PROGMEM = "minutes";
 
 class WinWater: public Window {
 	public:
 		WinWater(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinWater(const WinWater &other);
 		WinWater& operator=(const WinWater &other);
-		virtual ~WinWater();
-		virtual Screen getType() const;
-		virtual void draw();
-		virtual void update();
+		~WinWater();
+		Screen getType() const;
+		void draw();
+		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		//These are temp variables used for displaying data
-		//They are read from _settings in print() funcs. Changed in processTouch()
-		//displayed again with update() and saved to eeprom when button save is pressed
+		static const uint8_t _nWaterCycleButtons = _nFlowButtons + 7;
+		int8_t _waterCycleButtons[_nWaterCycleButtons];
 		boolean _waterTimed;
 		uint8_t _waterHour, _waterMin, _floodMin;
 		void print();

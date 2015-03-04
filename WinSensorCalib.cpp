@@ -1,15 +1,13 @@
-/*
- * MainMenu.cpp
- *
- * Created: 07/11/2014 1:20:03
- *  Author: HAL
- */ 
 #include "WinSensorCalib.h"
 
 WinSensorCalib::WinSensorCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 : Window(lcd,touch,sensors,settings) { }
 
-WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) { }
+WinSensorCalib::WinSensorCalib(const WinSensorCalib &other) : Window(other) {
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons; i++) {
+		_sensorCalibrationButtons[i] = other._sensorCalibrationButtons[i];
+	}
+}
 	
 WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	_lcd = other._lcd;
@@ -17,6 +15,9 @@ WinSensorCalib& WinSensorCalib::operator=(const WinSensorCalib& other) {
 	_sensors = other._sensors;
 	_settings = other._settings;
 	_buttons = other._buttons;
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons; i++) {
+		_sensorCalibrationButtons[i] = other._sensorCalibrationButtons[i];
+	}
 	return *this;
 }
 
@@ -27,42 +28,40 @@ Window::Screen WinSensorCalib::getType() const {
 }
 
 void WinSensorCalib::print() {
-	const int xSpacer = 15;
-	const int ySpacer = 45;
-	
-	const int yFirst = 60;
-	const int ySecond = 135;
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
-	
-	//Triangles
+	//Print bulletpoints
 	_lcd->setFont(various_symbols);
-	_lcd->print("T",xSpacer,yFirst);
-	_lcd->print("T",xSpacer,ySecond);
-	//Buttons
-	sensorCalibrationButtons[3] = _buttons.addButton(xSpacer+_bigFontSize*2,yFirst,sensorCalibrationButtonsText[0]);
-	sensorCalibrationButtons[4] = _buttons.addButton(xSpacer+_bigFontSize*2,ySecond,sensorCalibrationButtonsText[1]);
+	//Before the buttons were adding there are the flow buttons
+	for (uint8_t i = 0; i < _nSensorCalibrationButtons - _nFlowButtons; i++) {
+		_lcd->print(pmChar(bulletStr),_xMenu,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i);
+		_sensorCalibrationButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yThreeLnsFirst+_bigFontSize*_yFactor3lines*i,(char*)pgm_read_word(&sensorCalibrationButtonsText[i]));
+	}
 }
 
 //Draws entire screen Sensor Calibration
 void WinSensorCalib::draw() {
 	_lcd->fillScr(VGA_WHITE);
 	_buttons.deleteAllButtons();
-	printMenuHeader("- Calibration -");
-	addFlowButtons(true,false,true,sensorCalibrationButtons);
+	printMenuHeader(nameWinSensorCalib);
+	addFlowButtons(true,false,true,_sensorCalibrationButtons);
 	print();
 	_buttons.drawButtons();
 }
-
+ 
 Window::Screen WinSensorCalib::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == sensorCalibrationButtons[0]) { return SystemSettings; }
+	if (buttonIndex == _sensorCalibrationButtons[0]) 
+		return Reservoir;
 	//Exit
-	else if (buttonIndex == sensorCalibrationButtons[2]) { return MainScreen; }
-	//Water calibration
-	else if (buttonIndex == sensorCalibrationButtons[3]) { return LvlCalib; }
-	//Light Calibration
-	else if (buttonIndex == sensorCalibrationButtons[4]) { return LightCalib; }
+	else if (buttonIndex == _sensorCalibrationButtons[2])
+		return MainScreen;
+	else if (buttonIndex == _sensorCalibrationButtons[3])
+		return LvlCalib;
+	else if (buttonIndex == _sensorCalibrationButtons[4])
+		return PhCalib;
+	else if (buttonIndex == _sensorCalibrationButtons[5])
+		return EcCalib;
 	return None;
 }

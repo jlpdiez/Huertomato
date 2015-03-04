@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSystemMenu
-// # Version    : 1.0
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: System menu window
 //
@@ -28,34 +28,29 @@
 #define WINSYSTEMMENU_H_
 
 #include "Window.h"
+ 
+const char nameWinSystemMenu[] PROGMEM = "System Settings";
 
-const int nSystemButtons = 8;
-static char* systemButtonText[nSystemButtons] = {
-	"Watering Cycle",
-	"Sensor Alarms",
-	"Calibration",
-	"Pump protection",
-	"Watering at Night:"
-};
-static int systemButtons[nSystemButtons];
-
+const char sysMenuStr0[] PROGMEM = "Watering Cycle";
+const char sysMenuStr1[] PROGMEM = "Night Watering";
+const char sysMenuStr2[] PROGMEM = "Reservoir Module";
+const char* const systemButtonText[] PROGMEM = { sysMenuStr0, sysMenuStr1, sysMenuStr2 };
 
 class WinSystemMenu: public Window {
 	public:
 		WinSystemMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSystemMenu(const WinSystemMenu &other);
 		WinSystemMenu& operator=(const WinSystemMenu &other);
-		virtual ~WinSystemMenu();
-		virtual Screen getType() const;
+		~WinSystemMenu();
+		Screen getType() const;
 		void draw();
-		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nSystemButtons = _nFlowButtons + 3;
+		int8_t _systemButtons[_nSystemButtons];
 		boolean _nightWater;
 		void print();
 };
-
-
 
 #endif

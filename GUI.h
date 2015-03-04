@@ -1,10 +1,10 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 2.2
+// # Version    : 2.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.11.2014
+// # Date       : 03.01.2015
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains window and manages its transition and button presses
@@ -34,19 +34,22 @@
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
 #include "WinEcAlarms.h"
-#include "WinLightCalib.h"
+#include "WinEcCalib.h"
 #include "WinLvlAlarms.h"
 #include "WinLvlCalib.h"
 #include "WinMainMenu.h"
 #include "WinMainScreen.h"
 #include "WinPhAlarms.h"
+#include "WinPhCalib.h"
 #include "WinPump.h"
+#include "WinReservoir.h"
 #include "WinSD.h"
 #include "WinSensorCalib.h"
 #include "WinSensorPolling.h"
 #include "WinSystemMenu.h"
 #include "WinTime.h"
 #include "WinWater.h"
+#include "WinWaterNight.h"
 
 #include <UTFT.h>
 #include <UTouch.h>
@@ -66,7 +69,7 @@ class GUI {
 		void init();
 		//Second function. Shows Main Screen. Starts user interaction
 		void start();
-		void processTouch();
+		void processInput();
 		//Refreshes non-static windows.
 		void refresh();
 		boolean isMainScreen();

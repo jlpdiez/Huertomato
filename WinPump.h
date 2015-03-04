@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinPump
-// # Version    : 1.0
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Pump protection configuration window
 //
@@ -29,26 +29,26 @@
 
 #include "Window.h"
 
-const int nPumpProtectionButtons = 5;
-static char* pumpProtectionButtonsText[nPumpProtectionButtons] = {
-	"=",
-	">"
-};
-static int pumpProtectionButtons[nPumpProtectionButtons];
+const char nameWinPump[] PROGMEM = "Pump Protection";
 
-
+const char pumpProtTxt[] PROGMEM = "Protect Pump:";
+const char wPumpLimit[] PROGMEM = "Min Water Lvl:";
+ 
 class WinPump: public Window {
 	public:
 		WinPump(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPump(const WinPump &other);
 		WinPump& operator=(const WinPump &other);
-		virtual ~WinPump();
-		virtual Screen getType() const;
+		~WinPump();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nPumpProtectionButtons = _nFlowButtons + 3;
+		int8_t _pumpProtectionButtons[_nPumpProtectionButtons];
+		boolean _pumpProtection;
 		uint8_t _pumpProtectionLvl;
 		void print();
 };

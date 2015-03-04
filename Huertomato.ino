@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.2.6
+// # Version    : 1.4.4
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 28.06.2014
+// # Date       : 04.03.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -24,18 +24,18 @@
 // #############################################################################
 
 // *********************************************
-// INCLUDE
+// INCLUDES
 // *********************************************
 // # Non-standard libraries:
 // # Streaming http://arduiniana.org/libraries/streaming/
 // # DHT11 http://playground.arduino.cc/Main/DHT11Lib
-// Replace with http://playground.arduino.cc/Main/DHTLib
 // # DS1307 RTC, Time & TimeAlarms http://arduino.cc/playground/Code/Time
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
-// # UTouch & UTFT_Buttons http://www.henningkarlsen.com/electronics/library.php
+// # UTouch http://www.henningkarlsen.com/electronics/library.php
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
+// # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 
 #include "Sensors.h"
 #include "Settings.h"
@@ -44,23 +44,27 @@
 #include "GUI.h"
 #include "Settings.h"
 #include "Sensors.h"
+#include "SerialInterface.h"
 #include "Window.h"
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
 #include "WinEcAlarms.h"
-#include "WinLightCalib.h"
+#include "WinEcCalib.h"
 #include "WinLvlAlarms.h"
 #include "WinLvlCalib.h"
 #include "WinMainMenu.h"
 #include "WinMainScreen.h"
 #include "WinPhAlarms.h"
+#include "WinEcCalib.h"
 #include "WinPump.h"
+#include "WinReservoir.h"
 #include "WinSD.h"
 #include "WinSensorCalib.h"
 #include "WinSensorPolling.h"
 #include "WinSystemMenu.h"
 #include "WinTime.h"
 #include "WinWater.h"
+#include "WinWaterNight.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -72,62 +76,92 @@
 #include <TimeAlarms.h>
 #include <UTFT.h>
 #include <UTouch.h>
-#include <UTFT_Buttons.h>
-#include <EEPROMex.h>
+#include <EEPROMEx.h>
 #include <SD.h>
-//TEMP from http://arduino.cc/playground/Code/AvailableMemory
+#include <SerialCommand.h>
 #include <MemoryFree.h>
+#include <string.h>
+
+const float versionNumber = 1.44;
+
+// *********************************************
+// TEXTS STORED IN FLASH MEMORY
+// *********************************************
+const char rtcResetTxt[] PROGMEM = "RTC time has been recently reset. Manual adjustment needed.";
+const char rtcInitOkTxt[] PROGMEM = "RTC init OK.";
+const char rtcInitFailTxt[] PROGMEM = "RTC init FAIL! < --";
+const char sdInitOkTxt[] PROGMEM = "SD init OK.";
+const char sdInitFailTxt[] PROGMEM = "SD init FAIL! < --";
+const char waterTimedTxt[] PROGMEM = "Timed watering mode enabled.";
+const char waterContinuousTxt[] PROGMEM = "Continuous watering mode enabled.";
+const char nightStoppedTxt[] PROGMEM = "Watering stopped for the night.";
+const char nightStartTxt[] PROGMEM = "Watering reactivated with daylight.";
+const char sdLogOnTxt[] PROGMEM = "SD logging turned ON.";
+const char sdLogOffTxt[] PROGMEM = "SD logging turned OFF.";
+const char pollingUpdateTxt[] PROGMEM = "Sensor polling timer updated.";
+const char sdLogOk[] PROGMEM = "Logged sensor data to SD Card.";
+const char sdLogFail[] PROGMEM = "Error opening SD file, can't log sensor readings. < --";
+const char sensorsReadTxt[] PROGMEM = "Sensors read, data updated.";
+const char ecAdjTxt[] PROGMEM = "EC sensor readings adjusted for temperature.";
+const char phAdjTxt[] PROGMEM = "pH sensor readings adjusted for temperature.";
+const char alarmTxT[] PROGMEM = "Alarm triggered! System needs human intervention. < --";
+const char alarmOffTxt[] PROGMEM = "Huertomato recovered from an alarming situation! < -- ";
+const char noWaterTxt[] PROGMEM = "Huertomato will NOT water to prevent pump damage. < --";
+const char pumpOnTxt[] PROGMEM = "Nutrient level topped. Watering is safe again. < --";
+const char waterStartTxt[] PROGMEM = "Huertomato is watering plants.";
+const char waterStopTxt[] PROGMEM = "Watering cycle ended.";
 
 
 // *********************************************
 // PINOUT ASSIGN
 // *********************************************
-// Pins that cant be used;
-// 16 & 17 are Serial2 Tx,Rx used for EC circuit
-// 18 & 19 are Serial1 Tx,Rx used for PH circuit
-// 20 & 21 are IIC's SDA, SCL used for RTC
+// Pins that can't be used;
+// 16 & 17 are Serial2 Tx,Rx used for pH circuit
+// 18 & 19 are Serial1 Tx,Rx used for EC circuit
+// 20 & 21 are I2C's SDA, SCL used for RTC
 // 50, 51 & 52 are MISO, MOSI & SCK used for SD card
 //RGB LED
-const int redPin = 12;
-const int greenPin = 11;
-const int bluePin = 13;
+const uint8_t redPin = 12;
+const uint8_t greenPin = 11;
+const uint8_t bluePin = 13;
 //SENSORS
-const int humidIn = A1;
-const int lightIn = A2;
-const int tempIn = A0;
-const int waterEcho = 8;
-const int waterTrigger = 9;
+const uint8_t humidIn = A1;
+const uint8_t lightIn = A2;
+const uint8_t tempIn = A0;
+const uint8_t waterEcho = 8;
+const uint8_t waterTrigger = 9;
 //ACTUATORS
-const int buzzPin = 10;
-const int waterPump = A9;
+const uint8_t buzzPin = 10;
+const uint8_t waterPump = A9;
 //LCD
-const int lcdRS = 38;
-const int lcdWR = 39;
-const int lcdCS = 40;
-const int lcdRST = 41;
-const int lcdTCLK = 6;
-const int lcdTCS = 5;
-const int lcdTDIN = 4;
-const int lcdTDOUT = 3;
-const int lcdIRQ = 2;
+const uint8_t lcdRS = 38;
+const uint8_t lcdWR = 39;
+const uint8_t lcdCS = 40;
+const uint8_t lcdRST = 41;
+const uint8_t lcdTCLK = 6;
+const uint8_t lcdTCS = 5;
+const uint8_t lcdTDIN = 4;
+const uint8_t lcdTDOUT = 3;
+const uint8_t lcdIRQ = 2;
 //SD card select
-const int SDCardSS = 53;
+const uint8_t SDCardSS = 53;
 
 // *********************************************
 // OBJECT DECLARATIONS
 // *********************************************
 RGBled led(redPin, greenPin, bluePin);
-
 dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
-
+//LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
-
+//Huertomato internal data
 Settings settings;
 Sensors sensors(&settings);
+//Human interfaces
+SerialInterface ui; //&sensors,&settings are also used but from global var
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //Stores timers ID's and status
@@ -140,60 +174,64 @@ alarm sensorAlarm = {};
 alarm waterAlarm = {};
 alarm waterOffAlarm = {};
 alarm sdAlarm = {};
+alarm serialAlarm = {};
+alarm pumpProtAlarm = {};
 
 //True when system has beeping timers activated
-boolean beeping;
+boolean beeping = false;
+//True if SD has already been initiated
+boolean sdInit = false;
 
 // *********************************************
 // SETUP
 // *********************************************
 void setup() {  
 	led.setOn();
+	ui.init();
 	gui.init();
-	
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
-	
-	//TODO:Make auto-detect
-	//First run
-	//settings.setDefault();
-	
-	setupSerial();
 	setupRTC();
 	setupSD(); 
 	setupAlarms();
 	setupWaterModes();
 	initMusic();
 	Alarm.delay(10);
+	sensors.fastUpdate();
 	gui.start();
-}
-
-//Initiates serial communication if needed
-void setupSerial() {
-	if (settings.getSerialDebug()) {
-		Serial.begin(115200);
-		Serial << endl << ".::[ Huertomato ]::." << endl;
-		Serial << "www.TheGreenAutomation.com" << endl << endl;
-	}
 }
 
 //Initiates system time from RTC
 void setupRTC() {
-	setSyncProvider(RTC.get); 
-	if(timeStatus() != timeSet) {
-		timestampToSerial("RTC init problem!!");
-	} 
+	setSyncProvider(RTC.get);
+	time_t t = now();
+	int d = day(t);
+	int mo = month(t);
+	int y = year(t);
+	int h = hour(t);
+	int m = minute(t);
+	if ((timeStatus() == timeSet) && (d == 1) && (mo == 1) && (y = 2000)) {
+		//This prevents a bug when time resets and then loops 00:00 - 00:05
+		sensors.setRTCtime(10,10,10,10,10,2010);
+		ui.timeStamp(rtcResetTxt);
+	} else if (timeStatus() == timeSet)
+		ui.timeStamp(rtcInitOkTxt);
+	if (timeStatus() != timeSet)
+		ui.timeStamp(rtcInitFailTxt);
 }
 
 //Inits SD card and creates timer for SD logs
 void setupSD() {
 	if (settings.getSDactive()) {
 		pinMode(SDCardSS, OUTPUT);
-		if (SD.begin(SDCardSS))
-			timestampToSerial("SD init OK");
-		//Timer to log sensor data to SD Card
-		startSDlogTimer();
+		if (SD.begin(SDCardSS) || sdInit) {
+			sdInit = true;
+			//Timer to log sensor data to SD Card
+			startSDlogTimer();
+			ui.timeStamp(sdInitOkTxt);
+		} else 
+			ui.timeStamp(sdInitFailTxt);
 	}
 }
 
@@ -203,24 +241,33 @@ void setupAlarms() {
 	//Sensor polling and smoothing
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
-	//Every min we adjust EC circuit readings to temperature
-	if (settings.getReservoirModule())
-		Alarm.timerOnce(0,1,0,adjustECtemp);		  
+	//Every 10min we adjust pH & EC circuit readings to temperature
+	if (settings.getReservoirModule()) {
+		Alarm.timerOnce(0,10,0,adjustECtemp);
+		Alarm.timerOnce(0,10,0,adjustPHtemp);
+	}
 }
 
 //Sets watering timer or starts continuous water
 void setupWaterModes() {
-    if (settings.getWaterTimed()) {
-		digitalWrite(waterPump, LOW);
-		settings.setWateringPlants(false);
-		startWaterTimer();
-		updateNextWateringTime();
-		timestampToSerial("Timed watering mode enabled");
-    } else {
-		digitalWrite(waterPump,HIGH);	
-		settings.setWateringPlants(true);
-		timestampToSerial("Continuous watering mode enabled");
-	}	
+	//Not if pump protection activated
+	if (settings.getPumpProtected())
+		ui.timeStamp(noWaterTxt);
+	//Not if stopped watering for the night
+	else if (settings.getNightWateringStopped())
+		ui.timeStamp(nightStoppedTxt);
+	else {
+		if (settings.getWaterTimed()) {
+			startWaterTimer();
+			updateNextWateringTime();
+			ui.timeStamp(waterTimedTxt);
+		} else {
+			digitalWrite(waterPump,HIGH);
+			settings.setWateringPlants(true);
+			ui.timeStamp(waterContinuousTxt);
+		}
+	}
+	
 }
 
 //Updates variables used for displaying next watering time
@@ -261,114 +308,115 @@ void initMusic() {
 // LOOP
 // *********************************************
 void loop() {
+	ui.processInput();
 	gui.refresh();
-	gui.processTouch();
+	gui.processInput();
 	
-	Serial << "Available memory: " << freeMemory() << " bytes"<< endl << endl;
-	//Alarm reporting
-	//Serial << "total: " << Alarm.count() << endl;
-	//Serial << " waterAlarmID: " << waterAlarm.id << "|"<< waterAlarm.enabled << endl;
-	//Serial << " waterOffAlarmID: " << waterOffAlarm.id << "|" << waterOffAlarm.enabled << endl;
-	//Serial << " sdAlarmID: " << sdAlarm.id << "|" << sdAlarm.enabled << endl;
-	//Serial << " sensorAlarmID: " << sensorAlarm.id << "|" << sensorAlarm.enabled << endl;
-	/*for (int i = 0; i < Alarm.count(); i++) {
-		Serial << "id: " << i;
-		Serial << " time_t: " << Alarm.read(i);
-		Serial << " type: " << Alarm.readType(i) << endl;
-	}*/
-	
-	//Manage LED & Sound
-	if (settings.getWateringPlants() && settings.getWaterTimed()) {
-		led.setColour(BLUE);
-	} else if (settings.getAlarmTriggered()) {
-		led.setColour(RED);
-		//Sound alarm in main screen only
-		if (gui.isMainScreen() && settings.getSound() && !beeping && 
-			!settings.getNightWateringStopped()) {
-			beeping = true;	
-			beepOn();
-		}
-	} else
-		led.setColour(GREEN);
-	
+	//Check if led needs color change
+	checkLed();
+	//Check if pump protection toggled
+	checkPump();
 	//Trigger alarm if needed
 	checkAlarms();
-	//Stop/start watering if day/night changed
+	//Check if night time has come and system change necessary
 	checkNightTime();
 	//Checks if settings have changed and system needs updating
 	checkSettingsChanged();
-
+	
 	//Delays are needed for alarms to work
 	Alarm.delay(10);
 }
 
-//Checks if any alarm should be triggered and changes alarm setting if needed
+// *********************************************
+// LOOP CHECKS
+// *********************************************
+//Checks system status and updates led color if needed
+void checkLed() {
+	//Timed mode & watering
+	if (settings.getWateringPlants() && settings.getWaterTimed())
+		led.setColour(BLUE);
+	//Alarm triggered
+	else if (settings.getAlarmTriggered() || settings.getPumpProtected())
+		led.setColour(RED);
+	//Normal operation
+	else
+		led.setColour(GREEN);
+}
+
+//Checks if pump protection has been activated - System will stop watering if it has!
+//Also starts a timer for pump protection serial messages if enabled
+//Internally toggles waterSettingsChanged when setPumpProtected() used
+void checkPump() {
+	//Alarm not already toggled but triggered
+	if ((!settings.getPumpProtected()) 
+		&& (settings.getReservoirModule()) && (settings.getPumpProtection())  
+		&& (sensors.getWaterLevel() < settings.getPumpProtectionLvl())) {
+			settings.setPumpProtected(true);
+			if (settings.getSerialDebug())
+				startSerialPumpProtTimer();
+	//Alarm toggled but conditions changed	
+	} else if (settings.getPumpProtected() 
+		&& ((!settings.getReservoirModule()) || (!settings.getPumpProtection()) 
+		|| (sensors.getWaterLevel() > settings.getPumpProtectionLvl()))) {
+			settings.setPumpProtected(false);
+			stopSerialPumpProtTimer();
+			if (settings.getSerialDebug())
+				ui.timeStamp(pumpOnTxt);
+	}
+}
+
+//Checks if any alarm has been triggered and changes alarm setting if needed
+//Also starts timer for alarm serial messages if option enabled
+//and checks if buzzer has to beep to signal user
 void checkAlarms() {
-	//Only activate if not already done
 	if (settings.getReservoirModule()) {
-		if ((!settings.getAlarmTriggered()) && ((sensors.getPH() < settings.getPHalarmDown()) 
-			|| (sensors.getPH() > settings.getPHalarmUp())
-			|| (sensors.getEC() < settings.getECalarmDown()) 
-			|| (sensors.getEC() > settings.getECalarmUp())
-			|| (sensors.getWaterLevel() < settings.getWaterAlarm()))) {
-			
+		//Only activate if not already done and something off range
+		if ((!settings.getAlarmTriggered()) 
+			&& (sensors.ecOffRange() || sensors.phOffRange() || sensors.lvlOffRange())) {
 				settings.setAlarmTriggered(true);
-			
-		} else if ((settings.getAlarmTriggered()) && ((sensors.getPH() >= settings.getPHalarmDown()) 
-			&& (sensors.getPH() <= settings.getPHalarmUp())
-			&& (sensors.getEC() >= settings.getECalarmDown()) 
-			&& (sensors.getEC() <= settings.getECalarmUp())
-			&& (sensors.getWaterLevel() >= settings.getWaterAlarm()))) {
-			
+				if (settings.getSerialDebug()) {
+					printAlarm();
+					startSerialAlarmTimer();
+				}
+		//Theres an alarm triggered but everything is ok
+		} else if ((settings.getAlarmTriggered()) 
+			&& (!sensors.ecOffRange() && !sensors.phOffRange() && !sensors.lvlOffRange())) {		
 				settings.setAlarmTriggered(false);
+				stopSerialAlarmTimer();
+				if (settings.getSerialDebug())
+					ui.timeStamp(alarmOffTxt);
+		}
+		checkSoundAlarm();
+	}
+}
+
+//Checks if sound alarm must be triggered
+void checkSoundAlarm() {
+	if (settings.getAlarmTriggered() || settings.getPumpProtected()) {
+		//Sound alarm in main screen, when sound activated and not night watering stopped
+		if (gui.isMainScreen() && settings.getSound() && !beeping &&
+		!settings.getNightWateringStopped()) {
+			beeping = true;
+			beepOn();
 		}
 	}
 }
 
 //Checks for night-watering option and for day/night change. Updates watering if needed
-//Before sleeping system will do a last water cycle
+//Internally toggles waterSettingsChanged when setNightWateringStopped() used
 void checkNightTime() {
-	//Only if night-watering is disabled
-	if (!settings.getNightWatering()) {
-		//Its night-time and watering not stopped already
-		if ((sensors.getRawLight() < settings.getLightThreshold()) && !settings.getNightWateringStopped()) {
-			stopWaterTimer();
-			stopWaterOffTimer();
-			//System in timed mode and not currently watering
-			if (settings.getWaterTimed() && !settings.getWateringPlants()) {
-				//We make a last watering cycle
-				startWatering();
-				timestampToSerial("a last time before stopping for night");
-			//System in continuous mode	
-			} else {
-				digitalWrite(waterPump,LOW);
-				settings.setWateringPlants(false);
-				timestampToSerial("Watering stopped for the night");
-			}
+	//Not stopped for night and conditions for it to stop met
+	if ((!settings.getNightWateringStopped()) 
+		&& (!settings.getNightWatering()) && (sensors.getLight() < settings.getLightThreshold())) {
 			settings.setNightWateringStopped(true);
-			
-		//Day-time and watering not reactivated already
-		} else if ((sensors.getRawLight() >= settings.getLightThreshold()) && settings.getNightWateringStopped()) {
-			settings.setNightWateringStopped(false);
-			//Just in case. Prevents overflow when there are a lot of night/day triggers in short time
-			stopWaterOffTimer();
-			digitalWrite(waterPump, LOW);
-			settings.setWateringPlants(false);
-			setupWaterModes();
-			timestampToSerial("Watering reactivated with daylight");
-		}
-	}
-	//This handles changes in settings while watering stopped for night
-	if (settings.getNightWatering() && settings.getNightWateringStopped()) {
-		settings.setNightWateringStopped(false);
-		stopWaterTimer();
-		stopWaterOffTimer();
-		digitalWrite(waterPump, LOW);
-		settings.setWateringPlants(false);
-		setupWaterModes();
+	//Stopped for night but setting changed or day has come
+	} else if ((settings.getNightWateringStopped()) 
+		&& ((settings.getNightWatering()) || (sensors.getLight() > settings.getLightThreshold()))) {
+			settings.setNightWateringStopped(false);		
 	}
 }
 
+//These rely on settings class toggling changed flags when there is a change in settings
 //Checks if some setting has been changed and updates accordingly
 void checkSettingsChanged() {
 	checkWater();
@@ -377,7 +425,7 @@ void checkSettingsChanged() {
 	checkSerial();
 }
 
-//Checks if water settings have changed and updates system
+//Checks if water settings have changed and resets watering cycles
 void checkWater() {
 	if (settings.waterSettingsChanged()) {
 		//Clear alarms, stop water
@@ -396,9 +444,9 @@ void checkSD() {
 		stopSDlogTimer();
 		if (settings.getSDactive()) {
 			setupSD();
-			timestampToSerial("SD logging turned ON");
+			ui.timeStamp(sdLogOnTxt);
 		} else
-			timestampToSerial("SD logging turned OFF");
+			ui.timeStamp(sdLogOffTxt);
 	}
 }
 
@@ -408,55 +456,21 @@ void checkSensors() {
 		Alarm.free(sensorAlarm.id);
 		sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 		sensorAlarm.enabled = true;
-		timestampToSerial("Sensor polling timer updated");
+		ui.timeStamp(pollingUpdateTxt);
 	}
 }
 
 //Checks if serial settings have been changed and updates system
 void checkSerial() {
-	if (settings.serialDebugChanged()) {
-		if (settings.getSerialDebug()) {
-			setupSerial();
-		} else {
-			timestampToSerial("Deactivating serial communications");
-			Serial.end();
-		}
-	}
+	if (settings.serialDebugChanged())
+		(settings.getSerialDebug()) ? ui.init() : ui.end();
 }
 
 // *********************************************
-// TEXT OUTPUTS
+// SD AND SERIAL LOG FUNCTIONS
 // *********************************************
-
-//Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
-void timestampToSerial(String str) {
-	if (settings.getSerialDebug()) {
-		time_t t = now();
-		int h = hour(t);
-		int m = minute(t);
-		int s = second(t);
-	
-		Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
-		Serial  << " - " << str << endl;
-	}
-}
-
-//Write input string to file and endl
-//Serial << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << endl;
-/*void writeLog(char* t) {
-    int h = hour();
-    int m = minute();
-    int s = second();
-    stateLog = SD.open(stateLogFile, FILE_WRITE); 
-    stateLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m << ":" << ((s<10)?"0":"") << s;
-    stateLog << t << endl;
-    //stateLog << time(now()) << s << endl;
-    //twoD(hour(t)) + ":" + twoD(minute(t)) + ":" + twoD(second(t));
-    stateLog.close();
-}*/
-
-//Log data to SDCard and set next timer
-//File name is : YYYMMDD.txt
+//Logs system data to SDCard
+//File name will be: YYYMMDD.csv
 //Format is: Date,Time,Temp,Humidity,Light,EC,PH,WaterLevel
 void logSensorReadings() {
 	time_t t = now();
@@ -465,16 +479,16 @@ void logSensorReadings() {
 	int y = year(t);
 	int h = hour(t);
 	int m = minute(t);
-  
+	
 	//Filename must be at MAX 8chars + "." + 3chars
-	//We choose it to be YYYY+MM+DD.txt
-	String fileName = ""; 
+	//We choose it to be YYYY+MM+DD.csv
+	String fileName = "";
 	fileName.reserve(12);
-	fileName = (String)y + (String)mo + (String)d + ".txt";
+	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".csv";
 	char fileNameArray[fileName.length() + 1];
 	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
-	File sensorLog = SD.open(fileNameArray, FILE_WRITE); 
-   
+	File sensorLog = SD.open(fileNameArray, FILE_WRITE);
+	
 	if (sensorLog) {
 		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
 		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
@@ -483,16 +497,17 @@ void logSensorReadings() {
 		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
 		sensorLog.close();
 		//Inform through serial
-		timestampToSerial("Logged sensor data to SD Card.");
+		ui.timeStamp(sdLogOk);
 	} else
-		timestampToSerial("Error opening SD file, can't log sensor readings.");
-	//Set next timer
-	if (settings.getSDactive()) {
-		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
-		sdAlarm.enabled = true;
-	}
+		ui.timeStamp(sdLogFail);
 }
 
+//Timestamps to Serial that there's an alarm triggered
+void printAlarm() {
+	ui.timeStamp(alarmTxT);
+}
+
+<<<<<<< HEAD
 //Sends sensor data through serial
 void showStatsSerial() { 
 	if (settings.getSerialDebug()) {
@@ -506,18 +521,26 @@ void showStatsSerial() {
 			Serial << "Water level: " << sensors.getWaterLevel() << "%" << endl;
 		}
 	}
+=======
+//Timestamps to Serial if pump protection toggled
+void printPump() {
+	ui.timeStamp(noWaterTxt);
+>>>>>>> wip
 }
 
 // *********************************************
-// OTHER
+// ROUTINES THAT SET UP A TIMERONCE ALARM
 // *********************************************
-
 //Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
+<<<<<<< HEAD
 	timestampToSerial("Sensors read, data updated.");
 	showStatsSerial();
+=======
+	//ui.timeStamp(sensorsReadTxt);
+>>>>>>> wip
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -527,16 +550,25 @@ void updateSensors() {
 void adjustECtemp() {
 	if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
-		timestampToSerial("EC sensor readings adjusted for temperature.");
+		ui.timeStamp(ecAdjTxt);
 	}
 	//Set next timer
-	Alarm.timerOnce(0,1,0,adjustECtemp);
+	Alarm.timerOnce(0,10,0,adjustECtemp);
 }
 
-//These handle beeping when an alarm is triggered. It warns in serial too
+//Adjusts pH sensor readings to temperature and sets next timer
+void adjustPHtemp() {
+	if (gui.isMainScreen()) {
+		sensors.adjustPHtemp();
+		ui.timeStamp(phAdjTxt);
+	}
+	//Set next timer
+	Alarm.timerOnce(0,10,0,adjustPHtemp);
+}
+
+//These handle beeping when an alarm is triggered.
 void beepOn() {
 	const int onSecs = 1;
-	timestampToSerial("Alarm triggered! System needs human intervention.");
 	tone(buzzPin,440.00);
 	Alarm.timerOnce(0,0,onSecs,beepOff);
 }
@@ -544,17 +576,50 @@ void beepOn() {
 void beepOff() {
 	const int offSecs = 2;
 	noTone(buzzPin);
-	if (settings.getAlarmTriggered() && settings.getSound() && gui.isMainScreen() 
-		&& !settings.getNightWateringStopped())
-		Alarm.timerOnce(0,0,offSecs,beepOn);
+	if ((settings.getAlarmTriggered() || settings.getPumpProtected()) 
+		&& settings.getSound() && gui.isMainScreen() && !settings.getNightWateringStopped())
+			Alarm.timerOnce(0,0,offSecs,beepOn);
 	else
 		beeping = false;
 }
 
-//Timer managers
+// *********************************************
+// TIMER'S MANAGERS
+// *********************************************
+//Timers for informing of an alarm through Serial
+void startSerialAlarmTimer() {
+	if (!serialAlarm.enabled) {
+		serialAlarm.id = Alarm.timerRepeat(0,15,0,printAlarm);
+		serialAlarm.enabled = true;
+	}	
+}
+
+void stopSerialAlarmTimer() {
+	if (serialAlarm.enabled) {
+		Alarm.free(serialAlarm.id);
+		serialAlarm.enabled = false;
+	}
+}
+
+//Timers for informing of a pump protection state through Serial
+void startSerialPumpProtTimer() {
+	if (!pumpProtAlarm.enabled) {
+		pumpProtAlarm.id = Alarm.timerRepeat(0,15,0,printPump);
+		pumpProtAlarm.enabled = true;
+	}
+}
+
+void stopSerialPumpProtTimer() {
+	if (pumpProtAlarm.enabled) {
+		Alarm.free(pumpProtAlarm.id);
+		pumpProtAlarm.enabled = false;
+	}
+}
+
+//Timers for logging data to SD
 void startSDlogTimer() {
 	if (!sdAlarm.enabled) {
-		sdAlarm.id = Alarm.timerOnce(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
+		sdAlarm.id = Alarm.timerRepeat(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 		sdAlarm.enabled = true;
 	}
 }
@@ -566,6 +631,7 @@ void stopSDlogTimer() {
 	}
 }
 
+//Timers for watering cycles
 void startWaterTimer() {
 	if (!waterAlarm.enabled) {
 		waterAlarm.id = Alarm.timerRepeat(settings.getWaterHour(),settings.getWaterMinute(),0,startWatering);
@@ -594,22 +660,20 @@ void stopWaterOffTimer() {
 	}
 }
 
-//TIMED WATERING ROUTINES
+// *********************************************
+// TIMED WATERING ROUTINES
+// *********************************************
 void startWatering() {
 	updateNextWateringTime();	
-	//If theres enough water to activate pump
-	if (sensors.getWaterLevel() >= settings.getPumpProtectionLvl()) {	
+	//Only water if pump protection is off & not night 
+	if (!settings.getPumpProtected() && !settings.getNightWateringStopped()) {
 		digitalWrite(waterPump, HIGH);
 		settings.setWateringPlants(true);
-		led.setColour(BLUE);
-		gui.refresh();
-		timestampToSerial("Huertomato is watering plants < --");
+		ui.timeStamp(waterStartTxt);
 		//Creates timer to stop watering
 		stopWaterOffTimer();
-		startWaterOffTimer();
-	//Pump will get damaged - System will NOT water	
-	} else
-		timestampToSerial("Huertomato will NOT water to prevent pump damage < --");
+		startWaterOffTimer();	
+	}
 }
 
 //Stops watering pump and updates system status
@@ -617,5 +681,5 @@ void stopWatering() {
 	stopWaterOffTimer();
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
-	timestampToSerial("Watering cycle ended < --");
+	ui.timeStamp(waterStopTxt);
 }

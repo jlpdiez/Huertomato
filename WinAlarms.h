@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinAlarms
-// # Version    : 1.0
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Alarms menu window
 //
@@ -29,27 +29,31 @@
 
 #include "Window.h"
 
-const int nSensorAlarmsButtons = 6;
-static char* sensorAlarmsButtonsText[nSensorAlarmsButtons] = {
-	//"Auto Config",
-	"pH Thresholds",
-	"EC Thresholds",
-	"Nutrient Level"
-};
-static int sensorAlarmsButtons[nSensorAlarmsButtons];
+//Window name
+const char nameWinAlarms[] PROGMEM = "Sensor Alarms";
 
-
+//Window buttons texts
+const char alarmsStr0[] PROGMEM = "pH Thresholds";
+const char alarmsStr1[] PROGMEM = "EC Thresholds";
+const char alarmsStr2[] PROGMEM = "Nutrient Levels";
+const char* const sensorAlarmsButtonsText[] PROGMEM = { alarmsStr0, alarmsStr1, alarmsStr2 };
+	 
 class WinAlarms: public Window {
 	public:
 		WinAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinAlarms(const WinAlarms &other);
 		WinAlarms& operator=(const WinAlarms &other);
-		virtual ~WinAlarms();
-		virtual Screen getType() const;
+		~WinAlarms();
+		Screen getType() const;
 		void draw();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		//Here lies the button info for each window
+		//We add 3 to all nButtons to account for back/save/exit (These are always 0,1,2)
+		static const uint8_t _nSensorAlarmsButtons = _nFlowButtons + 3;
+		//Array that will contain the buttons
+		int8_t _sensorAlarmsButtons[_nSensorAlarmsButtons];
 		void print();
 };
 

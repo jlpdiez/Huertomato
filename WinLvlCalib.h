@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinLvlCalib
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Nutrient level max/min calibration window
 //
@@ -27,28 +27,30 @@
 #ifndef WINLVLCALIB_H_
 #define WINLVLCALIB_H_
 
-#include "Window.h"
+#include "Window.h" 
 
-const int nWaterLevelButtons = 5;
-static char* waterLevelButtonsText[nWaterLevelButtons] = {
-	"Set",
-	"Set"
-};
-static int waterLevelButtons[nWaterLevelButtons];
+const char nameWinLvlCalib[] PROGMEM = "Nutrient Levels";
 
+const char firstLvlCalib[] PROGMEM = "Current Reading:";
+const char secondLvlCalib[] PROGMEM = "Current Top:";
+const char thirdLvlCalib[] PROGMEM = " and Bottom:";
+const char unitLvl[] PROGMEM = "cm";
+const char setStr[] PROGMEM = "Set";
 
 class WinLvlCalib: public Window {
 	public:
 		WinLvlCalib(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlCalib(const WinLvlCalib &other);
 		WinLvlCalib& operator=(const WinLvlCalib &other);
-		virtual ~WinLvlCalib();
-		virtual Screen getType() const;
+		~WinLvlCalib();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nWaterLevelButtons = _nFlowButtons + 2;
+		int8_t _waterLevelButtons[_nWaterLevelButtons];
 		uint16_t _waterLvlMax, _waterLvlMin, _rawWaterLvl;
 		void print();
 };

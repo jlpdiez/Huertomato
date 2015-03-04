@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinTime
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Time configuration window
 //
@@ -30,37 +30,27 @@
 #include "Window.h"
 #include <Time.h>
 
-//These buttons use symbol font hence the strange texts
-const int nTimeButtons = 15;
-static char* timeButtonText[nTimeButtons] = {
-	"=",
-	"=",
-	"=",
-	">",
-	">",
-	">",
-	"=",
-	"=",
-	"=",
-	">",
-	">",
-	">"
-};
-static int timeButtons[nTimeButtons];
+const char nameWinTime[] PROGMEM = "Time & Date";
 
+const char timeS[] PROGMEM = "Time";
+const char timeFormatS[] PROGMEM = "(HH:MM:SS)";
+const char dateS[] PROGMEM = "Date";
+const char dateFormatS[] PROGMEM = "(DD/MM/YYYY)";
 
 class WinTime: public Window {
 	public:
 		WinTime(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinTime(const WinTime &other);
 		WinTime& operator=(const WinTime &other);
-		virtual ~WinTime();
-		virtual Screen getType() const;
+		~WinTime();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nTimeButtons = _nFlowButtons + 12;
+		int8_t _timeButtons[_nTimeButtons];
 		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
 		int _sysYear;
 		void print();

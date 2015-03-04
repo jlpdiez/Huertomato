@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinLvlAlarms
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Nutrient level alarms menu window
 //
@@ -26,29 +26,27 @@
 
 #ifndef WINLVLALARMS_H_
 #define WINLVLALARMS_H_
-
+ 
 #include "Window.h"
 
-const int nWaterAlarmsButtons = 5;
-static char* waterAlarmsButtonsText[nWaterAlarmsButtons] = {
-	"=",
-	">"
-};
-static int waterAlarmsButtons[nWaterAlarmsButtons];
+const char nameWinLvlAlarms[] PROGMEM = "Nutrient Alarms";
 
+const char wLimitLvlS[] PROGMEM = "Lower Limit:";
 
 class WinLvlAlarms: public Window {
 	public:
 		WinLvlAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinLvlAlarms(const WinLvlAlarms &other);
 		WinLvlAlarms& operator=(const WinLvlAlarms &other);
-		virtual ~WinLvlAlarms();
-		virtual Screen getType() const;
+		~WinLvlAlarms();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nWaterAlarmsButtons = _nFlowButtons + 2;
+		int8_t _waterAlarmsButtons[_nWaterAlarmsButtons];
 		uint8_t _waterAlarmMin;
 		void print();
 };

@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSensorPolling
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Time between sensor readings configuration window
 //
@@ -28,26 +28,25 @@
 
 #include "Window.h"
 
-const int nSensorPollingButtons = 5;
-static char* sensorPollingButtonText[nSensorPollingButtons] = {
-	"=",
-	">"
-};
-static int sensorPollingButtons[nSensorPollingButtons];
+const char nameWinSensorPolling[] PROGMEM = "Sensor Polling";
 
+const char sensorPollingText1[] PROGMEM = "Time between readings:";
+const char sensorPollingText2[] PROGMEM = "seconds";
 
 class WinSensorPolling: public Window {
 	public:
 		WinSensorPolling(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinSensorPolling(const WinSensorPolling &other);
 		WinSensorPolling& operator=(const WinSensorPolling &other);
-		virtual ~WinSensorPolling();
-		virtual Screen getType() const;
+		~WinSensorPolling();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nSensorPollingButtons = _nFlowButtons + 2;
+		int8_t _sensorPollingButtons[_nSensorPollingButtons];
 		uint8_t _pollSec;
 		void print();
 };

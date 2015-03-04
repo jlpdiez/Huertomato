@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.0
+// # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -33,7 +33,6 @@
 #include "Buttons.h"
 #include <UTFT.h>
 #include <UTouch.h>
-#include <UTFT_Buttons.h>
 
 //Main Screen Icons
 extern prog_uint16_t plant126[0x3E04];
@@ -59,34 +58,60 @@ static uint8_t grey[3] = {100,100,100};
 static uint8_t white[3] = {255,255,255};
 static uint8_t red[3] = {200,0,0};
 static uint8_t blue[3] = {0,135,199};
-//static uint8_t yellow[3] = {255,242,32};
 
-static char* backText = " Back ";
-static char* saveText = " Save ";
-static char* savedText = " Saved ";
-static char* cancelText = " Exit ";
+const char loadingText[] PROGMEM = "Huertomato is loading...";
+//Common window buttons text
+const char backText[] PROGMEM = " Back ";
+const char saveText[] PROGMEM = " Save ";
+const char savedText[] PROGMEM = " Saved ";
+const char cancelText[] PROGMEM = " Exit ";
+//Common window toggles
+//Has one extra char to cover last F of OFF
+const char onStr[] PROGMEM = "ON ";
+const char offStr[] PROGMEM = "OFF";
+//various_symbols font is used for these
+const char bulletStr[] PROGMEM = "T";
+const char plusStr[] PROGMEM = "=";
+const char minusStr[] PROGMEM = ">";
+//Other common texts
+const char headerDecoration[] PROGMEM = "-";
+const char spaceChar[] PROGMEM = " ";
+const char timeSeparator[] PROGMEM = ":";
+const char dateSeparator[] PROGMEM = "/";
+const char percentSign[] PROGMEM = "%";
+const char hoursChar[] PROGMEM = "h";
+const char minutesChar[] PROGMEM = "m";
+//Calibration texts
+const char startCalibStr1[] PROGMEM = "Start calibration";
+const char startCalibStr2[] PROGMEM = "procedure now?";
+const char yesStr[] PROGMEM = "Yes";
+const char continueStr[] PROGMEM = "Continue";
+const char endStr[] PROGMEM = "End";
 
 class Window {
 	public:
 		enum Screen {
-			None=0,
-			Splash=1,
-			MainScreen=2,
-			MainMenu=3,
-			SystemSettings=4,
-			ControllerSettings=5,
-			TimeDate=6,
-			SensorPolling=7,
-			SDCard=8,
-			WateringCycle=9,
-			Alarms=10,
-			PhAlarms=11,
-			EcAlarms=12,
-			LvlAlarms=13,
-			SensorCalib=14,
-			LvlCalib=15,
-			LightCalib=16,
-			Pump=17
+			None = 0,
+			Splash = 1,
+			MainScreen = 2,
+			MainMenu = 3,
+			SystemSettings = 4,
+			ControllerSettings = 5,
+			TimeDate = 6,
+			SensorPolling = 7,
+			SDCard = 8,
+			WateringCycle = 9,
+			Alarms = 10,
+			PhAlarms = 11,
+			EcAlarms = 12,
+			LvlAlarms = 13,
+			SensorCalib = 14,
+			LvlCalib = 15,
+			PhCalib = 16,
+			EcCalib = 17,
+			NightWater = 18,
+			Pump = 19,
+			Reservoir = 20
 		};
 				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
@@ -100,25 +125,56 @@ class Window {
 		virtual Screen processTouch(const int x, const int y);
 
 	protected:		
+		//Screen size
 		static const int _xSize = 399;
-		static const int _ySize = 239;
-		static const int _bigFontSize = 16;
-		static const int _smallFontSize = 8;
-		static const int _iconSize = 126;
-		static const int _headerHeight = 20;
-		static const int _buttonY = 215;
-		
+		static const int _ySize= 239;
+		//Font sizes
+		static const uint8_t _bigFontSize = 16;
+		static const uint8_t _smallFontSize = 8;
+		//Icon sizes
+		static const uint8_t _bigIconSize = 126;
+		static const uint8_t _smallIconSize = 64;
+		//Height of header
+		static const uint8_t _headerHeight = 20;
+		//The Y coord of the flow buttons bar
+		static const uint8_t _flowButtonY = 215;
+		//The max number of flow buttons
+		static const uint8_t _nFlowButtons = 3;
+		//First coords of windows
+		static const uint8_t _xMenu = 15;
+		static const uint8_t _xConfig = 25;
+		static const uint8_t _signSpacer = 22;
+		//The Y coord where the first text row will start
+		static const uint8_t _yOneLine = 100;
+		static const uint8_t _yTwoLnsFirst = 65;
+		static const uint8_t _yTwoLnsSecond = 140;
+		static const uint8_t _yThreeLnsFirst = 50;
+		static const uint8_t _yThreeLnsSecond = 100;
+		static const uint8_t _yThreeLnsThird = 150;
+		static const uint8_t _yFourLines = 40;
+		static const uint8_t _yFiveLines = 40;
+		//These are used for menus that are drawn using a for
+		//Will be multiplied with (_bigFontSize * number of row) to get Y coord in menus
+		static const uint8_t _yFactor3lines = 3;
+		static const float _yFactor4lines = 2.5;
+		static const uint8_t _yFactor5lines = 2;
+	 	
 		virtual void print();
-		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int buttonArray[]);
+		void addFlowButtons(boolean backButton, boolean saveButton, boolean exitButton, int8_t buttonArray[]);
 		void printHeaderBackground();
-		void printMenuHeader(char* c);
+		void printMenuHeader(const char* c);
 		void printSavedButton();
-
+		int centerX(const char* c);
+		
+		//These are used to read data from PROGMEM and store them into SRAM
+		char _stringBuffer[30];
+		char* pmChar(const char* pmArray);
+	
 		UTFT *_lcd;
 		UTouch *_touch;
 		Sensors *_sensors;
 		Settings *_settings;
-		Borderless_Buttons _buttons;
+		WinButtons _buttons;
 };
 
 #endif

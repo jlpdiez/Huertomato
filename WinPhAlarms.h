@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinPhAlarms
-// # Version    : 1.0
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 13.01.2015
 //
 // # Description: Ph alarms configuration window
 //
@@ -29,28 +29,25 @@
 
 #include "Window.h"
 
-const int nPHalarmsButtons = 7;
-static char* phAlarmsButtonsText[nPHalarmsButtons] = {
-	"=",
-	">",
-	"=",
-	">"
-};
-static int phAlarmsButtons[nPHalarmsButtons];
+const char nameWinPhAlarms[] PROGMEM = "pH Alarms";
 
+const char uPhLimit[] PROGMEM = "Upper Limit:";
+const char dPhLimit[] PROGMEM = "Lower Limit:";
 
 class WinPhAlarms: public Window {
 	public:
 		WinPhAlarms(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinPhAlarms(const WinPhAlarms &other);
 		WinPhAlarms& operator=(const WinPhAlarms &other);
-		virtual ~WinPhAlarms();
-		virtual Screen getType() const;
+		~WinPhAlarms();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
+		static const uint8_t _nPHalarmsButtons = _nFlowButtons + 4;		
+		int8_t _phAlarmsButtons[_nPHalarmsButtons];
 		float _phAlarmMax, _phAlarmMin;
 		void print();
 };

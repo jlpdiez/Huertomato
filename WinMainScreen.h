@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainScreen
-// # Version    : 1.0
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.11.2014
+// # Date       : 16.01.2015
 //
 // # Description: Main idle screen window
 //
@@ -33,36 +33,60 @@
 #include <SD.h>   
 #include <Time.h>
 
-//Holds text strings for each sensor
-const int nSensorText = 6;
-static char* sensorText[nSensorText] = {
-	"Humidity:",
-	"Temp:",
-	"Light:",
-	"pH:",
-	"EC:",
-	"Deposit:"
-};
+//Sensor names
+const char sensorTextStr0[] PROGMEM = "Humidity:";
+const char sensorTextStr1[] PROGMEM = "Temp:";
+const char sensorTextStr2[] PROGMEM = "Light:";
+const char sensorTextStr3[] PROGMEM = "pH:";
+const char sensorTextStr4[] PROGMEM = "EC:";
+const char sensorTextStr5[] PROGMEM = "Deposit:";
+//Paths for finding icons in SD card
+const char plantPath[] PROGMEM = "/PICTURE/plant126.RAW";
+const char nightPath[] PROGMEM  = "/PICTURE/moon126.RAW";
+const char logoPath[] PROGMEM = "/PICTURE/logo126.RAW";
+const char alarmPath[] PROGMEM = "/PICTURE/alarm126.RAW";
+//Misc texts
+const char htmtTxt[] PROGMEM = "Huertomato";
+const char tempUnit[] PROGMEM = "C";
+const char lightUnit[] PROGMEM = "Lux";
+const char ecUnit[] PROGMEM = "uS";
+//Status strings
+const char nextWater[] PROGMEM = "Next Watering @";
+const char noNight[] PROGMEM = "No Watering @ Night";
+const char htmtWatering[] PROGMEM = "Huertomato Watering";
+const char alarmCont[] PROGMEM = "Alarm - Check Solution";
+const char normalCont[] PROGMEM = "System working fine";
+const char pumpCont[] PROGMEM = "Watering OFF for pump";
 
+//Contains two main screens. One when reservoir module is on, another when off
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
 		WinMainScreen(const WinMainScreen &other);
 		WinMainScreen& operator=(const WinMainScreen &other);
-		virtual ~WinMainScreen();
-		virtual Screen getType() const;
+		~WinMainScreen();
+		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
-		
-	protected:		
-		void print();	
+		 
+	protected:	
+		static const uint8_t _headerTextY = 2;
+		static const uint8_t _statusTextY = 200;
+		static const uint8_t _statusTextX = 10;
+		static const uint8_t _statusLength = 22;
 		void printMainHeader();
-		void printSensorInfo();
-		void printIconAndStatus();
 		void updateMainHeader();
+				
+		void printInfoReservoir();
+		void updateInfoReservoir();
+		void printInfoNoModule();
+		void updateInfoNoModule();
+		
+		void printStatus(const char* msg);
+		void printNextWaterHour();
+		void printIconAndStatus();
 		void updateIconAndStatus();
-		void updateSensorInfo();
 };
 
 #endif 
