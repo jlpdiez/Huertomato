@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.0
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 23.04.2014
+// # Date       : 15.01.2015
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -32,9 +32,44 @@
 
 extern EEPROMClassEx EEPROM;
 
+extern const float versionNumber;
+
 // *********************************************
 class Settings {
   public:
+	enum Setting {
+		None,
+		WaterTimed,
+		WaterHour,
+		WaterMinute,
+		FloodMinute,
+		PHalarmUp,
+		PHalarmDown,
+		ECalarmUp,
+		ECalarmDown,
+		WaterAlarm,
+		NightWatering,
+		LightThreshold,
+		MaxWaterLvl,
+		MinWaterLvl,
+		PumpProtection,
+		PumpProtectionLvl,
+		SensorSecond,
+		SDactive,
+		SDhour,
+		SDminute,
+		Sound,
+		Leds,
+		SerialDebug,
+		ReservoirModule,
+		NextWhour,
+		NextWminute,
+		NightWateringStopped,
+		WateringPlants,
+		AlarmTriggered,
+		Version
+	};
+	
 	//Constructors
     Settings();
 	Settings(const Settings &other);
@@ -43,38 +78,41 @@ class Settings {
 	~Settings();
     
     //Setters - These store settings to EEPROM too
-	void setDefault();
     //System Settings
-    void setWaterTimed(const boolean);
-    void setWaterHour(const uint8_t);
-    void setWaterMinute(const uint8_t);
-    void setFloodMinute(const uint8_t);
-    void setPHalarmUp(const float);
-    void setPHalarmDown(const float);
-    void setECalarmUp(const uint16_t);
-    void setECalarmDown(const uint16_t);
-    void setWaterAlarm(const uint8_t);
-    void setNightWatering(const boolean);
-	void setLightThreshold(const uint16_t);
-	void setMaxWaterLvl(const uint16_t);
-	void setMinWaterLvl(const uint16_t);
-	void setPumpProtectionLvl(const uint8_t);
+    boolean setWaterTimed(const boolean);
+    boolean setWaterHour(const uint8_t);
+    boolean setWaterMinute(const uint8_t);
+    boolean setFloodMinute(const uint8_t);
+    boolean setPHalarmUp(const float);
+    boolean setPHalarmDown(const float);
+    boolean setECalarmUp(const uint16_t);
+    boolean setECalarmDown(const uint16_t);
+    boolean setWaterAlarm(const uint8_t);
+    boolean setNightWatering(const boolean);
+	boolean setLightThreshold(const uint16_t);
+	boolean setMaxWaterLvl(const uint16_t);
+	boolean setMinWaterLvl(const uint16_t);
+	boolean setPumpProtection(const boolean);
+	boolean setPumpProtectionLvl(const uint8_t);
     
     //Controller Settings
-    void setSensorSecond(const uint8_t);
-    void setSDactive(const boolean);
-    void setSDhour(const uint8_t);
-    void setSDminute(const uint8_t);
-    void setSound(const boolean);
-    void setSerialDebug(const boolean);
-	void setReservoirModule(const boolean);
+    boolean setSensorSecond(const uint8_t);
+    boolean setSDactive(const boolean);
+    boolean setSDhour(const uint8_t);
+    boolean setSDminute(const uint8_t);
+    boolean setSound(const boolean);
+	boolean setLeds(const boolean);
+    boolean setSerialDebug(const boolean);
+	boolean setReservoirModule(const boolean);
     
-    //Status vars - These are not written to EEPROM
+    //State vars - These are not written to EEPROM
+	//They are meant to be set only by main .ino logic, not by user!
     void setNextWhour(const uint8_t);
     void setNextWminute(const uint8_t);
     void setNightWateringStopped(const boolean);
     void setWateringPlants(const boolean);
     void setAlarmTriggered(const boolean);
+	void setPumpProtected(const boolean);
     
     //Getters
     //System Settings
@@ -91,6 +129,7 @@ class Settings {
 	uint16_t getLightThreshold() const;
 	uint16_t getMaxWaterLvl() const;
 	uint16_t getMinWaterLvl() const;
+	boolean getPumpProtection() const;
 	uint8_t getPumpProtectionLvl() const;
     
     //Controller Settings
@@ -99,6 +138,7 @@ class Settings {
     uint8_t getSDhour() const;
     uint8_t getSDminute() const;
     boolean getSound() const;
+	boolean getLeds() const;
     boolean getSerialDebug() const;
 	boolean getReservoirModule() const;
     
@@ -108,6 +148,7 @@ class Settings {
     boolean getNightWateringStopped() const;
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
+	boolean getPumpProtected() const;
 	
 	//These return value and go to false
 	boolean systemStateChanged();
@@ -115,10 +156,13 @@ class Settings {
 	boolean sdSettingsChanged();
 	boolean sensorPollingChanged();
 	boolean serialDebugChanged();
+	boolean moduleChanged();
        
   private:
 	void setEEPROMaddresses();
     void readEEPROMvars();
+	void setDefault();
+	
     //System Settings
     //Watering Cycle
     boolean _waterTimed;
@@ -137,12 +181,12 @@ class Settings {
 	uint16_t _lightThreshold;
 	uint16_t _maxWaterLvl;
 	uint16_t _minWaterLvl;
-	//Pump protection threshold
+	//Pump protection
+	boolean _pumpProtection;
 	uint8_t _pumpProtectionLvl;
-
     
     //Controller settings
-    //Time & Date - Handled outside (RTC Lib)
+    //Time & Date - Handled outside in RTC Lib
     //Sensor Polling
     uint8_t _sensorSecond;  
     //SD Card
@@ -151,6 +195,8 @@ class Settings {
     uint8_t _sdMinute;
     //Sound toggle
     boolean _sound;
+	//Leds toggle
+	boolean _leds;
     //Serial Debugging
     boolean _serialDebug;
 	//Module present
@@ -166,6 +212,8 @@ class Settings {
     boolean _wateringPlants;
     //Informs if theres an alarm triggered
     boolean _alarmTriggered;
+	//True if pump is off for protection
+	boolean _pumpProtected;
 	//True if state changed
 	boolean _systemStateChanged;
 	//Tells if water settings have been changed
@@ -176,6 +224,8 @@ class Settings {
 	boolean _sensorPollingChanged;
 	//Serial debug toggle
 	boolean _serialDebugChanged;
+	//Module config changed
+	boolean _moduleChanged;
     
     //EEPROM addresses for all settings
     int _addressWaterTimed;
@@ -194,13 +244,15 @@ class Settings {
     int _addressSDhour;
     int _addressSDminute;
     int _addressSound;
+	int _addressLeds;
     int _addressSerialDebug;
 	int _addressLightThreshold;
 	int _addressReservoirModule;
 	int _addressMaxWaterLvl;
 	int _addressMinWaterLvl;
 	int _addressPumpProtectionLvl;
-  
+	int _addressPumpProtection;
+	int _addressVersion;
 };
 
 #endif
