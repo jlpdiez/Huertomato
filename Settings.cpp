@@ -43,7 +43,8 @@ Settings::Settings(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
-	_leds = other._leds;
+	_led = other._led;
+	_celsius = other._celsius;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 }
@@ -79,7 +80,8 @@ Settings& Settings::operator=(const Settings &other) {
 	_sdHour = other._sdHour;
 	_sdMinute = other._sdMinute;
 	_sound = other._sound;
-	_leds = other._leds;
+	_led = other._led;
+	_celsius = other._celsius;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
@@ -106,6 +108,8 @@ void Settings::setEEPROMaddresses() {
 	_addressSDhour = EEPROM.getAddress(sizeof(byte));
 	_addressSDminute = EEPROM.getAddress(sizeof(byte));
 	_addressSound = EEPROM.getAddress(sizeof(byte));
+	_addressLed = EEPROM.getAddress(sizeof(byte));
+	_addressCelsius = EEPROM.getAddress(sizeof(byte));
 	_addressSerialDebug = EEPROM.getAddress(sizeof(byte));
 	_addressLightThreshold = EEPROM.getAddress(sizeof(int));
 	_addressReservoirModule = EEPROM.getAddress(sizeof(byte));
@@ -113,7 +117,7 @@ void Settings::setEEPROMaddresses() {
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
-	_addressLeds = EEPROM.getAddress(sizeof(byte));
+	_addressLed = EEPROM.getAddress(sizeof(byte));
 	_addressVersion = EEPROM.getAddress(sizeof(float));	
 }
 
@@ -138,7 +142,8 @@ void Settings::readEEPROMvars() {
 	_sdHour = EEPROM.readByte(_addressSDhour);
 	_sdMinute = EEPROM.readByte(_addressSDminute);
 	_sound = EEPROM.readByte(_addressSound);
-	_leds = EEPROM.readByte(_addressLeds);
+	_led = EEPROM.readByte(_addressLed);
+	_celsius = EEPROM.readByte(_addressCelsius);
 	_serialDebug = EEPROM.readByte(_addressSerialDebug);
 	_lightThreshold = EEPROM.readInt(_addressLightThreshold);
 	_reservoirModule = EEPROM.readByte(_addressReservoirModule);
@@ -168,8 +173,9 @@ void Settings::setDefault() {
 	EEPROM.updateByte(_addressSDactive,1);
 	EEPROM.updateByte(_addressSDhour,1);
 	EEPROM.updateByte(_addressSDminute,0);
-	EEPROM.updateByte(_addressSound,0);
-	EEPROM.updateByte(_addressLeds,1);
+	EEPROM.updateByte(_addressSound,1);
+	EEPROM.updateByte(_addressLed,1);
+	EEPROM.updateByte(_addressCelsius,1);
 	EEPROM.updateByte(_addressSerialDebug,1);
 	EEPROM.updateInt(_addressLightThreshold,30);
 	EEPROM.updateByte(_addressReservoirModule,0);
@@ -355,9 +361,15 @@ boolean Settings::setSound(const boolean s) {
 	return true;
 }
 
-boolean Settings::setLeds(const boolean l) {
-	_leds = l;
-	EEPROM.updateByte(_addressLeds,l);
+boolean Settings::setLed(const boolean l) {
+	_led = l;
+	EEPROM.updateByte(_addressLed,l);
+	return true;
+}
+
+boolean Settings::setCelsius(const boolean c) {
+	_celsius = c;
+	EEPROM.updateByte(_addressCelsius,c);
 	return true;
 }
 
@@ -445,7 +457,9 @@ uint8_t Settings::getSDminute() const { return _sdMinute; }
 
 boolean Settings::getSound() const { return _sound; }
 	
-boolean Settings::getLeds() const { return _leds; }
+boolean Settings::getLed() const { return _led; }
+	
+boolean Settings::getCelsius() const { return _celsius; }
 
 boolean Settings::getSerialDebug() const { return _serialDebug; }
 	

@@ -125,7 +125,7 @@ Window::Screen WinSD::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
 	if (buttonIndex == _sdCardButtons[0]) 
-		return ControllerSettings;
+		return ControllerSettingsTwo;
 	//Save
 	else if (buttonIndex == _sdCardButtons[1]) {
 		_settings->setSDactive(_sdActive);

@@ -72,13 +72,15 @@ void WinSensorPolling::update() {
 Window::Screen WinSensorPolling::processTouch(const int x, const int y) {
 	int buttonIndex = _buttons.checkButtons(x,y);
 	//Back
-	if (buttonIndex == _sensorPollingButtons[0]) { return ControllerSettings; }
+	if (buttonIndex == _sensorPollingButtons[0])
+		return ControllerSettingsTwo;
 	//Save
 	else if (buttonIndex == _sensorPollingButtons[1]) {
 		_settings->setSensorSecond(_pollSec);
 		printSavedButton();
 	//Exit
-	} else if (buttonIndex == _sensorPollingButtons[2]) { return MainScreen; }
+	} else if (buttonIndex == _sensorPollingButtons[2]) 
+		return MainScreen;
 		
 	//Sec up
 	else if (buttonIndex == _sensorPollingButtons[3]) {

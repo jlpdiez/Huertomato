@@ -1,10 +1,10 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 2.4
+// # Version    : 2.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 03.01.2015
+// # Date       : 11.10.2015
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains window and manages its transition and button presses
@@ -33,6 +33,7 @@
 #include "Window.h"
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
+#include "WinControllerMenuTwo.h"
 #include "WinEcAlarms.h"
 #include "WinEcCalib.h"
 #include "WinLvlAlarms.h"

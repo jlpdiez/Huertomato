@@ -69,6 +69,8 @@ const char cancelText[] PROGMEM = " Exit ";
 //Has one extra char to cover last F of OFF
 const char onStr[] PROGMEM = "ON ";
 const char offStr[] PROGMEM = "OFF";
+const char celsStr[] PROGMEM = "Celsius   ";
+const char farenhStr[] PROGMEM = "Fahrenheit";
 //various_symbols font is used for these
 const char bulletStr[] PROGMEM = "T";
 const char plusStr[] PROGMEM = "=";
@@ -97,21 +99,22 @@ class Window {
 			MainMenu = 3,
 			SystemSettings = 4,
 			ControllerSettings = 5,
-			TimeDate = 6,
-			SensorPolling = 7,
-			SDCard = 8,
-			WateringCycle = 9,
-			Alarms = 10,
-			PhAlarms = 11,
-			EcAlarms = 12,
-			LvlAlarms = 13,
-			SensorCalib = 14,
-			LvlCalib = 15,
-			PhCalib = 16,
-			EcCalib = 17,
-			NightWater = 18,
-			Pump = 19,
-			Reservoir = 20
+			ControllerSettingsTwo = 6,
+			TimeDate = 7,
+			SensorPolling = 8,
+			SDCard = 9,
+			WateringCycle = 10,
+			Alarms = 11,
+			PhAlarms = 12,
+			EcAlarms = 13,
+			LvlAlarms = 14,
+			SensorCalib = 15,
+			LvlCalib = 16,
+			PhCalib = 17,
+			EcCalib = 18,
+			NightWater = 19,
+			Pump = 20,
+			Reservoir = 21
 		};
 				
 		Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);

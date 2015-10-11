@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinSensorPolling
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 11.10.2015
 //
 // # Description: Time between sensor readings configuration window
 //

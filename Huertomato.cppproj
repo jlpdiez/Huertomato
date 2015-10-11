@@ -224,14 +224,12 @@ build.mcu=atmega2560
 build.f_cpu=16000000L
 build.core=arduino
 build.variant=mega
-runtime.ide.path=C:\arduino-1.0.5-r2
-build.system.path=C:\arduino-1.0.5-r2\hardware\arduino\system
-runtime.ide.version=101
+runtime.ide.path=C:\Program Files (x86)\Arduino
+build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system
+runtime.ide.version=105
 originalid=mega2560
+vm.platform.root.path=C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x
 vm.core.include=arduino.h
-vm.boardsource.path=C:\arduino-1.0.5-r2\hardware\arduino
-vm.platformname.name=avr
-build.arch=AVR
 ide.hint=Arduino 0023 and 1.0.x Ide
 ide.location.key=Arduino
 ide.location.ide.winreg=Arduino 1.0.x Application
@@ -244,7 +242,6 @@ ide.default.platform=avr
 ide.multiplatform=true
 ide.includes=arduino.h
 ide.platformswithoutpackage=true
-ide.sketchfolder.platforms.exclude=avr
 ide.includes.fallback=wprogram.h
 ide.extension=ino
 ide.extension.fallback=pde
@@ -255,7 +252,11 @@ ide.url=http://arduino.cc/en/Main/Software
 vm.debug=true
 software=ARDUINO
 ide.appid=arduino10x
-location.sketchbook=C:\Users\eNDeR\Documents\Arduino
+location.sketchbook=C:\Users\HAL\Documents\Arduino
+build.board=AVR_MEGA2560
+vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
 </arduino.board.property_bag>
         <arduino.build.mcu>atmega2560</arduino.build.mcu>
         <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
@@ -426,14 +427,12 @@ build.mcu=atmega2560
 build.f_cpu=16000000L
 build.core=arduino
 build.variant=mega
-runtime.ide.path=C:\arduino-1.0.5-r2
-build.system.path=C:\arduino-1.0.5-r2\hardware\arduino\system
-runtime.ide.version=101
+runtime.ide.path=C:\Program Files (x86)\Arduino
+build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system
+runtime.ide.version=105
 originalid=mega2560
+vm.platform.root.path=C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x
 vm.core.include=arduino.h
-vm.boardsource.path=C:\arduino-1.0.5-r2\hardware\arduino
-vm.platformname.name=avr
-build.arch=AVR
 ide.hint=Arduino 0023 and 1.0.x Ide
 ide.location.key=Arduino
 ide.location.ide.winreg=Arduino 1.0.x Application
@@ -446,7 +445,6 @@ ide.default.platform=avr
 ide.multiplatform=true
 ide.includes=arduino.h
 ide.platformswithoutpackage=true
-ide.sketchfolder.platforms.exclude=avr
 ide.includes.fallback=wprogram.h
 ide.extension=ino
 ide.extension.fallback=pde
@@ -457,7 +455,11 @@ ide.url=http://arduino.cc/en/Main/Software
 vm.debug=true
 software=ARDUINO
 ide.appid=arduino10x
-location.sketchbook=C:\Users\eNDeR\Documents\Arduino
+location.sketchbook=C:\Users\HAL\Documents\Arduino
+build.board=AVR_MEGA2560
+vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino
+vm.platformname.name=avr
+build.arch=AVR
 </arduino.board.property_bag>
         <arduino.build.mcu>atmega2560</arduino.build.mcu>
         <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
@@ -514,6 +516,12 @@ location.sketchbook=C:\Users\eNDeR\Documents\Arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinControllerMenu.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinControllerMenuTwo.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinControllerMenuTwo.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinEcAlarms.cpp">

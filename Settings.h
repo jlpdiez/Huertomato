@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.3
+// # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 15.01.2015
+// # Date       : 11.10.2015
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -59,7 +59,8 @@ class Settings {
 		SDhour,
 		SDminute,
 		Sound,
-		Leds,
+		Led,
+		Celsius,
 		SerialDebug,
 		ReservoirModule,
 		NextWhour,
@@ -101,7 +102,8 @@ class Settings {
     boolean setSDhour(const uint8_t);
     boolean setSDminute(const uint8_t);
     boolean setSound(const boolean);
-	boolean setLeds(const boolean);
+	boolean setLed(const boolean);
+	boolean setCelsius(const boolean);
     boolean setSerialDebug(const boolean);
 	boolean setReservoirModule(const boolean);
     
@@ -138,7 +140,8 @@ class Settings {
     uint8_t getSDhour() const;
     uint8_t getSDminute() const;
     boolean getSound() const;
-	boolean getLeds() const;
+	boolean getLed() const;
+	boolean getCelsius() const;
     boolean getSerialDebug() const;
 	boolean getReservoirModule() const;
     
@@ -196,7 +199,9 @@ class Settings {
     //Sound toggle
     boolean _sound;
 	//Leds toggle
-	boolean _leds;
+	boolean _led;
+	//Celsius toggle
+	boolean _celsius;
     //Serial Debugging
     boolean _serialDebug;
 	//Module present
@@ -244,7 +249,8 @@ class Settings {
     int _addressSDhour;
     int _addressSDminute;
     int _addressSound;
-	int _addressLeds;
+	int _addressLed;
+	int _addressCelsius;
     int _addressSerialDebug;
 	int _addressLightThreshold;
 	int _addressReservoirModule;

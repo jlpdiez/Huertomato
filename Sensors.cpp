@@ -214,10 +214,13 @@ uint16_t Sensors::light() {
 }
 
 
-//Returns temp in Celsius
+//Returns temp
 float Sensors::temp() {
 	temperature.requestTemperatures();
-	return temperature.getTempCByIndex(0);
+	if (_settings->getCelsius())
+		return temperature.getTempCByIndex(0);
+	else
+		return temperature.getTempFByIndex(0);
 }
 
 //Returns humidity percentage (-1 for error)

@@ -79,6 +79,9 @@ void GUI::updateScreen(Window::Screen newScreen) {
 		case Window::ControllerSettings:
 			_window = new WinControllerMenu(_lcd,_touch,_sensors,_settings);
 			break;
+		case Window::ControllerSettingsTwo:
+			_window = new WinControllerMenuTwo(_lcd,_touch,_sensors,_settings);
+			break;
 		case Window::TimeDate:
 			_window = new WinTime(_lcd,_touch,_sensors,_settings);
 			break;

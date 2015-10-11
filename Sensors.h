@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.7
+// # Version    : 1.8
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 16.01.2015
+// # Date       : 11.10.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards

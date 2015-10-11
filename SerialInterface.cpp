@@ -140,7 +140,11 @@ void SerialInterface::commandStatus() {
 		Serial << F("> Date: ") << ((d<10)?"0":"") << d << F("/") << ((mo<10)?"0":"") << mo << F("/") << y << endl;
 		Serial << F("> Time: ") << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s << endl;
 		Serial << F("> Available memory: ") << mem << F(" bytes") << endl;
-		Serial << F("> Temp: ") << sensors.getTemp() << F("C") << endl;
+		Serial << F("> Temp: ") << sensors.getTemp();
+		if (settings.getCelsius())
+			Serial << F("C") << endl;
+		else
+			Serial << F("F") << endl;
 		Serial << F("> Humidity: ") << sensors.getHumidity() << F("%") << endl;
 		Serial << F("> Light level: ") << sensors.getLight() << F("lux") << endl;
 		if (settings.getReservoirModule()) {
@@ -244,6 +248,10 @@ Settings::Setting SerialInterface::interpretSetting(char* keyword) {
 		return Settings::WateringPlants;
 	else if (strcmp_P(keyword,settingsNames[25]) == 0)
 		return Settings::AlarmTriggered;
+	else if (strcmp_P(keyword,settingsNames[26]) == 0)
+		return Settings::Led;
+	else if (strcmp_P(keyword,settingsNames[27]) == 0)
+		return Settings::Celsius;
 	//Word unrecognised
 	else
 		return Settings::None;
@@ -433,6 +441,12 @@ void SerialInterface::getSetting(Settings::Setting sett) {
 				break;
 			case Settings::AlarmTriggered:
 				Serial << pmChar(lineDeco) << pmChar(settingsNames[25]) << pmChar(textSeparator) << settings.getAlarmTriggered() << endl;
+				break;
+			case Settings::Led:
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[26]) << pmChar(textSeparator) << settings.getLed() << endl;
+				break;
+			case Settings::Celsius:
+				Serial << pmChar(lineDeco) << pmChar(settingsNames[27]) << pmChar(textSeparator) << settings.getCelsius() << endl;
 				break;
 		}
 		Serial << endl;
@@ -676,6 +690,22 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::Sound:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSound(true) : settings.setSound(false);
+				printLn(doneTxt);
+			} else
+				printLn(boolTxt);
+			break;
+			
+		case Settings::Led:
+			if (isBoolean(arg)) {
+				(getBoolean(arg)) ? settings.setLed(true) : settings.setLed(false);
+				printLn(doneTxt);
+			} else
+				printLn(boolTxt);
+			break;
+			
+		case Settings::Celsius:
+			if (isBoolean(arg)) {
+				(getBoolean(arg)) ? settings.setCelsius(true) : settings.setCelsius(false);
 				printLn(doneTxt);
 			} else
 				printLn(boolTxt);
