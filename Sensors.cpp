@@ -352,10 +352,12 @@ void Sensors::setPHten() {
 
 //Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
 void Sensors::adjustPHtemp() {
-	if ((_temp != 0) && (!_calibratingPh)) {
+	float tempt = temperature.getTempCByIndex(0);
+	Serial.print(tempt);
+	if ((tempt != 0) && (!_calibratingPh)) {
 		//Convert temp from float to char*
 		char tempArray[4];
-		dtostrf(_temp,4,2,tempArray);
+		dtostrf(tempt,4,2,tempArray);
 		String command = (String)tempArray + "\r";
 		Serial2.print(command);
 	}
@@ -418,10 +420,12 @@ void Sensors::setECtenThousand() {
 
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
 void Sensors::adjustECtemp() {
-	if ((_temp != 0) && (!_calibratingEc)) {
+	float tempt = temperature.getTempCByIndex(0);
+	Serial.print(tempt);
+	if ((tempt != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];
-		dtostrf(_temp,4,2,tempArray);
+		dtostrf(tempt,4,2,tempArray);
 		String command = (String)tempArray + ",C\r";
 		Serial1.print(command);
 	}

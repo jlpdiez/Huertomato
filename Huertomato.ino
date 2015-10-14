@@ -243,10 +243,10 @@ void setupAlarms() {
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
 	//Every 10min we adjust pH & EC circuit readings to temperature
-	if (settings.getReservoirModule()) {
+	/*if (settings.getReservoirModule()) {
 		Alarm.timerOnce(0,10,0,adjustECtemp);
 		Alarm.timerOnce(0,10,0,adjustPHtemp);
-	}
+	}*/
 }
 
 //Sets watering timer or starts continuous water

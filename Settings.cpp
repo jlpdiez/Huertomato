@@ -178,7 +178,7 @@ void Settings::setDefault() {
 	EEPROM.updateByte(_addressCelsius,1);
 	EEPROM.updateByte(_addressSerialDebug,1);
 	EEPROM.updateInt(_addressLightThreshold,30);
-	EEPROM.updateByte(_addressReservoirModule,0);
+	EEPROM.updateByte(_addressReservoirModule,1);
 	EEPROM.updateInt(_addressMaxWaterLvl,16);
 	EEPROM.updateInt(_addressMinWaterLvl,50);
 	EEPROM.updateByte(_addressPumpProtection,0);
