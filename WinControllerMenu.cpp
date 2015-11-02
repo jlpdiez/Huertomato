@@ -27,9 +27,29 @@ Window::Screen WinControllerMenu::getType() const {
 	return Window::ControllerSettings;
 }
 
+void WinControllerMenu::printToggles() {
+	_lcd->setFont(hallfetica_normal);
+	//LED ON/OFF
+	if (_ledActive)
+		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[1]),_yFiveLines+_bigFontSize*_yFactor5lines*1);
+	else
+		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[1]),_yFiveLines+_bigFontSize*_yFactor5lines*1);
+	//Sound ON/OFF
+	if (_soundActive)
+		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[2]),_yFiveLines+_bigFontSize*_yFactor5lines*2);
+	else
+		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[2]),_yFiveLines+_bigFontSize*_yFactor5lines*2);
+	//Units C/F
+	if (_celsiusActive)
+		_lcd->print(pmChar(celsStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[3]),_yFiveLines+_bigFontSize*_yFactor5lines*3);
+	else
+		_lcd->print(pmChar(farenhStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[3]),_yFiveLines+_bigFontSize*_yFactor5lines*3);
+}
+
 void WinControllerMenu::print() {
 	_soundActive = _settings->getSound();
-	_serialActive = _settings->getSerialDebug();
+	_ledActive = _settings->getLed();
+	_celsiusActive = _settings->getCelsius();
 	
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setBackColor(VGA_WHITE);
@@ -40,18 +60,7 @@ void WinControllerMenu::print() {
 		_lcd->print(pmChar(bulletStr),_xMenu,_yFiveLines+_bigFontSize*_yFactor5lines*i);
 		_controllerButtons[i + _nFlowButtons] = _buttons.addButton(_xMenu+_bigFontSize*2,_yFiveLines+_bigFontSize*_yFactor5lines*i,(char*)pgm_read_word(&controllerButtonText[i]));
 	}
-	
-	_lcd->setFont(hallfetica_normal);
-	//Sound ON/OFF
-	if (_soundActive)
-		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[_nFlowButtons]),_yFiveLines+_bigFontSize*_yFactor5lines*3);
-	else
-		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[_nFlowButtons]),_yFiveLines+_bigFontSize*_yFactor5lines*3);
-	//Serial Debug ON/OFF
-	if (_serialActive)
-		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[_nFlowButtons+1]),_yFiveLines+_bigFontSize*_yFactor5lines*4);
-	else
-		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[_nFlowButtons+1]),_yFiveLines+_bigFontSize*_yFactor5lines*4);
+	printToggles();
 }
 
 //Draws entire screen Controller Settings
@@ -69,17 +78,7 @@ void WinControllerMenu::draw() {
 void WinControllerMenu::update() {
 	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
 	_lcd->setFont(hallfetica_normal);
-	
-	//Sound ON/OFF
-	if (_soundActive)
-		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[3]),_yFiveLines+_bigFontSize*2*3);
-	else
-		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[3]),_yFiveLines+_bigFontSize*2*3);
-	//Serial Debug ON/OFF
-	if (_serialActive)
-		_lcd->print(pmChar(onStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[4]),_yFiveLines+_bigFontSize*2*4);
-	else
-		_lcd->print(pmChar(offStr),_xMenu+_bigFontSize*2+_bigFontSize*strlen_P(controllerButtonText[4]),_yFiveLines+_bigFontSize*2*4);
+	printToggles();
 }
 
 Window::Screen WinControllerMenu::processTouch(const int x, const int y) {
@@ -93,22 +92,23 @@ Window::Screen WinControllerMenu::processTouch(const int x, const int y) {
 	//Time & Date
 	else if (buttonIndex == _controllerButtons[3]) 
 		return TimeDate;
-	//Sensor polling
-	else if (buttonIndex == _controllerButtons[4]) 
-		return SensorPolling;
-	//SD Card
-	else if (buttonIndex == _controllerButtons[5]) 
-		return SDCard;
-	//Sound toggle
-	else if (buttonIndex == _controllerButtons[6]) {
+	//LED
+	else if (buttonIndex == _controllerButtons[4]) {
+		_ledActive = !_ledActive;
+		_settings->setLed(_ledActive);
+		update();
+	//Sound
+	} else if (buttonIndex == _controllerButtons[5]) {
 		_soundActive = !_soundActive;
 		_settings->setSound(_soundActive);
 		update();
-	//Serial debug toggle
-	} else if (buttonIndex == _controllerButtons[7]) {
-		_serialActive = !_serialActive;
-		_settings->setSerialDebug(_serialActive);
+	//Unit
+	} else if (buttonIndex == _controllerButtons[6]) {
+		_celsiusActive = !_celsiusActive;
+		_settings->setCelsius(_celsiusActive);
 		update();
-	}
+	//More
+	} else if (buttonIndex == _controllerButtons[7])
+		return ControllerSettingsTwo;
 	return None;
 }

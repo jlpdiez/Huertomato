@@ -1,12 +1,12 @@
 // #############################################################################
 //
-// # Name       : WinControllerMenu
-// # Version    : 1.3
+// # Name       : WinControllerMenuTwo
+// # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 11.10.2015
 //
-// # Description: Controller settings menu
+// # Description: Controller settings menu part two
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,44 +24,37 @@
 // #############################################################################
 
 
-#ifndef WINCONTROLLERMENU_H_
-#define WINCONTROLLERMENU_H_
+#ifndef WINCONTROLLERMENUTWO_H_
+#define WINCONTROLLERMENUTWO_H_
 
 #include "Window.h"
  
-const char nameWinControllerMenu[] PROGMEM = "Controller Settings";
+const char nameWinControllerMenuTwo[] PROGMEM = "Controller Settings";
 
-const char controllerStr0[] PROGMEM = "Time & Date";
-const char controllerStr1[] PROGMEM = "LED:";
-const char controllerStr2[] PROGMEM = "Sound:";
-const char controllerStr3[] PROGMEM = "T. Unit:";
-const char controllerStr4[] PROGMEM = "More";
-const char* const controllerButtonText[] PROGMEM = { controllerStr0, controllerStr1, controllerStr2,
-	controllerStr3, controllerStr4 };
+const char controller2Str0[] PROGMEM = "SD Card";
+const char controller2Str1[] PROGMEM = "Sensor Polling";
+const char controller2Str2[] PROGMEM = "Serial Debugging:";
+const char* const controllerButtonTextTwo[] PROGMEM = { controller2Str0, controller2Str1, controller2Str2 };
 
-class WinControllerMenu: public Window {
+class WinControllerMenuTwo: public Window {
 	public:
-		WinControllerMenu(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
-		WinControllerMenu(const WinControllerMenu &other);
-		WinControllerMenu& operator=(const WinControllerMenu &other);
-		~WinControllerMenu();
+		WinControllerMenuTwo(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		WinControllerMenuTwo(const WinControllerMenuTwo &other);
+		WinControllerMenuTwo& operator=(const WinControllerMenuTwo &other);
+		~WinControllerMenuTwo();
 		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(const int x, const int y);
 	
 	protected:
-		static const uint8_t _nControllerButtons = _nFlowButtons + 5;
-		int8_t _controllerButtons[_nControllerButtons];
+		static const uint8_t _nControllerButtonsTwo = _nFlowButtons + 3;
+		int8_t _controllerButtonsTwo[_nControllerButtonsTwo];
 		//These are temp variables used for displaying data
 		//They are read from _settings in print() funcs. Changed in processTouch()
 		//displayed again with update() and saved to eeprom when button save is pressed
-		//LED toggle
-		boolean _ledActive;
-		//Sound toggle
-		boolean _soundActive;
-		//Units toggle
-		boolean _celsiusActive;
+		//Serial toggle
+		boolean _serialActive;
 		void print();
 		void printToggles();
 };

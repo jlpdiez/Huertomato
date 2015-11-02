@@ -87,7 +87,10 @@ void WinMainScreen::printInfoReservoir() {
 	int y = ySpacer+(_bigFontSize+8);
 	_lcd->print(pmChar(sensorTextStr1),x,y);
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
-	_lcd->print(pmChar(tempUnit),xSpacer-_bigFontSize,y);
+	if (_settings->getCelsius())
+		_lcd->print(pmChar(tempUnitC),xSpacer-_bigFontSize,y);
+	else
+		_lcd->print(pmChar(tempUnitF),xSpacer-_bigFontSize,y);
 	//Light
 	x = xSpacer-(_bigFontSize*(11 + strlen_P(lightUnit)));
 	y = ySpacer+(_bigFontSize+8)*2;
@@ -189,7 +192,10 @@ void WinMainScreen::printInfoNoModule() {
 	int x = xSpacer-(_bigFontSize*(strlen_P(sensorTextStr1)+7));
 	_lcd->print(pmChar(sensorTextStr1),x,y);
 	_lcd->printNumF(_sensors->getTemp(),2,xSpacer-_bigFontSize*6,y,'.',5);
-	_lcd->print(pmChar(tempUnit),xSpacer-_bigFontSize,y);
+	if (_settings->getCelsius())
+		_lcd->print(pmChar(tempUnitC),xSpacer-_bigFontSize,y);
+	else
+		_lcd->print(pmChar(tempUnitF),xSpacer-_bigFontSize,y);
 	//Light
 	x = xSpacer-(_bigFontSize*(11 + strlen_P(lightUnit)));
 	y +=  _bigFontSize + 45;

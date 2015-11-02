@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SerialComms
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 09.01.2015
+// # Date       : 11.10.2015
 //
 // # Description: Class in charge of attending communication with input serial commands
 // # Works at 115200. Commands must end with a carriage return to work properly.
@@ -118,13 +118,16 @@ const char settingsNameStr22[] PROGMEM = "NextWminute";
 const char settingsNameStr23[] PROGMEM = "NightWateringStopped";
 const char settingsNameStr24[] PROGMEM = "WateringPlants";
 const char settingsNameStr25[] PROGMEM = "AlarmTriggered";
-static const int nSettings = 26;
+const char settingsNameStr26[] PROGMEM = "Led";
+const char settingsNameStr27[] PROGMEM = "Celsius";
+
+static const int nSettings = 28;
 const char* const settingsNames[] PROGMEM = { settingsNameStr0, settingsNameStr1, settingsNameStr2,
 	settingsNameStr3, settingsNameStr4, settingsNameStr5, settingsNameStr6, settingsNameStr7,
 	settingsNameStr8, settingsNameStr9, settingsNameStr10, settingsNameStr11, settingsNameStr12,
 	settingsNameStr13, settingsNameStr14, settingsNameStr15, settingsNameStr16, settingsNameStr17,
 	settingsNameStr18, settingsNameStr19, settingsNameStr20, settingsNameStr21, settingsNameStr22,
-	settingsNameStr23, settingsNameStr24, settingsNameStr25 };
+	settingsNameStr23, settingsNameStr24, settingsNameStr25, settingsNameStr26, settingsNameStr27 };
 
 //This makes things static so we can use SerialCommand.addCommand("str",function)
 extern Settings settings;

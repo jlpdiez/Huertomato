@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.4.4
+// # Version    : 1.5.0
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 04.03.2015
+// # Date       : 11.10.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -48,6 +48,7 @@
 #include "Window.h"
 #include "WinAlarms.h"
 #include "WinControllerMenu.h"
+#include "WinControllerMenuTwo.h"
 #include "WinEcAlarms.h"
 #include "WinEcCalib.h"
 #include "WinLvlAlarms.h"
@@ -82,7 +83,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.44;
+const float versionNumber = 1.5;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -242,10 +243,10 @@ void setupAlarms() {
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
 	//Every 10min we adjust pH & EC circuit readings to temperature
-	if (settings.getReservoirModule()) {
+	/*if (settings.getReservoirModule()) {
 		Alarm.timerOnce(0,10,0,adjustECtemp);
 		Alarm.timerOnce(0,10,0,adjustPHtemp);
-	}
+	}*/
 }
 
 //Sets watering timer or starts continuous water
@@ -332,15 +333,18 @@ void loop() {
 // *********************************************
 //Checks system status and updates led color if needed
 void checkLed() {
-	//Timed mode & watering
-	if (settings.getWateringPlants() && settings.getWaterTimed())
-		led.setColour(BLUE);
-	//Alarm triggered
-	else if (settings.getAlarmTriggered() || settings.getPumpProtected())
-		led.setColour(RED);
-	//Normal operation
-	else
-		led.setColour(GREEN);
+	if (settings.getLed()) {
+		//Timed mode & watering
+		if (settings.getWateringPlants() && settings.getWaterTimed())
+			led.setColour(BLUE);
+		//Alarm triggered
+		else if (settings.getAlarmTriggered() || settings.getPumpProtected())
+			led.setColour(RED);
+		//Normal operation
+		else
+			led.setColour(GREEN);
+	} else 
+		led.setOff();
 }
 
 //Checks if pump protection has been activated - System will stop watering if it has!

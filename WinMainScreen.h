@@ -47,7 +47,8 @@ const char logoPath[] PROGMEM = "/PICTURE/logo126.RAW";
 const char alarmPath[] PROGMEM = "/PICTURE/alarm126.RAW";
 //Misc texts
 const char htmtTxt[] PROGMEM = "Huertomato";
-const char tempUnit[] PROGMEM = "C";
+const char tempUnitC[] PROGMEM = "C";
+const char tempUnitF[] PROGMEM = "F";
 const char lightUnit[] PROGMEM = "Lux";
 const char ecUnit[] PROGMEM = "uS";
 //Status strings
