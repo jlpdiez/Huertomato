@@ -38,6 +38,8 @@
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 
 #include "Sensors.h"
+#include "Sensor.h"
+#include "SensorLight.h"
 #include "Settings.h"
 #include "RGBled.h"
 #include "Buttons.h"

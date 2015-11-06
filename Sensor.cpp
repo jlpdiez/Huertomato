@@ -24,6 +24,6 @@ const Sensor& Sensor::operator=(const Sensor &other) {
 //Destructor
 Sensor::~Sensor() {}
 
-const Sensor::SensName Sensor::getType() const {
+Sensor::SensName Sensor::getType() const {
  	return Sensor::None;
 }
