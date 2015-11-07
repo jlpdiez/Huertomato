@@ -1,10 +1,3 @@
-/*
- * Sensor.cpp
- *
- * Created: 11/6/2015 7:29:16 PM
- *  Author: HAL
- */ 
-
 #include "Sensor.h"
 
 //Constructors

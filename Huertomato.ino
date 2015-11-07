@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.0
+// # Version    : 1.5.1
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 07.11.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -39,7 +39,12 @@
 
 #include "Sensors.h"
 #include "Sensor.h"
+#include "SensorEC.h"
+#include "SensorHumid.h"
 #include "SensorLight.h"
+#include "SensorPH.h"
+#include "SensorTemp.h"
+#include "SensorWater.h"
 #include "Settings.h"
 #include "RGBled.h"
 #include "Buttons.h"

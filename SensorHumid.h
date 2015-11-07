@@ -1,12 +1,12 @@
 // #############################################################################
 //
-// # Name       : SensorLight
+// # Name       : SensorHumid
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 07.11.2015
 //
-// # Description: Photoresistor light sensor class
+// # Description: DHT11 humidity sensor class
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -23,37 +23,11 @@
 //
 // #############################################################################
 
+#ifndef SENSORHUMID_H_
+#define SENSORHUMID_H_
 
-#ifndef SENSORLIGHT_H_
-#define SENSORLIGHT_H_
 
-#include "Sensor.h"
 
-//extern const uint8_t lightIn;
 
-class SensorLight: public Sensor {
-	public:
-		SensorLight(Settings *settings, const int pin);
-		SensorLight(const SensorLight&);
-		SensorLight& operator=(const SensorLight&);
-		~SensorLight();
-		
-		SensName getType() const;
-		void init();
-		void update();
-		void fastUpdate();
-		uint16_t get() const;
-		uint16_t getRaw() const;
-		
-	protected:
-		//Smoothing counter
-		uint8_t _iSample;
-		//Data array
-		uint16_t _lights[_numSamples];
-		//Value post-smoothing
-		uint16_t _light;
-		
-		void smooth();
-};
 
 #endif

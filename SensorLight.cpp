@@ -1,9 +1,3 @@
-/*
- * SensorLight.cpp
- *
- * Created: 11/6/2015 6:29:20 PM
- *  Author: HAL
- */ 
 #include "SensorLight.h"
 
 SensorLight::SensorLight(Settings *settings, const int pin)
