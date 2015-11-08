@@ -14,6 +14,7 @@ SensorLight::SensorLight(const SensorLight &other) : Sensor(other) {
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_lights[i] = other._lights[i];
 	}
+	_light = other._light;
 }
 
 SensorLight& SensorLight::operator =(const SensorLight &other) {
@@ -23,6 +24,7 @@ SensorLight& SensorLight::operator =(const SensorLight &other) {
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_lights[i] = other._lights[i];
 	}
+	_light = other._light;
 	return *this;
 }
 

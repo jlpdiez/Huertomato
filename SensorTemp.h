@@ -29,9 +29,11 @@
 
 #include "Sensor.h"
 
+extern DallasTemperature temperature;
+
 class SensorTemp: public Sensor {
 	public:
-		SensorTemp(Settings *settings, const int pin);
+		SensorTemp(Settings *settings, const int pin = 0);
 		SensorTemp(const SensorTemp&);
 		SensorTemp& operator=(const SensorTemp&);
 		~SensorTemp();

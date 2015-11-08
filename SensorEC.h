@@ -41,6 +41,7 @@ class SensorEC: public Sensor {
 		void update();
 		void fastUpdate();
 		uint16_t get() const;
+		//Returns EC in uSiemens. Reading takes 1000ms
 		uint16_t getRaw() const;
 		//Test
 		boolean ecOffRange();

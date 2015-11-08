@@ -30,7 +30,7 @@
 
 class SensorWater: public Sensor {
 	public:
-		SensorWater(Settings *settings, const int pin);
+		SensorWater(Settings *settings, const int pinTrigger, const int pinEcho);
 		SensorWater(const SensorWater&);
 		SensorWater& operator=(const SensorWater&);
 		~SensorWater();
@@ -45,6 +45,8 @@ class SensorWater: public Sensor {
 		boolean lvlOffRange();
 	
 	protected:
+		int _pinTrigger;
+		int _pinEcho;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array

@@ -40,6 +40,7 @@ class SensorPH: public Sensor {
 		void update();
 		void fastUpdate();
 		float get() const;
+		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
 		//Test
 		boolean phOffRange();
@@ -63,7 +64,7 @@ class SensorPH: public Sensor {
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
-		float _temps[_numSamples];
+		float _phs[_numSamples];
 		//Value post-smoothing
 		float _ph;
 	
