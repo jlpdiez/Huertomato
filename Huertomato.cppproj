@@ -493,13 +493,55 @@ build.arch=AVR
     <Compile Include="Buttons.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Graphic.h">
+    <Compile Include="Sensor.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorEC.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorEC.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorHumid.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorHumid.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorLight.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorLight.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorPH.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorPH.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorTemp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorTemp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorWater.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SensorWater.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SerialInterface.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SerialInterface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Visual Micro\.Huertomato.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">

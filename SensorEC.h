@@ -44,19 +44,19 @@ class SensorEC: public Sensor {
 		//Returns EC in uSiemens. Reading takes 1000ms
 		uint16_t getRaw() const;
 		//This should be set while calibrating to prevent messing up circuits if update() called
-		void calibratingEC(boolean c);
+		void calibrating(boolean c);
 		//EC circuit commands
-		void resetEC();
-		void getECinfo();
-		void setECled(boolean);
-		void setECcontinuous();
-		void setECstandby();
-		void setECprobeType();
-		void setECdry();
-		void setECtenThousand();
-		void setECfortyThousand();
-		//Adjusts EC sensor readings to temperature
-		void adjustECtemp();
+		void reset();
+		void getInfo();
+		void setLed(boolean);
+		void setContinuous();
+		void setStandby();
+		void setProbeType();
+		void setDry();
+		void setTenThousand();
+		void setFortyThousand();
+		//Adjusts EC sensor readings to given temperature
+		void adjustTemp(float);
 	
 	protected:
 		//Stops EC routine if sensor is being calibrated

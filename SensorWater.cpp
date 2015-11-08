@@ -3,6 +3,8 @@
 SensorWater::SensorWater(const int pinTrigger, const int pinEcho)
 : Sensor(0), _pinTrigger(pinTrigger), _pinEcho(pinEcho) {
 	
+	_max = 255;
+	_min = 0;
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_waterLevels[i] = 0;
@@ -42,49 +44,28 @@ void SensorWater::init() {
 	pinMode(_pinEcho, INPUT);
 }
 
+//Max and min should be set before calling this
 void SensorWater::update() {
-	//if (_settings->getReservoirModule()) {
-		_waterLevels[_iSample] = getRaw();
-		_iSample++;
-		if (_iSample >= _numSamples)
-		_iSample = 0;
-		smooth();
-	//}
+	_waterLevels[_iSample] = getPercent();
+	_iSample++;
+	if (_iSample >= _numSamples)
+	_iSample = 0;
+	smooth();
 }
 
 void SensorWater::fastUpdate() {
-	//if (_settings->getReservoirModule()) {
-		uint8_t w = getRaw();
-		for (uint8_t i = 0; i < _numSamples; i++) {
-			_waterLevels[i] = w;
-		}
-		smooth();
-	//}
-
+	uint8_t w = getPercent();
+	for (uint8_t i = 0; i < _numSamples; i++) {
+		_waterLevels[i] = w;
+	}
+	smooth();
 }
 
 uint8_t SensorWater::get() const {
 	return _waterLevel;
 }
 
-/** PROBLEM! - Normal and raw differ!
-//Returns water reservoir % level
-uint8_t Sensors::waterLevel() {
-	int duration, distance;
-	digitalWrite(waterTrigger, LOW);
-	delayMicroseconds(2);
-	digitalWrite(waterTrigger, HIGH);
-	delayMicroseconds(5);
-	digitalWrite(waterTrigger, LOW);
-	//Calc duration. Timeout of half second
-	duration = pulseIn(waterEcho, HIGH,500000);
-	distance = (duration / 29) / 2;
-	//Serial << "Distance: " << distance << endl;
-	distance = constrain(distance, _settings->getMaxWaterLvl(), _settings->getMinWaterLvl());
-	return map(distance, _settings->getMaxWaterLvl(), _settings->getMinWaterLvl(), 100, 0);
-}
-**/
-
+//Returns raw distance in cm
 uint8_t SensorWater::getRaw() const {
 	digitalWrite(_pinTrigger, LOW);
 	delayMicroseconds(2);
@@ -95,11 +76,29 @@ uint8_t SensorWater::getRaw() const {
 	return (pulseIn(_pinEcho, HIGH) / 29) / 2;
 }
 
-/*boolean SensorWater::lvlOffRange() {
-	if (_waterLevel < _settings->getWaterAlarm())
-		return true;
-	return false;
-}*/
+//Returns water reservoir % level
+uint8_t SensorWater::getPercent() const {
+	int duration, distance;
+	digitalWrite(waterTrigger, LOW);
+	delayMicroseconds(2);
+	digitalWrite(waterTrigger, HIGH);
+	delayMicroseconds(5);
+	digitalWrite(waterTrigger, LOW);
+	//Calc duration. Timeout of half second
+	duration = pulseIn(waterEcho, HIGH,500000);
+	distance = (duration / 29) / 2;
+	//Serial << "Distance: " << distance << endl;
+	distance = constrain(distance, _max, _min);
+	return map(distance, _max, _min, 100, 0);
+}
+
+void SensorWater::setMax(uint16_t max) {
+	_max = max;
+}
+
+void SensorWater::setMin(uint16_t min) {
+	_min = min;
+}
 
 void SensorWater::smooth() {
 	uint8_t res = 0;

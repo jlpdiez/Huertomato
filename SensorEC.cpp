@@ -46,24 +46,19 @@ void SensorEC::init() {
 }
 
 void SensorEC::update() {
-	//if (_settings->getReservoirModule()) {
-		_ecs[_iSample] = getRaw();
-		_iSample++;
-		if (_iSample >= _numSamples)
+	_ecs[_iSample] = getRaw();
+	_iSample++;
+	if (_iSample >= _numSamples)
 		_iSample = 0;
-		smooth();
-	//}
+	smooth();
 }
 
 void SensorEC::fastUpdate() {
-	//if (_settings->getReservoirModule()) {
-		uint16_t e = getRaw();
-		for (uint8_t i = 0; i < _numSamples; i++) {
-			_ecs[i] = e;
-		}
-		smooth();
-	//}
-
+	uint16_t e = getRaw();
+	for (uint8_t i = 0; i < _numSamples; i++) {
+		_ecs[i] = e;
+	}
+	smooth();
 }
 
 uint16_t SensorEC::get() const {
@@ -88,12 +83,12 @@ uint16_t SensorEC::getRaw() const {
 }
 
 //This should be set while calibrating to prevent messing up circuits if update() called
-void SensorEC::calibratingEC(boolean c) {
+void SensorEC::calibrating(boolean c) {
 	_calibratingEc = c;
 }
 
 //TODO: Fix Serial logic
-void SensorEC::resetEC() {
+void SensorEC::reset() {
 	clearECbuffer();
 	Serial1.print("X\r");
 	//Give time for reset
@@ -101,57 +96,54 @@ void SensorEC::resetEC() {
 	//ecToSerial();
 }
 
-void SensorEC::getECinfo() {
+void SensorEC::getInfo() {
 	clearECbuffer();
 	Serial1.print("I\r");
 	delay(1450);
 	//ecToSerial();	
 }
 
-void SensorEC::setECled(boolean state) {
+void SensorEC::setLed(boolean state) {
 	if (state)
 		Serial1.print("L1\r");
 	else
 		Serial1.print("L0\r");	
 }
 
-void SensorEC::setECcontinuous() {
+void SensorEC::setContinuous() {
 	Serial1.print("C\r");	
 }
 
-void SensorEC::setECstandby() {
+void SensorEC::setStandby() {
 	Serial1.print("E\r");	
 }
 
-void SensorEC::setECprobeType() {
+void SensorEC::setProbeType() {
 	Serial1.print("P,2\r");
 	//if (_settings->getSerialDebug())
 	//	Serial.println("k1.0");
 }
 
-void SensorEC::setECdry() {
+void SensorEC::setDry() {
 	Serial1.print("Z0\r");
 // 	if (_settings->getSerialDebug())
 // 		Serial.println("dry cal");	
 }
 
-void SensorEC::setECtenThousand() {
+void SensorEC::setTenThousand() {
 	Serial1.print("Z10\r");
 // 	if (_settings->getSerialDebug())
 // 		Serial.println("10,500 uS cal");
 }
 
-void SensorEC::setECfortyThousand() {
+void SensorEC::setFortyThousand() {
 	Serial1.print("Z40\r");
 // 	if (_settings->getSerialDebug())
 // 		Serial.println("40,000 uS cal");
 }
 
-//TODO: Breaks encapsulation using temperature!!!
-//Adjusts EC sensor readings to temperature
-void SensorEC::adjustECtemp() {
-	float tempt = temperature.getTempCByIndex(0);
-	//Serial.print(tempt);
+//Adjusts EC sensor readings to given temperature
+void SensorEC::adjustTemp(float tempt) {
 	if ((tempt != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];

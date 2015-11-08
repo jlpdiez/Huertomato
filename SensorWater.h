@@ -41,12 +41,16 @@ class SensorWater: public Sensor {
 		void fastUpdate();
 		uint8_t get() const;
 		uint8_t getRaw() const;
-		//Test
-		//boolean lvlOffRange();
+		uint8_t getPercent() const;
+		void setMax(uint16_t);
+		void setMin(uint16_t);
 	
 	protected:
 		int _pinTrigger;
 		int _pinEcho;
+		//Holds min and max distance to get percent
+		uint16_t _max;
+		uint16_t _min;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array

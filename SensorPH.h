@@ -43,18 +43,18 @@ class SensorPH: public Sensor {
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
 		//This should be set while calibrating to prevent messing up circuits if update() called
-		void calibratingPH(boolean c);
+		void calibrating(boolean c);
 		//pH circuit commands
-		void resetPH();
-		void getPHinfo();
-		void setPHled(boolean);
-		void setPHcontinuous();
-		void setPHstandby();
-		void setPHfour();
-		void setPHseven();
-		void setPHten();
-		//Adjust pH readings to temperature
-		void adjustPHtemp();
+		void reset();
+		void getInfo();
+		void setLed(boolean);
+		void setContinuous();
+		void setStandby();
+		void setFour();
+		void setSeven();
+		void setTen();
+		//Adjust pH readings to given temperature
+		void adjustTemp(float);
 	
 	protected:
 		//Stops pH routine if sensor is being calibrated
@@ -69,7 +69,7 @@ class SensorPH: public Sensor {
 		void smooth();
 		
 		//Clear incoming buffer
-		void clearPHbuffer();
+		void clearBuffer();
 		//Output pH circuit's response to serial
 		void phToSerial();
 };

@@ -45,7 +45,6 @@
 // 18 & 19 are Serial1 Tx,Rx used for EC circuit
 extern const uint8_t humidIn;
 extern const uint8_t lightIn;
-extern const uint8_t tempIn;
 extern const uint8_t waterEcho;
 extern const uint8_t waterTrigger;
 
@@ -65,7 +64,7 @@ class Sensors {
 		Level
 	};
     //Constructors
-    Sensors(Settings *_settings);
+    Sensors(Settings *settings);
 	Sensors(const Sensors &other);
 	Sensors& operator=(const Sensors &other);
 	//Destructor
@@ -77,10 +76,13 @@ class Sensors {
     uint16_t getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
+	//Sets different modes
+	void setSerialDbg(boolean);
+	void setReservoir(boolean);
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
-	//Tests
+	//Tests - True if sensor value is off range
 	boolean ecOffRange();
 	boolean phOffRange();
 	boolean lvlOffRange();
@@ -117,14 +119,20 @@ class Sensors {
 	void adjustECtemp();
 
   private:
-	const Sensor *_sensores[6];
 	Settings *_settings;
-	//To stop EC & pH routines if sensors are being calibrated
-	boolean _calibratingPh;
-	boolean _calibratingEc;
 	
-    //Smoothes readings
-    void smoothSensorReadings();
+	SensorEC _ec;
+	SensorHumid _humidity;
+	SensorLight _light;
+	SensorPH _ph;
+	SensorTemp _temp;
+	SensorWater _water;
+	
+	//Keeps track of things internally
+	boolean _serialDbg;
+	boolean _reservoir;
+	boolean _celsius;
+
     //These poll hardware and return sensor info
     uint16_t light();
     float temp();
@@ -133,17 +141,17 @@ class Sensors {
     float ph();
     uint16_t ec();
 	
-	//Clears incoming buffers
-	void clearPHbuffer();
-	void clearECbuffer();
-	//Output EC circuit's response to serial
-	void ecToSerial();
-	void phToSerial();
+// 	//Clears incoming buffers
+// 	void clearPHbuffer();
+// 	void clearECbuffer();
+// 	//Output EC circuit's response to serial
+// 	void ecToSerial();
+// 	void phToSerial();
 	
 	// Used for smoothing sensor data.  The higher the number,
 	// the more the readings will be smoothed, but the slower the variables will
 	// respond to the input.
-	static const uint8_t _numSamples = 10;
+	/*static const uint8_t _numSamples = 10;
     //Smoothing counter
     uint8_t _iSample;
     //Contain sensor data pre-smoothing
@@ -159,7 +167,7 @@ class Sensors {
     uint8_t _humidity;
     uint16_t _ec;
     float _ph;
-    uint8_t _waterLevel;
+    uint8_t _waterLevel;*/
 };
 
 #endif
