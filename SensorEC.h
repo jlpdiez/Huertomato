@@ -31,7 +31,7 @@
 
 class SensorEC: public Sensor {
 	public:
-		SensorEC(Settings *settings, const int pin);
+		SensorEC(const int pin = 0);
 		SensorEC(const SensorEC&);
 		SensorEC& operator=(const SensorEC&);
 		~SensorEC();
@@ -44,7 +44,7 @@ class SensorEC: public Sensor {
 		//Returns EC in uSiemens. Reading takes 1000ms
 		uint16_t getRaw() const;
 		//Test
-		boolean ecOffRange();
+		//boolean ecOffRange();
 		//EC circuit commands
 		void resetEC();
 		void getECinfo();

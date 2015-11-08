@@ -30,10 +30,10 @@
 #include "Sensor.h"
 
 extern DallasTemperature temperature;
-
+//TODO: Externally setCelsius should be called to change mode
 class SensorTemp: public Sensor {
 	public:
-		SensorTemp(Settings *settings, const int pin = 0);
+		SensorTemp(const int pin = 0);
 		SensorTemp(const SensorTemp&);
 		SensorTemp& operator=(const SensorTemp&);
 		~SensorTemp();
@@ -44,8 +44,11 @@ class SensorTemp: public Sensor {
 		void fastUpdate();
 		float get() const;
 		float getRaw() const;
+		void setCelsius(boolean);
 	
 	protected:
+		//Celsius mode if true
+		boolean _celss;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array

@@ -1,7 +1,7 @@
 #include "SensorLight.h"
 
-SensorLight::SensorLight(Settings *settings, const int pin)
-: Sensor(settings,pin) {
+SensorLight::SensorLight(const int pin)
+: Sensor(pin) {
 	
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -18,7 +18,6 @@ SensorLight::SensorLight(const SensorLight &other) : Sensor(other) {
 }
 
 SensorLight& SensorLight::operator =(const SensorLight &other) {
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {

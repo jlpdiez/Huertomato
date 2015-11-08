@@ -1,7 +1,7 @@
 #include "SensorTemp.h"
 
-SensorTemp::SensorTemp(Settings *settings, const int pin)
-: Sensor(settings,pin) {
+SensorTemp::SensorTemp(const int pin)
+: Sensor(pin) {
 	
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -18,7 +18,6 @@ SensorTemp::SensorTemp(const SensorTemp &other) : Sensor(other) {
 }
 
 SensorTemp& SensorTemp::operator =(const SensorTemp &other) {
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -62,10 +61,16 @@ float SensorTemp::get() const {
 
 float SensorTemp::getRaw() const {
 	temperature.requestTemperatures();
-	if (_settings->getCelsius())
+	if (_celss)
 		return temperature.getTempCByIndex(0);
 	else
 		return temperature.getTempFByIndex(0);
+}
+
+void SensorTemp::setCelsius(boolean cel) {
+	_celss = cel;
+	//Fast refresh readings
+	fastUpdate();
 }
 
 void SensorTemp::smooth() {

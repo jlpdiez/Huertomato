@@ -30,7 +30,7 @@
 
 class SensorPH: public Sensor {
 	public:
-		SensorPH(Settings *settings, const int pin);
+		SensorPH(const int pin = 0);
 		SensorPH(const SensorPH&);
 		SensorPH& operator=(const SensorPH&);
 		~SensorPH();
@@ -43,7 +43,7 @@ class SensorPH: public Sensor {
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
 		//Test
-		boolean phOffRange();
+		//boolean phOffRange();
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibratingPH(boolean c);
 		//pH circuit commands

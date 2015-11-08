@@ -1,7 +1,7 @@
 #include "SensorPH.h"
 
-SensorPH::SensorPH(Settings *settings, const int pin)
-: Sensor(settings,pin) {
+SensorPH::SensorPH(const int pin)
+: Sensor(pin) {
 	
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -18,7 +18,6 @@ SensorPH::SensorPH(const SensorPH &other) : Sensor(other) {
 }
 
 SensorPH& SensorPH::operator =(const SensorPH &other) {
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -44,23 +43,23 @@ void SensorPH::init() {
 }
 
 void SensorPH::update() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		_phs[_iSample] = getRaw();
 		_iSample++;
 		if (_iSample >= _numSamples)
-		_iSample = 0;
+			_iSample = 0;
 		smooth();
-	}
+	//}
 }
 
 void SensorPH::fastUpdate() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		float p = getRaw();
 		for (uint8_t i = 0; i < _numSamples; i++) {
 			_phs[i] = p;
 		}
 		smooth();
-	}
+	//}
 
 }
 
@@ -84,11 +83,11 @@ float SensorPH::getRaw() const {
 	return _ph;
 }
 
-boolean SensorPH::phOffRange() {
+/*boolean SensorPH::phOffRange() {
 	if ((_ph < _settings->getPHalarmDown()) || (_ph > _settings->getPHalarmUp()))
 		return true;
 	return false;
-}
+}*/
 
 /** TO DO
 //This should be set while calibrating to prevent messing up circuits if update() called

@@ -2,8 +2,8 @@
 
 #include "SensorLight.h"
 
-SensorEC::SensorEC(Settings *settings, const int pin)
-: Sensor(settings,pin) {
+SensorEC::SensorEC(const int pin)
+: Sensor(pin) {
 
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -22,7 +22,6 @@ SensorEC::SensorEC(const SensorEC &other) : Sensor(other) {
 }
 
 SensorEC& SensorEC::operator =(const SensorEC &other) {
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -47,23 +46,23 @@ void SensorEC::init() {
 }
 
 void SensorEC::update() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		_ecs[_iSample] = getRaw();
 		_iSample++;
 		if (_iSample >= _numSamples)
 		_iSample = 0;
 		smooth();
-	}
+	//}
 }
 
 void SensorEC::fastUpdate() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		uint16_t e = getRaw();
 		for (uint8_t i = 0; i < _numSamples; i++) {
 			_ecs[i] = e;
 		}
 		smooth();
-	}
+	//}
 
 }
 
@@ -88,11 +87,11 @@ uint16_t SensorEC::getRaw() const {
 	return _ec;
 }
 
-boolean SensorEC::ecOffRange() {
+/*boolean SensorEC::ecOffRange() {
 	if ((_ec < _settings->getECalarmDown()) || (_ec > _settings->getECalarmUp()))
 		return true;
 	return false;
-}
+}*/
 
 /** TO DO:
 void resetEC();

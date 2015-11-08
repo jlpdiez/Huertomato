@@ -1,7 +1,7 @@
 #include "SensorHumid.h"
 
-SensorHumid::SensorHumid(Settings *settings, const int pin)
-: Sensor(settings,pin) {
+SensorHumid::SensorHumid(const int pin)
+: Sensor(pin) {
 	
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -18,7 +18,6 @@ SensorHumid::SensorHumid(const SensorHumid &other) : Sensor(other) {
 }
 
 SensorHumid& SensorHumid::operator =(const SensorHumid &other) {
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {

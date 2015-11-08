@@ -59,7 +59,7 @@ class Sensor {
 			Level
 		};
 		//Constructors
-		Sensor(Settings *_settings, const int pin);
+		Sensor(const int pin);
 		Sensor(const Sensor&);
 		const Sensor& operator=(const Sensor&);
 		//Destructor
@@ -97,8 +97,6 @@ class Sensor {
 		
 		//Smooth reading, update _value
 		virtual void smooth() = 0;
-	
-		Settings *_settings;
 };
 
 #endif

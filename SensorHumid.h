@@ -32,7 +32,7 @@ extern dht11 DHT11;
 
 class SensorHumid: public Sensor {
 	public:
-		SensorHumid(Settings *settings, const int pin);
+		SensorHumid(const int pin);
 		SensorHumid(const SensorHumid&);
 		SensorHumid& operator=(const SensorHumid&);
 		~SensorHumid();

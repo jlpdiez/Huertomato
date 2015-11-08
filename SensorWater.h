@@ -30,7 +30,7 @@
 
 class SensorWater: public Sensor {
 	public:
-		SensorWater(Settings *settings, const int pinTrigger, const int pinEcho);
+		SensorWater(const int pinTrigger, const int pinEcho);
 		SensorWater(const SensorWater&);
 		SensorWater& operator=(const SensorWater&);
 		~SensorWater();
@@ -42,7 +42,7 @@ class SensorWater: public Sensor {
 		uint8_t get() const;
 		uint8_t getRaw() const;
 		//Test
-		boolean lvlOffRange();
+		//boolean lvlOffRange();
 	
 	protected:
 		int _pinTrigger;

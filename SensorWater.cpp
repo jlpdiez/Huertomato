@@ -1,7 +1,7 @@
 #include "SensorWater.h"
 
-SensorWater::SensorWater(Settings *settings, const int pinTrigger, const int pinEcho)
-: Sensor(settings,0), _pinTrigger(pinTrigger), _pinEcho(pinEcho) {
+SensorWater::SensorWater(const int pinTrigger, const int pinEcho)
+: Sensor(0), _pinTrigger(pinTrigger), _pinEcho(pinEcho) {
 	
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -22,7 +22,6 @@ SensorWater::SensorWater(const SensorWater &other) : Sensor(other) {
 SensorWater& SensorWater::operator =(const SensorWater &other) {
 	_pinTrigger = other._pinTrigger;
 	_pinEcho = other._pinEcho;
-	_settings = other._settings;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
@@ -44,23 +43,23 @@ void SensorWater::init() {
 }
 
 void SensorWater::update() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		_waterLevels[_iSample] = getRaw();
 		_iSample++;
 		if (_iSample >= _numSamples)
 		_iSample = 0;
 		smooth();
-	}
+	//}
 }
 
 void SensorWater::fastUpdate() {
-	if (_settings->getReservoirModule()) {
+	//if (_settings->getReservoirModule()) {
 		uint8_t w = getRaw();
 		for (uint8_t i = 0; i < _numSamples; i++) {
 			_waterLevels[i] = w;
 		}
 		smooth();
-	}
+	//}
 
 }
 
@@ -96,11 +95,11 @@ uint8_t SensorWater::getRaw() const {
 	return (pulseIn(_pinEcho, HIGH) / 29) / 2;
 }
 
-boolean SensorWater::lvlOffRange() {
+/*boolean SensorWater::lvlOffRange() {
 	if (_waterLevel < _settings->getWaterAlarm())
 		return true;
 	return false;
-}
+}*/
 
 void SensorWater::smooth() {
 	uint8_t res = 0;

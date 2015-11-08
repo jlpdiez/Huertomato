@@ -33,7 +33,7 @@
 
 class SensorLight: public Sensor {
 	public:
-		SensorLight(Settings *settings, const int pin);
+		SensorLight(const int pin);
 		SensorLight(const SensorLight&);
 		SensorLight& operator=(const SensorLight&);
 		~SensorLight();
