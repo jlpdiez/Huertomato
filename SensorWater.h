@@ -26,8 +26,34 @@
 #ifndef SENSORWATER_H_
 #define SENSORWATER_H_
 
+#include "Sensor.h"
 
-
+class SensorWater: public Sensor {
+	public:
+		SensorWater(Settings *settings, const int pin);
+		SensorWater(const SensorWater&);
+		SensorWater& operator=(const SensorWater&);
+		~SensorWater();
+		
+		SensName getType() const;
+		void init();
+		void update();
+		void fastUpdate();
+		uint8_t get() const;
+		uint8_t getRaw() const;
+		//Test
+		boolean lvlOffRange();
+	
+	protected:
+		//Smoothing counter
+		uint8_t _iSample;
+		//Data array
+		uint8_t _waterLevels[_numSamples];
+		//Value post-smoothing
+		uint8_t _waterLevel;
+	
+		void smooth();
+};
 
 
 #endif

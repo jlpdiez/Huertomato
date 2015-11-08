@@ -26,8 +26,31 @@
 #ifndef SENSORHUMID_H_
 #define SENSORHUMID_H_
 
+#include "Sensor.h"
 
-
-
+class SensorHumid: public Sensor {
+	public:
+		SensorHumid(Settings *settings, const int pin);
+		SensorHumid(const SensorHumid&);
+		SensorHumid& operator=(const SensorHumid&);
+		~SensorHumid();
+	
+		SensName getType() const;
+		void init();
+		void update();
+		void fastUpdate();
+		uint8_t get() const;
+		uint8_t getRaw() const;
+	
+	protected:
+		//Smoothing counter
+		uint8_t _iSample;
+		//Data array
+		uint8_t _humidities[_numSamples];
+		//Value post-smoothing
+		uint8_t _humidity;
+	
+		void smooth();
+};
 
 #endif

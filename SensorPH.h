@@ -26,8 +26,53 @@
 #ifndef SENSORPH_H_
 #define SENSORPH_H_
 
+#include "Sensor.h"
 
-
-
+class SensorPH: public Sensor {
+	public:
+		SensorPH(Settings *settings, const int pin);
+		SensorPH(const SensorPH&);
+		SensorPH& operator=(const SensorPH&);
+		~SensorPH();
+	
+		SensName getType() const;
+		void init();
+		void update();
+		void fastUpdate();
+		float get() const;
+		float getRaw() const;
+		//Test
+		boolean phOffRange();
+		//This should be set while calibrating to prevent messing up circuits if update() called
+		void calibratingPH(boolean c);
+		//pH circuit commands
+		void resetPH();
+		void getPHinfo();
+		void setPHled(boolean);
+		void setPHcontinuous();
+		void setPHstandby();
+		void setPHfour();
+		void setPHseven();
+		void setPHten();
+		//Adjust pH readings to temperature
+		void adjustPHtemp();
+	
+	protected:
+		//Stops pH routine if sensor is being calibrated
+		boolean _calibratingPh;
+		//Smoothing counter
+		uint8_t _iSample;
+		//Data array
+		float _temps[_numSamples];
+		//Value post-smoothing
+		float _ph;
+	
+		void smooth();
+		
+		//Clear incoming buffer
+		void clearPHbuffer();
+		//Output pH circuit's response to serial
+		void phToSerial();
+};
 
 #endif

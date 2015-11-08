@@ -27,8 +27,55 @@
 #ifndef SENSOREC_H_
 #define SENSOREC_H_
 
+#include "Sensor.h"
 
-
-
+class SensorEC: public Sensor {
+	public:
+		SensorEC(Settings *settings, const int pin);
+		SensorEC(const SensorEC&);
+		SensorEC& operator=(const SensorEC&);
+		~SensorEC();
+	
+		SensName getType() const;
+		void init();
+		void update();
+		void fastUpdate();
+		uint16_t get() const;
+		uint16_t getRaw() const;
+		//Test
+		boolean ecOffRange();
+		//EC circuit commands
+		void resetEC();
+		void getECinfo();
+		void setECled(boolean);
+		void setECcontinuous();
+		void setECstandby();
+		void setECprobeType();
+		void setECdry();
+		void setECtenThousand();
+		void setECfortyThousand();
+		//Adjusts EC sensor readings to temperature
+		void adjustECtemp();
+		//This should be set while calibrating to prevent messing up circuits if update() called
+		void calibratingEC(boolean c);
+	
+	protected:
+		//Stops EC routine if sensor is being calibrated
+		boolean _calibratingEc;
+		//Smoothing counter
+		uint8_t _iSample;
+		//Data array
+		uint16_t _ecs[_numSamples];
+		//Value post-smoothing
+		uint16_t _ec;
+	
+		void smooth();
+		
+		//Clears incoming buffers
+		void clearECbuffer();
+		//Output EC circuit's response to serial
+		void ecToSerial();
+	
+};
 
 #endif

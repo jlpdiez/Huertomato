@@ -27,8 +27,31 @@
 #ifndef SENSORTEMP_H_
 #define SENSORTEMP_H_
 
+#include "Sensor.h"
 
-
-
+class SensorTemp: public Sensor {
+	public:
+		SensorTemp(Settings *settings, const int pin);
+		SensorTemp(const SensorTemp&);
+		SensorTemp& operator=(const SensorTemp&);
+		~SensorTemp();
+	
+		SensName getType() const;
+		void init();
+		void update();
+		void fastUpdate();
+		float get() const;
+		float getRaw() const;
+	
+	protected:
+		//Smoothing counter
+		uint8_t _iSample;
+		//Data array
+		float _temps[_numSamples];
+		//Value post-smoothing
+		float _temp;
+	
+		void smooth();
+};
 
 #endif
