@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.4
+// # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 08.11.2015
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -29,6 +29,8 @@
 
 #include <Arduino.h>
 #include <EEPROMEx.h>
+#include <Time.h>
+#include <DS1307RTC.h>
 
 extern EEPROMClassEx EEPROM;
 
@@ -160,6 +162,11 @@ class Settings {
 	boolean sensorPollingChanged();
 	boolean serialDebugChanged();
 	boolean moduleChanged();
+	
+	//Updates RTC internal time
+	//Breaks encapsulation as it uses RTC object directly 
+	//Needed for it to be called both by GUI and main .ino
+	void setRTCtime(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int);
        
   private:
 	void setEEPROMaddresses();

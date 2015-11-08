@@ -28,11 +28,17 @@
 #define SENSORS_H
 
 #include "Settings.h"
+#include "Sensor.h"
+#include "SensorEC.h"
+#include "SensorHumid.h"
+#include "SensorLight.h"
+#include "SensorPH.h"
+#include "SensorTemp.h"
+#include "SensorWater.h"
 #include <Arduino.h>
 #include <DHT11.h>
 #include <DallasTemperature.h>
-#include <DS1307RTC.h>
-#include <Time.h>
+
 
 //Pin numbers
 // 16 & 17 are Serial2 Tx,Rx used for pH circuit
@@ -109,10 +115,9 @@ class Sensors {
 	void setECfortyThousand();
 	//Adjusts EC sensor readings to temperature
 	void adjustECtemp();
-	//RTC adjustment
-	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
   private:
+	const Sensor *_sensores[6];
 	Settings *_settings;
 	//To stop EC & pH routines if sensors are being calibrated
 	boolean _calibratingPh;

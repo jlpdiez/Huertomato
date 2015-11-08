@@ -134,7 +134,7 @@ Window::Screen WinTime::processTouch(const int x, const int y) {
 		return ControllerSettings;
 	//Save
 	else if (buttonIndex == _timeButtons[1]) {
-		_sensors->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
+		_settings->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == _timeButtons[2]) 
