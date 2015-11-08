@@ -376,6 +376,29 @@ void checkPump() {
 	}
 }
 
+//These are true if sensor value is off range
+boolean checkPH() {
+	if ((sensors.getPH() < settings.getPHalarmDown()) || (sensors.getPH() > settings.getPHalarmUp())) {
+		return true;
+	}
+	return false;
+}
+
+boolean checkEC() {
+	if ((sensors.getEC() < settings.getECalarmDown()) 
+		|| (sensors.getEC() > settings.getECalarmUp())) {
+		return true;
+	}
+	return false;
+}
+
+boolean checkLvl() {
+	if (sensors.getWaterLevel() < settings.getWaterAlarm()) {
+		return true;
+	}
+	return false;
+}
+
 //Checks if any alarm has been triggered and changes alarm setting if needed
 //Also starts timer for alarm serial messages if option enabled
 //and checks if buzzer has to beep to signal user
@@ -383,7 +406,7 @@ void checkAlarms() {
 	if (settings.getReservoirModule()) {
 		//Only activate if not already done and something off range
 		if ((!settings.getAlarmTriggered()) 
-			&& (sensors.ecOffRange() || sensors.phOffRange() || sensors.lvlOffRange())) {
+			&& (checkEC() || checkPH() || checkLvl())) {
 				settings.setAlarmTriggered(true);
 				if (settings.getSerialDebug()) {
 					printAlarm();
@@ -391,7 +414,7 @@ void checkAlarms() {
 				}
 		//Theres an alarm triggered but everything is ok
 		} else if ((settings.getAlarmTriggered()) 
-			&& (!sensors.ecOffRange() && !sensors.phOffRange() && !sensors.lvlOffRange())) {		
+			&& (!checkEC() && !checkPH() && !checkLvl())) {		
 				settings.setAlarmTriggered(false);
 				stopSerialAlarmTimer();
 				if (settings.getSerialDebug())
