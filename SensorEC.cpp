@@ -87,27 +87,79 @@ uint16_t SensorEC::getRaw() const {
 	return _ec;
 }
 
-/*boolean SensorEC::ecOffRange() {
-	if ((_ec < _settings->getECalarmDown()) || (_ec > _settings->getECalarmUp()))
-		return true;
-	return false;
-}*/
-
-/** TO DO:
-void resetEC();
-void getECinfo();
-void setECled(boolean);
-void setECcontinuous();
-void setECstandby();
-void setECprobeType();
-void setECdry();
-void setECtenThousand();
-void setECfortyThousand();
-//Adjusts EC sensor readings to temperature
-void adjustECtemp();
 //This should be set while calibrating to prevent messing up circuits if update() called
-void calibratingEC(boolean c);
-*/
+void SensorEC::calibratingEC(boolean c) {
+	_calibratingEc = c;
+}
+
+//TODO: Fix Serial logic
+void SensorEC::resetEC() {
+	clearECbuffer();
+	Serial1.print("X\r");
+	//Give time for reset
+	delay(2750);
+	//ecToSerial();
+}
+
+void SensorEC::getECinfo() {
+	clearECbuffer();
+	Serial1.print("I\r");
+	delay(1450);
+	//ecToSerial();	
+}
+
+void SensorEC::setECled(boolean state) {
+	if (state)
+		Serial1.print("L1\r");
+	else
+		Serial1.print("L0\r");	
+}
+
+void SensorEC::setECcontinuous() {
+	Serial1.print("C\r");	
+}
+
+void SensorEC::setECstandby() {
+	Serial1.print("E\r");	
+}
+
+void SensorEC::setECprobeType() {
+	Serial1.print("P,2\r");
+	//if (_settings->getSerialDebug())
+	//	Serial.println("k1.0");
+}
+
+void SensorEC::setECdry() {
+	Serial1.print("Z0\r");
+// 	if (_settings->getSerialDebug())
+// 		Serial.println("dry cal");	
+}
+
+void SensorEC::setECtenThousand() {
+	Serial1.print("Z10\r");
+// 	if (_settings->getSerialDebug())
+// 		Serial.println("10,500 uS cal");
+}
+
+void SensorEC::setECfortyThousand() {
+	Serial1.print("Z40\r");
+// 	if (_settings->getSerialDebug())
+// 		Serial.println("40,000 uS cal");
+}
+
+//TODO: Breaks encapsulation using temperature!!!
+//Adjusts EC sensor readings to temperature
+void SensorEC::adjustECtemp() {
+	float tempt = temperature.getTempCByIndex(0);
+	//Serial.print(tempt);
+	if ((tempt != 0) && (!_calibratingEc)) {
+		//Convert temp from float to char*
+		char tempArray[4];
+		dtostrf(tempt,4,2,tempArray);
+		String command = (String)tempArray + ",C\r";
+		Serial1.print(command);
+	}
+}
 
 void SensorEC::smooth() {
 	uint16_t res = 0;
@@ -115,9 +167,29 @@ void SensorEC::smooth() {
 	_ec = (uint16_t)(res / _numSamples);
 }
 
-/** TO DO
+
 //Clears incoming buffers
-void clearECbuffer();
+void SensorEC::clearECbuffer() {
+	while (Serial1.available() > 0)
+		Serial1.read();	
+}
+
+//TODO: Reimplement
 //Output EC circuit's response to serial
-void ecToSerial();
-*/
+void SensorEC::ecToSerial() {
+	/*if (_settings->getSerialDebug()) {
+		if (Serial1.available() > 0) {
+			String sensorString = "";
+			sensorString.reserve(30);
+			//Read data from sensor
+			char inchar;
+			while (Serial1.peek() != '\r') {
+				inchar = (char)Serial1.read();
+				sensorString += inchar;
+			}
+			//Discard <CR>
+			Serial1.read();
+			Serial.println(sensorString);
+		}
+	}*/
+}

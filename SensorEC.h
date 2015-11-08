@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.11.2015
+// # Date       : 08.11.2015
 //
 // # Description: Atlas Scientific EC sensor class
 //
@@ -28,7 +28,7 @@
 #define SENSOREC_H_
 
 #include "Sensor.h"
-
+//TODO: Resolve what to do to output serial debug!
 class SensorEC: public Sensor {
 	public:
 		SensorEC(const int pin = 0);
@@ -43,8 +43,8 @@ class SensorEC: public Sensor {
 		uint16_t get() const;
 		//Returns EC in uSiemens. Reading takes 1000ms
 		uint16_t getRaw() const;
-		//Test
-		//boolean ecOffRange();
+		//This should be set while calibrating to prevent messing up circuits if update() called
+		void calibratingEC(boolean c);
 		//EC circuit commands
 		void resetEC();
 		void getECinfo();
@@ -57,8 +57,6 @@ class SensorEC: public Sensor {
 		void setECfortyThousand();
 		//Adjusts EC sensor readings to temperature
 		void adjustECtemp();
-		//This should be set while calibrating to prevent messing up circuits if update() called
-		void calibratingEC(boolean c);
 	
 	protected:
 		//Stops EC routine if sensor is being calibrated

@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.11.2015
+// # Date       : 08.11.2015
 //
 // # Description: Atlas scientific pH sensor class
 //
@@ -42,8 +42,6 @@ class SensorPH: public Sensor {
 		float get() const;
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
-		//Test
-		//boolean phOffRange();
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibratingPH(boolean c);
 		//pH circuit commands

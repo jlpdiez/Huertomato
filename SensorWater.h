@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.11.2015
+// # Date       : 08.11.2015
 //
 // # Description: HC-SR04 sonar sensor class
 //

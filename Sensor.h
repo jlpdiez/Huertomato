@@ -4,7 +4,7 @@
 // # Version    : 1.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.11.2015
+// # Date       : 08.11.2015
 //
 // # Description: Main sensor class.
 //
@@ -83,6 +83,9 @@ class Sensor {
 		// the more the readings will be smoothed, but the slower the variables will
 		// respond to the input.
 		static const uint8_t _numSamples = 10;
+		//To keep track of things internally?
+		//boolean _serialDbg;
+		//boolean _reservoir;
 		//Smoothing counter
 		//uint8_t _iSample;
 		//Contain sensor data pre-smoothing

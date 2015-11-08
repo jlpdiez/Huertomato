@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.1
+// # Version    : 1.5.2
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.11.2015
+// # Date       : 08.11.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -221,7 +221,7 @@ void setupRTC() {
 	int m = minute(t);
 	if ((timeStatus() == timeSet) && (d == 1) && (mo == 1) && (y = 2000)) {
 		//This prevents a bug when time resets and then loops 00:00 - 00:05
-		sensors.setRTCtime(10,10,10,10,10,2010);
+		setRTCtime(10,10,10,10,10,2010);
 		ui.timeStamp(rtcResetTxt);
 	} else if (timeStatus() == timeSet)
 		ui.timeStamp(rtcInitOkTxt);
@@ -695,4 +695,19 @@ void stopWatering() {
 	digitalWrite(waterPump, LOW);
 	settings.setWateringPlants(false);
 	ui.timeStamp(waterStopTxt);
+}
+
+//Updates RTC internal time
+void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y) {
+	tmElements_t t;
+	t.Hour = h;
+	t.Minute = m;
+	t.Second = s;
+	t.Day = d;
+	t.Month = mo;
+	//year argument is offset from 1970
+	t.Year = y - 1970;
+	time_t time = makeTime(t);
+	setTime(time);
+	RTC.set(time);
 }
