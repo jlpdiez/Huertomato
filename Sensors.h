@@ -133,41 +133,6 @@ class Sensors {
 	boolean _reservoir;
 	boolean _celsius;
 
-    //These poll hardware and return sensor info
-    uint16_t light();
-    float temp();
-    uint8_t humidity();
-    uint8_t waterLevel();
-    float ph();
-    uint16_t ec();
-	
-// 	//Clears incoming buffers
-// 	void clearPHbuffer();
-// 	void clearECbuffer();
-// 	//Output EC circuit's response to serial
-// 	void ecToSerial();
-// 	void phToSerial();
-	
-	// Used for smoothing sensor data.  The higher the number,
-	// the more the readings will be smoothed, but the slower the variables will
-	// respond to the input.
-	/*static const uint8_t _numSamples = 10;
-    //Smoothing counter
-    uint8_t _iSample;
-    //Contain sensor data pre-smoothing
-    float _temps[_numSamples];
-    uint16_t _lights[_numSamples]; 
-    uint8_t _humidities[_numSamples];
-    uint16_t _ecs[_numSamples];
-    float _phs[_numSamples];
-    uint8_t _waterLevels[_numSamples];
-    //Contain sensor values post smoothing
-    float _temp;
-    uint16_t _light;
-    uint8_t _humidity;
-    uint16_t _ec;
-    float _ph;
-    uint8_t _waterLevel;*/
 };
 
 #endif
