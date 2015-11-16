@@ -90,7 +90,7 @@ void SensorPH::reset() {
 	Serial2.print("X\r");
 	//Leave some time for circuit reset and for data to be received
 	delay(100);
-	//phToSerial();	
+	phToSerial();	
 }
 
 void SensorPH::getInfo() {
@@ -98,7 +98,7 @@ void SensorPH::getInfo() {
 	Serial2.print("I\r");
 	//Leave some time for data to be received
 	delay(10);
-	//phToSerial();
+	phToSerial();
 }
 
 void SensorPH::setLed(boolean state) {

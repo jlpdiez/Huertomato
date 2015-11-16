@@ -79,13 +79,13 @@ uint8_t SensorWater::getRaw() const {
 //Returns water reservoir % level
 uint8_t SensorWater::getPercent() const {
 	int duration, distance;
-	digitalWrite(waterTrigger, LOW);
+	digitalWrite(_pinTrigger, LOW);
 	delayMicroseconds(2);
-	digitalWrite(waterTrigger, HIGH);
+	digitalWrite(_pinTrigger, HIGH);
 	delayMicroseconds(5);
-	digitalWrite(waterTrigger, LOW);
+	digitalWrite(_pinTrigger, LOW);
 	//Calc duration. Timeout of half second
-	duration = pulseIn(waterEcho, HIGH,500000);
+	duration = pulseIn(_pinEcho, HIGH,500000);
 	distance = (duration / 29) / 2;
 	//Serial << "Distance: " << distance << endl;
 	distance = constrain(distance, _max, _min);

@@ -59,7 +59,7 @@ uint8_t SensorHumid::get() const {
 }
 
 uint8_t SensorHumid::getRaw() const {
-	if (DHT11.read(humidIn) == DHTLIB_OK)
+	if (DHT11.read(_pin) == DHTLIB_OK)
 		return DHT11.humidity;
 	else
 		return 0;
