@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SensorTemp
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 17.11.2015
 //
 // # Description: DS18B20 temperature sensor class
 //
@@ -30,7 +30,7 @@
 #include "Sensor.h"
 
 extern DallasTemperature temperature;
-//TODO: Externally setCelsius should be called to change mode
+
 class SensorTemp: public Sensor {
 	public:
 		SensorTemp(const int pin = 0);

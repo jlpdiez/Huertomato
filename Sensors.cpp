@@ -6,7 +6,6 @@ Sensors::Sensors(Settings *settings)
 	
 	_serialDbg = _settings->getSerialDebug();
 	_reservoir = _settings->getReservoirModule();
-	_celsius = _settings->getCelsius();
 	
 	_ec.init();
 	_humidity.init();
@@ -31,7 +30,6 @@ Sensors::Sensors(const Sensors &other)
 	_water = other._water;
 	_serialDbg = other._serialDbg;
 	_reservoir = other._reservoir;
-	_celsius = other._celsius;
 }
 
 Sensors& Sensors::operator=(const Sensors &other) {
@@ -43,7 +41,6 @@ Sensors& Sensors::operator=(const Sensors &other) {
 	_water = other._water;
 	_serialDbg = other._serialDbg;
 	_reservoir = other._reservoir;
-	_celsius = other._celsius;
 		
 	return *this;	
 }
@@ -83,6 +80,15 @@ uint16_t Sensors::getRawWaterLevel() {
 //Returns light in lux
 uint16_t Sensors::getRawLightLevel() {
 	_light.getRaw();
+}
+
+void Sensors::setSerialDebug(boolean d) {
+	_serialDbg = d;
+}
+
+void Sensors::setReservoir(boolean r) {
+	_reservoir = r;
+	fastUpdate();
 }
 
 boolean Sensors::ecOffRange() {

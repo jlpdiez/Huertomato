@@ -118,6 +118,7 @@ Window::Screen WinReservoir::processTouch(const int x, const int y) {
 	else if (buttonIndex == _reservoirButtons[3]) {
 		_reservoirActive = !_reservoirActive;
 		_settings->setReservoirModule(_reservoirActive);
+		_sensors->setReservoir(_reservoirActive);
 		update();
 	} else if (buttonIndex == _reservoirButtons[4])
 		return Alarms;

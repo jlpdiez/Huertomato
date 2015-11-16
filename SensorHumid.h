@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SensorHumid
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 17.11.2015
 //
 // # Description: DHT11 humidity sensor class
 //

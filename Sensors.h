@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.8
+// # Version    : 1.9
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 17.10.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -40,18 +40,16 @@
 #include <DallasTemperature.h>
 
 
-//Pin numbers
-// 16 & 17 are Serial2 Tx,Rx used for pH circuit
-// 18 & 19 are Serial1 Tx,Rx used for EC circuit
+//Pin numbers are previously declared in Huertomato.ino
 extern const uint8_t humidIn;
 extern const uint8_t lightIn;
 extern const uint8_t waterEcho;
 extern const uint8_t waterTrigger;
 
-extern DallasTemperature temperature;
-extern dht11 DHT11;
+// extern DallasTemperature temperature;
+// extern dht11 DHT11;
 
-//Class that handles sensor reading & smoothing
+//Contains all other instances of sensor classes
 class Sensors {
   public:
 	enum Sensor {
@@ -77,8 +75,8 @@ class Sensors {
     float getPH() const;
     uint8_t getWaterLevel() const;
 	//Sets different modes
-	//void setSerialDbg(boolean);
-	//void setReservoir(boolean);
+	void setSerialDebug(boolean);
+	void setReservoir(boolean);
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
@@ -133,7 +131,6 @@ class Sensors {
 	//Keeps track of things internally
 	boolean _serialDbg;
 	boolean _reservoir;
-	boolean _celsius;
 
 };
 

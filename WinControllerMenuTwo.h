@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinControllerMenuTwo
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 17.11.2015
 //
 // # Description: Controller settings menu part two
 //
