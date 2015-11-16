@@ -2,7 +2,7 @@
 
 SensorTemp::SensorTemp(const int pin)
 : Sensor(pin) {
-	
+	_celss = true;
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_temps[i] = 0;
@@ -10,6 +10,7 @@ SensorTemp::SensorTemp(const int pin)
 }
 
 SensorTemp::SensorTemp(const SensorTemp &other) : Sensor(other) {
+	_celss = other._celss;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
@@ -19,6 +20,7 @@ SensorTemp::SensorTemp(const SensorTemp &other) : Sensor(other) {
 
 SensorTemp& SensorTemp::operator =(const SensorTemp &other) {
 	_pin = other._pin;
+	_celss = other._celss;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_temps[i] = other._temps[i];
@@ -67,9 +69,9 @@ float SensorTemp::getRaw() const {
 		return temperature.getTempFByIndex(0);
 }
 
+//Changes units celsius/fahrenheit
 void SensorTemp::setCelsius(boolean cel) {
 	_celss = cel;
-	//Fast refresh readings
 	fastUpdate();
 }
 

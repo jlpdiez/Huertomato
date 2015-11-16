@@ -133,6 +133,11 @@ void Sensors::fastUpdate() {
 	}
 }
 
+//Sets temperature mode
+void Sensors::setCelsius(boolean c) {
+	_temp.setCelsius(c);
+}
+
 //This should be set while calibrating to prevent messing up circuits if update() or adjustTemp() called
 void Sensors::calibratingPH(boolean c) {
 	_ph.calibrating(c);

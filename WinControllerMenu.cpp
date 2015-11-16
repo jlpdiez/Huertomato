@@ -106,6 +106,7 @@ Window::Screen WinControllerMenu::processTouch(const int x, const int y) {
 	} else if (buttonIndex == _controllerButtons[6]) {
 		_celsiusActive = !_celsiusActive;
 		_settings->setCelsius(_celsiusActive);
+		_sensors->setCelsius(_celsiusActive);
 		update();
 	//More
 	} else if (buttonIndex == _controllerButtons[7])

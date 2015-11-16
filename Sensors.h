@@ -77,8 +77,8 @@ class Sensors {
     float getPH() const;
     uint8_t getWaterLevel() const;
 	//Sets different modes
-	void setSerialDbg(boolean);
-	void setReservoir(boolean);
+	//void setSerialDbg(boolean);
+	//void setReservoir(boolean);
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
@@ -91,9 +91,11 @@ class Sensors {
 	//Reads once from each sensor, fills the array with this measurement and smoothes
 	void fastUpdate();
 	
+	//Set temp mode. Should be called at init
+	void setCelsius(boolean);
 	//This should be set while calibrating to prevent messing up circuits if update() called
-	void calibratingPH(boolean c);
-	void calibratingEC(boolean c);
+	void calibratingPH(boolean);
+	void calibratingEC(boolean);
 	//pH circuit commands
 	void resetPH();
 	void getPHinfo();

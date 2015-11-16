@@ -202,6 +202,8 @@ void setup() {
 	pinMode(waterPump, OUTPUT);
 	setupRTC();
 	setupSD(); 
+	//Init temperature to correct units
+	sensors.setCelsius(settings.getCelsius());
 	setupAlarms();
 	setupWaterModes();
 	initMusic();
