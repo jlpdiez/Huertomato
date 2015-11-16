@@ -66,7 +66,7 @@ uint8_t SensorHumid::getRaw() const {
 }
 
 void SensorHumid::smooth() {
-	uint8_t res = 0;
+	uint16_t res = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) { res += _humidities[i]; }
 	_humidity = (uint8_t)(res / _numSamples);
 }
