@@ -160,7 +160,6 @@ const uint8_t SDCardSS = 53;
 // OBJECT DECLARATIONS
 // *********************************************
 RGBled led(redPin, greenPin, bluePin);
-dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 //TODO: Get outta here into temp sensor class
 OneWire oneWire(tempIn);

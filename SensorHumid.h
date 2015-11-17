@@ -29,8 +29,6 @@
 #include "Sensor.h"
 #include <DHT11.h>
 
-extern dht11 DHT11;
-
 class SensorHumid: public Sensor {
 	public:
 		SensorHumid(const int pin);
@@ -43,9 +41,11 @@ class SensorHumid: public Sensor {
 		void update();
 		void fastUpdate();
 		uint8_t get() const;
-		uint8_t getRaw() const;
+		uint8_t getRaw();
 	
 	protected:
+		//Library object
+		dht11 _dht11;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
