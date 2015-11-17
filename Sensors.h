@@ -35,9 +35,9 @@
 #include "SensorPH.h"
 #include "SensorTemp.h"
 #include "SensorWater.h"
-#include <Arduino.h>
-#include <DHT11.h>
-#include <DallasTemperature.h>
+//#include <Arduino.h>
+//#include <DHT11.h>
+//#include <DallasTemperature.h>
 
 
 //Pin numbers are previously declared in Huertomato.ino
@@ -45,9 +45,6 @@ extern const uint8_t humidIn;
 extern const uint8_t lightIn;
 extern const uint8_t waterEcho;
 extern const uint8_t waterTrigger;
-
-// extern DallasTemperature temperature;
-// extern dht11 DHT11;
 
 //Contains all other instances of sensor classes
 class Sensors {

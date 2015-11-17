@@ -36,6 +36,7 @@
 // # UTouch http://www.henningkarlsen.com/electronics/library.php
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
+// # New Ping for HC-SR04 http://playground.arduino.cc/Code/NewPing
 
 #include "Sensors.h"
 #include "Sensor.h"
@@ -80,6 +81,7 @@
 #include <DHT11.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <NewPing.h>
 #include <Time.h>  
 #include <TimeAlarms.h>
 #include <UTFT.h>
@@ -160,6 +162,7 @@ const uint8_t SDCardSS = 53;
 RGBled led(redPin, greenPin, bluePin);
 dht11 DHT11;
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
+//TODO: Get outta here into temp sensor class
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
 //LCD & touch

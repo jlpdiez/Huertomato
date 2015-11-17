@@ -6,14 +6,14 @@ Sensors::Sensors(Settings *settings)
 	
 	//Init reservoir status
 	_reservoir = _settings->getReservoirModule();
-	
+	boolean serialDbg = _settings->getSerialDebug();
 	//Init & config sensor instances 
 	_ec.init();
-	_ec.setSerialDebug(_settings->getSerialDebug());
+	_ec.setSerialDebug(serialDbg);
 	_humidity.init();
 	_light.init();
 	_ph.init();
-	_ph.setSerialDebug(_settings->getSerialDebug());
+	_ph.setSerialDebug(serialDbg);
 	_temp.init();
 	_temp.setCelsius(_settings->getCelsius());
 	_water.setMax(_settings->getMaxWaterLvl());

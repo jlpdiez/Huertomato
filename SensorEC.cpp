@@ -4,7 +4,7 @@
 
 SensorEC::SensorEC(const int pin)
 : Sensor(pin) {
-
+	_serialDbg = false;
 	_iSample = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_ecs[i] = 0;
@@ -13,6 +13,7 @@ SensorEC::SensorEC(const int pin)
 }
 
 SensorEC::SensorEC(const SensorEC &other) : Sensor(other) {
+	_serialDbg = other._serialDbg;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_ecs[i] = other._ecs[i];
@@ -22,6 +23,7 @@ SensorEC::SensorEC(const SensorEC &other) : Sensor(other) {
 }
 
 SensorEC& SensorEC::operator =(const SensorEC &other) {
+	_serialDbg = other._serialDbg;
 	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {

@@ -27,6 +27,7 @@
 #define SENSORHUMID_H_
 
 #include "Sensor.h"
+#include <DHT11.h>
 
 extern dht11 DHT11;
 

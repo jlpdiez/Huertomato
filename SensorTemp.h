@@ -28,6 +28,7 @@
 #define SENSORTEMP_H_
 
 #include "Sensor.h"
+#include <DallasTemperature.h>
 
 extern DallasTemperature temperature;
 

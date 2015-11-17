@@ -27,6 +27,7 @@
 #define SENSORWATER_H_
 
 #include "Sensor.h"
+#include <NewPing.h>
 
 class SensorWater: public Sensor {
 	public:
