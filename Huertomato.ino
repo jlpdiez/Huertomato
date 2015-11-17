@@ -1,7 +1,7 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.3
+// # Version    : 1.5.4
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 17.11.2015
 // 
@@ -37,6 +37,7 @@
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 // # New Ping for HC-SR04 http://playground.arduino.cc/Code/NewPing
+// # New Tone for buzzer https://bitbucket.org/teckel12/arduino-new-tone/wiki/Home
 
 #include "Sensors.h"
 #include "Sensor.h"
@@ -82,6 +83,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <NewPing.h>
+#include <NewTone.h>
 #include <Time.h>  
 #include <TimeAlarms.h>
 #include <UTFT.h>
@@ -92,7 +94,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.5;
+const float versionNumber = 1.54;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -161,9 +163,10 @@ const uint8_t SDCardSS = 53;
 // *********************************************
 RGBled led(redPin, greenPin, bluePin);
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
-//TODO: Get outta here into temp sensor class
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
+//Sonar sensor
+NewPing sonar(waterTrigger,waterEcho);
 //LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
@@ -300,17 +303,17 @@ void updateNextWateringTime() {
 //Plays Close Encounters of the Third Kind theme music
 void initMusic() {
 	if (settings.getSound()) {
-		tone(buzzPin, 783.99);
+		NewTone(buzzPin, 783.99);
 		Alarm.delay(750);
-		tone(buzzPin, 880.00);
+		NewTone(buzzPin, 880.00);
 		Alarm.delay(750);
-		tone(buzzPin, 698.46);
+		NewTone(buzzPin, 698.46);
 		Alarm.delay(750);
-		tone(buzzPin, 349.23);
+		NewTone(buzzPin, 349.23);
 		Alarm.delay(750);
-		tone(buzzPin, 523.25);
+		NewTone(buzzPin, 523.25);
 		Alarm.delay(1000);
-		noTone(buzzPin);
+		noNewTone(buzzPin);
 	}
 }
 
@@ -561,13 +564,13 @@ void adjustPHtemp() {
 //These handle beeping when an alarm is triggered.
 void beepOn() {
 	const int onSecs = 1;
-	tone(buzzPin,440.00);
+	NewTone(buzzPin,440.00);
 	Alarm.timerOnce(0,0,onSecs,beepOff);
 }
 
 void beepOff() {
 	const int offSecs = 2;
-	noTone(buzzPin);
+	noNewTone(buzzPin);
 	if ((settings.getAlarmTriggered() || settings.getPumpProtected()) 
 		&& settings.getSound() && gui.isMainScreen() && !settings.getNightWateringStopped())
 			Alarm.timerOnce(0,0,offSecs,beepOn);

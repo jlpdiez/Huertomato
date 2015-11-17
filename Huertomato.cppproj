@@ -108,6 +108,10 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
@@ -168,6 +172,10 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
@@ -311,6 +319,10 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
@@ -371,6 +383,10 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\OneWire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\DallasTemperature\utility</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing</Value>
+            <Value>C:\Users\HAL\Documents\Arduino\libraries\NewPing\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\NewTone\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>

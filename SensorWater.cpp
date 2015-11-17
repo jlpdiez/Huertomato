@@ -24,7 +24,6 @@ SensorWater::SensorWater(const SensorWater &other) : Sensor(other) {
 SensorWater& SensorWater::operator =(const SensorWater &other) {
 	_pinTrigger = other._pinTrigger;
 	_pinEcho = other._pinEcho;
-	_pin = other._pin;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_waterLevels[i] = other._waterLevels[i];
@@ -66,27 +65,13 @@ uint8_t SensorWater::get() const {
 }
 
 //Returns raw distance in cm
-uint8_t SensorWater::getRaw() const {
-	digitalWrite(_pinTrigger, LOW);
-	delayMicroseconds(2);
-	digitalWrite(_pinTrigger, HIGH);
-	delayMicroseconds(5);
-	digitalWrite(_pinTrigger, LOW);
-
-	return (pulseIn(_pinEcho, HIGH) / 29) / 2;
+uint16_t SensorWater::getRaw() {
+	return (uint16_t)sonar.ping_cm();
 }
 
 //Returns water reservoir % level
-uint8_t SensorWater::getPercent() const {
-	int duration, distance;
-	digitalWrite(_pinTrigger, LOW);
-	delayMicroseconds(2);
-	digitalWrite(_pinTrigger, HIGH);
-	delayMicroseconds(5);
-	digitalWrite(_pinTrigger, LOW);
-	//Calc duration. Timeout of half second!
-	duration = pulseIn(_pinEcho, HIGH, 500000);
-	distance = (duration / 29) / 2;
+uint8_t SensorWater::getPercent() {
+	uint16_t distance = (uint16_t)sonar.ping_cm();
 	distance = constrain(distance, _max, _min);
 	return map(distance, _max, _min, 100, 0);
 }
