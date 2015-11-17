@@ -82,25 +82,28 @@ uint16_t SensorEC::getRaw() const {
 	return _ec;
 }
 
+void SensorEC::setSerialDebug(boolean s) {
+	_serialDbg = s;
+}
+
 //This should be set while calibrating to prevent messing up circuits if update() called
 void SensorEC::calibrating(boolean c) {
 	_calibratingEc = c;
 }
 
-//TODO: Fix Serial logic
 void SensorEC::reset() {
 	clearECbuffer();
 	Serial1.print("X\r");
 	//Give time for reset
 	delay(2750);
-	//ecToSerial();
+	ecToSerial();
 }
 
 void SensorEC::getInfo() {
 	clearECbuffer();
 	Serial1.print("I\r");
 	delay(1450);
-	//ecToSerial();	
+	ecToSerial();	
 }
 
 void SensorEC::setLed(boolean state) {
@@ -120,26 +123,26 @@ void SensorEC::setStandby() {
 
 void SensorEC::setProbeType() {
 	Serial1.print("P,2\r");
-	//if (_settings->getSerialDebug())
-	//	Serial.println("k1.0");
+	if (_serialDbg)
+		Serial.println("k1.0");
 }
 
 void SensorEC::setDry() {
 	Serial1.print("Z0\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println("dry cal");	
+ 	if (_serialDbg)
+ 		Serial.println("dry cal");	
 }
 
 void SensorEC::setTenThousand() {
 	Serial1.print("Z10\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println("10,500 uS cal");
+ 	if (_serialDbg)
+ 		Serial.println("10,500 uS cal");
 }
 
 void SensorEC::setFortyThousand() {
 	Serial1.print("Z40\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println("40,000 uS cal");
+ 	if (_serialDbg)
+ 		Serial.println("40,000 uS cal");
 }
 
 //Adjusts EC sensor readings to given temperature
@@ -166,10 +169,9 @@ void SensorEC::clearECbuffer() {
 		Serial1.read();	
 }
 
-//TODO: Reimplement
 //Output EC circuit's response to serial
 void SensorEC::ecToSerial() {
-	/*if (_settings->getSerialDebug()) {
+	if (_serialDbg) {
 		if (Serial1.available() > 0) {
 			String sensorString = "";
 			sensorString.reserve(30);
@@ -183,5 +185,5 @@ void SensorEC::ecToSerial() {
 			Serial1.read();
 			Serial.println(sensorString);
 		}
-	}*/
+	}
 }

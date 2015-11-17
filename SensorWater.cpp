@@ -84,10 +84,9 @@ uint8_t SensorWater::getPercent() const {
 	digitalWrite(_pinTrigger, HIGH);
 	delayMicroseconds(5);
 	digitalWrite(_pinTrigger, LOW);
-	//Calc duration. Timeout of half second
-	duration = pulseIn(_pinEcho, HIGH,500000);
+	//Calc duration. Timeout of half second!
+	duration = pulseIn(_pinEcho, HIGH, 500000);
 	distance = (duration / 29) / 2;
-	//Serial << "Distance: " << distance << endl;
 	distance = constrain(distance, _max, _min);
 	return map(distance, _max, _min, 100, 0);
 }

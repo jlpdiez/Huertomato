@@ -74,13 +74,13 @@ class Sensors {
     uint16_t getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
-	//Sets different modes
+	//Sets different modes. Should be called when settings counterpart gets called.
 	void setSerialDebug(boolean);
 	void setReservoir(boolean);
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
-	//Tests - True if sensor value is off range
+	//Alarm tests - True if sensor value is off range.
 	boolean ecOffRange();
 	boolean phOffRange();
 	boolean lvlOffRange();
@@ -89,7 +89,7 @@ class Sensors {
 	//Reads once from each sensor, fills the array with this measurement and smoothes
 	void fastUpdate();
 	
-	//Set temp mode. Should be called at init
+	//Set temp mode. Should be called when it's counterpart in setting does too.
 	void setCelsius(boolean);
 	//This should be set while calibrating to prevent messing up circuits if update() called
 	void calibratingPH(boolean);
@@ -128,8 +128,7 @@ class Sensors {
 	SensorTemp _temp;
 	SensorWater _water;
 	
-	//Keeps track of things internally
-	boolean _serialDbg;
+	//Keeps track of reservoir activation
 	boolean _reservoir;
 
 };

@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.2
+// # Version    : 1.5.3
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 17.11.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -202,8 +202,6 @@ void setup() {
 	pinMode(waterPump, OUTPUT);
 	setupRTC();
 	setupSD(); 
-	//Init temperature to correct units
-	sensors.setCelsius(settings.getCelsius());
 	setupAlarms();
 	setupWaterModes();
 	initMusic();

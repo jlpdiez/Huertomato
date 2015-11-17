@@ -78,6 +78,9 @@ float SensorPH::getRaw() const {
 	return _ph;
 }
 
+void SensorPH::setSerialDebug(boolean s) {
+	_serialDbg = s;
+}
 
 //This should be set while calibrating to prevent messing up circuits if update() called
 void SensorPH::calibrating(boolean c) {
@@ -118,20 +121,20 @@ void SensorPH::setStandby() {
 
 void SensorPH::setFour() {
 	Serial2.print("F\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println(4.00);	
+ 	if (_serialDbg)
+ 		Serial.println(4.00);	
 }
 
 void SensorPH::setSeven() {
-// 	Serial2.print("S\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println(7.00);	
+ 	Serial2.print("S\r");
+ 	if (_serialDbg)
+ 		Serial.println(7.00);	
 }
 
 void SensorPH::setTen() {
 	Serial2.print("T\r");
-// 	if (_settings->getSerialDebug())
-// 		Serial.println(10.00);	
+ 	if (_serialDbg)
+ 		Serial.println(10.00);	
 }
 
 //Adjust pH readings to given temperature
@@ -159,7 +162,7 @@ void SensorPH::clearBuffer() {
 
 //Output pH circuit's response to serial
 void SensorPH::phToSerial() {
-	/*if (_settings->getSerialDebug()) {
+	if (_serialDbg) {
 		if (Serial2.available() > 0) {
 			String sensorString = "";
 			sensorString.reserve(30);
@@ -173,5 +176,5 @@ void SensorPH::phToSerial() {
 			Serial2.read();
 			Serial.println(sensorString);
 		}
-	}*/	
+	}
 }

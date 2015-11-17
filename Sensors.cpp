@@ -4,18 +4,21 @@
 Sensors::Sensors(Settings *settings) 
 : _settings(settings), _humidity(humidIn), _light(lightIn), _water(waterTrigger,waterEcho) {
 	
-	_serialDbg = _settings->getSerialDebug();
+	//Init reservoir status
 	_reservoir = _settings->getReservoirModule();
 	
+	//Init & config sensor instances 
 	_ec.init();
+	_ec.setSerialDebug(_settings->getSerialDebug());
 	_humidity.init();
 	_light.init();
 	_ph.init();
+	_ph.setSerialDebug(_settings->getSerialDebug());
 	_temp.init();
+	_temp.setCelsius(_settings->getCelsius());
 	_water.setMax(_settings->getMaxWaterLvl());
 	_water.setMin(_settings->getMinWaterLvl());
-	_water.init();
-				
+	_water.init();		
 }
 
 Sensors::Sensors(const Sensors &other) 
@@ -28,7 +31,6 @@ Sensors::Sensors(const Sensors &other)
 	_ec = other._ec;
 	_ph = other._ph;
 	_water = other._water;
-	_serialDbg = other._serialDbg;
 	_reservoir = other._reservoir;
 }
 
@@ -39,7 +41,6 @@ Sensors& Sensors::operator=(const Sensors &other) {
 	_ec = other._ec;
 	_ph = other._ph;
 	_water = other._water;
-	_serialDbg = other._serialDbg;
 	_reservoir = other._reservoir;
 		
 	return *this;	
@@ -82,8 +83,10 @@ uint16_t Sensors::getRawLightLevel() {
 	_light.getRaw();
 }
 
+//Stores internal
 void Sensors::setSerialDebug(boolean d) {
-	_serialDbg = d;
+	_ec.setSerialDebug(d);
+	_ph.setSerialDebug(d);
 }
 
 void Sensors::setReservoir(boolean r) {
@@ -91,25 +94,32 @@ void Sensors::setReservoir(boolean r) {
 	fastUpdate();
 }
 
+//These are always off if module is deactivated
 boolean Sensors::ecOffRange() {
-	if ((_ec.get() < _settings->getECalarmDown())
-		|| (_ec.get() > _settings->getECalarmUp())) {
-		return true;
+	if (_reservoir) {
+		if ((_ec.get() < _settings->getECalarmDown())
+			|| (_ec.get() > _settings->getECalarmUp())) {
+			return true;
+		}
 	}
 	return false;
 }
 
 boolean Sensors::phOffRange() {
-	if ((_ph.get() < _settings->getPHalarmDown()) 
-		|| (_ph.get() > _settings->getPHalarmUp())) {
-		return true;
+	if (_reservoir) {
+		if ((_ph.get() < _settings->getPHalarmDown()) 
+			|| (_ph.get() > _settings->getPHalarmUp())) {
+			return true;
+		}
 	}
 	return false;
 }
 
 boolean Sensors::lvlOffRange() {
-	if (_water.get() < _settings->getWaterAlarm()) {
-		return true;
+	if (_reservoir) {
+		if (_water.get() < _settings->getWaterAlarm()) {
+			return true;
+		}
 	}
 	return false;
 }

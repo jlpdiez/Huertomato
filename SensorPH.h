@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SensorPH
-// # Version    : 1.0
+// # Version    : 1.1
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 17.11.2015
 //
 // # Description: Atlas scientific pH sensor class
 //
@@ -42,6 +42,8 @@ class SensorPH: public Sensor {
 		float get() const;
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
+		//Sets output to serial
+		void setSerialDebug(boolean);
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibrating(boolean c);
 		//pH circuit commands
@@ -57,6 +59,7 @@ class SensorPH: public Sensor {
 		void adjustTemp(float);
 	
 	protected:
+		boolean _serialDbg;
 		//Stops pH routine if sensor is being calibrated
 		boolean _calibratingPh;
 		//Smoothing counter
