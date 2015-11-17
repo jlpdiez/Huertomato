@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinLvlCalib
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 17.11.2015
 //
 // # Description: Nutrient level max/min calibration window
 //

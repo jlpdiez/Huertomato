@@ -62,7 +62,6 @@ float SensorTemp::get() const {
 }
 
 float SensorTemp::getRaw() const {
-	
 	temperature.requestTemperatures();
 	if (_celss)
 		return temperature.getTempCByIndex(0);

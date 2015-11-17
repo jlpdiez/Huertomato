@@ -101,7 +101,9 @@ Window::Screen WinLvlCalib::processTouch(const int x, const int y) {
 	//Save
 	else if (buttonIndex == _waterLevelButtons[1]) {
 		_settings->setMaxWaterLvl(_waterLvlMax);
+		_sensors->setMaxLvl(_waterLvlMax);
 		_settings->setMinWaterLvl(_waterLvlMin);
+		_sensors->setMaxLvl(_waterLvlMin);
 		printSavedButton();
 	//Exit
 	} else if (buttonIndex == _waterLevelButtons[2]) 

@@ -67,12 +67,18 @@ class Sensors {
     uint16_t getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
-	//Sets different modes. Should be called when settings counterpart gets called.
-	void setSerialDebug(boolean);
-	void setReservoir(boolean);
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
+	//Setters
+	//Sets different modes. Should be called when settings counterpart gets called.
+	void setSerialDebug(boolean);
+	void setReservoir(boolean);
+	//Set temp mode. Should be called when it's counterpart in setting does too.
+	void setCelsius(boolean);
+	//Sets min and max waterLevel. Used for calculating % on water tank
+	void setMaxLvl(uint16_t);
+	void setMinLvl(uint16_t);
 	//Alarm tests - True if sensor value is off range.
 	boolean ecOffRange();
 	boolean phOffRange();
@@ -82,8 +88,6 @@ class Sensors {
 	//Reads once from each sensor, fills the array with this measurement and smoothes
 	void fastUpdate();
 	
-	//Set temp mode. Should be called when it's counterpart in setting does too.
-	void setCelsius(boolean);
 	//This should be set while calibrating to prevent messing up circuits if update() called
 	void calibratingPH(boolean);
 	void calibratingEC(boolean);

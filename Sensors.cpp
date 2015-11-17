@@ -83,16 +83,33 @@ uint16_t Sensors::getRawLightLevel() {
 	_light.getRaw();
 }
 
-//Stores internal
+//Sets internal states
+//Serial debug affects EC & pH while calibrating
 void Sensors::setSerialDebug(boolean d) {
 	_ec.setSerialDebug(d);
 	_ph.setSerialDebug(d);
 }
 
+//This affects if all sensors are updated() and used or not
 void Sensors::setReservoir(boolean r) {
 	_reservoir = r;
 	fastUpdate();
 }
+
+//Sets temperature mode
+void Sensors::setCelsius(boolean c) {
+	_temp.setCelsius(c);
+}
+
+//Set max nutrient level
+void Sensors::setMaxLvl(uint16_t m) {
+	_water.setMax(m);
+}
+
+void Sensors::setMinLvl(uint16_t m) {
+	_water.setMin(m);
+}
+
 
 //These are always off if module is deactivated
 boolean Sensors::ecOffRange() {
@@ -147,11 +164,6 @@ void Sensors::fastUpdate() {
 		_ec.fastUpdate();
 		_water.fastUpdate();
 	}
-}
-
-//Sets temperature mode
-void Sensors::setCelsius(boolean c) {
-	_temp.setCelsius(c);
 }
 
 //This should be set while calibrating to prevent messing up circuits if update() or adjustTemp() called

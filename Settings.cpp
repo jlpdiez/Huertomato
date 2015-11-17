@@ -285,7 +285,8 @@ boolean Settings::setLightThreshold(const uint16_t l) {
 }
 
 boolean Settings::setMaxWaterLvl(const uint16_t x) {
-	if ((x >= 0) && (x < 101)) {
+	//Not valid if greaer than 3m!
+	if ((x >= 0) && (x < 301)) {
 		_maxWaterLvl = x;
 		EEPROM.updateInt(_addressMaxWaterLvl,x);
 		return true;
@@ -294,7 +295,8 @@ boolean Settings::setMaxWaterLvl(const uint16_t x) {
 }
 
 boolean Settings::setMinWaterLvl(const uint16_t n) {
-	if ((n >= 0) && (n < 101)) {
+	//Not valid if greaer than 3m!
+	if ((n >= 0) && (n < 201)) {
 		_minWaterLvl = n;
 		EEPROM.updateInt(_addressMinWaterLvl,n);
 		return true;

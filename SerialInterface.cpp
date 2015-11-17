@@ -76,7 +76,7 @@ void SerialInterface::printLn(const char* ln, boolean leadingBlankLine, boolean 
 	(trailingBlankLine) ? Serial.println() : 0;
 }
 
-//Lists an array ending in an additional blank line
+//Lists an array ending with an additional blank line
 //Assumes a PROGMEM char* array as input
 void SerialInterface::list(int length, const char* const names[]) {
 	for (uint8_t i = 0; i < length; i++) {
@@ -492,6 +492,7 @@ boolean SerialInterface::isUint16_t(char* str) {
 uint16_t SerialInterface::getUint16_t(char* str) {
 	return (uint16_t)atol(str);
 }
+
 //Strangest way if checking for data.
 boolean SerialInterface::isFloat(char* str) {
 	if (str == NULL)
@@ -621,9 +622,11 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			
 		case Settings::MaxWaterLvl:
 			if (isUint16_t(arg)) {
-				if (settings.setMaxWaterLvl(getUint16_t(arg)))
+				uint16_t l = getUint16_t(arg);
+				if (settings.setMaxWaterLvl(l)) {
+					sensors.setMaxLvl(l);
 					printLn(doneTxt);
-				else
+				} else
 					printLn(lvlTxt);
 			} else
 				printLn(lvlTxt);
@@ -631,9 +634,11 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			
 		case Settings::MinWaterLvl:
 			if (isUint16_t(arg)) {
-				if (settings.setMinWaterLvl(getUint16_t(arg)))
+				uint16_t l = getUint16_t(arg);
+				if (settings.setMinWaterLvl(l)) {
+					sensors.setMinLvl(l);
 					printLn(doneTxt);
-				else
+				} else
 					printLn(lvlTxt);
 			} else
 				printLn(lvlTxt);
