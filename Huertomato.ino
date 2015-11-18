@@ -3,7 +3,7 @@
 // # Name       : Huertomato
 // # Version    : 1.5.4
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.11.2015
+// # Date       : 18.11.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -165,8 +165,6 @@ RGBled led(redPin, greenPin, bluePin);
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
-//Sonar sensor
-NewPing sonar(waterTrigger,waterEcho);
 //LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);

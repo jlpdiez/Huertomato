@@ -29,8 +29,6 @@
 #include "Sensor.h"
 #include <NewPing.h>
 
-extern NewPing sonar;
-
 class SensorWater: public Sensor {
 	public:
 		SensorWater(const int pinTrigger, const int pinEcho);
@@ -51,6 +49,8 @@ class SensorWater: public Sensor {
 	protected:
 		int _pinTrigger;
 		int _pinEcho;
+		//Sonar object
+		NewPing _sonar;
 		//Holds min and max distance to get percent
 		uint16_t _max;
 		uint16_t _min;

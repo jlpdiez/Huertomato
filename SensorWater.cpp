@@ -1,7 +1,7 @@
 #include "SensorWater.h"
 
 SensorWater::SensorWater(const int pinTrigger, const int pinEcho)
-: Sensor(0), _pinTrigger(pinTrigger), _pinEcho(pinEcho) {
+: Sensor(0), _pinTrigger(pinTrigger), _pinEcho(pinEcho), _sonar(pinTrigger,pinEcho) {
 	
 	_max = 255;
 	_min = 0;
@@ -11,7 +11,7 @@ SensorWater::SensorWater(const int pinTrigger, const int pinEcho)
 	}
 }
 
-SensorWater::SensorWater(const SensorWater &other) : Sensor(other) {
+SensorWater::SensorWater(const SensorWater &other) : Sensor(other), _sonar(other._sonar) {
 	_pinTrigger = other._pinTrigger;
 	_pinEcho = other._pinEcho;
 	_iSample = other._iSample;
@@ -24,6 +24,7 @@ SensorWater::SensorWater(const SensorWater &other) : Sensor(other) {
 SensorWater& SensorWater::operator =(const SensorWater &other) {
 	_pinTrigger = other._pinTrigger;
 	_pinEcho = other._pinEcho;
+	_sonar = other._sonar;
 	_iSample = other._iSample;
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_waterLevels[i] = other._waterLevels[i];
@@ -66,12 +67,12 @@ uint8_t SensorWater::get() const {
 
 //Returns raw distance in cm
 uint16_t SensorWater::getRaw() {
-	return (uint16_t)sonar.ping_cm();
+	return (uint16_t)_sonar.ping_cm();
 }
 
 //Returns water reservoir % level
 uint8_t SensorWater::getPercent() {
-	uint16_t distance = (uint16_t)sonar.ping_cm();
+	uint16_t distance = (uint16_t)_sonar.ping_cm();
 	distance = constrain(distance, _max, _min);
 	return map(distance, _max, _min, 100, 0);
 }
