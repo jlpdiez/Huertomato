@@ -168,10 +168,10 @@ DallasTemperature temperature(&oneWire);
 //LCD & touch
 UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
 UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
-//Huertomato internal data
+//Huertomato model
 Settings settings;
 Sensors sensors(&settings);
-//Human interfaces
+//Human views
 SerialInterface ui; //&sensors,&settings are also used but from global var
 GUI gui(&LCD,&Touch,&sensors,&settings);
 
@@ -253,10 +253,10 @@ void setupAlarms() {
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
 	//Every 10min we adjust pH & EC circuit readings to temperature
-	/*if (settings.getReservoirModule()) {
+	if (settings.getReservoirModule()) {
 		Alarm.timerOnce(0,10,0,adjustECtemp);
 		Alarm.timerOnce(0,10,0,adjustPHtemp);
-	}*/
+	}
 }
 
 //Sets watering timer or starts continuous water
