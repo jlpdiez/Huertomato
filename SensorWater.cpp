@@ -70,9 +70,20 @@ uint16_t SensorWater::getRaw() {
 	return (uint16_t)_sonar.ping_cm();
 }
 
+//For some reason using _sonar object here always returns 0 but not in function above.
+//I'm thinking it has something to do with this function being called by a TimeAlarm interrupt
+//and that this messes internal NewPing interrupts.
 //Returns water reservoir % level
 uint8_t SensorWater::getPercent() {
-	uint16_t distance = (uint16_t)_sonar.ping_cm();
+	int duration, distance;
+	digitalWrite(_pinTrigger, LOW);
+	delayMicroseconds(2);
+	digitalWrite(_pinTrigger, HIGH);
+	delayMicroseconds(5);
+	digitalWrite(_pinTrigger, LOW);
+	//Calc duration. Timeout of half second!
+	duration = pulseIn(_pinEcho, HIGH, 500000);
+	distance = (duration / 29) / 2;
 	distance = constrain(distance, _max, _min);
 	return map(distance, _max, _min, 100, 0);
 }
@@ -86,7 +97,7 @@ void SensorWater::setMin(uint16_t min) {
 }
 
 void SensorWater::smooth() {
-	uint8_t res = 0;
+	uint16_t res = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) { res += _waterLevels[i]; }
 	_waterLevel = (uint8_t)(res / _numSamples);
 }

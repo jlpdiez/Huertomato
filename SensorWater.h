@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SensorWater
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 18.11.2015
+// # Date       : 26.11.2015
 //
 // # Description: HC-SR04 sonar sensor class
 //
