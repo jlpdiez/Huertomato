@@ -38,6 +38,7 @@
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 // # New Ping for HC-SR04 http://playground.arduino.cc/Code/NewPing
 // # New Tone for buzzer https://bitbucket.org/teckel12/arduino-new-tone/wiki/Home
+// # ProportionalIntegralDrevivative https://github.com/orgua/Arduino-PID-Library
 
 #include "Sensors.h"
 #include "Sensor.h"
@@ -145,6 +146,11 @@ const uint8_t waterTrigger = 9;
 //ACTUATORS
 const uint8_t buzzPin = 10;
 const uint8_t waterPump = A9;
+const uint8_t phUpPump = A13;
+const uint8_t phDownPump = A14;
+const uint8_t phNutrientAPump = A15;
+const uint8_t phNutrientBPump = 43;
+
 //LCD
 const uint8_t lcdRS = 38;
 const uint8_t lcdWR = 39;
@@ -193,6 +199,11 @@ boolean beeping = false;
 //True if SD has already been initiated
 boolean sdInit = false;
 
+//PID 
+double phUpSetpoint, phUpIn, phUpOut;
+
+PID phUp(&phUpIn, &phUpOut, &phUpSetpoint, 2, 5, 1, DIRECT);
+
 // *********************************************
 // SETUP
 // *********************************************
@@ -203,6 +214,15 @@ void setup() {
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
+	pinMode(phUpPump, OUTPUT);
+	pinMode(phDownPump, OUTPUT);
+	pinMode(phNutrientAPump, OUTPUT);
+	pinMode(phNutrientBPump, OUTPUT);
+	//PID
+	phUpIn = sensors.getPH();
+	phUpSetpoint = 5.5;
+	phUp.SetMode(AUTOMATIC);
+
 	setupRTC();
 	setupSD(); 
 	setupAlarms();
