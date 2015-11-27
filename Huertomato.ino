@@ -94,7 +94,7 @@
 #include <SerialCommand.h>
 #include <MemoryFree.h>
 #include <string.h>
-
+#include <PID_v1.h>
 const float versionNumber = 1.54;
 
 // *********************************************
