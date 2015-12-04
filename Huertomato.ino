@@ -33,8 +33,6 @@
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
 // # EEPROMex http://playground.arduino.cc/Code/EEPROMex
-// # UTouch http://www.henningkarlsen.com/electronics/library.php
-// # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
 // # New Ping for HC-SR04 http://playground.arduino.cc/Code/NewPing
 // # New Tone for buzzer https://bitbucket.org/teckel12/arduino-new-tone/wiki/Home
@@ -168,6 +166,10 @@ boolean beeping = false;
 //True if SD has already been initiated
 boolean sdInit = false;
 
+//button press timing
+long previousMillis = 0;
+long pollTime = 200;
+
 // *********************************************
 // SETUP
 // *********************************************
@@ -295,7 +297,12 @@ void initMusic() {
 void loop() {
 	ui.processInput();
 	gui.refresh();
-	gui.processInput();
+	
+	unsigned long currentMillis = millis();	
+	if(currentMillis - previousMillis > pollTime) {
+		previousMillis = currentMillis;
+		gui.processInput();
+	}
 	
 	//Check if led needs color change
 	checkLed();
@@ -506,8 +513,8 @@ void printPump() {
 //Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.update();
-	//gui.refresh();
-	ui.timeStamp(sensorsReadTxt);
+	gui.refresh();
+	//ui.timeStamp(sensorsReadTxt);
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -515,20 +522,20 @@ void updateSensors() {
 
 //Adjusts EC sensor readings to temperature and sets next timer
 void adjustECtemp() {
-	//if (gui.isMainScreen()) {
+	if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
 		ui.timeStamp(ecAdjTxt);
-	//}
+	}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustECtemp);
 }
 
 //Adjusts pH sensor readings to temperature and sets next timer
 void adjustPHtemp() {
-	//if (gui.isMainScreen()) {
+	if (gui.isMainScreen()) {
 		sensors.adjustPHtemp();
 		ui.timeStamp(phAdjTxt);
-	//}
+	}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustPHtemp);
 }

@@ -81,7 +81,7 @@ void GUI::updateScreen(Window::Screen newScreen) {
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processInput() {
 	int adcIn = analogRead(lcdA0);
-	
+	//Some button pressed and distance between actual and previous analog value > 150
 	if ((adcIn < 1000) && (adcIn != _prevADC)) {
 		_prevADC = adcIn;
 		Button but = None;
@@ -95,12 +95,9 @@ void GUI::processInput() {
 			but = Left;
 		else if (adcIn < 790)
 			but = Select;
-		
-		Serial.println(but);
-	
 		Window::Screen newScreen = _window->processTouch(but);
 		if (newScreen != Window::None) {
-			_prevADC = 1500;
+			_prevADC = 1000;
 			updateScreen(newScreen);
 			_window->draw();
 		}

@@ -487,6 +487,12 @@ build.arch=AVR
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GUI.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Sensor.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -561,6 +567,30 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Window.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinMainScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinTime.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinTime.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinWater.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="WinWater.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
