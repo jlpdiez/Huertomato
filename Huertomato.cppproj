@@ -118,8 +118,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
@@ -178,8 +178,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
@@ -321,8 +321,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>
@@ -381,8 +381,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SD\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\LiquidCrystal\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\MemoryFree\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\ArduinoSerialCommand</Value>

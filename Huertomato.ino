@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.4
+// # Version    : 0.1
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 18.11.2015
+// # Date       : 4.12.2015
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -64,12 +64,12 @@
 #include <Time.h>  
 #include <TimeAlarms.h>
 #include <EEPROMEx.h>
-#include <SD.h>
+#include <LiquidCrystal.h>
 #include <SerialCommand.h>
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.54;
+const float versionNumber = 0.1;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -121,17 +121,12 @@ const uint8_t waterTrigger = 9;
 const uint8_t buzzPin = 10;
 const uint8_t waterPump = A9;
 //LCD
-const uint8_t lcdRS = 38;
-const uint8_t lcdWR = 39;
-const uint8_t lcdCS = 40;
-const uint8_t lcdRST = 41;
-const uint8_t lcdTCLK = 6;
-const uint8_t lcdTCS = 5;
-const uint8_t lcdTDIN = 4;
-const uint8_t lcdTDOUT = 3;
-const uint8_t lcdIRQ = 2;
-//SD card select
-const uint8_t SDCardSS = 53;
+const uint8_t lcdRS = 26;
+const uint8_t lcdEN = 27;
+const uint8_t lcdD0 = 22;
+const uint8_t lcdD1 = 23;
+const uint8_t lcdD2 = 24;
+const uint8_t lcdD3 = 25;
 
 // *********************************************
 // OBJECT DECLARATIONS
@@ -140,9 +135,8 @@ RGBled led(redPin, greenPin, bluePin);
 // Setup a oneWire instance to communicate with DS18B20 temp sensor
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
-//LCD & touch
-//UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
-//UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
+//LCD
+LiquidCrystal lcd(lcdRS, lcdEN, lcdD0, lcdD1, lcdD2, lcdD3); 
 //Huertomato model
 Settings settings;
 Sensors sensors(&settings);
@@ -174,12 +168,13 @@ boolean sdInit = false;
 void setup() {  
 	led.setOn();
 	ui.init();
-	//gui.init();
+	lcd.begin(16, 2);
+	lcd.setCursor(0,0);
+	lcd.print("Hello eNDeR!");
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
 	setupRTC();
-	setupSD(); 
 	setupAlarms();
 	setupWaterModes();
 	initMusic();
@@ -208,7 +203,7 @@ void setupRTC() {
 }
 
 //Inits SD card and creates timer for SD logs
-void setupSD() {
+/*void setupSD() {
 	if (settings.getSDactive()) {
 		pinMode(SDCardSS, OUTPUT);
 		if (SD.begin(SDCardSS) || sdInit) {
@@ -219,7 +214,7 @@ void setupSD() {
 		} else 
 			ui.timeStamp(sdInitFailTxt);
 	}
-}
+}*/
 
 //Initiates system alarms and timers
 //timerOnce is used and then another timerOnce is configured inside the called functions
@@ -429,14 +424,14 @@ void checkWater() {
 
 //Checks if SD settings have been changed and updates system
 void checkSD() {
-	if (settings.sdSettingsChanged()) {
+	/*if (settings.sdSettingsChanged()) {
 		stopSDlogTimer();
 		if (settings.getSDactive()) {
 			setupSD();
 			ui.timeStamp(sdLogOnTxt);
 		} else
 			ui.timeStamp(sdLogOffTxt);
-	}
+	}*/
 }
 
 //Checks if sensor polling settings have changed and updates system
@@ -461,7 +456,7 @@ void checkSerial() {
 //Logs system data to SDCard
 //File name will be: YYYMMDD.csv
 //Format is: Date,Time,Temp,Humidity,Light,EC,PH,WaterLevel
-void logSensorReadings() {
+/*void logSensorReadings() {
 	time_t t = now();
 	int d = day(t);
 	int mo = month(t);
@@ -489,7 +484,7 @@ void logSensorReadings() {
 		ui.timeStamp(sdLogOk);
 	} else
 		ui.timeStamp(sdLogFail);
-}
+}*/
 
 //Timestamps to Serial that there's an alarm triggered
 void printAlarm() {
@@ -585,12 +580,12 @@ void stopSerialPumpProtTimer() {
 }
 
 //Timers for logging data to SD
-void startSDlogTimer() {
+/*void startSDlogTimer() {
 	if (!sdAlarm.enabled) {
 		sdAlarm.id = Alarm.timerRepeat(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
 		sdAlarm.enabled = true;
 	}
-}
+}*/
 
 void stopSDlogTimer() {
 	if (sdAlarm.enabled) {
