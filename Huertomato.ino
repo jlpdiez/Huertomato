@@ -52,6 +52,11 @@
 #include "Settings.h"
 #include "Sensors.h"
 #include "SerialInterface.h"
+#include "GUI.h"
+#include "Window.h"
+#include "WinMainScreen.h"
+#include "WinTime.h"
+#include "WinWater.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -127,6 +132,7 @@ const uint8_t lcdD0 = 22;
 const uint8_t lcdD1 = 23;
 const uint8_t lcdD2 = 24;
 const uint8_t lcdD3 = 25;
+const uint8_t lcdA0 = A3;
 
 // *********************************************
 // OBJECT DECLARATIONS
@@ -142,7 +148,7 @@ Settings settings;
 Sensors sensors(&settings);
 //Human views
 SerialInterface ui; //&sensors,&settings are also used but from global var
-//GUI gui(&LCD,&Touch,&sensors,&settings);
+GUI gui(&lcd,&sensors,&settings);
 
 //Stores timers ID's and status
 struct alarm {
@@ -168,9 +174,7 @@ boolean sdInit = false;
 void setup() {  
 	led.setOn();
 	ui.init();
-	lcd.begin(16, 2);
-	lcd.setCursor(0,0);
-	lcd.print("Hello eNDeR!");
+	gui.init();
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
@@ -180,7 +184,7 @@ void setup() {
 	initMusic();
 	Alarm.delay(10);
 	sensors.fastUpdate();
-	//gui.start();
+	gui.start();
 }
 
 //Initiates system time from RTC
@@ -290,8 +294,8 @@ void initMusic() {
 // *********************************************
 void loop() {
 	ui.processInput();
-	//gui.refresh();
-	//gui.processInput();
+	gui.refresh();
+	gui.processInput();
 	
 	//Check if led needs color change
 	checkLed();

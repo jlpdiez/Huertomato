@@ -31,36 +31,27 @@
 #include "Settings.h"
 #include "Sensors.h" 
 #include "Window.h"
-#include "WinAlarms.h"
-#include "WinControllerMenu.h"
-#include "WinControllerMenuTwo.h"
-#include "WinEcAlarms.h"
-#include "WinEcCalib.h"
-#include "WinLvlAlarms.h"
-#include "WinLvlCalib.h"
-#include "WinMainMenu.h"
 #include "WinMainScreen.h"
-#include "WinPhAlarms.h"
-#include "WinPhCalib.h"
-#include "WinPump.h"
-#include "WinReservoir.h"
-#include "WinSD.h"
-#include "WinSensorCalib.h"
-#include "WinSensorPolling.h"
-#include "WinSystemMenu.h"
 #include "WinTime.h"
 #include "WinWater.h"
-#include "WinWaterNight.h"
+#include <LiquidCrystal.h>
 
-#include <UTFT.h>
-#include <UTouch.h>
+extern const uint8_t lcdA0;
 
-//Class in charge of starting and using LCD and Touchscreen
+//Class in charge of starting and using LCD
 //Holds a pointer to a window
 class GUI {
 	public:		
+		enum Button {
+			None = 0,
+			Right = 1,
+			Up = 2,
+			Down = 3,
+			Left = 4,
+			Select = 5,
+		};
 		//Constructors
-		GUI(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings);
+		GUI(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
 		GUI(const GUI &other);
 		GUI& operator=(const GUI &other);
 		//Destructor
@@ -77,9 +68,9 @@ class GUI {
 		
 	private:
 		void updateScreen(Window::Screen newScreen);
-			
-	    UTFT *_lcd;
-	    UTouch *_touch;
+		
+		int _prevADC;
+	    LiquidCrystal *_lcd;
 	    Sensors *_sensors;
 	    Settings *_settings;
 		Window *_window;
