@@ -49,32 +49,9 @@
 #include "SensorWater.h"
 #include "Settings.h"
 #include "RGBled.h"
-#include "Buttons.h"
-#include "GUI.h"
 #include "Settings.h"
 #include "Sensors.h"
 #include "SerialInterface.h"
-#include "Window.h"
-#include "WinAlarms.h"
-#include "WinControllerMenu.h"
-#include "WinControllerMenuTwo.h"
-#include "WinEcAlarms.h"
-#include "WinEcCalib.h"
-#include "WinLvlAlarms.h"
-#include "WinLvlCalib.h"
-#include "WinMainMenu.h"
-#include "WinMainScreen.h"
-#include "WinPhAlarms.h"
-#include "WinEcCalib.h"
-#include "WinPump.h"
-#include "WinReservoir.h"
-#include "WinSD.h"
-#include "WinSensorCalib.h"
-#include "WinSensorPolling.h"
-#include "WinSystemMenu.h"
-#include "WinTime.h"
-#include "WinWater.h"
-#include "WinWaterNight.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
 #include <Wire.h>
@@ -86,8 +63,6 @@
 #include <NewTone.h>
 #include <Time.h>  
 #include <TimeAlarms.h>
-#include <UTFT.h>
-#include <UTouch.h>
 #include <EEPROMEx.h>
 #include <SD.h>
 #include <SerialCommand.h>
@@ -166,14 +141,14 @@ RGBled led(redPin, greenPin, bluePin);
 OneWire oneWire(tempIn);
 DallasTemperature temperature(&oneWire);
 //LCD & touch
-UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
-UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
+//UTFT LCD(ITDB32WD,lcdRS,lcdWR,lcdCS,lcdRST);
+//UTouch Touch(lcdTCLK,lcdTCS,lcdTDIN,lcdTDOUT,lcdIRQ);
 //Huertomato model
 Settings settings;
 Sensors sensors(&settings);
 //Human views
 SerialInterface ui; //&sensors,&settings are also used but from global var
-GUI gui(&LCD,&Touch,&sensors,&settings);
+//GUI gui(&LCD,&Touch,&sensors,&settings);
 
 //Stores timers ID's and status
 struct alarm {
@@ -199,7 +174,7 @@ boolean sdInit = false;
 void setup() {  
 	led.setOn();
 	ui.init();
-	gui.init();
+	//gui.init();
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
@@ -210,7 +185,7 @@ void setup() {
 	initMusic();
 	Alarm.delay(10);
 	sensors.fastUpdate();
-	gui.start();
+	//gui.start();
 }
 
 //Initiates system time from RTC
@@ -301,16 +276,16 @@ void updateNextWateringTime() {
 //Plays Close Encounters of the Third Kind theme music
 void initMusic() {
 	if (settings.getSound()) {
-		NewTone(buzzPin, 783.99);
-		Alarm.delay(750);
+		//NewTone(buzzPin, 783.99);
+		//Alarm.delay(750);
 		NewTone(buzzPin, 880.00);
 		Alarm.delay(750);
-		NewTone(buzzPin, 698.46);
-		Alarm.delay(750);
-		NewTone(buzzPin, 349.23);
-		Alarm.delay(750);
-		NewTone(buzzPin, 523.25);
-		Alarm.delay(1000);
+		//NewTone(buzzPin, 698.46);
+		//Alarm.delay(750);
+		//NewTone(buzzPin, 349.23);
+		//Alarm.delay(750);
+		//NewTone(buzzPin, 523.25);
+		//Alarm.delay(1000);
 		noNewTone(buzzPin);
 	}
 }
@@ -320,8 +295,8 @@ void initMusic() {
 // *********************************************
 void loop() {
 	ui.processInput();
-	gui.refresh();
-	gui.processInput();
+	//gui.refresh();
+	//gui.processInput();
 	
 	//Check if led needs color change
 	checkLed();
@@ -408,7 +383,7 @@ void checkAlarms() {
 void checkSoundAlarm() {
 	if (settings.getAlarmTriggered() || settings.getPumpProtected()) {
 		//Sound alarm in main screen, when sound activated and not night watering stopped
-		if (gui.isMainScreen() && settings.getSound() && !beeping &&
+		if (/*gui.isMainScreen() &&*/ settings.getSound() && !beeping &&
 		!settings.getNightWateringStopped()) {
 			beeping = true;
 			beepOn();
@@ -532,8 +507,8 @@ void printPump() {
 //Updates sensor readings and sets next timer
 void updateSensors() {
 	sensors.update();
-	gui.refresh();
-	//ui.timeStamp(sensorsReadTxt);
+	//gui.refresh();
+	ui.timeStamp(sensorsReadTxt);
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -541,20 +516,20 @@ void updateSensors() {
 
 //Adjusts EC sensor readings to temperature and sets next timer
 void adjustECtemp() {
-	if (gui.isMainScreen()) {
+	//if (gui.isMainScreen()) {
 		sensors.adjustECtemp();
 		ui.timeStamp(ecAdjTxt);
-	}
+	//}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustECtemp);
 }
 
 //Adjusts pH sensor readings to temperature and sets next timer
 void adjustPHtemp() {
-	if (gui.isMainScreen()) {
+	//if (gui.isMainScreen()) {
 		sensors.adjustPHtemp();
 		ui.timeStamp(phAdjTxt);
-	}
+	//}
 	//Set next timer
 	Alarm.timerOnce(0,10,0,adjustPHtemp);
 }
@@ -570,7 +545,7 @@ void beepOff() {
 	const int offSecs = 2;
 	noNewTone(buzzPin);
 	if ((settings.getAlarmTriggered() || settings.getPumpProtected()) 
-		&& settings.getSound() && gui.isMainScreen() && !settings.getNightWateringStopped())
+		&& settings.getSound() /*&& gui.isMainScreen()*/ && !settings.getNightWateringStopped())
 			Alarm.timerOnce(0,0,offSecs,beepOn);
 	else
 		beeping = false;

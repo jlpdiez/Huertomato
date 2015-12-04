@@ -116,10 +116,6 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
@@ -180,10 +176,6 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
@@ -275,7 +267,7 @@ build.arch=AVR
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>arduino</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
-        <arduino.upload.port>COM15</arduino.upload.port>
+        <arduino.upload.port>COM16</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
     <PreBuildEvent>
@@ -327,10 +319,6 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
@@ -391,10 +379,6 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\Time\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\TimeAlarms\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTFT\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\UTouch\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROMEx\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SD</Value>
@@ -486,7 +470,7 @@ build.arch=AVR
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>arduino</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
-        <arduino.upload.port>COM15</arduino.upload.port>
+        <arduino.upload.port>COM16</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
     <UsesExternalMakeFile>False</UsesExternalMakeFile>
@@ -503,12 +487,6 @@ build.arch=AVR
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buttons.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Buttons.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="Sensor.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -564,81 +542,6 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h" />
-    <Compile Include="WinAlarms.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinAlarms.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinControllerMenu.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinControllerMenu.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinControllerMenuTwo.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinControllerMenuTwo.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinEcAlarms.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinEcAlarms.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinEcCalib.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinEcCalib.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinLvlAlarms.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinLvlAlarms.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinLvlCalib.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinLvlCalib.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinMainMenu.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinMainMenu.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Window.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="fonts.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="GUI.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="GUI.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinMainScreen.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinMainScreen.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Window.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="logo126.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="logos64.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="RGBled.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -658,72 +561,6 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.Huertomato_Code.vsarduino.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPhAlarms.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPhAlarms.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPhCalib.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPhCalib.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPump.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinPump.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinReservoir.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinReservoir.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSD.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSD.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSensorCalib.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSensorCalib.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSensorPolling.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSensorPolling.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSystemMenu.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinSystemMenu.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinTime.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinTime.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinWater.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinWater.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinWaterNight.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="WinWaterNight.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
