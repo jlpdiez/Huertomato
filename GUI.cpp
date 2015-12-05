@@ -47,10 +47,9 @@ void GUI::start() {
 
 //Refreshes non-static windows.
 void GUI::refresh() {
-	/*Window::Screen actScreen = _window->getType();
-	if ((actScreen == Window::MainScreen) || (actScreen == Window::NightWater)
-		|| (actScreen == Window::LvlCalib))
-			_window->update();	*/
+	Window::Screen actScreen = _window->getType();
+	if (actScreen == Window::MainScreen)
+			_window->update();
 }
 
 boolean GUI::isMainScreen() {

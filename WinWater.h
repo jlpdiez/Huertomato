@@ -54,7 +54,6 @@ class WinWater: public Window {
 		//int8_t _waterCycleButtons[_nWaterCycleButtons];
 		boolean _waterTimed;
 		uint8_t _waterHour, _waterMin, _floodMin;
-		void print();
 };
 
 #endif

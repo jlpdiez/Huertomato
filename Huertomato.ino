@@ -208,20 +208,6 @@ void setupRTC() {
 		ui.timeStamp(rtcInitFailTxt);
 }
 
-//Inits SD card and creates timer for SD logs
-/*void setupSD() {
-	if (settings.getSDactive()) {
-		pinMode(SDCardSS, OUTPUT);
-		if (SD.begin(SDCardSS) || sdInit) {
-			sdInit = true;
-			//Timer to log sensor data to SD Card
-			startSDlogTimer();
-			ui.timeStamp(sdInitOkTxt);
-		} else 
-			ui.timeStamp(sdInitFailTxt);
-	}
-}*/
-
 //Initiates system alarms and timers
 //timerOnce is used and then another timerOnce is configured inside the called functions
 void setupAlarms() { 

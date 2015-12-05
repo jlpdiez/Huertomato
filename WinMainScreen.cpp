@@ -18,25 +18,34 @@ Window::Screen WinMainScreen::getType() const {
 }
 
 void WinMainScreen::draw() {
-	//_lcd->fillScr(VGA_WHITE);
-	/*printMainHeader();
-	(_settings->getReservoirModule()) ? printInfoReservoir() : printInfoNoModule();
-	printIconAndStatus();*/
 	_lcd->clear();
 	_lcd->setCursor(0,0);
-	_lcd->print("Main");
+	
+	_lcd->print(_sensors->getTemp(),1);
+	_lcd->print("C");
+	_lcd->print(" LVL:");
+	_lcd->print(_sensors->getWaterLevel());
+	_lcd->print("%");
 	_lcd->setCursor(0,1);
-	_lcd->print("Screen");
+	_lcd->print("pH:");
+	//TODO: Implement real sensor data
+	_lcd->print("11.5");
+	_lcd->print(" EC:");
+	_lcd->print("300mS");
 }
 
 //Refreshes minimun or redraws if status of system has changed
 void WinMainScreen::update() {
-	/*if (!_settings->moduleChanged()) {
-		updateMainHeader();
-		(_settings->getReservoirModule()) ? updateInfoReservoir() : updateInfoNoModule();
-		updateIconAndStatus();
-	} else 
-		draw();*/
+	_lcd->setCursor(0,0);
+	_lcd->print(_sensors->getTemp(),1);
+	_lcd->setCursor(10,0);
+	_lcd->print(_sensors->getWaterLevel());
+	_lcd->print("%");
+	_lcd->setCursor(3,1);
+	//pH
+	_lcd->setCursor(12,1);
+	//EC
+	//_lcd->print("mS");
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 
