@@ -1,12 +1,12 @@
 // #############################################################################
 //
 // # Name       : WinTime
-// # Version    : 1.3
+// # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 07.12.2015
 //
-// # Description: Time configuration window
+// # Description: Time configuration screen
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -30,13 +30,6 @@
 #include "Window.h"
 #include <Time.h>
 
-const char nameWinTime[] PROGMEM = "Time & Date";
-
-const char timeS[] PROGMEM = "Time";
-const char timeFormatS[] PROGMEM = "(HH:MM:SS)";
-const char dateS[] PROGMEM = "Date";
-const char dateFormatS[] PROGMEM = "(DD/MM/YYYY)";
-
 class WinTime: public Window {
 	public:
 		WinTime(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
@@ -49,11 +42,16 @@ class WinTime: public Window {
 		Window::Screen processTouch(int);
 	
 	protected:
-		//static const uint8_t _nTimeButtons = _nFlowButtons + 12;
-		//int8_t _timeButtons[_nTimeButtons];
+		//Tracks position of cursor
+		//Line 0 is time, line 1 is date
+		//Line 0 Columns: 5-hour; 8-minute; 11-second
+		//Line 1 Columns: 4-day; 7-month; 12-year
+		uint8_t  _line, _column;
+		//Internal time variables
 		uint8_t _sysHour, _sysMin, _sysSec, _sysDay, _sysMonth;
 		int _sysYear;
-		void print();
+		//Tracks date change to update RTC or not
+		boolean _modified;
 };
 
 #endif

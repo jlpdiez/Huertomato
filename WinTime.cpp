@@ -1,15 +1,22 @@
 #include "WinTime.h"
 
 WinTime::WinTime(LiquidCrystal *lcd, Sensors *sensors, Settings *settings) 
-: Window(lcd,sensors,settings) { }
+: Window(lcd,sensors,settings) {
+	_line = 0;
+	_column = 0;
+	_modified = false;
+}
 
 WinTime::WinTime(const WinTime &other) : Window(other) {
-	/*for (uint8_t i = 0; i < _nTimeButtons; i++) {
-		_timeButtons[i] = other._timeButtons[i];
-	}*/
+	_line = other._line;
+	_column = other._column;
+	_modified = false;
 }
 	
 WinTime& WinTime::operator=(const WinTime& other) {
+	_line = other._line;
+	_column = other._column;
+	_modified = false;
 	_lcd = other._lcd;
 	_sensors = other._sensors;
 	_settings = other._settings;
@@ -22,20 +29,8 @@ Window::Screen WinTime::getType() const {
 	return Window::TimeDate;
 }
 
-void WinTime::print() {
-	/*const int houU[] = {150, _yTwoLnsFirst-22};       //hour up
-	const int minU[] = {220, _yTwoLnsFirst-22};       //min up
-	const int secU[] = {290, _yTwoLnsFirst-22};       //sec up
-	const int houD[] = {150, _yTwoLnsFirst+22};       //hour down
-	const int minD[] = {220, _yTwoLnsFirst+22};       //min down
-	const int secD[] = {290, _yTwoLnsFirst+22};       //sec down
-	const int dayU[] = {150, _yTwoLnsSecond-22};       //day up
-	const int monU[] = {220, _yTwoLnsSecond-22};       //month up
-	const int yeaU[] = {290, _yTwoLnsSecond-22};       //year up
-	const int dayD[] = {150, _yTwoLnsSecond+22};       //day down
-	const int monD[] = {220, _yTwoLnsSecond+22};       //month down
-	const int yeaD[] = {290, _yTwoLnsSecond+22};       //year down
-
+//Draws entire screen Time Settings
+void WinTime::draw() {
 	//Get actual time
 	time_t t = now();
 	_sysHour = hour(t);
@@ -44,157 +39,190 @@ void WinTime::print() {
 	_sysDay = day(t);
 	_sysMonth = month(t);
 	_sysYear = year(t);
-
-	_lcd->setColor(grey[0],grey[1],grey[2]);
-	_lcd->setBackColor(VGA_WHITE);
 	
-	//Make +/- buttons
-	_timeButtons[_nFlowButtons] = _buttons.addButton(houU[0],houU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+1] = _buttons.addButton(minU[0],minU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+2] = _buttons.addButton(secU[0],secU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+3] = _buttons.addButton(houD[0],houD[1],minusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+4] = _buttons.addButton(minD[0],minD[1],minusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+5] = _buttons.addButton(secD[0],secD[1],minusStr,BUTTON_SYMBOL);
-	
-	_timeButtons[_nFlowButtons+6] = _buttons.addButton(dayU[0],dayU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+7] = _buttons.addButton(monU[0],monU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+8] = _buttons.addButton(yeaU[0],yeaU[1],plusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+9] = _buttons.addButton(dayD[0],dayD[1],minusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+10] = _buttons.addButton(monD[0],monD[1],minusStr,BUTTON_SYMBOL);
-	_timeButtons[_nFlowButtons+11] = _buttons.addButton(yeaD[0],yeaD[1],minusStr,BUTTON_SYMBOL);
-	
-	//TIME
-	_lcd->setFont(hallfetica_normal);
-	_lcd->print(pmChar(timeS), _xConfig, _yTwoLnsFirst);
-	_lcd->setFont(Sinclair_S);
-	//(strlen_P(timeS)*bigFontSize)/2 is middle point of "Time". (strlen_P(hhmmss)*smallFontSize)/2 is middle point of "(HH:MM:SS)"
-	//So the x coord is xTime + middle "Time" - middle of "(HH:MM:SS)"
-	_lcd->print(pmChar(timeFormatS), _xConfig+(strlen_P(timeS)*_bigFontSize)/2-(strlen_P(timeFormatS)*_smallFontSize)/2, _yTwoLnsFirst+_bigFontSize+2);
-	
-	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->print(pmChar(timeSeparator),houU[0]+39,_yTwoLnsFirst);
-	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->print(pmChar(timeSeparator),minU[0]+39,_yTwoLnsFirst);
-	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-
-	//DATE
-	_lcd->print(pmChar(dateS), _xConfig, _yTwoLnsSecond);
-	_lcd->setFont(Sinclair_S);
-	_lcd->print(pmChar(dateFormatS), _xConfig+(strlen_P(dateS)*_bigFontSize)/2-(strlen_P(dateFormatS)*_smallFontSize)/2, _yTwoLnsSecond+_bigFontSize+2);
-	
-	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->print(pmChar(dateSeparator), dayU[0]+39, _yTwoLnsSecond);
-	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->print(pmChar(dateSeparator), monU[0]+39, _yTwoLnsSecond);
-	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,4);
-	*/
-}
-
-//Draws entire screen Time Settings
-void WinTime::draw() {
 	_lcd->clear();
-	_lcd->setCursor(0,0);
-	_lcd->print("Time");
-	_lcd->setCursor(0,1);
-	_lcd->print("Date");
-	/*_lcd->fillScr(VGA_WHITE);
-	_buttons.deleteAllButtons();
-	printMenuHeader(nameWinTime);
-	addFlowButtons(true,true,true,_timeButtons);
-	print();
-	_buttons.drawButtons();*/
+	_lcd->setCursor(4,0);
+	(_sysHour < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysHour);
+	_lcd->print(pmChar(timeSeparator));
+	(_sysMin < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysMin);
+	_lcd->print(pmChar(timeSeparator));
+	(_sysSec < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysSec);
+	
+	_lcd->setCursor(3,1);
+	(_sysDay < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysDay);
+	_lcd->print(pmChar(dateSeparator));
+	(_sysMonth < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysMonth);
+	_lcd->print(pmChar(dateSeparator));
+	_lcd->print(_sysYear);
+	
+	_line = 0;
+	_column = 5;
+	_lcd->setCursor(_column,_line);
+	_lcd->cursor();
 }
 
 //Redraws only time & date numbers from inner temp vars
 //Used when +- signs are pressed
 void WinTime::update() {
-	/*const int houU[] = {150, _yTwoLnsFirst-22};       //hour up
-	const int minU[] = {220, _yTwoLnsFirst-22};       //min up
-	const int secU[] = {290, _yTwoLnsFirst-22};       //sec up
-	const int dayU[] = {150, _yTwoLnsSecond-22};       //day up
-	const int monU[] = {220, _yTwoLnsSecond-22};       //month up
-	const int yeaU[] = {290, _yTwoLnsSecond-22};       //year up
+	//_lcd->clear();
+	_lcd->setCursor(4,0);
+	(_sysHour < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysHour);
+	_lcd->print(pmChar(timeSeparator));
+	(_sysMin < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysMin);
+	_lcd->print(pmChar(timeSeparator));
+	(_sysSec < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysSec);
 	
-	_lcd->setFont(hallfetica_normal);
-	_lcd->printNumI(_sysHour,houU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->printNumI(_sysMin,minU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
-	_lcd->printNumI(_sysSec,secU[0]+_smallFontSize/2-_bigFontSize+2,_yTwoLnsFirst,2,'0');
+	_lcd->setCursor(3,1);
+	(_sysDay < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysDay);
+	_lcd->print(pmChar(dateSeparator));
+	(_sysMonth < 10) ? _lcd->print("0") : 0;
+	_lcd->print(_sysMonth);
+	_lcd->print(pmChar(dateSeparator));
+	_lcd->print(_sysYear);
 	
-	_lcd->printNumI(_sysDay, dayU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->printNumI(_sysMonth, monU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,2,'0');
-	_lcd->printNumI(_sysYear, yeaU[0]+_smallFontSize/2-_bigFontSize+2, _yTwoLnsSecond,4);*/
+	_lcd->setCursor(_column,_line);
+	_lcd->cursor();
 }
 
 Window::Screen WinTime::processTouch(int but) {
-	if (but == 4)
-		return MainScreen;
-	else if (but == 1)
-		return WateringCycle;
-	else
-		return None;
-	/*int buttonIndex = _buttons.checkButtons(x,y);
-	//Back
-	if (buttonIndex == _timeButtons[0]) 
-		return ControllerSettings;
-	//Save
-	else if (buttonIndex == _timeButtons[1]) {
-		_settings->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
-		printSavedButton();
-	//Exit
-	} else if (buttonIndex == _timeButtons[2]) 
+	//Select - Saves time and changes screen
+	if (but == 5) {
+		_lcd->noBlink();
+		_lcd->noCursor();
+		if (_modified)
+			_settings->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
 		return MainScreen;
 		
-	//Hour up
-	else if (buttonIndex == _timeButtons[3]) {
-		(_sysHour >= 23) ? _sysHour=0 : _sysHour++;
+	//Right Button - Cycle between numbers
+	} else if (but == 1) {
+		//First line - Time
+		if (_line == 0) {
+			//From hour to min
+			if (_column == 5) {
+				_column = 8;
+			//Min to sec
+			} else if (_column == 8) {
+				_column = 11;
+			//Sec to day
+			} else if (_column == 11) {
+				_line = 1;
+				_column = 4;
+			}		
+		//Second line - Date
+		} else if (_line == 1) {
+			//From day to month
+			if (_column == 4) {
+				_column = 7;
+			//From month to year
+			} else if(_column == 7) {
+				_column = 12;
+			//From year back to hour
+			} else if (_column == 12) {
+				_line = 0;
+				_column = 5;
+			}
+		}
+		_lcd->setCursor(_column,_line);
+	
+	//Left Button - Cycle between numbers
+	} else if (but == 4) {
+		//First line - Time
+		if (_line == 0) {
+			//From hour to year
+			if (_column == 5) {
+				_line = 1;
+				_column = 12;
+			//Min to hour
+			} else if (_column == 8) {
+				_column = 5;
+			//Sec to min
+			} else if (_column == 11) {
+				_column = 8;
+			}
+		//Second line - Date
+		} else if (_line == 1) {
+			//From day to sec
+			if (_column == 4) {
+				_line = 0;
+				_column = 11;
+			//From month to day
+			} else if(_column == 7) {
+				_column = 4;
+			//From year back to month
+			} else if (_column == 12) {
+				_column = 7;
+			}
+		}
+		_lcd->setCursor(_column,_line);
+			
+	//UP Button
+	} else if (but == 2) {
+		//First line - Time
+		if (_line == 0) {
+			//Hour++
+			if (_column == 5) {
+				(_sysHour >= 23) ? _sysHour=0 : _sysHour++;
+			//Min++
+			} else if (_column == 8) {
+				(_sysMin >= 59) ? _sysMin=0 : _sysMin++;
+			//Sec++
+			} else if (_column == 11) {
+				(_sysSec >= 59) ? _sysSec=0 : _sysSec++;
+			}
+		//Second line - Date
+		} else if (_line == 1) {
+			//Day++
+			if (_column == 4) {
+				(_sysDay >= 31) ? _sysDay=1 : _sysDay++;
+			//Month++
+			} else if(_column == 7) {
+				(_sysMonth >= 12) ? _sysMonth=1 : _sysMonth++;
+			//Year++
+			} else if (_column == 12) {
+				(_sysYear >= 2037) ? _sysYear=1971 : _sysYear++;
+			}
+		}
+		_modified = true;
 		update();
-	//Min up
-	} else if (buttonIndex == _timeButtons[4]) {
-		(_sysMin >= 59) ? _sysMin=0 : _sysMin++;
-		update();
-	//Sec up
-	} else if (buttonIndex == _timeButtons[5]) {
-		(_sysSec >= 59) ? _sysSec=0 : _sysSec++;;
-		update();
-	//Hour down
-	} else if (buttonIndex == _timeButtons[6]) {
-		(_sysHour <= 0) ? _sysHour=23 : _sysHour--;
-		update();
-	//Min down
-	} else if (buttonIndex == _timeButtons[7]) {
-		(_sysMin <= 0) ? _sysMin=59 : _sysMin--;
-		update();
-	//Sec down
-	} else if (buttonIndex == _timeButtons[8]) {
-		(_sysSec <= 0) ? _sysSec=59 : _sysSec--;
-		update();
-	//Day up
-	} else if (buttonIndex == _timeButtons[9]) {
-		(_sysDay >= 31) ? _sysDay=1 : _sysDay++;
-		update();
-	//Month up
-	} else if (buttonIndex == _timeButtons[10]) {
-		(_sysMonth >= 12) ? _sysMonth=1 : _sysMonth++;
-		update();
-	//Year up
-	} else if (buttonIndex == _timeButtons[11]) {
-		//TimeAlarms can only handle 1971-2037
-		(_sysYear >= 2037) ? _sysYear=1971 : _sysYear++;
-		update();
-	//Day down
-	} else if (buttonIndex == _timeButtons[12]) {
-		(_sysDay <= 1) ? _sysDay=31 : _sysDay--;
-		update();
-	//Month down
-	} else if (buttonIndex == _timeButtons[13]) {
-		(_sysMonth <= 1) ? _sysMonth=12 : _sysMonth--;
-		update();
-	//Year down
-	} else if (buttonIndex == _timeButtons[14]) {
-		(_sysYear <= 1971) ? _sysYear=2037 : _sysYear--;
+		
+	//DOWN	
+	} else if (but == 3) {
+		//First line - Time
+		if (_line == 0) {
+			//Hour--
+			if (_column == 5) {
+				(_sysHour <= 0) ? _sysHour=23 : _sysHour--;
+			//Min--
+			} else if (_column == 8) {
+				(_sysMin <= 0) ? _sysMin=59 : _sysMin--;
+			//Sec--
+			} else if (_column == 11) {
+				(_sysSec <= 0) ? _sysSec=59 : _sysSec--;
+			}
+		//Second line - Date
+		} else if (_line == 1) {
+			//Day--
+			if (_column == 4) {
+				(_sysDay <= 1) ? _sysDay=31 : _sysDay--;
+			//Month--
+			} else if(_column == 7) {
+				(_sysMonth <= 1) ? _sysMonth=12 : _sysMonth--;
+			//Year--
+			} else if (_column == 12) {
+				(_sysYear <= 1971) ? _sysYear=2037 : _sysYear--;
+			}
+		}
+		_modified = true;
 		update();
 	}
-	return None;*/
+	return None;
 }

@@ -49,10 +49,11 @@ void WinMainScreen::update() {
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 
-	if (but == 4)
+	//Select
+	if (but == 5)
 		return WateringCycle;
-	else if (but == 1)
-		return TimeDate; 
+	//else if (but == 1)
+		//return TimeDate; 
 	else
 		return None;
 }

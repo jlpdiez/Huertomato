@@ -68,10 +68,11 @@ void WinWater::update() {
 
 //TODO: Rutina para incrementar/decrementar valores
 Window::Screen WinWater::processTouch(int but) {
-	if (but == 4)
+	//Select
+	if (but == 5)
 		return TimeDate;
-	else if (but == 1)
-		return MainScreen;
+	//else if (but == 1)
+		//return MainScreen;
 	else
 		return None;	
 	/*int buttonIndex = _buttons.checkButtons(x,y);

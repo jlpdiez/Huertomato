@@ -80,7 +80,7 @@ void GUI::updateScreen(Window::Screen newScreen) {
 //Reads x,y press and calls one function or another depending on active screen
 void GUI::processInput() {
 	int adcIn = analogRead(lcdA0);
-	//Some button pressed and distance between actual and previous analog value > 150
+	//Some button pressed
 	if ((adcIn < 1000) && (adcIn != _prevADC)) {
 		_prevADC = adcIn;
 		Button but = None;
@@ -100,5 +100,6 @@ void GUI::processInput() {
 			updateScreen(newScreen);
 			_window->draw();
 		}
-	}
+	} else
+		_prevADC = 1000;
 }
