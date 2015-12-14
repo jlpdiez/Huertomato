@@ -42,20 +42,20 @@ void WinTime::draw() {
 	
 	_lcd->clear();
 	_lcd->setCursor(4,0);
-	(_sysHour < 10) ? _lcd->print("0") : 0;
+	(_sysHour < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysHour);
 	_lcd->print(pmChar(timeSeparator));
-	(_sysMin < 10) ? _lcd->print("0") : 0;
+	(_sysMin < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysMin);
 	_lcd->print(pmChar(timeSeparator));
-	(_sysSec < 10) ? _lcd->print("0") : 0;
+	(_sysSec < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysSec);
 	
 	_lcd->setCursor(3,1);
-	(_sysDay < 10) ? _lcd->print("0") : 0;
+	(_sysDay < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysDay);
 	_lcd->print(pmChar(dateSeparator));
-	(_sysMonth < 10) ? _lcd->print("0") : 0;
+	(_sysMonth < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysMonth);
 	_lcd->print(pmChar(dateSeparator));
 	_lcd->print(_sysYear);
@@ -71,20 +71,20 @@ void WinTime::draw() {
 void WinTime::update() {
 	//_lcd->clear();
 	_lcd->setCursor(4,0);
-	(_sysHour < 10) ? _lcd->print("0") : 0;
+	(_sysHour < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysHour);
 	_lcd->print(pmChar(timeSeparator));
-	(_sysMin < 10) ? _lcd->print("0") : 0;
+	(_sysMin < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysMin);
 	_lcd->print(pmChar(timeSeparator));
-	(_sysSec < 10) ? _lcd->print("0") : 0;
+	(_sysSec < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysSec);
 	
 	_lcd->setCursor(3,1);
-	(_sysDay < 10) ? _lcd->print("0") : 0;
+	(_sysDay < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysDay);
 	_lcd->print(pmChar(dateSeparator));
-	(_sysMonth < 10) ? _lcd->print("0") : 0;
+	(_sysMonth < 10) ? _lcd->print(pmChar(zero)) : 0;
 	_lcd->print(_sysMonth);
 	_lcd->print(pmChar(dateSeparator));
 	_lcd->print(_sysYear);
@@ -96,7 +96,6 @@ void WinTime::update() {
 Window::Screen WinTime::processTouch(int but) {
 	//Select - Saves time and changes screen
 	if (but == 5) {
-		_lcd->noBlink();
 		_lcd->noCursor();
 		if (_modified)
 			_settings->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);

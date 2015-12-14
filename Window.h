@@ -55,7 +55,8 @@ const char timeSeparator[] PROGMEM = ":";
 const char dateSeparator[] PROGMEM = "/";
 //const char percentSign[] PROGMEM = "%";
 //const char hoursChar[] PROGMEM = "h";
-//const char minutesChar[] PROGMEM = "m";
+const char minutesChar[] PROGMEM = "m";
+const char zero[] PROGMEM = "0";
 /*//Calibration texts
 const char startCalibStr1[] PROGMEM = "Start calibration";
 const char startCalibStr2[] PROGMEM = "procedure now?";

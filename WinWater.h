@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinWater
-// # Version    : 1.2
+// # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 14.12.2015
 //
 // # Description: Water cycle configuration window
 //
@@ -29,14 +29,17 @@
 
 #include "Window.h"
 
-const char nameWinWater[] PROGMEM = "Watering Cycle";
+/*const char nameWinWater[] PROGMEM = "Watering Cycle";
 
 const char modeStr[] PROGMEM = "Mode:";
 const char modeTimedS[] PROGMEM = "Timed     ";
 const char modeContS[] PROGMEM = "Continuous";
 const char waterTwo[] PROGMEM = "Water every:";
 const char waterThree[] PROGMEM = "Active for:";
-const char minutesTxT[] PROGMEM = "minutes";
+const char minutesTxT[] PROGMEM = "minutes";*/
+
+const char riegoTxt[] PROGMEM = "Riego cada:";
+const char duranteTxt[] PROGMEM = "Durante:";
 
 class WinWater: public Window {
 	public:
@@ -50,10 +53,13 @@ class WinWater: public Window {
 		Window::Screen processTouch(int);
 	
 	protected:
-		//static const uint8_t _nWaterCycleButtons = _nFlowButtons + 7;
-		//int8_t _waterCycleButtons[_nWaterCycleButtons];
-		boolean _waterTimed;
+		//Tracks position of cursor
+		uint8_t  _line, _column;
+		//Internal variables
+		//boolean _waterTimed;
 		uint8_t _waterHour, _waterMin, _floodMin;
+		//Tracks change to update settings or not
+		boolean _modified;
 };
 
 #endif

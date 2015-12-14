@@ -1,11 +1,22 @@
 #include "WinWater.h"
 
 WinWater::WinWater(LiquidCrystal *lcd, Sensors *sensors, Settings *settings) 
-: Window(lcd,sensors,settings) { }
+: Window(lcd,sensors,settings) {
+	_line = 0;
+	_column = 0;
+	_modified = false;
+}
 
-WinWater::WinWater(const WinWater &other) : Window(other) {}
+WinWater::WinWater(const WinWater &other) : Window(other) {
+	_line = other._line;
+	_column = other._column;
+	_modified = false;
+}
 	
 WinWater& WinWater::operator=(const WinWater& other) {
+	_line = other._line;
+	_column = other._column;
+	_modified = false;
 	_lcd = other._lcd;
 	_sensors = other._sensors;
 	_settings = other._settings;
@@ -20,109 +31,134 @@ Window::Screen WinWater::getType() const {
 
 //Draws entire screen Watering Cycle
 void WinWater::draw() {
+	//Get actual settings
+	_waterHour = _settings->getWaterHour();
+	_waterMin = _settings->getWaterMinute();
+	_floodMin = _settings->getFloodMinute();
+	
 	_lcd->clear();
+	//First line
 	_lcd->setCursor(0,0);
-	_lcd->print("Riego cada:");
-	_lcd->print("01:30");
+	_lcd->print(pmChar(riegoTxt));
+	(_waterHour < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_waterHour);
+	_lcd->print(pmChar(timeSeparator));
+	(_waterMin < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_waterMin);
+	//Second line
 	_lcd->setCursor(0,1);
-	_lcd->print("Durante:");
-	_lcd->print("15m");
+	_lcd->print(pmChar(duranteTxt));
+	(_floodMin < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_floodMin);
+	_lcd->print(pmChar(minutesChar));
+	
+	_line = 0;
+	_column = 12;
+	_lcd->setCursor(_column,_line);
+	_lcd->cursor();
 } 
 
 //Redraws only water cycle numbers & text from inner temp vars
 //Used when +- signs are pressed
 void WinWater::update() {
-	/*_lcd->setFont(hallfetica_normal);
-	_lcd->setColor(lightGreen[0],lightGreen[1],lightGreen[2]);
+	//First line
+	_lcd->setCursor(11,0);
+	(_waterHour < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_waterHour);
+	_lcd->print(pmChar(timeSeparator));
+	(_waterMin < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_waterMin);
+	//Second line
+	_lcd->setCursor(8,1);
+	(_floodMin < 10) ? _lcd->print(pmChar(zero)) : 0;
+	_lcd->print(_floodMin);
+	_lcd->print(pmChar(minutesChar));
 	
-	//Continuous/timed text
-	int x = _xConfig + 2*_bigFontSize;;
-	x += (1+strlen_P(modeStr))*_bigFontSize;
-	if (_waterTimed)
-		_lcd->print(pmChar(modeTimedS),x,_yThreeLnsFirst);
-	else
-		_lcd->print(pmChar(modeContS),x,_yThreeLnsFirst);
-	
-	_lcd->setColor(grey[0],grey[1],grey[2]);
-	//Water every
-	x = _xConfig;
-	x += 13*_bigFontSize;
-	_lcd->printNumI(_waterHour,x,_yThreeLnsSecond,2,'0');
-	x += 2*_bigFontSize;
-	x += 2*_bigFontSize;
-	_lcd->printNumI(_waterMin,x,_yThreeLnsSecond,2,'0');
-	//Flood time
-	x = _xConfig;
-	x += 12*_bigFontSize;
-	_lcd->printNumI(_floodMin,x,_yThreeLnsThird,2,'0');
-	
-	//If first toggle is inactive we grey out buttons
-	if (!_waterTimed) {
-		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
-			_buttons.disableButton(_waterCycleButtons[i],true);
-	} else {
-		for (uint8_t i = 4; i < _nWaterCycleButtons; i++)
-			_buttons.enableButton(_waterCycleButtons[i],true);
-	}*/
+	_lcd->setCursor(_column,_line);
+	_lcd->cursor();
 }
 
 //TODO: Rutina para incrementar/decrementar valores
 Window::Screen WinWater::processTouch(int but) {
-	//Select
-	if (but == 5)
-		return TimeDate;
-	//else if (but == 1)
-		//return MainScreen;
-	else
-		return None;	
-	/*int buttonIndex = _buttons.checkButtons(x,y);
-	//Back
-	if (buttonIndex == _waterCycleButtons[0]) 
-		return SystemSettings;
-	//Save
-	else if (buttonIndex == _waterCycleButtons[1]) {
-		//Prevents flood time > time inactive as it will mess up alarms
-		//As flood time always > 1 this also prevents a watering time of 0
-		if ((_waterHour == 0) && (_floodMin >= _waterMin)) {
-			_waterMin = _floodMin + 1;
-			update();
+	//Select - Saves and changes screen
+	if (but == 5) {
+		_lcd->noCursor();
+		if (_modified) {
+			_settings->setWaterHour(_waterHour);
+			_settings->setWaterMinute(_waterMin);
+			_settings->setFloodMinute(_floodMin);
 		}
-		_settings->setWaterTimed(_waterTimed);
-		_settings->setWaterHour(_waterHour);
-		_settings->setWaterMinute(_waterMin);
-		_settings->setFloodMinute(_floodMin);
-		printSavedButton();
-	//Exit
-	} else if (buttonIndex == _waterCycleButtons[2]) 
-		return MainScreen;	
-	//Water mode
-	else if (buttonIndex == _waterCycleButtons[3]) {
-		_waterTimed = !_waterTimed;
+		return TimeDate;
+		
+	//Right Button - Cycle between numbers
+	} else if (but == 1) {
+		//First line - Time
+		if (_line == 0) {
+			//From hour to min
+			if (_column == 12) {
+				_column = 15;
+			//From water to flood
+			} else if (_column == 15) {
+				_line = 1;
+				_column = 9;
+			}
+			//Second line
+			} else if ((_line == 1) && (_column == 9)) {
+				_line = 0;
+				_column = 12;
+		}
+		_lcd->setCursor(_column,_line);
+	
+	//Left Button - Cycle between numbers
+	} else if (but == 4) {
+	//First line - Time
+	if (_line == 0) {
+		//From hour to flood
+		if (_column == 12) {
+			_line = 1;
+			_column = 9;
+		//From min to hour
+		} else if (_column == 15) {
+			_column = 12;
+		}
+	//Second line - Date
+	} else if ((_line == 1) && (_column == 9)) {
+		_line = 0;
+		_column = 15;
+	}
+	_lcd->setCursor(_column,_line);
+	
+	//UP Button
+	} else if (but == 2) {
+		if (_line == 0) {
+			//Hour++
+			if (_column == 12) {
+				(_waterHour >= 23) ? _waterHour=0 : _waterHour++;
+			//Minute++
+			} else if (_column == 15) {
+				(_waterMin >= 59) ? _waterMin=0 : _waterMin++;	
+			}
+		} else if ((_line = 1) && (_column == 9)) {
+			(_floodMin >= 59) ? _floodMin=0 : _floodMin++;
+		}
+		_modified = true;
 		update();
-	//Hour up
-	} else if (buttonIndex == _waterCycleButtons[4]) {
-		(_waterHour >= 23) ? _waterHour=0 : _waterHour++;
-		update();
-	//Hour down
-	} else if (buttonIndex == _waterCycleButtons[5]) {
-		(_waterHour <= 0) ? _waterHour=23 : _waterHour--;
-		update();
-	//Minute up
-	} else if (buttonIndex == _waterCycleButtons[6]) {
-		(_waterMin >= 59) ? _waterMin=0 : _waterMin++;;
-		update();
-	//Minute down
-	} else if (buttonIndex == _waterCycleButtons[7]) {
-		(_waterMin <= 0) ? _waterMin=59 : _waterMin--;
-		update();
-	//Flood minute up
-	} else if (buttonIndex == _waterCycleButtons[8]) {
-		(_floodMin >= 59) ? _floodMin=1 : _floodMin++;
-		update();
-	//Flood minute down
-	} else if (buttonIndex == _waterCycleButtons[9]) {
-		(_floodMin <= 1) ? _floodMin=59 : _floodMin--;
+	
+	//DOWN
+	} else if (but == 3) {
+		if (_line == 0) {
+			//Hour++
+			if (_column == 12) {
+				(_waterHour <= 0) ? _waterHour=23 : _waterHour--;
+			//Minute++
+			} else if (_column == 15) {
+				(_waterMin <= 1) ? _waterMin=59 : _waterMin--;
+			}
+		} else if ((_line = 1) && (_column == 9)) {
+			(_floodMin <= 0) ? _floodMin=59 : _floodMin--;
+		}
+		_modified = true;
 		update();
 	}
-	return None;*/
+	return None;
 }
