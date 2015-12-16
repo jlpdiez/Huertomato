@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.9
+// # Version    : 2.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.10.2015
+// # Date       : 14.12.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -89,21 +89,21 @@ class Sensors {
 	void fastUpdate();
 	
 	//This should be set while calibrating to prevent messing up circuits if update() called
-	void calibratingPH(boolean);
-	void calibratingEC(boolean);
+	//void calibratingPH(boolean);
+	//void calibratingEC(boolean);
 	//pH circuit commands
-	void resetPH();
+	/*void resetPH();
 	void getPHinfo();
 	void setPHled(boolean);
 	void setPHcontinuous();
 	void setPHstandby();
 	void setPHfour();
 	void setPHseven();
-	void setPHten();
+	void setPHten();*/
 	//Adjust pH readings to temperature
 	void adjustPHtemp();
 	//EC circuit commands
-	void resetEC();
+	/*void resetEC();
 	void getECinfo();
 	void setECled(boolean);
 	void setECcontinuous();
@@ -111,7 +111,7 @@ class Sensors {
 	void setECprobeType();
 	void setECdry();
 	void setECtenThousand();
-	void setECfortyThousand();
+	void setECfortyThousand();*/
 	//Adjusts EC sensor readings to temperature
 	void adjustECtemp();
 

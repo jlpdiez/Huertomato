@@ -106,10 +106,7 @@ const char waterStopTxt[] PROGMEM = "Watering cycle ended.";
 // PINOUT ASSIGN
 // *********************************************
 // Pins that can't be used;
-// 16 & 17 are Serial2 Tx,Rx used for pH circuit
-// 18 & 19 are Serial1 Tx,Rx used for EC circuit
 // 20 & 21 are I2C's SDA, SCL used for RTC
-// 50, 51 & 52 are MISO, MOSI & SCK used for SD card
 //RGB LED
 const uint8_t redPin = 12;
 const uint8_t greenPin = 11;
@@ -131,6 +128,9 @@ const uint8_t lcdD1 = 23;
 const uint8_t lcdD2 = 24;
 const uint8_t lcdD3 = 25;
 const uint8_t lcdA0 = A3;
+//pH & EC
+const uint8_t phPin = A4;
+const uint8_t ecPin = A5;
 
 // *********************************************
 // OBJECT DECLARATIONS

@@ -9,7 +9,7 @@ SensorEC::SensorEC(const int pin)
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_ecs[i] = 0;
 	}
-	_calibratingEc = false;
+	//_calibratingEc = false;
 }
 
 SensorEC::SensorEC(const SensorEC &other) : Sensor(other) {
@@ -19,7 +19,7 @@ SensorEC::SensorEC(const SensorEC &other) : Sensor(other) {
 		_ecs[i] = other._ecs[i];
 	}
 	_ec = other._ec;
-	_calibratingEc = false;
+	//_calibratingEc = false;
 }
 
 SensorEC& SensorEC::operator =(const SensorEC &other) {
@@ -39,13 +39,7 @@ Sensor::SensName SensorEC::getType() const {
 	return Sensor::Ec;
 }
 
-void SensorEC::init() {
-	//Open communication
-	Serial1.begin(38400);
-	Serial1.print("E\r");
-	//Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
-	Serial1.print("C\r");
-}
+void SensorEC::init() {}
 
 void SensorEC::update() {
 	_ecs[_iSample] = getRaw();
@@ -69,22 +63,17 @@ uint16_t SensorEC::get() const {
 
 //Returns EC in uSiemens. Reading takes 1000ms
 uint16_t SensorEC::getRaw() const {
-	//If sensors being calibrated we return previous values
-	if (!_calibratingEc) {
-		if (Serial1.available() > 0) {
-			uint16_t res = Serial1.parseInt();
-			//Clear buffer of remaining messages
-			while (Serial1.available() > 0)
-			Serial1.read();
-			return res;
-		}
-		//Buffer has been emptied before and circuit still hasn't put data into it again
-		return 0;
-	} else
-	return _ec;
+	uint16_t raw = analogRead(ecPin);
+	Serial.print("RAW: ");
+	Serial.print(raw);
+	uint16_t rawVolt = raw*(float)5000/1024;
+	Serial.print(" | mV: ");
+	Serial.print(rawVolt);
+	//float tempCoef = 1.0 + 0.0185*(sensors.getTemp()-25.0);
+	
 }
 
-void SensorEC::setSerialDebug(boolean s) {
+/*void SensorEC::setSerialDebug(boolean s) {
 	_serialDbg = s;
 }
 
@@ -146,16 +135,16 @@ void SensorEC::setFortyThousand() {
  	if (_serialDbg)
  		Serial.println("40,000 uS cal");
 }
-
+*/
 //Adjusts EC sensor readings to given temperature
 void SensorEC::adjustTemp(float tempt) {
-	if ((tempt != 0) && (!_calibratingEc)) {
+	/*if ((tempt != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(tempt,4,2,tempArray);
 		String command = (String)tempArray + ",C\r";
 		Serial1.print(command);
-	}
+	}*/
 }
 
 void SensorEC::smooth() {
@@ -166,7 +155,7 @@ void SensorEC::smooth() {
 
 
 //Clears incoming buffers
-void SensorEC::clearECbuffer() {
+/*void SensorEC::clearECbuffer() {
 	while (Serial1.available() > 0)
 		Serial1.read();	
 }
@@ -188,4 +177,4 @@ void SensorEC::ecToSerial() {
 			Serial.println(sensorString);
 		}
 	}
-}
+}*/

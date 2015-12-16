@@ -1,12 +1,12 @@
 // #############################################################################
 //
 // # Name       : SensorPH
-// # Version    : 1.1
+// # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.11.2015
+// # Date       : 14.12.2015
 //
-// # Description: Atlas scientific pH sensor class
+// # Description: DFRobot pH sensor class
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,9 @@
 
 #include "Sensor.h"
 
+extern const uint8_t phPin;
+const float offSet = 3.39;
+
 class SensorPH: public Sensor {
 	public:
 		SensorPH(const int pin = 0);
@@ -43,7 +46,7 @@ class SensorPH: public Sensor {
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
 		//Sets output to serial
-		void setSerialDebug(boolean);
+		/*void setSerialDebug(boolean);
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibrating(boolean c);
 		//pH circuit commands
@@ -54,14 +57,14 @@ class SensorPH: public Sensor {
 		void setStandby();
 		void setFour();
 		void setSeven();
-		void setTen();
+		void setTen();*/
 		//Adjust pH readings to given temperature
 		void adjustTemp(float);
 	
 	protected:
 		boolean _serialDbg;
 		//Stops pH routine if sensor is being calibrated
-		boolean _calibratingPh;
+		//boolean _calibratingPh;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
@@ -72,9 +75,9 @@ class SensorPH: public Sensor {
 		void smooth();
 		
 		//Clear incoming buffer
-		void clearBuffer();
+		//void clearBuffer();
 		//Output pH circuit's response to serial
-		void phToSerial();
+		//void phToSerial();
 };
 
 #endif

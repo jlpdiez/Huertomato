@@ -9,11 +9,11 @@ Sensors::Sensors(Settings *settings)
 	boolean serialDbg = _settings->getSerialDebug();
 	//Init & config sensor instances 
 	_ec.init();
-	_ec.setSerialDebug(serialDbg);
+	//_ec.setSerialDebug(serialDbg);
 	_humidity.init();
 	_light.init();
 	_ph.init();
-	_ph.setSerialDebug(serialDbg);
+	//_ph.setSerialDebug(serialDbg);
 	_temp.init();
 	_temp.setCelsius(_settings->getCelsius());
 	_water.setMax(_settings->getMaxWaterLvl());
@@ -85,10 +85,10 @@ uint16_t Sensors::getRawLightLevel() {
 
 //Sets internal states
 //Serial debug affects EC & pH while calibrating
-void Sensors::setSerialDebug(boolean d) {
+/*void Sensors::setSerialDebug(boolean d) {
 	_ec.setSerialDebug(d);
 	_ph.setSerialDebug(d);
-}
+}*/
 
 //This affects if all sensors are updated() and used or not
 void Sensors::setReservoir(boolean r) {
@@ -167,7 +167,7 @@ void Sensors::fastUpdate() {
 }
 
 //This should be set while calibrating to prevent messing up circuits if update() or adjustTemp() called
-void Sensors::calibratingPH(boolean c) {
+/*void Sensors::calibratingPH(boolean c) {
 	_ph.calibrating(c);
 }
 
@@ -206,7 +206,7 @@ void Sensors::setPHseven() {
 
 void Sensors::setPHten() {
 	_ph.setTen();
-}
+}*/
 
 //Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
 void Sensors::adjustPHtemp() {
@@ -214,7 +214,7 @@ void Sensors::adjustPHtemp() {
 }
 
 //EC circuit commands
-void Sensors::resetEC() {
+/*void Sensors::resetEC() {
 	_ec.reset();
 }
 
@@ -248,7 +248,7 @@ void Sensors::setECfortyThousand() {
 
 void Sensors::setECtenThousand() {
 	_ec.setTenThousand();
-}
+}*/
 
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
 void Sensors::adjustECtemp() {

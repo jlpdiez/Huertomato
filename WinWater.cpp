@@ -78,7 +78,6 @@ void WinWater::update() {
 	_lcd->cursor();
 }
 
-//TODO: Rutina para incrementar/decrementar valores
 Window::Screen WinWater::processTouch(int but) {
 	//Select - Saves and changes screen
 	if (but == 5) {

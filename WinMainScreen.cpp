@@ -22,14 +22,14 @@ void WinMainScreen::draw() {
 	_lcd->setCursor(0,0);
 	
 	_lcd->print(_sensors->getTemp(),1);
-	_lcd->print("C");
+	_lcd->print(pmChar(celsStr));
 	_lcd->print(" LVL:");
 	_lcd->print(_sensors->getWaterLevel());
-	_lcd->print("%");
+	_lcd->print(pmChar(percentSign));
 	_lcd->setCursor(0,1);
 	_lcd->print("pH:");
 	//TODO: Implement real sensor data
-	_lcd->print("11.5");
+	_lcd->print(_sensors->getPH());
 	_lcd->print(" EC:");
 	_lcd->print("300mS");
 }

@@ -42,7 +42,7 @@ const char cancelText[] PROGMEM = " Exit ";
 //Has one extra char to cover last F of OFF
 const char onStr[] PROGMEM = "ON ";
 const char offStr[] PROGMEM = "OFF";
-const char celsStr[] PROGMEM = "Celsius   ";
+
 const char farenhStr[] PROGMEM = "Fahrenheit";
 //various_symbols font is used for these
 const char bulletStr[] PROGMEM = "T";
@@ -51,9 +51,10 @@ const char minusStr[] PROGMEM = ">";
 //Other common texts
 const char headerDecoration[] PROGMEM = "-";
 const char spaceChar[] PROGMEM = " ";*/
+const char celsStr[] PROGMEM = "C";
 const char timeSeparator[] PROGMEM = ":";
 const char dateSeparator[] PROGMEM = "/";
-//const char percentSign[] PROGMEM = "%";
+const char percentSign[] PROGMEM = "%";
 //const char hoursChar[] PROGMEM = "h";
 const char minutesChar[] PROGMEM = "m";
 const char zero[] PROGMEM = "0";

@@ -1,12 +1,12 @@
 // #############################################################################
 //
 // # Name       : SensorEC
-// # Version    : 1.1
+// # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.11.2015
+// # Date       : 16.12.2015
 //
-// # Description: Atlas Scientific EC sensor class
+// # Description: DFRobot EC sensor
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 
 #include "Sensor.h"
 
+extern const uint8_t ecPin;
+
 class SensorEC: public Sensor {
 	public:
 		SensorEC(const int pin = 0);
@@ -44,7 +46,7 @@ class SensorEC: public Sensor {
 		//Returns EC in uSiemens. Reading takes 1000ms
 		uint16_t getRaw() const;
 		//Sets output to serial
-		void setSerialDebug(boolean);
+		/*void setSerialDebug(boolean);
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibrating(boolean c);
 		//EC circuit commands
@@ -56,14 +58,14 @@ class SensorEC: public Sensor {
 		void setProbeType();
 		void setDry();
 		void setTenThousand();
-		void setFortyThousand();
+		void setFortyThousand();*/
 		//Adjusts EC sensor readings to given temperature
 		void adjustTemp(float);
 	
 	protected:
 		boolean _serialDbg;
 		//Stops EC routine if sensor is being calibrated
-		boolean _calibratingEc;
+		//boolean _calibratingEc;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
@@ -74,9 +76,9 @@ class SensorEC: public Sensor {
 		void smooth();
 		
 		//Clears incoming buffers
-		void clearECbuffer();
+		//void clearECbuffer();
 		//Output EC circuit's response to serial
-		void ecToSerial();
+		//void ecToSerial();
 	
 };
 

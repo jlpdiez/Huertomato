@@ -35,14 +35,7 @@ Sensor::SensName SensorPH::getType() const {
 	return Sensor::Ph;
 }
 
-void SensorPH::init() {
-	//Open communication with PH sensor
-	Serial2.begin(38400);
-	//Set it into reading on-demand mode
-	Serial2.print("E\r");
-	//Make a reading or fastUpdate() won't work
-	Serial2.print("R\r");
-}
+void SensorPH::init() {}
 
 void SensorPH::update() {
 	_phs[_iSample] = getRaw();
@@ -64,28 +57,28 @@ float SensorPH::get() const {
 	return _ph;
 }
 
-//Returns a PH reading. Reading takes 378ms
+//Returns a PH reading.
 float SensorPH::getRaw() const {
-	if (!_calibratingPh) {
-		Serial2.print("R\r");
-		if (Serial2.available() > 0) {
-			float res = Serial2.parseFloat();
-			//Discard carriage return '/r'
-			Serial2.read();
-			return res;
-		}
-		//There's some kind of problem communicating with circuit
-		return 0;
-	} else
-	return _ph;
+	uint16_t raw = analogRead(phPin);
+	Serial.print("RAW: ");
+	Serial.print(raw);
+	//Analog to mV
+	float phValue = (float)raw*5.0/1024/6;
+	Serial.print(" | mV: ");
+	Serial.print(phValue);
+	//mV to pH
+	phValue = phValue * 3.5 + offSet;
+	Serial.print(" | pH: ");
+	Serial.println(phValue);
+	return phValue;
 }
 
-void SensorPH::setSerialDebug(boolean s) {
+/*void SensorPH::setSerialDebug(boolean s) {
 	_serialDbg = s;
-}
+}*/
 
 //This should be set while calibrating to prevent messing up circuits if update() called
-void SensorPH::calibrating(boolean c) {
+/*void SensorPH::calibrating(boolean c) {
 	_calibratingPh = c;	
 }
 
@@ -137,17 +130,17 @@ void SensorPH::setTen() {
 	Serial2.print("T\r");
  	if (_serialDbg)
  		Serial.println(10.00);	
-}
+}*/
 
 //Adjust pH readings to given temperature
 void SensorPH::adjustTemp(float tempt) {
-	if ((tempt != 0) && (!_calibratingPh)) {
+	/*if ((tempt != 0) && (!_calibratingPh)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(tempt,4,2,tempArray);
 		String command = (String)tempArray + "\r";
 		Serial2.print(command);
-	}	
+	}*/	
 }
 
 void SensorPH::smooth() {
@@ -157,13 +150,13 @@ void SensorPH::smooth() {
 }
 
 //Clear incoming buffer
-void SensorPH::clearBuffer() {
+/*void SensorPH::clearBuffer() {
  	while (Serial2.available() > 0)
  		Serial2.read();
-}
+}*/
 
 //Output pH circuit's response to serial
-void SensorPH::phToSerial() {
+/*void SensorPH::phToSerial() {
 	if (_serialDbg) {
 		if (Serial2.available() > 0) {
 			String sensorString = "";
@@ -179,4 +172,4 @@ void SensorPH::phToSerial() {
 			Serial.println(sensorString);
 		}
 	}
-}
+}*/
