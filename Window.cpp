@@ -27,7 +27,7 @@ Window::Screen Window::getType() const {
 //Draw splash Screen
 void Window::print() {
 	_lcd->setCursor(0,0);
-	_lcd->print("Loading system...");
+	_lcd->print(pmChar(loadingText));
 }
 
 void Window::draw() {
@@ -39,11 +39,6 @@ void Window::update() {
 }
 
 Window::Screen Window::processTouch(int but) { return Splash; }
-	
-/*//Returns the x where the PROGMEM char* should be printed for it to get centered in screen
-int Window::centerX(const char* c) {
-	return (_xSize / 2) - (_bigFontSize * (strlen_P(c) / 2));
-}*/
 
 //Converts a char array from PROGMEM to variable in SRAM
 char* Window::pmChar(const char *pmArray) {

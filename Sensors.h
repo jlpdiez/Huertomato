@@ -64,7 +64,7 @@ class Sensors {
     float getTemp() const;
     uint16_t getLight() const;
     uint8_t getHumidity() const;
-    uint16_t getEC() const;
+    float getEC() const;
     float getPH() const;
     uint8_t getWaterLevel() const;
 	//Poll sensor and get raw data
@@ -88,18 +88,6 @@ class Sensors {
 	//Reads once from each sensor, fills the array with this measurement and smoothes
 	void fastUpdate();
 	
-	//This should be set while calibrating to prevent messing up circuits if update() called
-	//void calibratingPH(boolean);
-	//void calibratingEC(boolean);
-	//pH circuit commands
-	/*void resetPH();
-	void getPHinfo();
-	void setPHled(boolean);
-	void setPHcontinuous();
-	void setPHstandby();
-	void setPHfour();
-	void setPHseven();
-	void setPHten();*/
 	//Adjust pH readings to temperature
 	void adjustPHtemp();
 

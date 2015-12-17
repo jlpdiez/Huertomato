@@ -61,7 +61,7 @@ uint8_t Sensors::getHumidity() const {
 	return _humidity.get(); 
 }
 
-uint16_t Sensors::getEC() const { 
+float Sensors::getEC() const { 
 	return _ec.get(); 
 }
 
@@ -82,13 +82,6 @@ uint16_t Sensors::getRawWaterLevel() {
 uint16_t Sensors::getRawLightLevel() {
 	_light.getRaw();
 }
-
-//Sets internal states
-//Serial debug affects EC & pH while calibrating
-/*void Sensors::setSerialDebug(boolean d) {
-	_ec.setSerialDebug(d);
-	_ph.setSerialDebug(d);
-}*/
 
 //This affects if all sensors are updated() and used or not
 void Sensors::setReservoir(boolean r) {
@@ -166,91 +159,7 @@ void Sensors::fastUpdate() {
 	}
 }
 
-//This should be set while calibrating to prevent messing up circuits if update() or adjustTemp() called
-/*void Sensors::calibratingPH(boolean c) {
-	_ph.calibrating(c);
-}
-
-void Sensors::calibratingEC(boolean c) {
-	_ec.calibrating(c);
-}
-
-//pH circuit commands
-void Sensors::resetPH() {
-	_ph.reset();
-}
-
-void Sensors::getPHinfo() {
-	_ph.getInfo();
-}
-
-void Sensors::setPHled(boolean state) {
-	_ph.setLed(state);
-}
-
-void Sensors::setPHcontinuous() {
-	_ph.setContinuous();
-}
-
-void Sensors::setPHstandby() {
-	_ph.setStandby();
-}
-
-void Sensors::setPHfour() {
-	_ph.setFour();
-}
-
-void Sensors::setPHseven() {
-	_ph.setSeven();
-}
-
-void Sensors::setPHten() {
-	_ph.setTen();
-}*/
-
 //Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
 void Sensors::adjustPHtemp() {
 	_ph.adjustTemp(temperature.getTempCByIndex(0));
 }
-
-//EC circuit commands
-/*void Sensors::resetEC() {
-	_ec.reset();
-}
-
-void Sensors::getECinfo() {
-	_ec.getInfo();
-}
-
-void Sensors::setECled(boolean state) {
-	_ec.setLed(state);
-}
-
-void Sensors::setECcontinuous() {
-	_ec.setContinuous();
-}
-
-void Sensors::setECstandby() {
-	_ec.setStandby();
-}
-
-void Sensors::setECprobeType() {
-	_ec.setProbeType();
-}
-
-void Sensors::setECdry() {
-	_ec.setDry();
-}
-
-void Sensors::setECfortyThousand() {
-	_ec.setFortyThousand();
-}
-
-void Sensors::setECtenThousand() {
-	_ec.setTenThousand();
-}*/
-
-//Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
-/*void Sensors::adjustECtemp() {
-	_ec.adjustTemp(temperature.getTempCByIndex(0));
-}*/

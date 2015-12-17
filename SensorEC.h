@@ -43,17 +43,17 @@ class SensorEC: public Sensor {
 		void init();
 		void update();
 		void fastUpdate();
-		uint16_t get() const;
-		//Returns EC in uSiemens.
-		uint16_t getRaw() const;
+		float get() const;
+		//Returns EC in mSiemens.
+		float getRaw() const;
 	
 	protected:
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
-		uint16_t _ecs[_numSamples];
+		float _ecs[_numSamples];
 		//Value post-smoothing
-		uint16_t _ec;
+		float _ec;
 	
 		void smooth();
 };

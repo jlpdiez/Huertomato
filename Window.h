@@ -4,7 +4,7 @@
 // # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 7.12.2015
+// # Date       : 17.12.2015
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -32,38 +32,16 @@
 #include "Sensors.h"
 #include <LiquidCrystal.h>
 
-/*const char loadingText[] PROGMEM = "Huertomato is loading...";
-//Common window buttons text
-const char backText[] PROGMEM = " Back ";
-const char saveText[] PROGMEM = " Save ";
-const char savedText[] PROGMEM = " Saved ";
-const char cancelText[] PROGMEM = " Exit ";
-//Common window toggles
-//Has one extra char to cover last F of OFF
-const char onStr[] PROGMEM = "ON ";
-const char offStr[] PROGMEM = "OFF";
+const char loadingText[] PROGMEM = "Loading system..";
 
-const char farenhStr[] PROGMEM = "Fahrenheit";
-//various_symbols font is used for these
-const char bulletStr[] PROGMEM = "T";
-const char plusStr[] PROGMEM = "=";
-const char minusStr[] PROGMEM = ">";
-//Other common texts
-const char headerDecoration[] PROGMEM = "-";
-const char spaceChar[] PROGMEM = " ";*/
+const char spaceChar[] PROGMEM = " ";
 const char celsStr[] PROGMEM = "C";
 const char timeSeparator[] PROGMEM = ":";
 const char dateSeparator[] PROGMEM = "/";
 const char percentSign[] PROGMEM = "%";
-//const char hoursChar[] PROGMEM = "h";
 const char minutesChar[] PROGMEM = "m";
 const char zero[] PROGMEM = "0";
-/*//Calibration texts
-const char startCalibStr1[] PROGMEM = "Start calibration";
-const char startCalibStr2[] PROGMEM = "procedure now?";
-const char yesStr[] PROGMEM = "Yes";
-const char continueStr[] PROGMEM = "Continue";
-const char endStr[] PROGMEM = "End";*/
+const char miliSiemens[] PROGMEM = "mS";
 
 class Window {
 	public:
@@ -97,7 +75,6 @@ class Window {
 
 	protected:			 	
 		virtual void print();
-		//int centerX(const char* c);
 		
 		//These are used to read data from PROGMEM and store them into SRAM
 		char _stringBuffer[30];

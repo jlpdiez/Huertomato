@@ -19,42 +19,47 @@ Window::Screen WinMainScreen::getType() const {
 
 void WinMainScreen::draw() {
 	_lcd->clear();
-	_lcd->setCursor(0,0);
-	
+	_lcd->setCursor(1,0);
+	//First line
 	_lcd->print(_sensors->getTemp(),1);
 	_lcd->print(pmChar(celsStr));
 	_lcd->print(" LVL:");
 	_lcd->print(_sensors->getWaterLevel());
 	_lcd->print(pmChar(percentSign));
+	//Second line
 	_lcd->setCursor(0,1);
-	_lcd->print("pH:");
-	_lcd->print(_sensors->getPH(),1);
-	_lcd->print(" EC:");
-	_lcd->print(_sensors->getEC());
-	_lcd->print("uS");
+	//Prints one or two decimals depending on value
+	float ph = _sensors->getPH();
+	(ph < 10) ? _lcd->print(ph,2) : _lcd->print(ph,1);
+	_lcd->print("pH EC:");
+	//Prints one or two decimals depending on value
+	float ec = _sensors->getEC();
+	(ec < 10) ? _lcd->print(ec,2) : _lcd->print(ec,1);
+	_lcd->print(pmChar(miliSiemens));
 }
 
-//Refreshes minimun or redraws if status of system has changed
+//Refreshes minimum data
 void WinMainScreen::update() {
-	_lcd->setCursor(0,0);
+	//First line
+	_lcd->setCursor(1,0);
 	_lcd->print(_sensors->getTemp(),1);
-	_lcd->setCursor(10,0);
+	_lcd->setCursor(11,0);
 	_lcd->print(_sensors->getWaterLevel());
 	_lcd->print(pmChar(percentSign));
-	_lcd->print("  ");
-	_lcd->setCursor(3,1);
+	_lcd->print(pmChar(spaceChar));
+	_lcd->print(pmChar(spaceChar));
+	//Second line
+	_lcd->setCursor(0,1);
 	_lcd->print(_sensors->getPH(),1);
-	_lcd->setCursor(11,1);
-	_lcd->print(_sensors->getEC());
-	_lcd->print("uS  ");
+	_lcd->setCursor(10,1);
+	float ec = _sensors->getEC();
+	(ec < 10) ? _lcd->print(_sensors->getEC(),2) : _lcd->print(_sensors->getEC(),1);
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 
-	//Select
+	//Select button
 	if (but == 5)
 		return WateringCycle;
-	//else if (but == 1)
-		//return TimeDate; 
 	else
 		return None;
 }
