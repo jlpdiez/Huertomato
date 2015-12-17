@@ -28,7 +28,7 @@ void WinMainScreen::draw() {
 	_lcd->print(pmChar(percentSign));
 	_lcd->setCursor(0,1);
 	_lcd->print("pH:");
-	_lcd->print(_sensors->getPH());
+	_lcd->print(_sensors->getPH(),1);
 	_lcd->print(" EC:");
 	_lcd->print(_sensors->getEC());
 	_lcd->print("uS");
@@ -43,10 +43,10 @@ void WinMainScreen::update() {
 	_lcd->print(pmChar(percentSign));
 	_lcd->print("  ");
 	_lcd->setCursor(3,1);
-	_lcd->print(_sensors->getPH());
+	_lcd->print(_sensors->getPH(),1);
 	_lcd->setCursor(11,1);
 	_lcd->print(_sensors->getEC());
-	_lcd->print("uS");
+	_lcd->print("uS  ");
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 

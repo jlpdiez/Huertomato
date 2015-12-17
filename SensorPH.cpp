@@ -57,18 +57,12 @@ float SensorPH::get() const {
 //Returns a PH reading.
 float SensorPH::getRaw() const {
 	uint16_t raw = analogRead(phPin);
-	//Serial.print("RAW: ");
-	//Serial.print(raw);
 	//Analog to mV
 	float phValue = (float)raw*5.0/1024;
-	//Serial.print(" | V: ");
-	//Serial.print(phValue);
 	//mV to pH
 	phValue = phValue * 3.5 + offSet;
-	//Serial.print(" | pH: ");
-	//Serial.println(phValue);
-	//Serial.flush();
-	return phValue;
+	//Return and make sure value is in range
+	return constrain(phValue,0.0,14.0);
 }
 
 //Adjust pH readings to given temperature
