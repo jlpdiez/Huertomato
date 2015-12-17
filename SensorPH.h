@@ -4,7 +4,7 @@
 // # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 14.12.2015
+// # Date       : 17.12.2015
 //
 // # Description: DFRobot pH sensor class
 //
@@ -29,7 +29,7 @@
 #include "Sensor.h"
 
 extern const uint8_t phPin;
-const float offSet = 3.39;
+const float offSet = 0.09;
 
 class SensorPH: public Sensor {
 	public:
@@ -45,26 +45,10 @@ class SensorPH: public Sensor {
 		float get() const;
 		//Returns a PH reading. Reading takes 378ms
 		float getRaw() const;
-		//Sets output to serial
-		/*void setSerialDebug(boolean);
-		//This should be set while calibrating to prevent messing up circuits if update() called
-		void calibrating(boolean c);
-		//pH circuit commands
-		void reset();
-		void getInfo();
-		void setLed(boolean);
-		void setContinuous();
-		void setStandby();
-		void setFour();
-		void setSeven();
-		void setTen();*/
 		//Adjust pH readings to given temperature
 		void adjustTemp(float);
 	
 	protected:
-		boolean _serialDbg;
-		//Stops pH routine if sensor is being calibrated
-		//boolean _calibratingPh;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
@@ -73,11 +57,6 @@ class SensorPH: public Sensor {
 		float _ph;
 	
 		void smooth();
-		
-		//Clear incoming buffer
-		//void clearBuffer();
-		//Output pH circuit's response to serial
-		//void phToSerial();
 };
 
 #endif
