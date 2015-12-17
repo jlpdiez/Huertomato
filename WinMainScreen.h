@@ -4,7 +4,7 @@
 // # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 05.12.2015
+// # Date       : 17.12.2015
 //
 // # Description: Main idle screen window
 //
