@@ -214,9 +214,8 @@ void setupAlarms() {
 	//Sensor polling and smoothing
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
-	//Every 10min we adjust pH & EC circuit readings to temperature
+	//Every 10min we adjust pH readings to temperature
 	if (settings.getReservoirModule()) {
-		Alarm.timerOnce(0,10,0,adjustECtemp);
 		Alarm.timerOnce(0,10,0,adjustPHtemp);
 	}
 }
@@ -263,16 +262,8 @@ void updateNextWateringTime() {
 //Plays Close Encounters of the Third Kind theme music
 void initMusic() {
 	if (settings.getSound()) {
-		//NewTone(buzzPin, 783.99);
-		//Alarm.delay(750);
 		NewTone(buzzPin, 880.00);
 		Alarm.delay(750);
-		//NewTone(buzzPin, 698.46);
-		//Alarm.delay(750);
-		//NewTone(buzzPin, 349.23);
-		//Alarm.delay(750);
-		//NewTone(buzzPin, 523.25);
-		//Alarm.delay(1000);
 		noNewTone(buzzPin);
 	}
 }
@@ -504,16 +495,6 @@ void updateSensors() {
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
-}
-
-//Adjusts EC sensor readings to temperature and sets next timer
-void adjustECtemp() {
-	if (gui.isMainScreen()) {
-		sensors.adjustECtemp();
-		ui.timeStamp(ecAdjTxt);
-	}
-	//Set next timer
-	Alarm.timerOnce(0,10,0,adjustECtemp);
 }
 
 //Adjusts pH sensor readings to temperature and sets next timer

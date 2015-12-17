@@ -4,7 +4,7 @@
 // # Version    : 2.0
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 14.12.2015
+// # Date       : 17.12.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -102,18 +102,6 @@ class Sensors {
 	void setPHten();*/
 	//Adjust pH readings to temperature
 	void adjustPHtemp();
-	//EC circuit commands
-	/*void resetEC();
-	void getECinfo();
-	void setECled(boolean);
-	void setECcontinuous();
-	void setECstandby();
-	void setECprobeType();
-	void setECdry();
-	void setECtenThousand();
-	void setECfortyThousand();*/
-	//Adjusts EC sensor readings to temperature
-	void adjustECtemp();
 
   private:
 	Settings *_settings;

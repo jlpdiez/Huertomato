@@ -251,6 +251,6 @@ void Sensors::setECtenThousand() {
 }*/
 
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor
-void Sensors::adjustECtemp() {
+/*void Sensors::adjustECtemp() {
 	_ec.adjustTemp(temperature.getTempCByIndex(0));
-}
+}*/

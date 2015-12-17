@@ -4,7 +4,7 @@
 // # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 16.12.2015
+// # Date       : 17.12.2015
 //
 // # Description: DFRobot EC sensor
 //
@@ -30,6 +30,7 @@
 #include "Sensor.h"
 
 extern const uint8_t ecPin;
+extern DallasTemperature temperature;
 
 class SensorEC: public Sensor {
 	public:
@@ -43,29 +44,10 @@ class SensorEC: public Sensor {
 		void update();
 		void fastUpdate();
 		uint16_t get() const;
-		//Returns EC in uSiemens. Reading takes 1000ms
+		//Returns EC in uSiemens.
 		uint16_t getRaw() const;
-		//Sets output to serial
-		/*void setSerialDebug(boolean);
-		//This should be set while calibrating to prevent messing up circuits if update() called
-		void calibrating(boolean c);
-		//EC circuit commands
-		void reset();
-		void getInfo();
-		void setLed(boolean);
-		void setContinuous();
-		void setStandby();
-		void setProbeType();
-		void setDry();
-		void setTenThousand();
-		void setFortyThousand();*/
-		//Adjusts EC sensor readings to given temperature
-		void adjustTemp(float);
 	
 	protected:
-		boolean _serialDbg;
-		//Stops EC routine if sensor is being calibrated
-		//boolean _calibratingEc;
 		//Smoothing counter
 		uint8_t _iSample;
 		//Data array
@@ -74,12 +56,6 @@ class SensorEC: public Sensor {
 		uint16_t _ec;
 	
 		void smooth();
-		
-		//Clears incoming buffers
-		//void clearECbuffer();
-		//Output EC circuit's response to serial
-		//void ecToSerial();
-	
 };
 
 #endif
