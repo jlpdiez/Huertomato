@@ -26,12 +26,13 @@ void WinMainScreen::draw() {
 	_lcd->print(" LVL:");
 	_lcd->print(_sensors->getWaterLevel());
 	_lcd->print(pmChar(percentSign));
+	_lcd->print("  ");
 	_lcd->setCursor(0,1);
 	_lcd->print("pH:");
-	//TODO: Implement real sensor data
 	_lcd->print(_sensors->getPH());
 	_lcd->print(" EC:");
-	_lcd->print("300mS");
+	_lcd->print(_sensors->getEC());
+	_lcd->print("mS");
 }
 
 //Refreshes minimun or redraws if status of system has changed
@@ -40,12 +41,13 @@ void WinMainScreen::update() {
 	_lcd->print(_sensors->getTemp(),1);
 	_lcd->setCursor(10,0);
 	_lcd->print(_sensors->getWaterLevel());
-	_lcd->print("%");
+	_lcd->print(pmChar(percentSign));
+	_lcd->print("  ");
 	_lcd->setCursor(3,1);
-	//pH
-	_lcd->setCursor(12,1);
-	//EC
-	//_lcd->print("mS");
+	_lcd->print(_sensors->getPH());
+	_lcd->setCursor(11,1);
+	_lcd->print(_sensors->getEC());
+	_lcd->print("mS");
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 
