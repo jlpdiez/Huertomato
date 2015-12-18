@@ -259,7 +259,7 @@ void updateNextWateringTime() {
 	settings.setNextWminute(min);
 }
 
-//Plays Close Encounters of the Third Kind theme music
+//Init beep
 void initMusic() {
 	if (settings.getSound()) {
 		NewTone(buzzPin, 880.00);

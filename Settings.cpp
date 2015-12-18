@@ -225,7 +225,7 @@ boolean Settings::setFloodMinute(const uint8_t f) {
 }
 
 boolean Settings::setPHalarmUp(const float p) { 
-	if ((p >= 0) && (p < 14.00)) {
+	if ((p >= 0) && (p <= 14.00)) {
 		_phAlarmUp = p; 
 		EEPROM.updateFloat(_addressPHalarmUp,p);
 		return true;
@@ -234,7 +234,7 @@ boolean Settings::setPHalarmUp(const float p) {
 }
 
 boolean Settings::setPHalarmDown(const float p) { 
-	if ((p >= 0) && (p < 14.00)) {
+	if ((p >= 0) && (p <= 14.00)) {
 		_phAlarmDown = p; 
 		EEPROM.updateFloat(_addressPHalarmDown,p);
 		return true;
