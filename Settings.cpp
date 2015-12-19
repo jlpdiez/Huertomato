@@ -99,8 +99,8 @@ void Settings::setEEPROMaddresses() {
 	_addressFloodMinute = EEPROM.getAddress(sizeof(byte));
 	_addressPHalarmUp = EEPROM.getAddress(sizeof(float));
 	_addressPHalarmDown = EEPROM.getAddress(sizeof(float));
-	_addressECalarmUp = EEPROM.getAddress(sizeof(int));
-	_adressECalarmDown = EEPROM.getAddress(sizeof(int));
+	_addressECalarmUp = EEPROM.getAddress(sizeof(float));
+	_adressECalarmDown = EEPROM.getAddress(sizeof(float));
 	_addressWaterAlarm = EEPROM.getAddress(sizeof(byte));
 	_addressNightWatering = EEPROM.getAddress(sizeof(byte));
 	_addressSensorSecond = EEPROM.getAddress(sizeof(byte));
@@ -133,8 +133,8 @@ void Settings::readEEPROMvars() {
 	_floodMinute = EEPROM.readByte(_addressFloodMinute);
 	_phAlarmUp = EEPROM.readFloat(_addressPHalarmUp);
 	_phAlarmDown = EEPROM.readFloat(_addressPHalarmDown);
-	_ecAlarmUp = EEPROM.readInt(_addressECalarmUp);
-	_ecAlarmDown = EEPROM.readInt(_adressECalarmDown);
+	_ecAlarmUp = EEPROM.readFloat(_addressECalarmUp);
+	_ecAlarmDown = EEPROM.readFloat(_adressECalarmDown);
 	_waterAlarm = EEPROM.readByte(_addressWaterAlarm);
 	_nightWatering = EEPROM.readByte(_addressNightWatering);
 	_sensorSecond = EEPROM.readByte(_addressSensorSecond);
@@ -164,8 +164,8 @@ void Settings::setDefault() {
 	EEPROM.updateByte(_addressFloodMinute,1);
 	EEPROM.updateFloat(_addressPHalarmUp,14.0);
 	EEPROM.updateFloat(_addressPHalarmDown,0.0);
-	EEPROM.updateInt(_addressECalarmUp,9990);
-	EEPROM.updateInt(_adressECalarmDown,0);
+	EEPROM.updateFloat(_addressECalarmUp,20.0);
+	EEPROM.updateFloat(_adressECalarmDown,0);
 	EEPROM.updateByte(_addressWaterAlarm,0);
 	EEPROM.updateByte(_addressNightWatering,1);  
 	//Controller Settings
@@ -242,26 +242,26 @@ boolean Settings::setPHalarmDown(const float p) {
 		return false;
 }
 
-boolean Settings::setECalarmUp(const uint16_t e) { 
-	if ((e >= 0) && (e < 9999)) {
+boolean Settings::setECalarmUp(const float e) { 
+	if ((e >= 0) && (e <= 20.00)) {
 		_ecAlarmUp = e; 
-		EEPROM.updateInt(_addressECalarmUp,e);
+		EEPROM.updateFloat(_addressECalarmUp,e);
 		return true;
 	} else
 		return false;
 }
 
-boolean Settings::setECalarmDown(const uint16_t e) { 
-	if ((e >= 0) && (e < 9999)) {
+boolean Settings::setECalarmDown(const flaot e) { 
+	if ((e >= 0) && (e <= 20.00)) {
 		_ecAlarmDown = e;
-		EEPROM.updateInt(_adressECalarmDown,e);
+		EEPROM.updateFloat(_adressECalarmDown,e);
 		return true;
 	} else
 		return false;
 }
 
 boolean Settings::setWaterAlarm(const uint8_t w) { 
-	if ((w >= 0) && (w < 101)) {
+	if ((w >= 0) && (w <= 100)) {
 		_waterAlarm = w; 
 		EEPROM.updateByte(_addressWaterAlarm,w);
 		return true;
@@ -276,7 +276,7 @@ boolean Settings::setNightWatering(const boolean n) {
 }
 
 boolean Settings::setLightThreshold(const uint16_t l) {
-	if ((l >= 0) && (l < 9999)) {
+	if ((l >= 0) && (l <= 9999)) {
 		_lightThreshold = l;
 		EEPROM.updateInt(_addressLightThreshold,l);
 		return true;
@@ -285,8 +285,8 @@ boolean Settings::setLightThreshold(const uint16_t l) {
 }
 
 boolean Settings::setMaxWaterLvl(const uint16_t x) {
-	//Not valid if greaer than 3m!
-	if ((x >= 0) && (x < 301)) {
+	//Not valid if greater than 3m!
+	if ((x >= 0) && (x <= 300)) {
 		_maxWaterLvl = x;
 		EEPROM.updateInt(_addressMaxWaterLvl,x);
 		return true;
@@ -295,8 +295,7 @@ boolean Settings::setMaxWaterLvl(const uint16_t x) {
 }
 
 boolean Settings::setMinWaterLvl(const uint16_t n) {
-	//Not valid if greaer than 3m!
-	if ((n >= 0) && (n < 201)) {
+	if ((n >= 0) && (n <= 300)) {
 		_minWaterLvl = n;
 		EEPROM.updateInt(_addressMinWaterLvl,n);
 		return true;
@@ -311,7 +310,7 @@ boolean Settings::setPumpProtection(const boolean p) {
 }
 
 boolean Settings::setPumpProtectionLvl(const uint8_t p) {
-	if ((p >= 0) && (p < 101)) {
+	if ((p >= 0) && (p <= 100)) {
 		_pumpProtectionLvl = p;
 		EEPROM.updateByte(_addressPumpProtectionLvl,p);
 		return true;
@@ -430,9 +429,9 @@ float Settings::getPHalarmUp() const { return _phAlarmUp; }
 
 float Settings::getPHalarmDown() const { return _phAlarmDown; }
 
-uint16_t Settings::getECalarmUp() const { return _ecAlarmUp; }
+float Settings::getECalarmUp() const { return _ecAlarmUp; }
 
-uint16_t Settings::getECalarmDown() const { return _ecAlarmDown; }
+float Settings::getECalarmDown() const { return _ecAlarmDown; }
 
 uint8_t Settings::getWaterAlarm() const { return _waterAlarm; }
 

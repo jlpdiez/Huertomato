@@ -72,7 +72,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 0.1;
+const float versionNumber = 0.2;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
