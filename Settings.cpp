@@ -225,7 +225,7 @@ boolean Settings::setFloodMinute(const uint8_t f) {
 }
 
 boolean Settings::setPHalarmUp(const float p) { 
-	if ((p >= 0) && (p < 14.00)) {
+	if ((p >= 0) && (p <= 14.00)) {
 		_phAlarmUp = p; 
 		EEPROM.updateFloat(_addressPHalarmUp,p);
 		return true;
@@ -234,7 +234,7 @@ boolean Settings::setPHalarmUp(const float p) {
 }
 
 boolean Settings::setPHalarmDown(const float p) { 
-	if ((p >= 0) && (p < 14.00)) {
+	if ((p >= 0) && (p <= 14.00)) {
 		_phAlarmDown = p; 
 		EEPROM.updateFloat(_addressPHalarmDown,p);
 		return true;
@@ -243,7 +243,7 @@ boolean Settings::setPHalarmDown(const float p) {
 }
 
 boolean Settings::setECalarmUp(const uint16_t e) { 
-	if ((e >= 0) && (e < 9999)) {
+	if ((e >= 0) && (e <= 9999)) {
 		_ecAlarmUp = e; 
 		EEPROM.updateInt(_addressECalarmUp,e);
 		return true;
@@ -252,7 +252,7 @@ boolean Settings::setECalarmUp(const uint16_t e) {
 }
 
 boolean Settings::setECalarmDown(const uint16_t e) { 
-	if ((e >= 0) && (e < 9999)) {
+	if ((e >= 0) && (e <= 9999)) {
 		_ecAlarmDown = e;
 		EEPROM.updateInt(_adressECalarmDown,e);
 		return true;
@@ -286,7 +286,7 @@ boolean Settings::setLightThreshold(const uint16_t l) {
 
 boolean Settings::setMaxWaterLvl(const uint16_t x) {
 	//Not valid if greaer than 3m!
-	if ((x >= 0) && (x < 301)) {
+	if ((x >= 0) && (x <= 300)) {
 		_maxWaterLvl = x;
 		EEPROM.updateInt(_addressMaxWaterLvl,x);
 		return true;
@@ -296,7 +296,7 @@ boolean Settings::setMaxWaterLvl(const uint16_t x) {
 
 boolean Settings::setMinWaterLvl(const uint16_t n) {
 	//Not valid if greaer than 3m!
-	if ((n >= 0) && (n < 201)) {
+	if ((n >= 0) && (n <= 300)) {
 		_minWaterLvl = n;
 		EEPROM.updateInt(_addressMinWaterLvl,n);
 		return true;
@@ -311,7 +311,7 @@ boolean Settings::setPumpProtection(const boolean p) {
 }
 
 boolean Settings::setPumpProtectionLvl(const uint8_t p) {
-	if ((p >= 0) && (p < 101)) {
+	if ((p >= 0) && (p <= 100)) {
 		_pumpProtectionLvl = p;
 		EEPROM.updateByte(_addressPumpProtectionLvl,p);
 		return true;
