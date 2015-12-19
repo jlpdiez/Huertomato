@@ -157,7 +157,6 @@ struct alarm {
 alarm sensorAlarm = {};
 alarm waterAlarm = {};
 alarm waterOffAlarm = {};
-alarm sdAlarm = {};
 alarm serialAlarm = {};
 alarm pumpProtAlarm = {};
 
@@ -302,11 +301,8 @@ void loop() {
 //Checks system status and updates led color if needed
 void checkLed() {
 	if (settings.getLed()) {
-		//Timed mode & watering
-		if (settings.getWateringPlants() && settings.getWaterTimed())
-			led.setColour(BLUE);
 		//Alarm triggered
-		else if (settings.getAlarmTriggered() || settings.getPumpProtected())
+		if (settings.getAlarmTriggered() || settings.getPumpProtected())
 			led.setColour(RED);
 		//Normal operation
 		else
@@ -366,8 +362,7 @@ void checkAlarms() {
 void checkSoundAlarm() {
 	if (settings.getAlarmTriggered() || settings.getPumpProtected()) {
 		//Sound alarm in main screen, when sound activated and not night watering stopped
-		if (/*gui.isMainScreen() &&*/ settings.getSound() && !beeping &&
-		!settings.getNightWateringStopped()) {
+		if ( settings.getSound() && !beeping &&	!settings.getNightWateringStopped()) {
 			beeping = true;
 			beepOn();
 		}
@@ -392,7 +387,6 @@ void checkNightTime() {
 //Checks if some setting has been changed and updates accordingly
 void checkSettingsChanged() {
 	checkWater();
-	checkSD();
 	checkSensors();
 	checkSerial();
 }
@@ -408,18 +402,6 @@ void checkWater() {
 		//Reset system
 		setupWaterModes();
 	}
-}
-
-//Checks if SD settings have been changed and updates system
-void checkSD() {
-	/*if (settings.sdSettingsChanged()) {
-		stopSDlogTimer();
-		if (settings.getSDactive()) {
-			setupSD();
-			ui.timeStamp(sdLogOnTxt);
-		} else
-			ui.timeStamp(sdLogOffTxt);
-	}*/
 }
 
 //Checks if sensor polling settings have changed and updates system
@@ -438,42 +420,6 @@ void checkSerial() {
 		(settings.getSerialDebug()) ? ui.init() : ui.end();
 }
 
-// *********************************************
-// SD AND SERIAL LOG FUNCTIONS
-// *********************************************
-//Logs system data to SDCard
-//File name will be: YYYMMDD.csv
-//Format is: Date,Time,Temp,Humidity,Light,EC,PH,WaterLevel
-/*void logSensorReadings() {
-	time_t t = now();
-	int d = day(t);
-	int mo = month(t);
-	int y = year(t);
-	int h = hour(t);
-	int m = minute(t);
-	
-	//Filename must be at MAX 8chars + "." + 3chars
-	//We choose it to be YYYY+MM+DD.csv
-	String fileName = "";
-	fileName.reserve(12);
-	fileName = (String)y + ((mo<10)?"0":"") + (String)mo + ((d<10)?"0":"") + (String)d + ".csv";
-	char fileNameArray[fileName.length() + 1];
-	fileName.toCharArray(fileNameArray, sizeof(fileNameArray));
-	File sensorLog = SD.open(fileNameArray, FILE_WRITE);
-	
-	if (sensorLog) {
-		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
-		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
-		sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
-		sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
-		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
-		sensorLog.close();
-		//Inform through serial
-		ui.timeStamp(sdLogOk);
-	} else
-		ui.timeStamp(sdLogFail);
-}*/
-
 //Timestamps to Serial that there's an alarm triggered
 void printAlarm() {
 	ui.timeStamp(alarmTxT);
@@ -491,7 +437,6 @@ void printPump() {
 void updateSensors() {
 	sensors.update();
 	gui.refresh();
-	//ui.timeStamp(sensorsReadTxt);
 	//Set next timer
 	sensorAlarm.id = Alarm.timerOnce(0,0,settings.getSensorSecond(),updateSensors);
 	sensorAlarm.enabled = true;
@@ -518,7 +463,7 @@ void beepOff() {
 	const int offSecs = 2;
 	noNewTone(buzzPin);
 	if ((settings.getAlarmTriggered() || settings.getPumpProtected()) 
-		&& settings.getSound() /*&& gui.isMainScreen()*/ && !settings.getNightWateringStopped())
+		&& settings.getSound()  && !settings.getNightWateringStopped())
 			Alarm.timerOnce(0,0,offSecs,beepOn);
 	else
 		beeping = false;
@@ -554,21 +499,6 @@ void stopSerialPumpProtTimer() {
 	if (pumpProtAlarm.enabled) {
 		Alarm.free(pumpProtAlarm.id);
 		pumpProtAlarm.enabled = false;
-	}
-}
-
-//Timers for logging data to SD
-/*void startSDlogTimer() {
-	if (!sdAlarm.enabled) {
-		sdAlarm.id = Alarm.timerRepeat(settings.getSDhour(),settings.getSDminute(),0,logSensorReadings);
-		sdAlarm.enabled = true;
-	}
-}*/
-
-void stopSDlogTimer() {
-	if (sdAlarm.enabled) {
-		Alarm.free(sdAlarm.id);
-		sdAlarm.enabled = false;
 	}
 }
 

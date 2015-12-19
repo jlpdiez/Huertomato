@@ -88,8 +88,8 @@ class Settings {
     boolean setFloodMinute(const uint8_t);
     boolean setPHalarmUp(const float);
     boolean setPHalarmDown(const float);
-    boolean setECalarmUp(const uint16_t);
-    boolean setECalarmDown(const uint16_t);
+    boolean setECalarmUp(const float);
+    boolean setECalarmDown(const float);
     boolean setWaterAlarm(const uint8_t);
     boolean setNightWatering(const boolean);
 	boolean setLightThreshold(const uint16_t);
@@ -126,8 +126,8 @@ class Settings {
     uint8_t getFloodMinute() const;
     float getPHalarmUp() const;
     float getPHalarmDown() const;
-    uint16_t getECalarmUp() const;
-    uint16_t getECalarmDown() const;
+    float getECalarmUp() const;
+    float getECalarmDown() const;
     uint8_t getWaterAlarm() const;
     boolean getNightWatering() const;
 	uint16_t getLightThreshold() const;
@@ -182,8 +182,8 @@ class Settings {
     //Sensor Alarms
     float _phAlarmUp;
     float _phAlarmDown;
-    uint16_t _ecAlarmUp;
-    uint16_t _ecAlarmDown;
+    float _ecAlarmUp;
+    float _ecAlarmDown;
     uint8_t _waterAlarm;
     //Water at night - Informs the system that watering timers are stopped for the night
     boolean _nightWatering;

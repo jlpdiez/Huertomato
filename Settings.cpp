@@ -251,7 +251,7 @@ boolean Settings::setECalarmUp(const float e) {
 		return false;
 }
 
-boolean Settings::setECalarmDown(const flaot e) { 
+boolean Settings::setECalarmDown(const float e) { 
 	if ((e >= 0) && (e <= 20.00)) {
 		_ecAlarmDown = e;
 		EEPROM.updateFloat(_adressECalarmDown,e);
