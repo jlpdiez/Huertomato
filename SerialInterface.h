@@ -51,7 +51,7 @@ const char boolTxt[] PROGMEM = "Expected a 'true' or 'false'";
 const char hourTxt[] PROGMEM = "Expected an hour 0 .. 23";
 const char minSecTxt[] PROGMEM = "Expected 0 .. 59";
 const char phTxt[] PROGMEM = "Expected pH 0.00 .. 14.00";
-const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
+const char ecTxt[] PROGMEM = "Expected ec 0.00 .. 20.00";
 const char percentTxT[] PROGMEM = "Expected 0 .. 100";
 const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
 

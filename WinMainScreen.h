@@ -4,7 +4,7 @@
 // # Version    : 0.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.12.2015
+// # Date       : 21.12.2015
 //
 // # Description: Main idle screen window
 //
@@ -33,7 +33,16 @@
 #include <SD.h>   
 #include <Time.h>
 
-//Contains two main screens. One when reservoir module is on, another when off
+const char phAlarmUp[] PROGMEM = "pH alto";
+const char phAlarmUp1[] PROGMEM = "agregue pH Down";
+const char phAlarmDown[] PROGMEM = "pH bajo";
+const char phAlarmDown1[] PROGMEM = "agregue pH Up";
+
+const char ecAlarmUp[] PROGMEM = "EC alta";
+const char ecAlarmUp1[] PROGMEM = "agregue agua";
+const char ecAlarmDown[] PROGMEM = "EC baja";
+const char ecAlarmDown1[] PROGMEM = "mas nutrientes";
+
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
