@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Sensors
-// # Version    : 1.8
+// # Version    : 1.9
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 17.10.2015
 // 
 // # Description: Library for managing Huertomato's sensors
 // # In charge of polling all hardware and smoothing values afterwards
@@ -28,25 +28,21 @@
 #define SENSORS_H
 
 #include "Settings.h"
-#include <Arduino.h>
-#include <DHT11.h>
-#include <DallasTemperature.h>
-#include <DS1307RTC.h>
-#include <Time.h>
+#include "Sensor.h"
+#include "SensorEC.h"
+#include "SensorHumid.h"
+#include "SensorLight.h"
+#include "SensorPH.h"
+#include "SensorTemp.h"
+#include "SensorWater.h"
 
-//Pin numbers
-// 16 & 17 are Serial2 Tx,Rx used for pH circuit
-// 18 & 19 are Serial1 Tx,Rx used for EC circuit
+//Pin numbers are previously declared in Huertomato.ino
 extern const uint8_t humidIn;
 extern const uint8_t lightIn;
-extern const uint8_t tempIn;
 extern const uint8_t waterEcho;
 extern const uint8_t waterTrigger;
 
-extern DallasTemperature temperature;
-extern dht11 DHT11;
-
-//Class that handles sensor reading & smoothing
+//Contains all other instances of sensor classes
 class Sensors {
   public:
 	enum Sensor {
@@ -59,7 +55,7 @@ class Sensors {
 		Level
 	};
     //Constructors
-    Sensors(Settings *_settings);
+    Sensors(Settings *settings);
 	Sensors(const Sensors &other);
 	Sensors& operator=(const Sensors &other);
 	//Destructor
@@ -74,7 +70,16 @@ class Sensors {
 	//Poll sensor and get raw data
 	uint16_t getRawWaterLevel();
 	uint16_t getRawLightLevel();
-	//Tests
+	//Setters
+	//Sets different modes. Should be called when settings counterpart gets called.
+	void setSerialDebug(boolean);
+	void setReservoir(boolean);
+	//Set temp mode. Should be called when it's counterpart in setting does too.
+	void setCelsius(boolean);
+	//Sets min and max waterLevel. Used for calculating % on water tank
+	void setMaxLvl(uint16_t);
+	void setMinLvl(uint16_t);
+	//Alarm tests - True if sensor value is off range.
 	boolean ecOffRange();
 	boolean phOffRange();
 	boolean lvlOffRange();
@@ -84,8 +89,8 @@ class Sensors {
 	void fastUpdate();
 	
 	//This should be set while calibrating to prevent messing up circuits if update() called
-	void calibratingPH(boolean c);
-	void calibratingEC(boolean c);
+	void calibratingPH(boolean);
+	void calibratingEC(boolean);
 	//pH circuit commands
 	void resetPH();
 	void getPHinfo();
@@ -109,92 +114,20 @@ class Sensors {
 	void setECfortyThousand();
 	//Adjusts EC sensor readings to temperature
 	void adjustECtemp();
-	//RTC adjustment
-	void setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo, int y);
 
   private:
 	Settings *_settings;
-	//To stop EC & pH routines if sensors are being calibrated
-	boolean _calibratingPh;
-	boolean _calibratingEc;
 	
-    //Smoothes readings
-    void smoothSensorReadings();
-    //These poll hardware and return sensor info
-    uint16_t light();
-    float temp();
-    uint8_t humidity();
-    uint8_t waterLevel();
-    float ph();
-    uint16_t ec();
+	SensorEC _ec;
+	SensorHumid _humidity;
+	SensorLight _light;
+	SensorPH _ph;
+	SensorTemp _temp;
+	SensorWater _water;
 	
-	//Clears incoming buffers
-	void clearPHbuffer();
-	void clearECbuffer();
-	//Output EC circuit's response to serial
-	void ecToSerial();
-	void phToSerial();
-	
-	// Used for smoothing sensor data.  The higher the number,
-	// the more the readings will be smoothed, but the slower the variables will
-	// respond to the input.
-	static const uint8_t _numSamples = 10;
-    //Smoothing counter
-    uint8_t _iSample;
-    //Contain sensor data pre-smoothing
-    float _temps[_numSamples];
-    uint16_t _lights[_numSamples]; 
-    uint8_t _humidities[_numSamples];
-    uint16_t _ecs[_numSamples];
-    float _phs[_numSamples];
-    uint8_t _waterLevels[_numSamples];
-    //Contain sensor values post smoothing
-    float _temp;
-    uint16_t _light;
-    uint8_t _humidity;
-    uint16_t _ec;
-    float _ph;
-    uint8_t _waterLevel;
+	//Keeps track of reservoir activation
+	boolean _reservoir;
+
 };
 
 #endif
-/*
-template <class T>; 
-class Sensor {
-	public:
-		//Constructors
-		Sensor(Settings *_settings, const int pin);
-		Sensor(const Sensor &other);
-		Sensor& operator=(const Sensor &other);
-		//Destructor
-		virtual ~Sensor();
-		virtual void init();
-		virtual T get() const;	
-		virtual void update();	
-		//Idea: return false if more than x time passes and no data to auto-disable reservoir module if not present
-		virtual boolean isResponsive();
-		
-	protected:
-		int _pin;
-		//TODO:To include here Graphic class should only care for data and draw() method there should go to Window class
-		Graphic<T> _graph;
-		// Used for smoothing sensor data.  The higher the number,
-		// the more the readings will be smoothed, but the slower the variables will
-		// respond to the input.
-		static const uint8_t _numSamples = 10;
-		//Smoothing counter
-		uint8_t _iSample;
-		//Contain sensor data pre-smoothing
-		T _raw[_numSamples];
-		//Contain sensor values post smoothing
-		T _value;
-		//Poll hardware, return reading
-		T poll();
-		//Smooth reading, update _value
-		void smooth();
-};
-
-class sensorTemp public Sensor<uint8_t> {
-}
-
-*/

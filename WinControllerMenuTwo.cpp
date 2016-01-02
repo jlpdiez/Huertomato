@@ -87,6 +87,7 @@ Window::Screen WinControllerMenuTwo::processTouch(const int x, const int y) {
 	else if (buttonIndex == _controllerButtonsTwo[5]) {
 		_serialActive = !_serialActive;
 		_settings->setSerialDebug(_serialActive);
+		_sensors->setSerialDebug(_serialActive);
 		update();
 	}
 	return None;

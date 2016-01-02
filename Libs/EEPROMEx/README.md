@@ -1,4 +1,4 @@
-# Arduino EEPROMex library 
+# Arduino EEPROMEx library 
 
 The EEPROMex library is an extension of the standard Arduino EEPROM library. It extends the functionality of the original Arduino EEPROM library with:
 
@@ -11,11 +11,32 @@ The EEPROMex library is an extension of the standard Arduino EEPROM library. It 
 * Enabling write limitation: In theory one can burn out a memory cell in a few minutes: a write/erase cycle takes approximately 4 ms, so writing 100.000 times to a single cell takes 6 1/2 min. Limiting the number of writes during the debug phase helps prevent this.
 * Debugging of writing out of memory range.
 
-You can download the library here: 
-[http://thijs.elenbaas.net/downloads/?did=3](http://thijs.elenbaas.net/downloads/?did=3)
- 
+
 And find detailed explanation and samples of the functionality here: 
 [http://thijs.elenbaas.net/2012/07/extended-eeprom-library-for-arduino](http://thijs.elenbaas.net/2012/07/extended-eeprom-library-for-arduino)
+
+## Downloading
+
+This package can be downloaded in different manners 
+
+
+- The Arduino Library Manager: [see here how to use it](http://www.arduino.cc/en/guide/libraries#toc3).
+- The PlatformIO Library Manager: [see here how to use it](http://docs.platformio.org/en/latest/ide/arduino.html).
+- By directly loading fetching the Archive from GitHub: 
+ 1. Go to [https://github.com/thijse/Arduino-EEPROMEx](https://github.com/thijse/Arduino-EEPROMEx)
+ 2. Click the DOWNLOAD ZIP button in the panel on the
+ 3. Rename the uncompressed folder **Arduino-EEPROMEx-master** to **EEPROMEx**.
+ 4. You may need to create the libraries subfolder if its your first library.  
+ 5. Place the **EEPROMEx** library folder in your **arduinosketchfolder/libraries/** folder. 
+ 5. Restart the IDE.
+ 6. For more information, [read this extended manual](http://thijs.elenbaas.net/2012/07/installing-an-arduino-library/)
+- If you want to have a package that includes all referenced libraries, use the pre-packaged library
+ 1. Download the package as a zipfile [here](https://github.com/thijse/Zipballs/blob/master/EEPROMEx/EEPROMEx.zip?raw=true) or as a tarball [here ](https://github.com/thijse/Zipballs/blob/master/EEPROMEx/EEPROMEx.tar.gz?raw=true).
+ 2. Copy the folders inside the **libraries** folder  to you your **arduinosketchfolder/libraries/** folder.
+ 3. Restart the IDE.
+ 3. For more information, [read this extended manual](http://thijs.elenbaas.net/2012/07/installing-an-arduino-library/)
+
+
 
 ### Using different data formats
 
@@ -109,6 +130,9 @@ Based on processor:
 *EEPROMSizeATmega168
 *EEPROMSizeATmega328
 *EEPROMSizeATmega1280
+*EEPROMSizeATmega32u4
+*EEPROMSizeAT90USB1286
+*EEPROMSizeMK20DX128
 ```
 Based on board:
 ```
@@ -119,6 +143,12 @@ Based on board:
 *EEPROMSizeMega
 *EEPROMSizeDiecimila
 *EEPROMSizeNano
+*EEPROMSizeTeensy2
+*EEPROMSizeLeonardo
+*EEPROMSizeMicro
+*EEPROMSizeYun
+*EEPROMSizeTeensy2pp
+*EEPROMSizeTeensy3
 ```
 
 ### EEPROM performance
@@ -128,3 +158,13 @@ All of the read/write functions make sure the EEPROM is ready to be accessed. Si
 ```
 bool isReady();
 ```
+
+## On using and modifying libraries
+
+- [http://www.arduino.cc/en/Main/Libraries](http://www.arduino.cc/en/Main/Libraries)
+- [http://www.arduino.cc/en/Reference/Libraries](http://www.arduino.cc/en/Reference/Libraries) 
+
+
+## Copyright
+
+EEPROMEx is provided Copyright © 2013,2014,2015 under LGPL License.

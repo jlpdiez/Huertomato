@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinReservoir
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 17.11.2015
 //
 // # Description: Reservoir module submenu. On/off toggle, alarms, calibration and pump protection
 //

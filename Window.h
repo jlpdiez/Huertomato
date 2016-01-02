@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.5
+// # Version    : 1.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 02.01.2016
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -35,16 +35,16 @@
 #include <UTouch.h>
 
 //Main Screen Icons
-extern prog_uint16_t plant126[0x3E04];
-extern prog_uint16_t alarm126[0x3E04];
-extern prog_uint16_t logo126[0x3E04];
-extern prog_uint16_t moon126[0x3E04];
+extern uint16_t plant126[0x3E04];
+extern uint16_t alarm126[0x3E04];
+extern uint16_t logo126[0x3E04];
+extern uint16_t moon126[0x3E04];
 
 //Menu Icons
-extern prog_uint16_t plant64[0x1000];
-extern prog_uint16_t plantDark64[0x1000];
-extern prog_uint16_t settings64[0x1000];
-extern prog_uint16_t settingsDark64[0x1000];
+extern uint16_t plant64[0x1000];
+extern uint16_t plantDark64[0x1000];
+extern uint16_t settings64[0x1000];
+extern uint16_t settingsDark64[0x1000];
 
 //Fonts
 extern uint8_t hallfetica_normal[];
@@ -159,7 +159,8 @@ class Window {
 		//These are used for menus that are drawn using a for
 		//Will be multiplied with (_bigFontSize * number of row) to get Y coord in menus
 		static const uint8_t _yFactor3lines = 3;
-		static const float _yFactor4lines = 2.5;
+		//Defined in .cpp
+		static const float _yFactor4lines;
 		static const uint8_t _yFactor5lines = 2;
 	 	
 		virtual void print();
