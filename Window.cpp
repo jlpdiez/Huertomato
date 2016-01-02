@@ -1,5 +1,8 @@
 #include "Window.h"
 
+//Definition of float variable
+const float Window::_yFactor4lines = 2.5;
+
 //Constructors
 Window::Window(UTFT *lcd, UTouch *touch, Sensors *sensors, Settings *settings) 
 : _lcd(lcd), _touch(touch), _sensors(sensors),_settings(settings),_buttons(lcd,touch) {

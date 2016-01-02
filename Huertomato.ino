@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.4
+// # Version    : 1.5.5
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 18.11.2015
+// # Date       : 02.01.2016
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -77,6 +77,7 @@
 #include "WinWaterNight.h"
 #include <avr/pgmspace.h>
 #include <Streaming.h>
+#include <SPI.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
 #include <DHT11.h>
@@ -94,7 +95,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.54;
+const float versionNumber = 1.55;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY

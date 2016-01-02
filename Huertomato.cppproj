@@ -27,15 +27,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.18.1" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.18.1" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <PercepioTrace>
       <TargetOS xmlns="">FreeRTOS</TargetOS>
@@ -87,11 +87,13 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
+      <Value>_VMDEBUG=1</Value>
+      <Value>ARDUINO=167</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
+      <Value>ARDUINO_AVR_MEGA2560</Value>
+      <Value>ARDUINO_ARCH_AVR</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
@@ -115,6 +117,8 @@
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src</Value>
       <Value>C:/Program Files/Arduino/libraries/OneWire/utility</Value>
@@ -151,11 +155,13 @@
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
+      <Value>_VMDEBUG=1</Value>
+      <Value>ARDUINO=167</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
+      <Value>ARDUINO_AVR_MEGA2560</Value>
+      <Value>ARDUINO_ARCH_AVR</Value>
     </ListValues>
   </avrgcccpp.compiler.symbols.DefSymbols>
   <avrgcccpp.compiler.directories.IncludePaths>
@@ -179,6 +185,8 @@
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src</Value>
       <Value>C:/Program Files/Arduino/libraries/OneWire/utility</Value>
@@ -280,7 +288,7 @@ build.arch=AVR
     </VisualMicroSettings>
     <PreBuildEvent>
     </PreBuildEvent>
-    <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/variants/mega;C:/Program Files (x86)/Arduino/libraries/Streaming;C:/Program Files (x86)/Arduino/libraries/Streaming/utility;C:/Program Files (x86)/Arduino/libraries/Wire;C:/Program Files (x86)/Arduino/libraries/Wire/utility;C:/Program Files (x86)/Arduino/libraries/DS1307RTC;C:/Program Files (x86)/Arduino/libraries/DS1307RTC/utility;C:/Program Files (x86)/Arduino/libraries/DHT11;C:/Program Files (x86)/Arduino/libraries/DHT11/utility;C:/Program Files (x86)/Arduino/libraries/OneWire;C:/Program Files (x86)/Arduino/libraries/OneWire/utility;C:/Program Files (x86)/Arduino/libraries/DallasTemperature;C:/Program Files (x86)/Arduino/libraries/DallasTemperature/utility;C:/Program Files (x86)/Arduino/libraries/Time;C:/Program Files (x86)/Arduino/libraries/Time/utility;C:/Program Files (x86)/Arduino/libraries/TimeAlarms;C:/Program Files (x86)/Arduino/libraries/TimeAlarms/utility;C:/Program Files (x86)/Arduino/libraries/UTFT;C:/Program Files (x86)/Arduino/libraries/UTFT/utility;C:/Program Files (x86)/Arduino/libraries/UTouch;C:/Program Files (x86)/Arduino/libraries/UTouch/utility;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons/utility;C:/Program Files (x86)/Arduino/libraries/EEPROMEx;C:/Program Files (x86)/Arduino/libraries/EEPROMEx/utility;C:/Program Files (x86)/Arduino/libraries/SD;C:/Program Files (x86)/Arduino/libraries/SD/utility;C:/Program Files (x86)/Arduino/libraries/MemoryFree;C:/Program Files (x86)/Arduino/libraries/MemoryFree/utility;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/HAL/Documents/Arduino/libraries;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.3.2/include/;;C:/Program Files/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files/Arduino/hardware/arduino/avr/variants/mega;../../Huertomato;C:/Program Files/Arduino/libraries/ArduinoSerialCommand;C:/Program Files/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files/Arduino/libraries/DallasTemperature;C:/Program Files/Arduino/libraries/DallasTemperature/utility;C:/Program Files/Arduino/libraries/DHT11;C:/Program Files/Arduino/libraries/DHT11/utility;C:/Program Files/Arduino/libraries/DS1307RTC;C:/Program Files/Arduino/libraries/DS1307RTC/utility;C:/Program Files/Arduino/libraries/EEPROMEx;C:/Program Files/Arduino/libraries/EEPROMEx/utility;C:/Program Files/Arduino/libraries/MemoryFree;C:/Program Files/Arduino/libraries/MemoryFree/utility;C:/Program Files/Arduino/libraries/NewPing;C:/Program Files/Arduino/libraries/NewPing/utility;C:/Program Files/Arduino/libraries/NewTone;C:/Program Files/Arduino/libraries/NewTone/utility;C:/Program Files/Arduino/libraries/OneWire;C:/Program Files/Arduino/libraries/OneWire/utility;C:/Program Files/Arduino/libraries/SD/src;C:/Program Files/Arduino/libraries/SD/src/utility;C:/Program Files/Arduino/libraries/Streaming;C:/Program Files/Arduino/libraries/Streaming/utility;C:/Program Files/Arduino/libraries/Time;C:/Program Files/Arduino/libraries/Time/utility;C:/Program Files/Arduino/libraries/TimeAlarms;C:/Program Files/Arduino/libraries/TimeAlarms/utility;C:/Program Files/Arduino/libraries/UTFT;C:/Program Files/Arduino/libraries/UTFT/utility;C:/Program Files/Arduino/libraries/UTouch;C:/Program Files/Arduino/libraries/UTouch/utility;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire/utility;C:/Program Files/Arduino/libraries;C:/Program Files/Arduino/hardware/arduino/avr/libraries;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers;C:/Users/Naggaroth/Documents/Arduino/libraries;C:/Program Files/Arduino/hardware/tools/avr/avr/include/;C:/Program Files/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/variants/mega;C:/Program Files (x86)/Arduino/libraries/Streaming;C:/Program Files (x86)/Arduino/libraries/Streaming/utility;C:/Program Files (x86)/Arduino/libraries/Wire;C:/Program Files (x86)/Arduino/libraries/Wire/utility;C:/Program Files (x86)/Arduino/libraries/DS1307RTC;C:/Program Files (x86)/Arduino/libraries/DS1307RTC/utility;C:/Program Files (x86)/Arduino/libraries/DHT11;C:/Program Files (x86)/Arduino/libraries/DHT11/utility;C:/Program Files (x86)/Arduino/libraries/OneWire;C:/Program Files (x86)/Arduino/libraries/OneWire/utility;C:/Program Files (x86)/Arduino/libraries/DallasTemperature;C:/Program Files (x86)/Arduino/libraries/DallasTemperature/utility;C:/Program Files (x86)/Arduino/libraries/Time;C:/Program Files (x86)/Arduino/libraries/Time/utility;C:/Program Files (x86)/Arduino/libraries/TimeAlarms;C:/Program Files (x86)/Arduino/libraries/TimeAlarms/utility;C:/Program Files (x86)/Arduino/libraries/UTFT;C:/Program Files (x86)/Arduino/libraries/UTFT/utility;C:/Program Files (x86)/Arduino/libraries/UTouch;C:/Program Files (x86)/Arduino/libraries/UTouch/utility;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons/utility;C:/Program Files (x86)/Arduino/libraries/EEPROMEx;C:/Program Files (x86)/Arduino/libraries/EEPROMEx/utility;C:/Program Files (x86)/Arduino/libraries/SD;C:/Program Files (x86)/Arduino/libraries/SD/utility;C:/Program Files (x86)/Arduino/libraries/MemoryFree;C:/Program Files (x86)/Arduino/libraries/MemoryFree/utility;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/HAL/Documents/Arduino/libraries;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.3.2/include/;;C:/Program Files/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files/Arduino/hardware/arduino/avr/variants/mega;../../Huertomato;C:/Program Files/Arduino/libraries/ArduinoSerialCommand;C:/Program Files/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files/Arduino/libraries/DallasTemperature;C:/Program Files/Arduino/libraries/DallasTemperature/utility;C:/Program Files/Arduino/libraries/DHT11;C:/Program Files/Arduino/libraries/DHT11/utility;C:/Program Files/Arduino/libraries/DS1307RTC;C:/Program Files/Arduino/libraries/DS1307RTC/utility;C:/Program Files/Arduino/libraries/EEPROMEx;C:/Program Files/Arduino/libraries/EEPROMEx/utility;C:/Program Files/Arduino/libraries/MemoryFree;C:/Program Files/Arduino/libraries/MemoryFree/utility;C:/Program Files/Arduino/libraries/NewPing;C:/Program Files/Arduino/libraries/NewPing/utility;C:/Program Files/Arduino/libraries/NewTone;C:/Program Files/Arduino/libraries/NewTone/utility;C:/Program Files/Arduino/libraries/OneWire;C:/Program Files/Arduino/libraries/OneWire/utility;C:/Program Files/Arduino/libraries/SD/src;C:/Program Files/Arduino/libraries/SD/src/utility;C:/Program Files/Arduino/libraries/Streaming;C:/Program Files/Arduino/libraries/Streaming/utility;C:/Program Files/Arduino/libraries/Time;C:/Program Files/Arduino/libraries/Time/utility;C:/Program Files/Arduino/libraries/TimeAlarms;C:/Program Files/Arduino/libraries/TimeAlarms/utility;C:/Program Files/Arduino/libraries/UTFT;C:/Program Files/Arduino/libraries/UTFT/utility;C:/Program Files/Arduino/libraries/UTouch;C:/Program Files/Arduino/libraries/UTouch/utility;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire/utility;C:/Program Files/Arduino/libraries;C:/Program Files/Arduino/hardware/arduino/avr/libraries;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers;C:/Users/Naggaroth/Documents/Arduino/libraries;C:/Program Files/Arduino/hardware/tools/avr/avr/include/;C:/Program Files/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI;C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers/VM_DBG;</VMSETTING_IncludePaths>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
@@ -297,11 +305,13 @@ build.arch=AVR
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
+      <Value>_VMDEBUG=1</Value>
+      <Value>ARDUINO=167</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
+      <Value>ARDUINO_AVR_MEGA2560</Value>
+      <Value>ARDUINO_ARCH_AVR</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
@@ -325,6 +335,8 @@ build.arch=AVR
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src</Value>
       <Value>C:/Program Files/Arduino/libraries/OneWire/utility</Value>
@@ -361,11 +373,13 @@ build.arch=AVR
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>__AVR_ATmega2560__</Value>
-      <Value>ARDUINO=101</Value>
+      <Value>_VMDEBUG=1</Value>
+      <Value>ARDUINO=167</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=16000000L</Value>
       <Value>__AVR__</Value>
-      <Value>__cplusplus</Value>
+      <Value>ARDUINO_AVR_MEGA2560</Value>
+      <Value>ARDUINO_ARCH_AVR</Value>
     </ListValues>
   </avrgcccpp.compiler.symbols.DefSymbols>
   <avrgcccpp.compiler.directories.IncludePaths>
@@ -389,6 +403,8 @@ build.arch=AVR
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
+      <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src</Value>
       <Value>C:/Program Files/Arduino/libraries/OneWire/utility</Value>
@@ -491,7 +507,7 @@ build.arch=AVR
     <UsesExternalMakeFile>False</UsesExternalMakeFile>
     <BuildTarget>all</BuildTarget>
     <CleanTarget>clean</CleanTarget>
-    <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/variants/mega;C:/Program Files (x86)/Arduino/libraries/Streaming;C:/Program Files (x86)/Arduino/libraries/Streaming/utility;C:/Program Files (x86)/Arduino/libraries/Wire;C:/Program Files (x86)/Arduino/libraries/Wire/utility;C:/Program Files (x86)/Arduino/libraries/DS1307RTC;C:/Program Files (x86)/Arduino/libraries/DS1307RTC/utility;C:/Program Files (x86)/Arduino/libraries/DHT11;C:/Program Files (x86)/Arduino/libraries/DHT11/utility;C:/Program Files (x86)/Arduino/libraries/OneWire;C:/Program Files (x86)/Arduino/libraries/OneWire/utility;C:/Program Files (x86)/Arduino/libraries/DallasTemperature;C:/Program Files (x86)/Arduino/libraries/DallasTemperature/utility;C:/Program Files (x86)/Arduino/libraries/Time;C:/Program Files (x86)/Arduino/libraries/Time/utility;C:/Program Files (x86)/Arduino/libraries/TimeAlarms;C:/Program Files (x86)/Arduino/libraries/TimeAlarms/utility;C:/Program Files (x86)/Arduino/libraries/UTFT;C:/Program Files (x86)/Arduino/libraries/UTFT/utility;C:/Program Files (x86)/Arduino/libraries/UTouch;C:/Program Files (x86)/Arduino/libraries/UTouch/utility;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons/utility;C:/Program Files (x86)/Arduino/libraries/EEPROMEx;C:/Program Files (x86)/Arduino/libraries/EEPROMEx/utility;C:/Program Files (x86)/Arduino/libraries/SD;C:/Program Files (x86)/Arduino/libraries/SD/utility;C:/Program Files (x86)/Arduino/libraries/MemoryFree;C:/Program Files (x86)/Arduino/libraries/MemoryFree/utility;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/HAL/Documents/Arduino/libraries;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.3.2/include/;;C:/Program Files/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files/Arduino/hardware/arduino/avr/variants/mega;../../Huertomato;C:/Program Files/Arduino/libraries/ArduinoSerialCommand;C:/Program Files/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files/Arduino/libraries/DallasTemperature;C:/Program Files/Arduino/libraries/DallasTemperature/utility;C:/Program Files/Arduino/libraries/DHT11;C:/Program Files/Arduino/libraries/DHT11/utility;C:/Program Files/Arduino/libraries/DS1307RTC;C:/Program Files/Arduino/libraries/DS1307RTC/utility;C:/Program Files/Arduino/libraries/EEPROMEx;C:/Program Files/Arduino/libraries/EEPROMEx/utility;C:/Program Files/Arduino/libraries/MemoryFree;C:/Program Files/Arduino/libraries/MemoryFree/utility;C:/Program Files/Arduino/libraries/NewPing;C:/Program Files/Arduino/libraries/NewPing/utility;C:/Program Files/Arduino/libraries/NewTone;C:/Program Files/Arduino/libraries/NewTone/utility;C:/Program Files/Arduino/libraries/OneWire;C:/Program Files/Arduino/libraries/OneWire/utility;C:/Program Files/Arduino/libraries/SD/src;C:/Program Files/Arduino/libraries/SD/src/utility;C:/Program Files/Arduino/libraries/Streaming;C:/Program Files/Arduino/libraries/Streaming/utility;C:/Program Files/Arduino/libraries/Time;C:/Program Files/Arduino/libraries/Time/utility;C:/Program Files/Arduino/libraries/TimeAlarms;C:/Program Files/Arduino/libraries/TimeAlarms/utility;C:/Program Files/Arduino/libraries/UTFT;C:/Program Files/Arduino/libraries/UTFT/utility;C:/Program Files/Arduino/libraries/UTouch;C:/Program Files/Arduino/libraries/UTouch/utility;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire/utility;C:/Program Files/Arduino/libraries;C:/Program Files/Arduino/hardware/arduino/avr/libraries;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers;C:/Users/Naggaroth/Documents/Arduino/libraries;C:/Program Files/Arduino/hardware/tools/avr/avr/include/;C:/Program Files/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/variants/mega;C:/Program Files (x86)/Arduino/libraries/Streaming;C:/Program Files (x86)/Arduino/libraries/Streaming/utility;C:/Program Files (x86)/Arduino/libraries/Wire;C:/Program Files (x86)/Arduino/libraries/Wire/utility;C:/Program Files (x86)/Arduino/libraries/DS1307RTC;C:/Program Files (x86)/Arduino/libraries/DS1307RTC/utility;C:/Program Files (x86)/Arduino/libraries/DHT11;C:/Program Files (x86)/Arduino/libraries/DHT11/utility;C:/Program Files (x86)/Arduino/libraries/OneWire;C:/Program Files (x86)/Arduino/libraries/OneWire/utility;C:/Program Files (x86)/Arduino/libraries/DallasTemperature;C:/Program Files (x86)/Arduino/libraries/DallasTemperature/utility;C:/Program Files (x86)/Arduino/libraries/Time;C:/Program Files (x86)/Arduino/libraries/Time/utility;C:/Program Files (x86)/Arduino/libraries/TimeAlarms;C:/Program Files (x86)/Arduino/libraries/TimeAlarms/utility;C:/Program Files (x86)/Arduino/libraries/UTFT;C:/Program Files (x86)/Arduino/libraries/UTFT/utility;C:/Program Files (x86)/Arduino/libraries/UTouch;C:/Program Files (x86)/Arduino/libraries/UTouch/utility;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons;C:/Program Files (x86)/Arduino/libraries/UTFT_Buttons/utility;C:/Program Files (x86)/Arduino/libraries/EEPROMEx;C:/Program Files (x86)/Arduino/libraries/EEPROMEx/utility;C:/Program Files (x86)/Arduino/libraries/SD;C:/Program Files (x86)/Arduino/libraries/SD/utility;C:/Program Files (x86)/Arduino/libraries/MemoryFree;C:/Program Files (x86)/Arduino/libraries/MemoryFree/utility;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand;C:/Program Files (x86)/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/HAL/Documents/Arduino/libraries;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.3.2/include/;;C:/Program Files/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files/Arduino/hardware/arduino/avr/variants/mega;../../Huertomato;C:/Program Files/Arduino/libraries/ArduinoSerialCommand;C:/Program Files/Arduino/libraries/ArduinoSerialCommand/utility;C:/Program Files/Arduino/libraries/DallasTemperature;C:/Program Files/Arduino/libraries/DallasTemperature/utility;C:/Program Files/Arduino/libraries/DHT11;C:/Program Files/Arduino/libraries/DHT11/utility;C:/Program Files/Arduino/libraries/DS1307RTC;C:/Program Files/Arduino/libraries/DS1307RTC/utility;C:/Program Files/Arduino/libraries/EEPROMEx;C:/Program Files/Arduino/libraries/EEPROMEx/utility;C:/Program Files/Arduino/libraries/MemoryFree;C:/Program Files/Arduino/libraries/MemoryFree/utility;C:/Program Files/Arduino/libraries/NewPing;C:/Program Files/Arduino/libraries/NewPing/utility;C:/Program Files/Arduino/libraries/NewTone;C:/Program Files/Arduino/libraries/NewTone/utility;C:/Program Files/Arduino/libraries/OneWire;C:/Program Files/Arduino/libraries/OneWire/utility;C:/Program Files/Arduino/libraries/SD/src;C:/Program Files/Arduino/libraries/SD/src/utility;C:/Program Files/Arduino/libraries/Streaming;C:/Program Files/Arduino/libraries/Streaming/utility;C:/Program Files/Arduino/libraries/Time;C:/Program Files/Arduino/libraries/Time/utility;C:/Program Files/Arduino/libraries/TimeAlarms;C:/Program Files/Arduino/libraries/TimeAlarms/utility;C:/Program Files/Arduino/libraries/UTFT;C:/Program Files/Arduino/libraries/UTFT/utility;C:/Program Files/Arduino/libraries/UTouch;C:/Program Files/Arduino/libraries/UTouch/utility;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files/Arduino/hardware/arduino/avr/libraries/Wire/utility;C:/Program Files/Arduino/libraries;C:/Program Files/Arduino/hardware/arduino/avr/libraries;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers;C:/Users/Naggaroth/Documents/Arduino/libraries;C:/Program Files/Arduino/hardware/tools/avr/avr/include/;C:/Program Files/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI;C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility;C:/Program Files/Atmel/Studio/7.0/Extensions/qro0a5aq.445/Micro Platforms/default/debuggers/VM_DBG;</VMSETTING_IncludePaths>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Huertomato.ino">
@@ -500,6 +516,7 @@ build.arch=AVR
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Visual Micro\" />
+    <Folder Include="__vm\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buttons.cpp">
@@ -723,6 +740,9 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="WinWaterNight.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="__vm\.Huertomato.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
