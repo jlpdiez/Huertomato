@@ -28,9 +28,6 @@
 #include <inttypes.h>
 #include <avr/eeprom.h>
 
-// Boards with ATmega328, Duemilanove, Uno, UnoSMD, Lilypad - 1024 bytes (1 kilobyte)
-// Boards with ATmega1280 or 2560, Arduino Mega series – 4096 bytes (4 kilobytes)
-// Boards with ATmega168, Lilypad, old Nano, Diecimila  – 512 bytes (1/2 kilobyte)
 
 #define EEPROMSizeATmega168   512     
 #define EEPROMSizeATmega328   1024     
@@ -38,21 +35,28 @@
 #define EEPROMSizeATmega32u4  1024
 #define EEPROMSizeAT90USB1286 4096
 #define EEPROMSizeMK20DX128   2048
+#define EEPROMSizeMK20DX256   2048
+#define EEPROMSizeATSAMD21G18 16384          
 
 #define EEPROMSizeUno         EEPROMSizeATmega328     
 #define EEPROMSizeUnoSMD      EEPROMSizeATmega328
 #define EEPROMSizeLilypad     EEPROMSizeATmega328
 #define EEPROMSizeDuemilanove EEPROMSizeATmega328
+#define EEPROMSizePro         EEPROMSizeATmega328
+#define EEPROMSizeFio         EEPROMSizeATmega328
 #define EEPROMSizeMega        EEPROMSizeATmega1280
 #define EEPROMSizeDiecimila   EEPROMSizeATmega168
 #define EEPROMSizeNano        EEPROMSizeATmega168
 #define EEPROMSizeTeensy2     EEPROMSizeATmega32u4
 #define EEPROMSizeLeonardo    EEPROMSizeATmega32u4
 #define EEPROMSizeMicro       EEPROMSizeATmega32u4
+#define EEPROMSizeEsplora     EEPROMSizeATmega32u4
 #define EEPROMSizeYun         EEPROMSizeATmega32u4
+#define EEPROMSizeTre         EEPROMSizeATmega32u4
+#define EEPROMSizeZero        EEPROMSizeATSAMD21G18
 #define EEPROMSizeTeensy2pp   EEPROMSizeAT90USB1286
 #define EEPROMSizeTeensy3     EEPROMSizeMK20DX128
-
+#define EEPROMSizeTeensy31    EEPROMSizeMK20DX256
 class EEPROMClassEx
 {
 	  
@@ -91,22 +95,29 @@ class EEPROMClassEx
 	
     // Use template for other data formats
 
-
+	/**
+	 * Template function to read  multiple items of any type of variable, such as structs
+	 */
 	template <class T> int readBlock(int address, const T value[], int items)
 	{
-		if (!isWriteOk(address+items*sizeof(T))) return 0;
 		unsigned int i;
 		for (i = 0; i < (unsigned int)items; i++)
 			readBlock<T>(address+(i*sizeof(T)),value[i]);
 		return i;
 	}
-	
+
+	/**
+	 * Template function to read any type of variable, such as structs
+	 */	
 	template <class T> int readBlock(int address, const T& value)
 	{		
 		eeprom_read_block((void*)&value, (const void*)address, sizeof(value));
 		return sizeof(value);
 	}
 	
+	/**
+	 * Template function to write multiple items of any type of variable, such as structs
+	 */	
 	template <class T> int writeBlock(int address, const T value[], int items)
 	{	
 		if (!isWriteOk(address+items*sizeof(T))) return 0;
@@ -115,14 +126,21 @@ class EEPROMClassEx
 			  writeBlock<T>(address+(i*sizeof(T)),value[i]);
 		return i;
 	}
-	
+
+	/**
+	 * Template function to write any type of variable, such as structs
+	 */		
 	template <class T> int writeBlock(int address, const T& value)
 	{
 		if (!isWriteOk(address+sizeof(value))) return 0;
 		eeprom_write_block((void*)&value, (void*)address, sizeof(value));			  			  
 		return sizeof(value);
 	}
-
+	 
+	/**
+	 * Template function to update multiple items of any type of variable, such as structs
+	 * The EEPROM will only be overwritten if different. This will reduce wear.
+	 */	 
 	template <class T> int updateBlock(int address, const T value[], int items)
 	{
 		int writeCount=0;
@@ -133,6 +151,10 @@ class EEPROMClassEx
 		return writeCount;
 	}
 	
+	/**
+	 * Template function to update any type of variable, such as structs
+	 * The EEPROM will only be overwritten if different. This will reduce wear.
+	 */	 
 	template <class T> int updateBlock(int address, const T& value)
 	{
 		int writeCount=0;

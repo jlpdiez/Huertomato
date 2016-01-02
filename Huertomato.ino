@@ -26,13 +26,14 @@
 // *********************************************
 // INCLUDES
 // *********************************************
-// # Non-standard libraries:
+// # Non-standard libraries. 
+// # Some of these have been modified so it's better to use the ones located in the /Libs/ folder.
 // # Streaming http://arduiniana.org/libraries/streaming/
 // # DHT11 http://playground.arduino.cc/Main/DHT11Lib
 // # DS1307 RTC, Time & TimeAlarms http://arduino.cc/playground/Code/Time
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
 // # DallasTemperature https://github.com/milesburton/Arduino-temp-Control-Library
-// # EEPROMex http://playground.arduino.cc/Code/EEPROMex
+// # EEPROMex https://github.com/thijse/Arduino-EEPROMEx
 // # UTouch http://www.henningkarlsen.com/electronics/library.php
 // # UTFT custom version based on: http://arduinodev.com/arduino-sd-card-image-viewer-with-tft-shield/
 // # ArduinoSerialCommand https://github.com/fsb054c/ArduinoSerialCommand
