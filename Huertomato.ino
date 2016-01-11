@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.5
+// # Version    : 1.5.6
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 02.01.2016
+// # Date       : 11.01.2016
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -28,7 +28,6 @@
 // *********************************************
 // # Non-standard libraries. 
 // # Some of these have been modified so it's better to use the ones located in the /Libs/ folder.
-// # Streaming http://arduiniana.org/libraries/streaming/
 // # DHT11 http://playground.arduino.cc/Main/DHT11Lib
 // # DS1307 RTC, Time & TimeAlarms http://arduino.cc/playground/Code/Time
 // # OneWire http://www.pjrc.com/teensy/td_libs_OneWire.html
@@ -77,7 +76,6 @@
 #include "WinWater.h"
 #include "WinWaterNight.h"
 #include <avr/pgmspace.h>
-#include <Streaming.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
@@ -96,7 +94,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.55;
+const float versionNumber = 1.56;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -124,7 +122,6 @@ const char noWaterTxt[] PROGMEM = "Huertomato will NOT water to prevent pump dam
 const char pumpOnTxt[] PROGMEM = "Nutrient level topped. Watering is safe again. < --";
 const char waterStartTxt[] PROGMEM = "Huertomato is watering plants.";
 const char waterStopTxt[] PROGMEM = "Watering cycle ended.";
-
 
 // *********************************************
 // PINOUT ASSIGN
@@ -506,11 +503,44 @@ void logSensorReadings() {
 	File sensorLog = SD.open(fileNameArray, FILE_WRITE);
 	
 	if (sensorLog) {
-		sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
-		sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
-		sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
-		sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
-		sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
+		//Date
+		(d < 10) ? sensorLog.print("0") : 0;
+		sensorLog.print(d);
+		sensorLog.print("-");
+		(mo < 10) ? sensorLog.print("0") : 0;
+		sensorLog.print(mo);
+		sensorLog.print("-");
+		sensorLog.print(y);
+		sensorLog.print(",");
+		//Time
+		(h < 10) ? sensorLog.print("0") : 0;
+		sensorLog.print(h);
+		sensorLog.print(":");
+		(m < 10) ? sensorLog.print("0") : 0;
+		sensorLog.print(m);
+		sensorLog.print(",");
+		//Sensors
+		sensorLog.print(sensors.getTemp());
+		sensorLog.print(",");
+		sensorLog.print(sensors.getHumidity());
+		sensorLog.print(",");
+		sensorLog.print(sensors.getLight());
+		sensorLog.print(",");
+		
+		if (settings.getReservoirModule()) {
+			sensorLog.print(sensors.getEC());
+			sensorLog.print(",");
+			sensorLog.print(sensors.getPH());
+			sensorLog.print(",");
+			sensorLog.print(sensors.getWaterLevel());
+			sensorLog.print(",");
+		}
+		
+		//sensorLog << ((d<10)?"0":"") << d << "-" << ((mo<10)?"0":"") << mo << "-" << y << ",";
+		//sensorLog << ((h<10)?"0":"") << h << ":" << ((m<10)?"0":"") << m;
+		//sensorLog << "," << sensors.getTemp() << "," << sensors.getHumidity();
+		//sensorLog << "," << sensors.getLight() << "," << sensors.getEC();
+		//sensorLog << "," << sensors.getPH() << "," << sensors.getWaterLevel() << endl;
 		sensorLog.close();
 		//Inform through serial
 		ui.timeStamp(sdLogOk);

@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SerialComms
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.10.2015
+// # Date       : 11.01.2016
 //
 // # Description: Class in charge of attending communication with input serial commands
 // # Works at 115200. Commands must end with a carriage return to work properly.
@@ -31,7 +31,6 @@
 #include "Sensors.h"
 #include "Settings.h"
 #include <SerialCommand.h>
-#include <Streaming.h>
 #include <Time.h>  
 #include <MemoryFree.h>
 
@@ -47,6 +46,21 @@ const char commandsTxT[] PROGMEM = "Available commands are:";
 const char sensorsTxT[] PROGMEM = "Available sensors are:";
 const char settingsTxt[] PROGMEM = "Available settings are:";
 
+const char memoryTxt[] PROGMEM = "> Available memory: ";
+const char memoryTxt1[] PROGMEM = " bytes";
+const char dateTxt[] PROGMEM = "> Date: ";
+const char timeTxt[] PROGMEM = "> Time: ";
+const char tempTxt[] PROGMEM = "> Temp: ";
+const char celsTxt[] PROGMEM = "C";
+const char fahrTxt[] PROGMEM = "F";
+const char humidTxt[] PROGMEM = "> Humidity: ";
+const char lightTxt[] PROGMEM = "> Light level: ";
+const char luxTxt[] PROGMEM = "lux";
+const char elecTxt[] PROGMEM = "> EC: ";
+const char ecUnitsTxt[] PROGMEM = "uS";
+const char pihTxt[] PROGMEM = "> pH: ";
+const char levelTxt[] PROGMEM = "> Water level: ";
+
 const char boolTxt[] PROGMEM = "Expected a 'true' or 'false'";
 const char hourTxt[] PROGMEM = "Expected an hour 0 .. 23";
 const char minSecTxt[] PROGMEM = "Expected 0 .. 59";
@@ -55,9 +69,15 @@ const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
 const char percentTxT[] PROGMEM = "Expected 0 .. 100";
 const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
 
+const char noHelp[] PROGMEM = "> No help found for command <";
+const char noReservoir[] PROGMEM = "> Reservoir module is deactivated";
 const char doneTxt[] PROGMEM = "Done.";
 const char lineDeco[] PROGMEM = "> ";
 const char textSeparator[] PROGMEM = ": ";
+const char timeDots[] PROGMEM = ":";
+const char timeStampSeparator[] PROGMEM = " - ";
+const char dateSlash[] PROGMEM = "/";
+const char percentTxt[] PROGMEM = "%";
 
 //Command Strings
 const char commandStr0[] PROGMEM = "help";
@@ -160,11 +180,14 @@ class SerialInterface {
 		//Static to prevent multiple instances and is also required to handle methods
 		static SerialCommand _cmd;
 		
+		//Prints number preceeded by a '0' if needed
+		static void printDecNum(const uint8_t num);
 		//These are used to read data from PROGMEM and store them into SRAM
 		static char* pmChar(const char* pmArray);
 		//Printers
 		static void printLn(const char* ln, boolean leadingBlankLine = true, boolean trailingBlankLine = true);
 		static void list(int length, const char* const names[]);
+		static void printName(const char* ln);
 		
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
