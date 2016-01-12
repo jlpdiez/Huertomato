@@ -91,6 +91,109 @@ Settings& Settings::operator=(const Settings &other) {
 //Destructor
 Settings::~Settings() {}
 	
+void Settings::printAddresses() {
+	Serial.print("_addressWaterTimed: ");
+	Serial.print(_addressWaterTimed);
+	Serial.print(" | ");
+	Serial.println(_waterTimed);
+	Serial.print("_addressWaterHour: ");
+	Serial.print(_addressWaterHour);	
+	Serial.print(" | ");
+	Serial.println(_waterHour);
+	Serial.print("_addressWaterMinute: ");
+	Serial.print(_addressWaterMinute);	
+	Serial.print(" | ");
+	Serial.println(_waterMinute);
+	Serial.print("_addressFloodMinute: ");
+	Serial.print(_addressFloodMinute);	
+	Serial.print(" | ");
+	Serial.println(_floodMinute);
+	Serial.print("_addressPHalarmUp: ");
+	Serial.print(_addressPHalarmUp);	
+	Serial.print(" | ");
+	Serial.println(_phAlarmUp);
+	Serial.print("_addressPHalarmDown: ");
+	Serial.print(_addressPHalarmDown);	
+	Serial.print(" | ");
+	Serial.println(_phAlarmDown);
+	Serial.print("_addressECalarmUp: ");
+	Serial.print(_addressECalarmUp);	
+	Serial.print(" | ");
+	Serial.println(_ecAlarmUp);
+	Serial.print("_adressECalarmDown: ");
+	Serial.print(_adressECalarmDown);	
+	Serial.print(" | ");
+	Serial.println(_ecAlarmDown);
+	Serial.print("_addressWaterAlarm: ");
+	Serial.print(_addressWaterAlarm);	
+	Serial.print(" | ");
+	Serial.println(_waterAlarm);
+	Serial.print("_addressNightWatering: ");
+	Serial.print(_addressNightWatering);	
+	Serial.print(" | ");
+	Serial.println(_nightWatering);
+	Serial.print("_addressSensorSecond: ");
+	Serial.print(_addressSensorSecond);	
+	Serial.print(" | ");
+	Serial.println(_sensorSecond);
+	Serial.print("_addressSDactive: ");
+	Serial.print(_addressSDactive);	
+	Serial.print(" | ");
+	Serial.println(_sdActive);
+	Serial.print("_addressSDhour: ");
+	Serial.print(_addressSDhour);	
+	Serial.print(" | ");
+	Serial.println(_sdHour);
+	Serial.print("_addressSDminute: ");
+	Serial.print(_addressSDminute);	
+	Serial.print(" | ");
+	Serial.println(_sdMinute);
+	Serial.print("_addressSound: ");
+	Serial.print(_addressSound);		
+	Serial.print(" | ");
+	Serial.println(_sound);
+	Serial.print("_addressLed: ");
+	Serial.print(_addressLed);
+	Serial.print(" | ");
+	Serial.println(_led);
+	Serial.print("_addressCelsius: ");
+	Serial.print(_addressCelsius);	
+	Serial.print(" | ");
+	Serial.println(_celsius);
+	Serial.print("_addressSerialDebug: ");
+	Serial.print(_addressSerialDebug);	
+	Serial.print(" | ");
+	Serial.println(_serialDebug);
+	Serial.print("_addressLightThreshold: ");
+	Serial.print(_addressLightThreshold);
+	Serial.print(" | ");
+	Serial.println(_lightThreshold);
+	Serial.print("_addressReservoirModule: ");
+	Serial.print(_addressReservoirModule);
+	Serial.print(" | ");
+	Serial.println(_reservoirModule);
+	Serial.print("_addressMaxWaterLvl: ");
+	Serial.print(_addressMaxWaterLvl);	
+	Serial.print(" | ");
+	Serial.println(_maxWaterLvl);
+	Serial.print("_addressMinWaterLvl: ");
+	Serial.print(_addressMinWaterLvl);	
+	Serial.print(" | ");
+	Serial.println(_minWaterLvl);
+	Serial.print("_addressPumpProtectionLvl: ");
+	Serial.print(_addressPumpProtectionLvl);	
+	Serial.print(" | ");
+	Serial.println(_pumpProtectionLvl);
+	Serial.print("_addressPumpProtection: ");
+	Serial.print(_addressPumpProtection);	
+	Serial.print(" | ");
+	Serial.println(_pumpProtection);
+	Serial.print("_addressVersion: ");
+	Serial.print(_addressVersion);
+	Serial.print(" | ");
+	Serial.println(EEPROM.readFloat(_addressVersion));
+}
+	
 //Sets EEPROM addresses for all variables
 void Settings::setEEPROMaddresses() {
 	_addressWaterTimed = EEPROM.getAddress(sizeof(byte));
@@ -115,9 +218,8 @@ void Settings::setEEPROMaddresses() {
 	_addressReservoirModule = EEPROM.getAddress(sizeof(byte));
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
-	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
-	_addressLed = EEPROM.getAddress(sizeof(byte));
+	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressVersion = EEPROM.getAddress(sizeof(float));	
 }
 

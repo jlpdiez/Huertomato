@@ -34,14 +34,18 @@
 #include <Time.h>  
 #include <MemoryFree.h>
 
+extern const float versionNumber;
+
 //General strings
+const char welcome0[] PROGMEM = ".::[ Huertomato ]::.";
+const char welcome1[] PROGMEM = "www.TheGreenAutomation.com";
 const char serialRdyTxt[] PROGMEM = "Serial I/O ready.";
 const char serialOffTxt[] PROGMEM = "Deactivating serial communications.";
 
-const char helpTxt0[] PROGMEM = "Huertomato version 1.4";
+const char helpTxt0[] PROGMEM = "> Huertomato version ";
 const char helpTxt1[] PROGMEM = "Type <help name> to find out more about the function <name>.";
 const char memHelpTxt[] PROGMEM = "Displays current system's free memory.";
-const char statusHelpTxt[] PROGMEM = "Displays all sensor info.";
+const char statusHelpTxt[] PROGMEM = "Displays system status and sensor info.";
 const char commandsTxT[] PROGMEM = "Available commands are:";
 const char sensorsTxT[] PROGMEM = "Available sensors are:";
 const char settingsTxt[] PROGMEM = "Available settings are:";
@@ -180,12 +184,12 @@ class SerialInterface {
 		//Static to prevent multiple instances and is also required to handle methods
 		static SerialCommand _cmd;
 		
-		//Prints number preceeded by a '0' if needed
+		//Prints number preceeded by a '0' if < 10
 		static void printDecNum(const uint8_t num);
 		//These are used to read data from PROGMEM and store them into SRAM
 		static char* pmChar(const char* pmArray);
 		//Printers
-		static void printLn(const char* ln, boolean leadingBlankLine = true, boolean trailingBlankLine = true);
+		static void printLn(const char* ln, boolean leadingBlankLine = false, boolean trailingBlankLine = false);
 		static void list(int length, const char* const names[]);
 		static void printName(const char* ln);
 		

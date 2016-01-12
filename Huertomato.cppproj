@@ -114,8 +114,6 @@
       <Value>C:/Program Files/Arduino/libraries/TimeAlarms</Value>
       <Value>C:/Program Files/Arduino/libraries/Time/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
@@ -181,8 +179,6 @@
       <Value>C:/Program Files/Arduino/libraries/TimeAlarms</Value>
       <Value>C:/Program Files/Arduino/libraries/Time/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
@@ -330,8 +326,6 @@ build.arch=AVR
       <Value>C:/Program Files/Arduino/libraries/TimeAlarms</Value>
       <Value>C:/Program Files/Arduino/libraries/Time/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>
@@ -397,8 +391,6 @@ build.arch=AVR
       <Value>C:/Program Files/Arduino/libraries/TimeAlarms</Value>
       <Value>C:/Program Files/Arduino/libraries/Time/utility</Value>
       <Value>C:/Program Files/Arduino/libraries/Time</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming/utility</Value>
-      <Value>C:/Program Files/Arduino/libraries/Streaming</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI/utility</Value>
       <Value>C:/Program Files/Arduino/hardware/arduino/avr/libraries/SPI</Value>
       <Value>C:/Program Files/Arduino/libraries/SD/src/utility</Value>

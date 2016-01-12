@@ -94,7 +94,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 1.56;
+const float versionNumber = 1.57;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -210,6 +210,7 @@ void setup() {
 	Alarm.delay(10);
 	sensors.fastUpdate();
 	gui.start();
+	settings.printAddresses();
 }
 
 //Initiates system time from RTC
@@ -277,7 +278,6 @@ void setupWaterModes() {
 			ui.timeStamp(waterContinuousTxt);
 		}
 	}
-	
 }
 
 //Updates variables used for displaying next watering time

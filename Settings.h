@@ -80,6 +80,8 @@ class Settings {
 	//Destructor
 	~Settings();
     
+	void printAddresses();
+	
     //Setters - These store settings to EEPROM too
     //System Settings
     boolean setWaterTimed(const boolean);
