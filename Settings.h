@@ -80,7 +80,7 @@ class Settings {
 	//Destructor
 	~Settings();
     
-	void printAddresses();
+	void debugEEPROM();
 	
     //Setters - These store settings to EEPROM too
     //System Settings
@@ -157,6 +157,8 @@ class Settings {
     boolean getAlarmTriggered() const;
 	boolean getPumpProtected() const;
 	
+	float getVersion() const;
+	
 	//These return value and go to false
 	boolean systemStateChanged();
 	boolean waterSettingsChanged();
@@ -170,10 +172,12 @@ class Settings {
 	//Needed for it to be called both by GUI and main .ino
 	void setRTCtime(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int);
        
+	void setDefault();
+	  
   private:
 	void setEEPROMaddresses();
     void readEEPROMvars();
-	void setDefault();
+	//void setDefault();
 	
     //System Settings
     //Watering Cycle
@@ -240,6 +244,8 @@ class Settings {
 	boolean _serialDebugChanged;
 	//Module config changed
 	boolean _moduleChanged;
+	//Version number
+	float _version;
     
     //EEPROM addresses for all settings
     int _addressWaterTimed;

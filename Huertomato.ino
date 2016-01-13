@@ -210,7 +210,8 @@ void setup() {
 	Alarm.delay(10);
 	sensors.fastUpdate();
 	gui.start();
-	settings.printAddresses();
+	//settings.setDefault();
+	settings.debugEEPROM();
 }
 
 //Initiates system time from RTC

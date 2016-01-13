@@ -91,7 +91,7 @@ Settings& Settings::operator=(const Settings &other) {
 //Destructor
 Settings::~Settings() {}
 	
-void Settings::printAddresses() {
+void Settings::debugEEPROM() {
 	Serial.print("_addressWaterTimed: ");
 	Serial.print(_addressWaterTimed);
 	Serial.print(" | ");
@@ -180,18 +180,20 @@ void Settings::printAddresses() {
 	Serial.print(_addressMinWaterLvl);	
 	Serial.print(" | ");
 	Serial.println(_minWaterLvl);
-	Serial.print("_addressPumpProtectionLvl: ");
-	Serial.print(_addressPumpProtectionLvl);	
-	Serial.print(" | ");
-	Serial.println(_pumpProtectionLvl);
 	Serial.print("_addressPumpProtection: ");
 	Serial.print(_addressPumpProtection);	
 	Serial.print(" | ");
 	Serial.println(_pumpProtection);
+	Serial.print("_addressPumpProtectionLvl: ");
+	Serial.print(_addressPumpProtectionLvl);
+	Serial.print(" | ");
+	Serial.println(_pumpProtectionLvl);
 	Serial.print("_addressVersion: ");
 	Serial.print(_addressVersion);
 	Serial.print(" | ");
-	Serial.println(EEPROM.readFloat(_addressVersion));
+	Serial.print(EEPROM.readFloat(_addressVersion));
+	Serial.print(" | ");
+	Serial. println(versionNumber);
 }
 	
 //Sets EEPROM addresses for all variables
@@ -225,9 +227,13 @@ void Settings::setEEPROMaddresses() {
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
-	//If version number isn't the same we reset to default settings
-	if (EEPROM.readFloat(_addressVersion) != versionNumber)
+	//TODO:
+	//If EEPROM version number is missing or isn't the same we reset to default settings
+	/*
+	float vers = EEPROM.readFloat(_addressVersion);
+	if ((vers != versionNumber) || (vers == 0)) {
 		setDefault();	
+	}*/
 		
 	_waterTimed = EEPROM.readByte(_addressWaterTimed);
 	_waterHour = EEPROM.readByte(_addressWaterHour);
@@ -253,12 +259,11 @@ void Settings::readEEPROMvars() {
 	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
 	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
+	_version == EEPROM.readFloat(_addressVersion);
 }
 
 //Setters - These store their value on EEPROM too
 void Settings::setDefault() {	
-	//Saves current version number to EEPROM
-	EEPROM.updateFloat(_addressVersion,versionNumber);
 	//System Settings
 	EEPROM.updateByte(_addressWaterTimed,1);
 	EEPROM.updateByte(_addressWaterHour,1);	
@@ -285,6 +290,8 @@ void Settings::setDefault() {
 	EEPROM.updateInt(_addressMinWaterLvl,50);
 	EEPROM.updateByte(_addressPumpProtection,0);
 	EEPROM.updateByte(_addressPumpProtectionLvl,15);
+	//Saves current version number to EEPROM
+	EEPROM.updateFloat(_addressVersion,versionNumber);
 }
 
 //System Settings
@@ -582,6 +589,8 @@ boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
 	
 boolean Settings::getPumpProtected() const { return _pumpProtected; }
 	
+float Settings::getVersion() const { return _version; }
+		
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;
 	_systemStateChanged = false;
