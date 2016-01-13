@@ -33,6 +33,7 @@
 #include <SerialCommand.h>
 #include <Time.h>  
 #include <MemoryFree.h>
+#include <ctype.h>
 
 extern const float versionNumber;
 
@@ -72,10 +73,11 @@ const char phTxt[] PROGMEM = "Expected pH 0.00 .. 14.00";
 const char ecTxt[] PROGMEM = "Expected ec 0 .. 9999";
 const char percentTxT[] PROGMEM = "Expected 0 .. 100";
 const char lvlTxt[] PROGMEM = "Expected 0 .. 1024";
+const char innerTxt[] PROGMEM = "Inner var not to be changed";
 
+const char successTxt[] PROGMEM = " successfuly updated to: ";
 const char noHelp[] PROGMEM = "> No help found for command <";
 const char noReservoir[] PROGMEM = "> Reservoir module is deactivated";
-const char doneTxt[] PROGMEM = "Done.";
 const char lineDeco[] PROGMEM = "> ";
 const char textSeparator[] PROGMEM = ": ";
 const char timeDots[] PROGMEM = ":";
@@ -192,6 +194,7 @@ class SerialInterface {
 		static void printLn(const char* ln, boolean leadingBlankLine = false, boolean trailingBlankLine = false);
 		static void list(int length, const char* const names[]);
 		static void printName(const char* ln);
+		static void printUpdated(const char* ln, const char* arg);
 		
 		//Each of these functions are used when certain keywords are found in processInput
 		//They need to be static so handler finds them correctly
@@ -217,14 +220,14 @@ class SerialInterface {
 		//Executes get command
 		static void getSetting(Settings::Setting sett);
 		//Checks if inputs are valid and convert methods
-		static boolean isBoolean(char* str);
-		static boolean getBoolean(char* str);
-		static boolean isUint8_t(char* str);
-		static uint8_t getUint8_t(char* str);
-		static boolean isUint16_t(char* str);
-		static uint16_t getUint16_t(char* str);
-		static boolean isFloat(char* str);
-		static float getFloat(char* str);
+		static boolean isBoolean(const char* str);
+		static boolean getBoolean(const char* str);
+		static boolean isUint8_t(const char* str);
+		static uint8_t getUint8_t(const char* str);
+		static boolean isUint16_t(const char* str);
+		static uint16_t getUint16_t(const char* str);
+		static boolean isFloat(const char* str);
+		static float getFloat(const char* str);
 		//Executes the set commands
 		static void setSetting(Settings::Setting sett);
 };

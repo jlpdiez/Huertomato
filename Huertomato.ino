@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.6
+// # Version    : 1.5.7
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.01.2016
+// # Date       : 13.01.2016
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -93,12 +93,14 @@
 #include <SerialCommand.h>
 #include <MemoryFree.h>
 #include <string.h>
+#include <ctype.h>
 
 const float versionNumber = 1.57;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
 // *********************************************
+const char defaultsLoaded[] PROGMEM = "Reset settings to default.";
 const char rtcResetTxt[] PROGMEM = "RTC time has been recently reset. Manual adjustment needed.";
 const char rtcInitOkTxt[] PROGMEM = "RTC init OK.";
 const char rtcInitFailTxt[] PROGMEM = "RTC init FAIL! < --";
@@ -199,6 +201,11 @@ void setup() {
 	led.setOn();
 	ui.init();
 	gui.init();
+	//Reset to default settings if EEPROM version differs from code version
+	if (settings.getVersion() != versionNumber) {
+		settings.loadDefaults();
+		ui.timeStamp(defaultsLoaded);
+	}
 	//Actuators
 	pinMode(buzzPin, OUTPUT);
 	pinMode(waterPump, OUTPUT);
@@ -210,8 +217,6 @@ void setup() {
 	Alarm.delay(10);
 	sensors.fastUpdate();
 	gui.start();
-	//settings.setDefault();
-	settings.debugEEPROM();
 }
 
 //Initiates system time from RTC

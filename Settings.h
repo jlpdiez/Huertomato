@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.5
+// # Version    : 1.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 08.11.2015
+// # Date       : 13.01.2016
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -79,8 +79,9 @@ class Settings {
 	Settings& operator=(const Settings &other);
 	//Destructor
 	~Settings();
-    
-	void debugEEPROM();
+	
+	//Loads defaults to EEPROM and updates object
+	void loadDefaults();
 	
     //Setters - These store settings to EEPROM too
     //System Settings
@@ -156,7 +157,7 @@ class Settings {
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
 	boolean getPumpProtected() const;
-	
+	//Internal EEPROM version
 	float getVersion() const;
 	
 	//These return value and go to false
@@ -171,13 +172,12 @@ class Settings {
 	//Breaks encapsulation as it uses RTC object directly 
 	//Needed for it to be called both by GUI and main .ino
 	void setRTCtime(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int);
-       
-	void setDefault();
+     
+	//void debugEEPROM();
 	  
   private:
 	void setEEPROMaddresses();
     void readEEPROMvars();
-	//void setDefault();
 	
     //System Settings
     //Watering Cycle
