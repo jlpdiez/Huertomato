@@ -127,9 +127,9 @@ void SerialInterface::notFound() {
 void SerialInterface::help() {
 	//Read argument following "help"
 	char *arg = _cmd.next();
-	//Not more words
-	if (arg == NULL) {
-		Serial.println();
+	Serial.println();
+	//Not more words or "help help"
+	if ((arg == NULL) || (strcmp_P(arg,commands[0]) == 0)) {
 		Serial.print(pmChar(helpTxt0));
 		Serial.println(versionNumber,2);
 		printLn(helpTxt1,false,true);
@@ -146,6 +146,7 @@ void SerialInterface::help() {
 	//help memory
 	} else if (strcmp_P(arg,commands[3]) == 0)
 		printLn(memHelpTxt);
+	//help status
 	else if (strcmp_P(arg,commands[4]) == 0)
 		printLn(statusHelpTxt);
 	//not recognized
@@ -364,26 +365,29 @@ void SerialInterface::commandSensors() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSensor(Sensors::Sensor sens) {
-	Serial.println();
 	switch (sens) {
 		case Sensors::None:
 			break;
 		case Sensors::Temperature:
 			printName(sensorsNames[0]);
-			Serial.println(sensors.getTemp());
+			Serial.print(sensors.getTemp());
+			(settings.getCelsius()) ? Serial.println(pmChar(celsTxt)) : Serial.println(pmChar(fahrTxt));
 			break;
 		case Sensors::Humidity:
 			printName(sensorsNames[1]);
-			Serial.println(sensors.getHumidity());
+			Serial.print(sensors.getHumidity());
+			Serial.println(pmChar(percentTxt));
 			break;
 		case Sensors::Light:
 			printName(sensorsNames[2]);
-			Serial.println(sensors.getLight());
+			Serial.print(sensors.getLight());
+			Serial.println(pmChar(luxTxt));
 			break;
 		case Sensors::Ec:
 			if (settings.getReservoirModule()) {
 				printName(sensorsNames[3]);
-				Serial.println(sensors.getEC());				
+				Serial.print(sensors.getEC());	
+				Serial.println(pmChar(ecUnitsTxt));			
 			} else {
 				Serial.println(pmChar(noReservoir));
 			}
@@ -399,7 +403,8 @@ void SerialInterface::getSensor(Sensors::Sensor sens) {
 		case Sensors::Level:
 			if (settings.getReservoirModule()) {
 				printName(sensorsNames[5]);
-				Serial.println(sensors.getWaterLevel());				
+				Serial.print(sensors.getWaterLevel());
+				Serial.println(pmChar(percentTxt));				
 			} else {
 				Serial.println(pmChar(noReservoir));
 			}
@@ -450,7 +455,6 @@ void SerialInterface::commandSettings() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSetting(Settings::Setting sett) {
-		Serial.println();
 		switch (sett) {
 			case Settings::None:
 				break;
@@ -830,6 +834,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SerialDebug:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
+				(getBoolean(arg)) ? sensors.setSerialDebug(true) : sensors.setSerialDebug(false);
 				printUpdated(settingsNames[19],arg);
 			} else
 				printLn(boolTxt);
@@ -838,6 +843,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::ReservoirModule:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setReservoirModule(true) : settings.setReservoirModule(false);
+				(getBoolean(arg)) ? sensors.setReservoir(true) : sensors.setReservoir(false);
 				printUpdated(settingsNames[20],arg);
 			} else
 				printLn(boolTxt);
@@ -854,6 +860,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::Celsius:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setCelsius(true) : settings.setCelsius(false);
+				(getBoolean(arg)) ? sensors.setCelsius(true) : sensors.setCelsius(false);
 				printUpdated(settingsNames[27],arg);
 			} else
 				printLn(boolTxt);

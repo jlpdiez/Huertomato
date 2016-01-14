@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SerialComms
-// # Version    : 1.3
+// # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 11.01.2016
+// # Date       : 14.01.2016
 //
 // # Description: Class in charge of attending communication with input serial commands
 // # Works at 115200. Commands must end with a carriage return to work properly.
@@ -60,7 +60,7 @@ const char celsTxt[] PROGMEM = "C";
 const char fahrTxt[] PROGMEM = "F";
 const char humidTxt[] PROGMEM = "> Humidity: ";
 const char lightTxt[] PROGMEM = "> Light level: ";
-const char luxTxt[] PROGMEM = "lux";
+const char luxTxt[] PROGMEM = " lux";
 const char elecTxt[] PROGMEM = "> EC: ";
 const char ecUnitsTxt[] PROGMEM = "uS";
 const char pihTxt[] PROGMEM = "> pH: ";
