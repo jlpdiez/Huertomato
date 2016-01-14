@@ -217,3 +217,7 @@ pip-log.txt
 #Visual Micro
 Visual Micro/
 *.atsuo
+
+__vm/
+Debug/
+Release/
