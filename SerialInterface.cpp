@@ -20,8 +20,11 @@ SerialInterface::~SerialInterface() {}
 void SerialInterface::init() {
 	if (settings.getSerialDebug()) {
 		Serial.begin(115200);
-		Serial << endl << F(".::[ Huertomato ]::.") << endl;
-		Serial << F("www.TheGreenAutomation.com") << endl << endl;
+		//Welcome message
+		Serial.println();
+		Serial.println(pmChar(welcome0));
+		Serial.println(pmChar(welcome1));
+		Serial.println();
 		// Setup callbacks for SerialCommand commands
 		_cmd.addCommand(pmChar(commands[0]),SerialInterface::help);
 		_cmd.addCommand(pmChar(commands[1]),SerialInterface::commandSensors);
@@ -49,6 +52,12 @@ void SerialInterface::processInput() {
 		Serial.read();
 }
 
+//Prints number preceeded by a '0' if needed
+void SerialInterface::printDecNum(const uint8_t num) {
+	(num < 10) ? Serial.print(F("0")) : 0;
+	Serial.print(num);
+}
+
 //Writes "HH:MM:SS - <Text>" to serial console if serial debugging is on
 //Assumes a PROGMEM char* as input
 void SerialInterface::timeStamp(const char* txt) const {
@@ -57,8 +66,13 @@ void SerialInterface::timeStamp(const char* txt) const {
 		uint8_t h = hour(t);
 		uint8_t m = minute(t);
 		uint8_t s = second(t);
-		Serial << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s;
-		Serial  << F(" - ") << pmChar(txt) << endl;
+		printDecNum(h);
+		Serial.print(pmChar(timeDots));
+		printDecNum(m);
+		Serial.print(pmChar(timeDots));
+		printDecNum(s);
+		Serial.print(pmChar(timeStampSeparator));
+		Serial.println(pmChar(txt));
 	}
 }
 
@@ -72,7 +86,8 @@ char* SerialInterface::pmChar(const char *pmArray) {
 //Assumes a PROGMEM char* as input
 void SerialInterface::printLn(const char* ln, boolean leadingBlankLine, boolean trailingBlankLine) {
 	(leadingBlankLine) ? Serial.println() : 0;
-	Serial << pmChar(lineDeco) << pmChar(ln) << endl;
+	Serial.print(pmChar(lineDeco));
+	Serial.println(pmChar(ln));
 	(trailingBlankLine) ? Serial.println() : 0;
 }
 
@@ -82,11 +97,28 @@ void SerialInterface::list(int length, const char* const names[]) {
 	for (uint8_t i = 0; i < length; i++) {
 		printLn((char*)pgm_read_word(&names[i]),false,false);
 	}
-	Serial << endl;
+}
+
+//Prints "> Text: "
+//Assumes a PROGMEM char* as input
+void SerialInterface::printName(const char* ln) {
+	Serial.print(pmChar(lineDeco));
+	Serial.print(pmChar(ln));
+	Serial.print(pmChar(textSeparator));
+}
+
+//Prints "> 'ln' successfuly updated to: 'arg'"
+void SerialInterface::printUpdated(const char* ln, const char* arg) {
+	Serial.print(pmChar(lineDeco));
+	Serial.print(pmChar(ln));
+	Serial.print(pmChar(successTxt));
+	Serial.println(arg);
 }
 
 void SerialInterface::notFound() {
-	printLn(helpTxt0,true,false);
+	Serial.println();
+	Serial.print(pmChar(helpTxt0));
+	Serial.println(versionNumber,2);
 	printLn(helpTxt1,false,true);
 	list(nCommands,commands);
 }
@@ -95,9 +127,11 @@ void SerialInterface::notFound() {
 void SerialInterface::help() {
 	//Read argument following "help"
 	char *arg = _cmd.next();
-	//Not more words
-	if (arg == NULL) {
-		printLn(helpTxt0,true,false);
+	Serial.println();
+	//Not more words or "help help"
+	if ((arg == NULL) || (strcmp_P(arg,commands[0]) == 0)) {
+		Serial.print(pmChar(helpTxt0));
+		Serial.println(versionNumber,2);
 		printLn(helpTxt1,false,true);
 		list(nCommands,commands);
 	//help sensors
@@ -112,16 +146,25 @@ void SerialInterface::help() {
 	//help memory
 	} else if (strcmp_P(arg,commands[3]) == 0)
 		printLn(memHelpTxt);
+	//help status
 	else if (strcmp_P(arg,commands[4]) == 0)
 		printLn(statusHelpTxt);
 	//not recognized
-	else 
-		Serial << endl << F("> No help found for command <") << arg << F(">") << endl << endl;	
+	else {
+		Serial.println();
+		Serial.print(pmChar(noHelp));
+		Serial.print(arg);
+		Serial.println(pmChar(lineDeco));
+	}
+		
 }
 
 //Uses external FreeMemory library
 void SerialInterface::commandMemory() {
-	Serial << endl << F("> Available memory: ") << freeMemory() << F(" bytes") << endl << endl;
+	Serial.println();
+	Serial.print(pmChar(memoryTxt));
+	Serial.print(freeMemory());
+	Serial.println(pmChar(memoryTxt1));
 }
 
 //Sends sensor data through serial
@@ -133,26 +176,55 @@ void SerialInterface::commandStatus() {
 		uint8_t s = second(t);
 		uint8_t d = day(t);
 		uint8_t mo = month(t);
-		uint16_t y = year(t);		
+		uint16_t y = year(t);
 		int mem = freeMemory();
 		
-		Serial << endl;
-		Serial << F("> Date: ") << ((d<10)?"0":"") << d << F("/") << ((mo<10)?"0":"") << mo << F("/") << y << endl;
-		Serial << F("> Time: ") << ((h<10)?"0":"") << h << F(":") << ((m<10)?"0":"") << m << F(":") << ((s<10)?"0":"") << s << endl;
-		Serial << F("> Available memory: ") << mem << F(" bytes") << endl;
-		Serial << F("> Temp: ") << sensors.getTemp();
-		if (settings.getCelsius())
-			Serial << F("C") << endl;
-		else
-			Serial << F("F") << endl;
-		Serial << F("> Humidity: ") << sensors.getHumidity() << F("%") << endl;
-		Serial << F("> Light level: ") << sensors.getLight() << F("lux") << endl;
+		Serial.println();
+		//Date
+		Serial.print(pmChar(dateTxt));
+		printDecNum(d);
+		Serial.print(pmChar(dateSlash));
+		printDecNum(mo);
+		Serial.print(pmChar(dateSlash));
+		Serial.println(y);
+		//Time
+		Serial.print(pmChar(timeTxt));
+		printDecNum(h);
+		Serial.print(pmChar(timeDots));
+		printDecNum(m);
+		Serial.print(pmChar(timeDots));
+		printDecNum(s);
+		Serial.println();
+		//Memory
+		Serial.print(pmChar(memoryTxt));
+		Serial.print(mem);
+		Serial.println(pmChar(memoryTxt1));
+		//Temp
+		Serial.print(pmChar(tempTxt));
+		Serial.print(sensors.getTemp());
+		(settings.getCelsius()) ? Serial.println(pmChar(celsTxt)) : Serial.println(pmChar(fahrTxt));
+		//Humidity
+		Serial.print(pmChar(humidTxt));
+		Serial.print(sensors.getHumidity());
+		Serial.println(pmChar(percentTxt));
+		//Light
+		Serial.print(pmChar(lightTxt));
+		Serial.print(sensors.getLight());
+		Serial.println(pmChar(luxTxt));
+		//Reservoir module
 		if (settings.getReservoirModule()) {
-			Serial << F("> EC: ") << sensors.getEC() << endl;
-			Serial << F("> pH: ") << sensors.getPH() << endl;
-			Serial << F("> Water level: ") << sensors.getWaterLevel() << F("%") << endl;
+			//EC
+			Serial.print(pmChar(elecTxt));
+			Serial.print(sensors.getEC());
+			Serial.println(pmChar(ecUnitsTxt));
+			//pH
+			Serial.print(pmChar(pihTxt));
+			Serial.println(sensors.getPH());
+			//Level
+			Serial.print(pmChar(levelTxt));
+			Serial.print(sensors.getWaterLevel());
+			Serial.println(pmChar(percentTxt));
 		}
-		Serial << endl;
 	}
 }
 
@@ -187,7 +259,7 @@ Sensors::Sensor SerialInterface::interpretSensor(char* keyword) {
 		return Sensors::Ph;
 	else if (strcmp_P(keyword,sensorsNames[5]) == 0)
 		return Sensors::Level;
-	//Word unrecognised
+	//Word unrecognized
 	else
 		return Sensors::None;
 }
@@ -267,6 +339,7 @@ void SerialInterface::commandSensors() {
 	arg = _cmd.next();
 	sens = interpretSensor(arg);
 	
+	Serial.println();
 	switch (comm) {
 		case Invalid:
 			printLn(commandsTxT);
@@ -292,30 +365,51 @@ void SerialInterface::commandSensors() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSensor(Sensors::Sensor sens) {
-	Serial << endl;
 	switch (sens) {
 		case Sensors::None:
 			break;
 		case Sensors::Temperature:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[0]) << pmChar(textSeparator) << sensors.getTemp() << endl;
+			printName(sensorsNames[0]);
+			Serial.print(sensors.getTemp());
+			(settings.getCelsius()) ? Serial.println(pmChar(celsTxt)) : Serial.println(pmChar(fahrTxt));
 			break;
 		case Sensors::Humidity:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[1]) << pmChar(textSeparator) << sensors.getHumidity() << endl;
+			printName(sensorsNames[1]);
+			Serial.print(sensors.getHumidity());
+			Serial.println(pmChar(percentTxt));
 			break;
 		case Sensors::Light:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[2]) << pmChar(textSeparator) << sensors.getLight() << endl;
+			printName(sensorsNames[2]);
+			Serial.print(sensors.getLight());
+			Serial.println(pmChar(luxTxt));
 			break;
 		case Sensors::Ec:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[3]) << pmChar(textSeparator) << sensors.getEC() << endl;
+			if (settings.getReservoirModule()) {
+				printName(sensorsNames[3]);
+				Serial.print(sensors.getEC());	
+				Serial.println(pmChar(ecUnitsTxt));			
+			} else {
+				Serial.println(pmChar(noReservoir));
+			}
 			break;
 		case Sensors::Ph:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[4]) << pmChar(textSeparator) << sensors.getPH() << endl;
+			if (settings.getReservoirModule()) {
+				printName(sensorsNames[4]);
+				Serial.println(sensors.getPH());				
+			} else {
+				Serial.println(pmChar(noReservoir));
+			}
 			break;
 		case Sensors::Level:
-			Serial << pmChar(lineDeco) << pmChar(sensorsNames[5]) << pmChar(textSeparator) << sensors.getWaterLevel() << endl;
+			if (settings.getReservoirModule()) {
+				printName(sensorsNames[5]);
+				Serial.print(sensors.getWaterLevel());
+				Serial.println(pmChar(percentTxt));				
+			} else {
+				Serial.println(pmChar(noReservoir));
+			}
 			break;
 	}
-	Serial << endl;
 }
 
 //Links keywords to program logic and executes commands
@@ -328,6 +422,7 @@ void SerialInterface::commandSettings() {
 	arg = _cmd.next();
 	sett = interpretSetting(arg);
 	
+	Serial.println();
 	switch (comm) {
 		case Invalid:
 			printLn(commandsTxT);
@@ -360,116 +455,149 @@ void SerialInterface::commandSettings() {
 
 //Displays info from input setting to screen
 void SerialInterface::getSetting(Settings::Setting sett) {
-		Serial << endl;
 		switch (sett) {
 			case Settings::None:
 				break;
 			case Settings::WaterTimed:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[0]) << pmChar(textSeparator) << settings.getWaterTimed() << endl;
+				printName(settingsNames[0]);
+				Serial.println(settings.getWaterTimed());				
 				break;
 			case Settings::WaterHour:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[1]) << pmChar(textSeparator) << settings.getWaterHour() << endl;
+				printName(settingsNames[1]);
+				Serial.println(settings.getWaterHour());				
 				break;
 			case Settings::WaterMinute:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[2]) << pmChar(textSeparator) << settings.getWaterMinute() << endl;
+				printName(settingsNames[2]);
+				Serial.println(settings.getWaterMinute());				
 				break;
 			case Settings::FloodMinute:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[3]) << pmChar(textSeparator) << settings.getFloodMinute() << endl;
+				printName(settingsNames[3]);
+				Serial.println(settings.getFloodMinute());				
 				break;
 			case Settings::PHalarmUp:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[4]) << pmChar(textSeparator) << settings.getPHalarmUp() << endl;
+				printName(settingsNames[4]);
+				Serial.println(settings.getPHalarmUp());				
 				break;
 			case Settings::PHalarmDown:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[5]) << pmChar(textSeparator) << settings.getPHalarmDown() << endl;
+				printName(settingsNames[5]);
+				Serial.println(settings.getPHalarmDown());				
 				break;
 			case Settings::ECalarmUp:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[6]) << pmChar(textSeparator) << settings.getECalarmUp() << endl;
+				printName(settingsNames[6]);
+				Serial.println(settings.getECalarmUp());				
 				break;
 			case Settings::ECalarmDown:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[7]) << pmChar(textSeparator) << settings.getECalarmDown() << endl;
+				printName(settingsNames[7]);
+				Serial.println(settings.getECalarmDown());				
 				break;
 			case Settings::WaterAlarm:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[8]) << pmChar(textSeparator) << settings.getWaterAlarm() << endl;
+				printName(settingsNames[8]);
+				Serial.println(settings.getWaterAlarm());				
 				break;
 			case Settings::NightWatering:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[9]) << pmChar(textSeparator) << settings.getNightWatering() << endl;
+				printName(settingsNames[9]);
+				Serial.println(settings.getNightWatering());				
 				break;
 			case Settings::LightThreshold:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[10]) << pmChar(textSeparator) << settings.getLightThreshold() << endl;
+				printName(settingsNames[10]);
+				Serial.println(settings.getLightThreshold());				
 				break;
 			case Settings::MaxWaterLvl:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[11]) << pmChar(textSeparator) << settings.getMaxWaterLvl() << endl;
+				printName(settingsNames[11]);
+				Serial.println(settings.getMaxWaterLvl());				
 				break;
 			case Settings::MinWaterLvl:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[12]) << pmChar(textSeparator) << settings.getMinWaterLvl() << endl;
+				printName(settingsNames[12]);
+				Serial.println(settings.getMinWaterLvl());				
 				break;
 			case Settings::PumpProtectionLvl:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[13]) << pmChar(textSeparator) << settings.getPumpProtectionLvl() << endl;
+				printName(settingsNames[13]);
+				Serial.println(settings.getPumpProtectionLvl());				
 				break;
 			case Settings::SensorSecond:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[14]) << pmChar(textSeparator) << settings.getSensorSecond() << endl;
+				printName(settingsNames[14]);
+				Serial.println(settings.getSensorSecond());				
 				break;
 			case Settings::SDactive:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[15]) << pmChar(textSeparator) << settings.getSDactive() << endl;
+				printName(settingsNames[15]);
+				Serial.println(settings.getSDactive());				
 				break;
 			case Settings::SDhour:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[16]) << pmChar(textSeparator) << settings.getSDhour() << endl;
+				printName(settingsNames[16]);
+				Serial.println(settings.getSDhour());				
 				break;
 			case Settings::SDminute:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[17]) << pmChar(textSeparator) << settings.getSDminute() << endl;
+				printName(settingsNames[17]);
+				Serial.println(settings.getSDminute());				
 				break;
 			case Settings::Sound:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[18]) << pmChar(textSeparator) << settings.getSound() << endl;
+				printName(settingsNames[18]);
+				Serial.println(settings.getSound());				
 				break;
 			case Settings::SerialDebug:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[19]) << pmChar(textSeparator) << settings.getSerialDebug() << endl;
+				printName(settingsNames[19]);
+				Serial.println(settings.getSerialDebug());				
 				break;
 			case Settings::ReservoirModule:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[20]) << pmChar(textSeparator) << settings.getReservoirModule() << endl;
+				printName(settingsNames[20]);
+				Serial.println(settings.getReservoirModule());				
 				break;
 			case Settings::NextWhour:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[21]) << pmChar(textSeparator) << settings.getNextWhour() << endl;
+				printName(settingsNames[21]);
+				Serial.println(settings.getNextWhour());				
 				break;
 			case Settings::NextWminute:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[22]) << pmChar(textSeparator) << settings.getNextWminute() << endl;
+				printName(settingsNames[22]);
+				Serial.println(settings.getNextWminute());				
 				break;
 			case Settings::NightWateringStopped:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[23]) << pmChar(textSeparator) << settings.getNightWateringStopped() << endl;
+				printName(settingsNames[23]);
+				Serial.println(settings.getNightWateringStopped());				
 				break;
 			case Settings::WateringPlants:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[24]) << pmChar(textSeparator) << settings.getWateringPlants() << endl;
+				printName(settingsNames[24]);
+				Serial.println(settings.getWateringPlants());				
 				break;
 			case Settings::AlarmTriggered:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[25]) << pmChar(textSeparator) << settings.getAlarmTriggered() << endl;
+				printName(settingsNames[25]);
+				Serial.println(settings.getAlarmTriggered());				
 				break;
 			case Settings::Led:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[26]) << pmChar(textSeparator) << settings.getLed() << endl;
+				printName(settingsNames[26]);
+				Serial.println(settings.getLed());				
 				break;
 			case Settings::Celsius:
-				Serial << pmChar(lineDeco) << pmChar(settingsNames[27]) << pmChar(textSeparator) << settings.getCelsius() << endl;
+				printName(settingsNames[27]);
+				Serial.println(settings.getCelsius());				
 				break;
 		}
-		Serial << endl;
 }
 
 
 //Checks if inputs are valid and convert methods
-boolean SerialInterface::isBoolean(char* str) {
-	return ((strcmp(str, "true") == 0) || (strcmp(str, "1") == 0) 
-			|| (strcmp(str, "false") == 0) || (strcmp(str, "0") == 0));
+boolean SerialInterface::isBoolean(const char* str) {
+	return ((strcmp(str, "true") == 0) || (strcmp(str, "True") == 0) || (strcmp(str, "1") == 0) 
+			|| (strcmp(str, "on") == 0) || (strcmp(str, "On") == 0) || (strcmp(str, "false") == 0) 
+			|| (strcmp(str, "False") == 0) || (strcmp(str, "0") == 0) || (strcmp(str, "off") == 0)
+			|| (strcmp(str, "Off") == 0));
 }
 
-boolean SerialInterface::getBoolean(char* str) {
+boolean SerialInterface::getBoolean(const char* str) {
 	if (str == NULL)
 		return false;
-	else if ((strcmp(str, "true") == 0) || (strcmp(str, "1") == 0))
+	else if ((strcmp(str, "true") == 0) || (strcmp(str, "1") == 0) || (strcmp(str, "on") == 0) 
+		|| (strcmp(str, "True") == 0) || (strcmp(str, "On") == 0))
 		return true;
-	else if ((strcmp(str, "false") == 0) || (strcmp(str, "0") == 0))
+	else if ((strcmp(str, "false") == 0) || (strcmp(str, "0") == 0) || (strcmp(str, "off") == 0)
+		|| (strcmp(str, "False") == 0) || (strcmp(str, "Off") == 0))
 		return false;
 }
 
-boolean SerialInterface::isUint8_t(char* str) {
+boolean SerialInterface::isUint8_t(const char* str) {
 	if (str == NULL)
+		return false;
+	//Check if at least first char is a number
+	if (!(isDigit(str[0])))
 		return false;
 	//We use an order of magnitude bigger number to cast and check correctness
 	long num = atol(str);
@@ -477,38 +605,41 @@ boolean SerialInterface::isUint8_t(char* str) {
 }
 
 //Doesn't check if input is right... use method above
-uint8_t SerialInterface::getUint8_t(char* str) {
+uint8_t SerialInterface::getUint8_t(const char* str) {
 	return (uint8_t)atoi(str);
 }
 
-boolean SerialInterface::isUint16_t(char* str) {
+boolean SerialInterface::isUint16_t(const char* str) {
 	if (str == NULL)
+		return false;
+	if (!(isDigit(str[0])))
 		return false;
 	long num = atol(str);
 	return ((num >= 0) && (num < 65536));
 }
 
 //Doesn't check if input is right... use method above
-uint16_t SerialInterface::getUint16_t(char* str) {
+uint16_t SerialInterface::getUint16_t(const char* str) {
 	return (uint16_t)atol(str);
 }
 
 //Strangest way if checking for data.
-boolean SerialInterface::isFloat(char* str) {
+boolean SerialInterface::isFloat(const char* str) {
 	if (str == NULL)
+		return false;
+	if (!(isDigit(str[0])))
 		return false;
 	float num = atof(str);
 	return ((num >= 0) && (num < 99.99));	
 }
 
 //Doesn't check if input is right... use method above
-float SerialInterface::getFloat(char* str) {
+float SerialInterface::getFloat(const char* str) {
 	return atof(str);
 }
 
 //Gets info from input, checks validity and modifies data
 void SerialInterface::setSetting(Settings::Setting sett) {
-	Serial << endl;
 	char* arg = _cmd.next();
 	switch (sett) {
 		case Settings::None:
@@ -517,7 +648,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::WaterTimed:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setWaterTimed(true) : settings.setWaterTimed(false);
-				printLn(doneTxt);
+				printUpdated(settingsNames[0],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -525,7 +656,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::WaterHour: 
 			if (isUint8_t(arg)) {
 				if (settings.setWaterHour(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[1],arg);
 				else
 					printLn(hourTxt);
 			} else
@@ -535,17 +666,17 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::WaterMinute:
 			if (isUint8_t(arg)) {
 				if (settings.setWaterMinute(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[2],arg);
 				else
 					printLn(minSecTxt);
 			} else
-			printLn(minSecTxt);
+				printLn(minSecTxt);
 			break;
 			
 		case Settings::FloodMinute:
 			if (isUint8_t(arg)) {
 				if (settings.setFloodMinute(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[3],arg);
 				else
 					printLn(minSecTxt);
 			} else
@@ -555,7 +686,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::PHalarmUp:
 			if (isFloat(arg)) {
 				if (settings.setPHalarmUp(getFloat(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[4],arg);
 				else
 					printLn(phTxt);
 			} else
@@ -565,7 +696,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::PHalarmDown:
 			if (isFloat(arg)) {
 				if (settings.setPHalarmDown(getFloat(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[5],arg);
 				else
 					printLn(phTxt);
 			} else
@@ -575,7 +706,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::ECalarmUp:
 			if (isUint16_t(arg)) {
 				if (settings.setECalarmUp(getUint16_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[6],arg);
 				else
 					printLn(ecTxt);
 			} else
@@ -585,7 +716,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::ECalarmDown:
 			if (isUint16_t(arg)) {
 				if (settings.setECalarmDown(getUint16_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[7],arg);
 				else
 					printLn(ecTxt);
 			} else
@@ -595,7 +726,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::WaterAlarm:
 			if (isUint8_t(arg)) {
 				if (settings.setWaterAlarm(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[8],arg);
 				else
 					printLn(percentTxT);
 			} else
@@ -605,7 +736,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::NightWatering:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setNightWatering(true) : settings.setNightWatering(false);
-				printLn(doneTxt);
+				printUpdated(settingsNames[9],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -613,7 +744,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::LightThreshold:
 			if (isUint8_t(arg)) {
 				if (settings.setLightThreshold(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[10],arg);
 				else
 					printLn(percentTxT);
 			} else
@@ -625,7 +756,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 				uint16_t l = getUint16_t(arg);
 				if (settings.setMaxWaterLvl(l)) {
 					sensors.setMaxLvl(l);
-					printLn(doneTxt);
+					printUpdated(settingsNames[11],arg);
 				} else
 					printLn(lvlTxt);
 			} else
@@ -637,7 +768,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 				uint16_t l = getUint16_t(arg);
 				if (settings.setMinWaterLvl(l)) {
 					sensors.setMinLvl(l);
-					printLn(doneTxt);
+					printUpdated(settingsNames[12],arg);
 				} else
 					printLn(lvlTxt);
 			} else
@@ -647,7 +778,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::PumpProtectionLvl:
 			if (isUint8_t(arg)) {
 				if (settings.setPumpProtectionLvl(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[13],arg);
 				else
 					printLn(percentTxT);
 			} else
@@ -657,7 +788,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SensorSecond:
 			if (isUint8_t(arg)) {
 				if (settings.setSensorSecond(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[14],arg);
 				else
 					printLn(minSecTxt);
 			} else
@@ -667,7 +798,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDactive:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSDactive(true) : settings.setSDactive(false);
-				printLn(doneTxt);
+				printUpdated(settingsNames[15],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -675,7 +806,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDhour:
 			if (isUint8_t(arg)) {
 				if (settings.setSDhour(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[16],arg);
 				else
 					printLn(hourTxt);
 			} else
@@ -685,7 +816,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDminute:
 			if (isUint8_t(arg)) {
 				if (settings.setSDminute(getUint8_t(arg)))
-					printLn(doneTxt);
+					printUpdated(settingsNames[17],arg);
 				else
 					printLn(minSecTxt);
 			} else
@@ -695,23 +826,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::Sound:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSound(true) : settings.setSound(false);
-				printLn(doneTxt);
-			} else
-				printLn(boolTxt);
-			break;
-			
-		case Settings::Led:
-			if (isBoolean(arg)) {
-				(getBoolean(arg)) ? settings.setLed(true) : settings.setLed(false);
-				printLn(doneTxt);
-			} else
-				printLn(boolTxt);
-			break;
-			
-		case Settings::Celsius:
-			if (isBoolean(arg)) {
-				(getBoolean(arg)) ? settings.setCelsius(true) : settings.setCelsius(false);
-				printLn(doneTxt);
+				printUpdated(settingsNames[18],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -719,18 +834,38 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SerialDebug:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
-				printLn(doneTxt);
+				(getBoolean(arg)) ? sensors.setSerialDebug(true) : sensors.setSerialDebug(false);
+				printUpdated(settingsNames[19],arg);
+			} else
+				printLn(boolTxt);
+			break;
+
+		case Settings::ReservoirModule:
+			if (isBoolean(arg)) {
+				(getBoolean(arg)) ? settings.setReservoirModule(true) : settings.setReservoirModule(false);
+				(getBoolean(arg)) ? sensors.setReservoir(true) : sensors.setReservoir(false);
+				printUpdated(settingsNames[20],arg);
+			} else
+				printLn(boolTxt);
+			break;
+		
+		case Settings::Led:
+			if (isBoolean(arg)) {
+				(getBoolean(arg)) ? settings.setLed(true) : settings.setLed(false);
+				printUpdated(settingsNames[26],arg);
 			} else
 				printLn(boolTxt);
 			break;
 			
-		case Settings::ReservoirModule:
+		case Settings::Celsius:
 			if (isBoolean(arg)) {
-				(getBoolean(arg)) ? settings.setReservoirModule(true) : settings.setReservoirModule(false);
-				printLn(doneTxt);
+				(getBoolean(arg)) ? settings.setCelsius(true) : settings.setCelsius(false);
+				(getBoolean(arg)) ? sensors.setCelsius(true) : sensors.setCelsius(false);
+				printUpdated(settingsNames[27],arg);
 			} else
 				printLn(boolTxt);
 			break;
+			
 		//These are left blank on purpose. Only main .ino logic should touch these 
 		//as they are internal states not user-selectable settings per se
 		case Settings::NextWhour:
@@ -739,7 +874,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::WateringPlants:
 		case Settings::AlarmTriggered:
 		default:
+			printLn(innerTxt);
 			break;
 	}
-	Serial << endl;
 }

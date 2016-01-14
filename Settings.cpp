@@ -115,18 +115,13 @@ void Settings::setEEPROMaddresses() {
 	_addressReservoirModule = EEPROM.getAddress(sizeof(byte));
 	_addressMaxWaterLvl = EEPROM.getAddress(sizeof(int));
 	_addressMinWaterLvl = EEPROM.getAddress(sizeof(int));
-	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
-	_addressLed = EEPROM.getAddress(sizeof(byte));
-	_addressVersion = EEPROM.getAddress(sizeof(float));	
+	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
+	_addressVersion = EEPROM.getAddress(sizeof(float));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
 void Settings::readEEPROMvars() {
-	//If version number isn't the same we reset to default settings
-	if (EEPROM.readFloat(_addressVersion) != versionNumber)
-		setDefault();	
-		
 	_waterTimed = EEPROM.readByte(_addressWaterTimed);
 	_waterHour = EEPROM.readByte(_addressWaterHour);
 	_waterMinute = EEPROM.readByte(_addressWaterMinute);
@@ -151,10 +146,10 @@ void Settings::readEEPROMvars() {
 	_minWaterLvl = EEPROM.readInt(_addressMinWaterLvl);
 	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
-}
+	_version = EEPROM.readFloat(_addressVersion);
 
-//Setters - These store their value on EEPROM too
-void Settings::setDefault() {	
+//Resets EEPROM data to defaults
+void Settings::loadDefaults() {
 	//Saves current version number to EEPROM
 	EEPROM.updateFloat(_addressVersion,versionNumber);
 	//System Settings
@@ -183,8 +178,12 @@ void Settings::setDefault() {
 	EEPROM.updateInt(_addressMinWaterLvl,50);
 	EEPROM.updateByte(_addressPumpProtection,0);
 	EEPROM.updateByte(_addressPumpProtectionLvl,15);
+	//Saves current version number to EEPROM
+	EEPROM.updateFloat(_addressVersion,versionNumber);
+	readEEPROMvars();
 }
 
+//Setters - These store their value on EEPROM too
 //System Settings
 //Also sets _waterModeChanged to true
 boolean Settings::setWaterTimed(const boolean w) { 
@@ -478,6 +477,8 @@ boolean Settings::getWateringPlants() const { return _wateringPlants; }
 boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
 	
 boolean Settings::getPumpProtected() const { return _pumpProtected; }
+
+float Settings::getVersion() const { return _version; }
 	
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;
@@ -529,3 +530,110 @@ void Settings::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo
 	setTime(time);
 	RTC.set(time);
 }
+
+/*
+void Settings::debugEEPROM() {
+	Serial.print("_addressWaterTimed: ");
+	Serial.print(_addressWaterTimed);
+	Serial.print(" | ");
+	Serial.println(_waterTimed);
+	Serial.print("_addressWaterHour: ");
+	Serial.print(_addressWaterHour);
+	Serial.print(" | ");
+	Serial.println(_waterHour);
+	Serial.print("_addressWaterMinute: ");
+	Serial.print(_addressWaterMinute);
+	Serial.print(" | ");
+	Serial.println(_waterMinute);
+	Serial.print("_addressFloodMinute: ");
+	Serial.print(_addressFloodMinute);
+	Serial.print(" | ");
+	Serial.println(_floodMinute);
+	Serial.print("_addressPHalarmUp: ");
+	Serial.print(_addressPHalarmUp);
+	Serial.print(" | ");
+	Serial.println(_phAlarmUp);
+	Serial.print("_addressPHalarmDown: ");
+	Serial.print(_addressPHalarmDown);
+	Serial.print(" | ");
+	Serial.println(_phAlarmDown);
+	Serial.print("_addressECalarmUp: ");
+	Serial.print(_addressECalarmUp);
+	Serial.print(" | ");
+	Serial.println(_ecAlarmUp);
+	Serial.print("_adressECalarmDown: ");
+	Serial.print(_adressECalarmDown);
+	Serial.print(" | ");
+	Serial.println(_ecAlarmDown);
+	Serial.print("_addressWaterAlarm: ");
+	Serial.print(_addressWaterAlarm);
+	Serial.print(" | ");
+	Serial.println(_waterAlarm);
+	Serial.print("_addressNightWatering: ");
+	Serial.print(_addressNightWatering);
+	Serial.print(" | ");
+	Serial.println(_nightWatering);
+	Serial.print("_addressSensorSecond: ");
+	Serial.print(_addressSensorSecond);
+	Serial.print(" | ");
+	Serial.println(_sensorSecond);
+	Serial.print("_addressSDactive: ");
+	Serial.print(_addressSDactive);
+	Serial.print(" | ");
+	Serial.println(_sdActive);
+	Serial.print("_addressSDhour: ");
+	Serial.print(_addressSDhour);
+	Serial.print(" | ");
+	Serial.println(_sdHour);
+	Serial.print("_addressSDminute: ");
+	Serial.print(_addressSDminute);
+	Serial.print(" | ");
+	Serial.println(_sdMinute);
+	Serial.print("_addressSound: ");
+	Serial.print(_addressSound);
+	Serial.print(" | ");
+	Serial.println(_sound);
+	Serial.print("_addressLed: ");
+	Serial.print(_addressLed);
+	Serial.print(" | ");
+	Serial.println(_led);
+	Serial.print("_addressCelsius: ");
+	Serial.print(_addressCelsius);
+	Serial.print(" | ");
+	Serial.println(_celsius);
+	Serial.print("_addressSerialDebug: ");
+	Serial.print(_addressSerialDebug);
+	Serial.print(" | ");
+	Serial.println(_serialDebug);
+	Serial.print("_addressLightThreshold: ");
+	Serial.print(_addressLightThreshold);
+	Serial.print(" | ");
+	Serial.println(_lightThreshold);
+	Serial.print("_addressReservoirModule: ");
+	Serial.print(_addressReservoirModule);
+	Serial.print(" | ");
+	Serial.println(_reservoirModule);
+	Serial.print("_addressMaxWaterLvl: ");
+	Serial.print(_addressMaxWaterLvl);
+	Serial.print(" | ");
+	Serial.println(_maxWaterLvl);
+	Serial.print("_addressMinWaterLvl: ");
+	Serial.print(_addressMinWaterLvl);
+	Serial.print(" | ");
+	Serial.println(_minWaterLvl);
+	Serial.print("_addressPumpProtection: ");
+	Serial.print(_addressPumpProtection);
+	Serial.print(" | ");
+	Serial.println(_pumpProtection);
+	Serial.print("_addressPumpProtectionLvl: ");
+	Serial.print(_addressPumpProtectionLvl);
+	Serial.print(" | ");
+	Serial.println(_pumpProtectionLvl);
+	Serial.print("_addressVersion: ");
+	Serial.print(_addressVersion);
+	Serial.print(" | ");
+	Serial.print(_version);
+	Serial.print(" | ");
+	Serial. println(versionNumber);
+}
+*/
