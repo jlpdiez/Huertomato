@@ -1,7 +1,13 @@
 #include "WinMainScreen.h"
 
 WinMainScreen::WinMainScreen(LiquidCrystal *lcd, Sensors *sensors, Settings *settings) 
-: Window(lcd,sensors,settings) {}
+: Window(lcd,sensors,settings) {
+	_alarm = false;
+	_temp = 0.0;
+	_waterLvl = 0;
+	_ph = 0.0;
+	_ec = 0.0;
+}
 
 WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {}
 WinMainScreen& WinMainScreen::operator=(const WinMainScreen &other) {
@@ -17,7 +23,6 @@ Window::Screen WinMainScreen::getType() const {
 	return Window::MainScreen;
 }
 
-//TODO: Add nutrient level here and in update()
 void WinMainScreen::draw() {
 	_lcd->clear();
 	//No alarms
@@ -71,18 +76,37 @@ void WinMainScreen::draw() {
 			_lcd->setCursor(1,1);
 			_lcd->print(pmChar(phAlarmDown1));
 		}
+	
+	//Water level alarm triggered
+	} else if (_sensors->lvlOffRange()) {
+		//Pump is critically low too - No watering
+		if (_settings->getPumpProtected()) {
+			_lcd->setCursor(4,0);
+			_lcd->print(pmChar(lvlAlarm));
+			_lcd->setCursor(1,1);
+			_lcd->print(pmChar(lvlAlarm1));
+		} else {
+			_lcd->setCursor(4,0);
+			_lcd->print(pmChar(pumpAlarm));
+			_lcd->setCursor(1,1);
+			_lcd->print(pmChar(pumpAlarm1));
+		}
 	}
 }
 
 //TODO: RE-enable
 //TODO: Pensar una forma de hacer clear() when screen changes
+//draw() when number of digits change or alarm gets active/deactive
 //Refreshes minimum data
 void WinMainScreen::update() {
-	draw();	
-	/*
-	_lcd->setCursor(1,0);
+	if ((settings.getAlarmTriggered() != _alarm)) { //Or temp or whatever changed digits
+		_alarm = _settings->getAlarmTriggered();
+		draw();	
+	}
+	
 	//No alarm
 	if (!_settings->getAlarmTriggered()){
+		_lcd->setCursor(1,0);
 		//First line
 		_lcd->print(_sensors->getTemp(),1);
 		_lcd->setCursor(11,0);
@@ -97,7 +121,7 @@ void WinMainScreen::update() {
 		float ec = _sensors->getEC();
 		(ec < 10) ? _lcd->print(_sensors->getEC(),2) : _lcd->print(_sensors->getEC(),1);
 	
-	}*/
+	}
 }
 
 Window::Screen WinMainScreen::processTouch(int but) { 

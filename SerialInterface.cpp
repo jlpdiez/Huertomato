@@ -704,8 +704,8 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			break;
 			
 		case Settings::ECalarmUp:
-			if (isUint16_t(arg)) {
-				if (settings.setECalarmUp(getUint16_t(arg)))
+			if (isFloat(arg)) {
+				if (settings.setECalarmUp(getFloat(arg)))
 					printUpdated(settingsNames[6],arg);
 				else
 					printLn(ecTxt);
@@ -714,8 +714,8 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			break;
 			
 		case Settings::ECalarmDown:
-			if (isUint16_t(arg)) {
-				if (settings.setECalarmDown(getUint16_t(arg)))
+			if (isFloat(arg)) {
+				if (settings.setECalarmDown(getFloat(arg)))
 					printUpdated(settingsNames[7],arg);
 				else
 					printLn(ecTxt);
@@ -834,7 +834,6 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SerialDebug:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
-				(getBoolean(arg)) ? sensors.setSerialDebug(true) : sensors.setSerialDebug(false);
 				printUpdated(settingsNames[19],arg);
 			} else
 				printLn(boolTxt);

@@ -29,8 +29,7 @@
 
 #include "Sensors.h"
 #include "Settings.h"
-#include "Window.h"
-#include <SD.h>   
+#include "Window.h"  
 #include <Time.h>
 
 const char phAlarmUp[] PROGMEM = "pH alto";
@@ -43,6 +42,11 @@ const char ecAlarmUp1[] PROGMEM = "agregue agua";
 const char ecAlarmDown[] PROGMEM = "EC baja";
 const char ecAlarmDown1[] PROGMEM = "mas nutrientes";
 
+const char lvlAlarm[] PROGMEM = "Nivel bajo";
+const char lvlAlarm1[] PROGMEM = "Rellene depo";
+const char pumpAlarm[] PROGMEM = "Nivel critico!";
+const char pumpAlarm1[] PROGMEM = "NO se regara!";
+
 class WinMainScreen: public Window {
 	public:	
 		WinMainScreen(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
@@ -53,6 +57,12 @@ class WinMainScreen: public Window {
 		void draw();
 		void update();
 		Window::Screen processTouch(int);
+	protected:
+		bool _alarm;
+		float _temp;
+		uint8_t _waterLvl;
+		float _ph;
+		float _ec;
 };
 
 #endif 

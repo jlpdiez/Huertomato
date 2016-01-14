@@ -147,6 +147,7 @@ void Settings::readEEPROMvars() {
 	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 	_version = EEPROM.readFloat(_addressVersion);
+}
 
 //Resets EEPROM data to defaults
 void Settings::loadDefaults() {

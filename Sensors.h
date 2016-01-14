@@ -72,7 +72,6 @@ class Sensors {
 	uint16_t getRawLightLevel();
 	//Setters
 	//Sets different modes. Should be called when settings counterpart gets called.
-	void setSerialDebug(boolean);
 	void setReservoir(boolean);
 	//Set temp mode. Should be called when it's counterpart in setting does too.
 	void setCelsius(boolean);
