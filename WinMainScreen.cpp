@@ -3,10 +3,7 @@
 WinMainScreen::WinMainScreen(LiquidCrystal *lcd, Sensors *sensors, Settings *settings) 
 : Window(lcd,sensors,settings) {
 	_alarm = false;
-	_temp = 0.0;
-	_waterLvl = 0;
-	_ph = 0.0;
-	_ec = 0.0;
+	_pumpAlarm = false;
 }
 
 WinMainScreen::WinMainScreen(const WinMainScreen &other) : Window(other) {}
@@ -81,30 +78,30 @@ void WinMainScreen::draw() {
 	} else if (_sensors->lvlOffRange()) {
 		//Pump is critically low too - No watering
 		if (_settings->getPumpProtected()) {
-			_lcd->setCursor(4,0);
-			_lcd->print(pmChar(lvlAlarm));
+			_lcd->setCursor(2,0);
+			_lcd->print(pmChar(pumpAlarmTxt));
 			_lcd->setCursor(1,1);
-			_lcd->print(pmChar(lvlAlarm1));
+			_lcd->print(pmChar(pumpAlarmTxt1));
 		} else {
-			_lcd->setCursor(4,0);
-			_lcd->print(pmChar(pumpAlarm));
-			_lcd->setCursor(1,1);
-			_lcd->print(pmChar(pumpAlarm1));
+			_lcd->setCursor(3,0);
+			_lcd->print(pmChar(lvlAlarmTxt));
+			_lcd->setCursor(2,1);
+			_lcd->print(pmChar(lvlAlarmTxt1));
 		}
 	}
 }
 
-//TODO: RE-enable
-//TODO: Pensar una forma de hacer clear() when screen changes
-//draw() when number of digits change or alarm gets active/deactive
 //Refreshes minimum data
 void WinMainScreen::update() {
-	if ((settings.getAlarmTriggered() != _alarm)) { //Or temp or whatever changed digits
-		_alarm = _settings->getAlarmTriggered();
+	//If there's a change in alarm status we redraw all the screen
+	bool alarm = _settings->getAlarmTriggered();
+	bool pumpAlarm = _settings->getPumpProtected();
+	if ((alarm != _alarm) || (pumpAlarm != _pumpAlarm)) {
+		_alarm = alarm;
+		_pumpAlarm = pumpAlarm;
 		draw();	
 	}
-	
-	//No alarm
+	//With no alarm we just update numbers
 	if (!_settings->getAlarmTriggered()){
 		_lcd->setCursor(1,0);
 		//First line

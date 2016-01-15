@@ -42,12 +42,13 @@ const char ecAlarmUp1[] PROGMEM = "agregue agua";
 const char ecAlarmDown[] PROGMEM = "EC baja";
 const char ecAlarmDown1[] PROGMEM = "mas nutrientes";
 
-const char lvlAlarm[] PROGMEM = "Nivel bajo";
-const char lvlAlarm1[] PROGMEM = "Rellene depo";
-const char pumpAlarm[] PROGMEM = "Nivel critico!";
-const char pumpAlarm1[] PROGMEM = "NO se regara!";
+const char lvlAlarmTxt[] PROGMEM = "Nivel bajo";
+const char lvlAlarmTxt1[] PROGMEM = "Rellene depo";
+const char pumpAlarmTxt[] PROGMEM = "Nivel critico!";
+const char pumpAlarmTxt1[] PROGMEM = "NO se regara!";
 
 class WinMainScreen: public Window {
+	
 	public:	
 		WinMainScreen(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
 		WinMainScreen(const WinMainScreen &other);
@@ -57,12 +58,10 @@ class WinMainScreen: public Window {
 		void draw();
 		void update();
 		Window::Screen processTouch(int);
+		
 	protected:
 		bool _alarm;
-		float _temp;
-		uint8_t _waterLvl;
-		float _ph;
-		float _ec;
+		bool _pumpAlarm;
 };
 
 #endif 
