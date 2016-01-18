@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.6
+// # Version    : 1.7
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2016
+// # Date       : 18.01.2016
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -159,7 +159,9 @@ class Settings {
 	boolean getPumpProtected() const;
 	//Internal EEPROM version
 	float getVersion() const;
-
+	//Last nutrient change
+	uint8_t getNutChangeDay();
+	uint8_t getNutChangeMonth();
 	//These return value and go to false
 	boolean systemStateChanged();
 	boolean waterSettingsChanged();
@@ -248,6 +250,10 @@ class Settings {
     //Version number
 	float _version;
 	
+	//Time of nutrient change
+	uint8_t _nutChangeDay;
+	uint8_t _nutChangeMonth;
+	
     //EEPROM addresses for all settings
     int _addressWaterTimed;
     int _addressWaterHour;
@@ -275,6 +281,8 @@ class Settings {
 	int _addressPumpProtectionLvl;
 	int _addressPumpProtection;
 	int _addressVersion;
+	int _addressNutChangeDay;
+	int _addressNutChangeMonth;
 };
 
 #endif

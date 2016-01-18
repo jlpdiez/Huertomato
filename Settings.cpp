@@ -47,6 +47,9 @@ Settings::Settings(const Settings &other) {
 	_celsius = other._celsius;
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
+	
+	_nutChangeDay = other._nutChangeDay;
+	_nutChangeHour = other._nutChangeHour;
 }
 
 Settings& Settings::operator=(const Settings &other) {
@@ -85,6 +88,9 @@ Settings& Settings::operator=(const Settings &other) {
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
+	_nutChangeDay = other._nutChangeDay;
+	_nutChangeHour = other._nutChangeHour;
+	
 	return *this;
 }
 
@@ -118,6 +124,8 @@ void Settings::setEEPROMaddresses() {
 	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressVersion = EEPROM.getAddress(sizeof(float));
+	_addressNutChangeDay = EEPROM.getAddress(sizeof(byte));
+	_addressNutChangeMonth = EEPROM.getAddress(sizeof(byte));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
@@ -147,6 +155,8 @@ void Settings::readEEPROMvars() {
 	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 	_version = EEPROM.readFloat(_addressVersion);
+	_nutChangeDay = EEPROM.read(_addressNutChangeDay);
+	_nutChangeMonth = EEPROM.read(_addressNutChangeMonth);
 }
 
 //Resets EEPROM data to defaults
@@ -181,6 +191,8 @@ void Settings::loadDefaults() {
 	EEPROM.updateByte(_addressPumpProtectionLvl,15);
 	//Saves current version number to EEPROM
 	EEPROM.updateFloat(_addressVersion,versionNumber);
+	EEPROM.updateByte(_addressNutChangeDay,day());
+	EEPROM.updateByte(_addressNutChangeMonth,month());
 	readEEPROMvars();
 }
 
@@ -481,6 +493,10 @@ boolean Settings::getPumpProtected() const { return _pumpProtected; }
 
 float Settings::getVersion() const { return _version; }
 	
+uint8_t Settings::getNutChangeDay() const { return _nutChangeDay; }
+
+uint8_t Settings::getNutChangeMonth() const { return _nutChangeMonth; }
+	
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;
 	_systemStateChanged = false;
@@ -530,6 +546,11 @@ void Settings::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo
 	time_t time = makeTime(t);
 	setTime(time);
 	RTC.set(time);
+}
+
+void Settings::resetNutrientChange() {
+	EEPROM.updateByte(_addressNutChangeDay,day());
+	EEPROM.updateByte(_addressNutChangeMonth,month());
 }
 
 /*
@@ -636,5 +657,9 @@ void Settings::debugEEPROM() {
 	Serial.print(_version);
 	Serial.print(" | ");
 	Serial. println(versionNumber);
+	Serial.print("_addressNutChangeDay: ");
+	Serial.print(_addressNutChangeDay);
+	Serial.print(" | ");
+	Serial.println(_nutChangeDay);
 }
 */
