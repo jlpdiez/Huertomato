@@ -297,32 +297,34 @@ Settings::Setting SerialInterface::interpretSetting(char* keyword) {
 	else if (strcmp_P(keyword,settingsNames[13]) == 0)
 		return Settings::PumpProtectionLvl;
 	else if (strcmp_P(keyword,settingsNames[14]) == 0)
-		return Settings::SensorSecond;
+		return Settings::PumpProtection;
 	else if (strcmp_P(keyword,settingsNames[15]) == 0)
-		return Settings::SDactive;
+		return Settings::SensorSecond;
 	else if (strcmp_P(keyword,settingsNames[16]) == 0)
-		return Settings::SDhour;
+		return Settings::SDactive;
 	else if (strcmp_P(keyword,settingsNames[17]) == 0)
-		return Settings::SDminute;
+		return Settings::SDhour;
 	else if (strcmp_P(keyword,settingsNames[18]) == 0)
-		return Settings::Sound;
+		return Settings::SDminute;
 	else if (strcmp_P(keyword,settingsNames[19]) == 0)
-		return Settings::SerialDebug;
+		return Settings::Sound;
 	else if (strcmp_P(keyword,settingsNames[20]) == 0)
-		return Settings::ReservoirModule;
+		return Settings::SerialDebug;
 	else if (strcmp_P(keyword,settingsNames[21]) == 0)
-		return Settings::NextWhour;
+		return Settings::ReservoirModule;
 	else if (strcmp_P(keyword,settingsNames[22]) == 0)
-		return Settings::NextWminute;
+		return Settings::NextWhour;
 	else if (strcmp_P(keyword,settingsNames[23]) == 0)
-		return Settings::NightWateringStopped;
+		return Settings::NextWminute;
 	else if (strcmp_P(keyword,settingsNames[24]) == 0)
-		return Settings::WateringPlants;
+		return Settings::NightWateringStopped;
 	else if (strcmp_P(keyword,settingsNames[25]) == 0)
-		return Settings::AlarmTriggered;
+		return Settings::WateringPlants;
 	else if (strcmp_P(keyword,settingsNames[26]) == 0)
-		return Settings::Led;
+		return Settings::AlarmTriggered;
 	else if (strcmp_P(keyword,settingsNames[27]) == 0)
+		return Settings::Led;
+	else if (strcmp_P(keyword,settingsNames[28]) == 0)
 		return Settings::Celsius;
 	//Word unrecognised
 	else
@@ -514,60 +516,64 @@ void SerialInterface::getSetting(Settings::Setting sett) {
 				printName(settingsNames[13]);
 				Serial.println(settings.getPumpProtectionLvl());				
 				break;
-			case Settings::SensorSecond:
+			case Settings::PumpProtection:
 				printName(settingsNames[14]);
+				Serial.println(settings.getPumpProtection());
+				break;
+			case Settings::SensorSecond:
+				printName(settingsNames[15]);
 				Serial.println(settings.getSensorSecond());				
 				break;
 			case Settings::SDactive:
-				printName(settingsNames[15]);
+				printName(settingsNames[16]);
 				Serial.println(settings.getSDactive());				
 				break;
 			case Settings::SDhour:
-				printName(settingsNames[16]);
+				printName(settingsNames[17]);
 				Serial.println(settings.getSDhour());				
 				break;
 			case Settings::SDminute:
-				printName(settingsNames[17]);
+				printName(settingsNames[18]);
 				Serial.println(settings.getSDminute());				
 				break;
 			case Settings::Sound:
-				printName(settingsNames[18]);
+				printName(settingsNames[19]);
 				Serial.println(settings.getSound());				
 				break;
 			case Settings::SerialDebug:
-				printName(settingsNames[19]);
+				printName(settingsNames[20]);
 				Serial.println(settings.getSerialDebug());				
 				break;
 			case Settings::ReservoirModule:
-				printName(settingsNames[20]);
+				printName(settingsNames[21]);
 				Serial.println(settings.getReservoirModule());				
 				break;
 			case Settings::NextWhour:
-				printName(settingsNames[21]);
+				printName(settingsNames[22]);
 				Serial.println(settings.getNextWhour());				
 				break;
 			case Settings::NextWminute:
-				printName(settingsNames[22]);
+				printName(settingsNames[23]);
 				Serial.println(settings.getNextWminute());				
 				break;
 			case Settings::NightWateringStopped:
-				printName(settingsNames[23]);
+				printName(settingsNames[24]);
 				Serial.println(settings.getNightWateringStopped());				
 				break;
 			case Settings::WateringPlants:
-				printName(settingsNames[24]);
+				printName(settingsNames[25]);
 				Serial.println(settings.getWateringPlants());				
 				break;
 			case Settings::AlarmTriggered:
-				printName(settingsNames[25]);
+				printName(settingsNames[26]);
 				Serial.println(settings.getAlarmTriggered());				
 				break;
 			case Settings::Led:
-				printName(settingsNames[26]);
+				printName(settingsNames[27]);
 				Serial.println(settings.getLed());				
 				break;
 			case Settings::Celsius:
-				printName(settingsNames[27]);
+				printName(settingsNames[28]);
 				Serial.println(settings.getCelsius());				
 				break;
 		}
@@ -784,11 +790,19 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			} else
 				printLn(percentTxT);
 			break;
+		
+		case Settings::PumpProtection:
+			if (isBoolean(arg)) {
+				(getBoolean(arg)) ? settings.setPumpProtection(true) : settings.setPumpProtection(false);
+				printUpdated(settingsNames[14],arg);
+			} else
+				printLn(boolTxt);
+			break;
 			
 		case Settings::SensorSecond:
 			if (isUint8_t(arg)) {
 				if (settings.setSensorSecond(getUint8_t(arg)))
-					printUpdated(settingsNames[14],arg);
+					printUpdated(settingsNames[15],arg);
 				else
 					printLn(minSecTxt);
 			} else
@@ -798,7 +812,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDactive:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSDactive(true) : settings.setSDactive(false);
-				printUpdated(settingsNames[15],arg);
+				printUpdated(settingsNames[16],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -806,7 +820,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDhour:
 			if (isUint8_t(arg)) {
 				if (settings.setSDhour(getUint8_t(arg)))
-					printUpdated(settingsNames[16],arg);
+					printUpdated(settingsNames[17],arg);
 				else
 					printLn(hourTxt);
 			} else
@@ -816,7 +830,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SDminute:
 			if (isUint8_t(arg)) {
 				if (settings.setSDminute(getUint8_t(arg)))
-					printUpdated(settingsNames[17],arg);
+					printUpdated(settingsNames[18],arg);
 				else
 					printLn(minSecTxt);
 			} else
@@ -826,7 +840,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::Sound:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSound(true) : settings.setSound(false);
-				printUpdated(settingsNames[18],arg);
+				printUpdated(settingsNames[19],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -835,7 +849,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
 				(getBoolean(arg)) ? sensors.setSerialDebug(true) : sensors.setSerialDebug(false);
-				printUpdated(settingsNames[19],arg);
+				printUpdated(settingsNames[20],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -844,7 +858,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setReservoirModule(true) : settings.setReservoirModule(false);
 				(getBoolean(arg)) ? sensors.setReservoir(true) : sensors.setReservoir(false);
-				printUpdated(settingsNames[20],arg);
+				printUpdated(settingsNames[21],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -852,7 +866,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::Led:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setLed(true) : settings.setLed(false);
-				printUpdated(settingsNames[26],arg);
+				printUpdated(settingsNames[27],arg);
 			} else
 				printLn(boolTxt);
 			break;
@@ -861,7 +875,7 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setCelsius(true) : settings.setCelsius(false);
 				(getBoolean(arg)) ? sensors.setCelsius(true) : sensors.setCelsius(false);
-				printUpdated(settingsNames[27],arg);
+				printUpdated(settingsNames[28],arg);
 			} else
 				printLn(boolTxt);
 			break;
