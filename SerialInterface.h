@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SerialComms
-// # Version    : 1.4
+// # Version    : 1.5
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 14.01.2016
+// # Date       : 18.01.2016
 //
 // # Description: Class in charge of attending communication with input serial commands
 // # Works at 115200. Commands must end with a carriage return to work properly.
@@ -132,28 +132,30 @@ const char settingsNameStr10[] PROGMEM = "LightThreshold";
 const char settingsNameStr11[] PROGMEM = "MaxWaterLvl";
 const char settingsNameStr12[] PROGMEM = "MinWaterLvl";
 const char settingsNameStr13[] PROGMEM = "PumpProtectionLvl";
-const char settingsNameStr14[] PROGMEM = "SensorSecond";
-const char settingsNameStr15[] PROGMEM = "SDactive";
-const char settingsNameStr16[] PROGMEM = "SDhour";
-const char settingsNameStr17[] PROGMEM = "SDminute";
-const char settingsNameStr18[] PROGMEM = "Sound";
-const char settingsNameStr19[] PROGMEM = "SerialDebug";
-const char settingsNameStr20[] PROGMEM = "ReservoirModule";
-const char settingsNameStr21[] PROGMEM = "NextWhour";
-const char settingsNameStr22[] PROGMEM = "NextWminute";
-const char settingsNameStr23[] PROGMEM = "NightWateringStopped";
-const char settingsNameStr24[] PROGMEM = "WateringPlants";
-const char settingsNameStr25[] PROGMEM = "AlarmTriggered";
-const char settingsNameStr26[] PROGMEM = "Led";
-const char settingsNameStr27[] PROGMEM = "Celsius";
+const char settingsNameStr14[] PROGMEM = "PumpProtection";
+const char settingsNameStr15[] PROGMEM = "SensorSecond";
+const char settingsNameStr16[] PROGMEM = "SDactive";
+const char settingsNameStr17[] PROGMEM = "SDhour";
+const char settingsNameStr18[] PROGMEM = "SDminute";
+const char settingsNameStr19[] PROGMEM = "Sound";
+const char settingsNameStr20[] PROGMEM = "SerialDebug";
+const char settingsNameStr21[] PROGMEM = "ReservoirModule";
+const char settingsNameStr22[] PROGMEM = "NextWhour";
+const char settingsNameStr23[] PROGMEM = "NextWminute";
+const char settingsNameStr24[] PROGMEM = "NightWateringStopped";
+const char settingsNameStr25[] PROGMEM = "WateringPlants";
+const char settingsNameStr26[] PROGMEM = "AlarmTriggered";
+const char settingsNameStr27[] PROGMEM = "Led";
+const char settingsNameStr28[] PROGMEM = "Celsius";
 
-static const int nSettings = 28;
+static const int nSettings = 29;
 const char* const settingsNames[] PROGMEM = { settingsNameStr0, settingsNameStr1, settingsNameStr2,
 	settingsNameStr3, settingsNameStr4, settingsNameStr5, settingsNameStr6, settingsNameStr7,
 	settingsNameStr8, settingsNameStr9, settingsNameStr10, settingsNameStr11, settingsNameStr12,
 	settingsNameStr13, settingsNameStr14, settingsNameStr15, settingsNameStr16, settingsNameStr17,
 	settingsNameStr18, settingsNameStr19, settingsNameStr20, settingsNameStr21, settingsNameStr22,
-	settingsNameStr23, settingsNameStr24, settingsNameStr25, settingsNameStr26, settingsNameStr27 };
+	settingsNameStr23, settingsNameStr24, settingsNameStr25, settingsNameStr26, settingsNameStr27,
+	settingsNameStr28 };
 
 //This makes things static so we can use SerialCommand.addCommand("str",function)
 extern Settings settings;
