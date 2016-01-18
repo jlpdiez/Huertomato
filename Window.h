@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Window
-// # Version    : 1.5
+// # Version    : 1.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.12.2015
+// # Date       : 18.01.2016
 //
 // # Description: Superclass window. holds types of screens, and common variables.
 //
@@ -51,6 +51,7 @@ class Window {
 			MainScreen = 2,
 			TimeDate = 3,
 			WateringCycle = 4,
+			NutrientCounter = 5,
 		};
 		
 		//Here for reference - Implemented in GUI

@@ -6,7 +6,7 @@
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
 // # Date       : 18.01.2016
 //
-// # Description: Water cycle configuration window
+// # Description: Nutrient change counter window
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,33 +24,33 @@
 // #############################################################################
 
 
-#ifndef WINWATER_H_
-#define WINWATER_H_
+#ifndef WINNUTRIENT_H_
+#define WINNUTRIENT_H_
 
 #include "Window.h"
 
-const char riegoTxt[] PROGMEM = "Riego cada:";
-const char duranteTxt[] PROGMEM = "Durante:";
+const char cambioTxt[] PROGMEM = "Cambio deposito:";
+const char cambioTxt1[] PROGMEM = "dias";
 
-class WinWater: public Window {
+class WinNutrient: public Window {
 	public:
-		WinWater(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
-		WinWater(const WinWater &other);
-		WinWater& operator=(const WinWater &other);
-		~WinWater();
+		WinNutrient(LiquidCrystal *lcd, Sensors *sensors, Settings *settings);
+		WinNutrient(const WinNutrient &other);
+		WinNutrient& operator=(const WinNutrient &other);
+		~WinNutrient();
 		Screen getType() const;
 		void draw();
 		void update();
 		Window::Screen processTouch(int);
 	
-	protected:
+	/*protected:
 		//Tracks position of cursor
 		uint8_t  _line, _column;
 		//Internal variables
 		//boolean _waterTimed;
 		uint8_t _waterHour, _waterMin, _floodMin;
 		//Tracks change to update settings or not
-		boolean _modified;
+		boolean _modified;*/
 };
 
 #endif

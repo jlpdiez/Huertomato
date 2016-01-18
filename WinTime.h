@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinTime
-// # Version    : 0.5
+// # Version    : 0.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 07.12.2015
+// # Date       : 18.01.2016
 //
 // # Description: Time configuration screen
 //

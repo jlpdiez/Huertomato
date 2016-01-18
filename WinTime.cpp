@@ -99,7 +99,7 @@ Window::Screen WinTime::processTouch(int but) {
 		_lcd->noCursor();
 		if (_modified)
 			_settings->setRTCtime(_sysHour, _sysMin, _sysSec, _sysDay, _sysMonth, _sysYear);
-		return MainScreen;
+		return NutrientCounter;
 		
 	//Right Button - Cycle between numbers
 	} else if (but == 1) {

@@ -848,7 +848,6 @@ void SerialInterface::setSetting(Settings::Setting sett) {
 		case Settings::SerialDebug:
 			if (isBoolean(arg)) {
 				(getBoolean(arg)) ? settings.setSerialDebug(true) : settings.setSerialDebug(false);
-				(getBoolean(arg)) ? sensors.setSerialDebug(true) : sensors.setSerialDebug(false);
 				printUpdated(settingsNames[20],arg);
 			} else
 				printLn(boolTxt);

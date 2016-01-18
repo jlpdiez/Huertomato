@@ -78,7 +78,7 @@ void WinMainScreen::draw() {
 	} else if (_sensors->lvlOffRange()) {
 		//Pump is critically low too - No watering
 		if (_settings->getPumpProtected()) {
-			_lcd->setCursor(2,0);
+			_lcd->setCursor(1,0);
 			_lcd->print(pmChar(pumpAlarmTxt));
 			_lcd->setCursor(1,1);
 			_lcd->print(pmChar(pumpAlarmTxt1));

@@ -71,6 +71,9 @@ void GUI::updateScreen(Window::Screen newScreen) {
 		case Window::WateringCycle:
 			_window = new WinWater(_lcd,_sensors,_settings);
 			break;
+		case Window::NutrientCounter:
+			_window = new WinNutrient(_lcd,_sensors,_settings);
+			break;
 		default:
 			_window = new Window(_lcd,_sensors,_settings);
 			break;

@@ -44,8 +44,8 @@ const char ecAlarmDown1[] PROGMEM = "mas nutrientes";
 
 const char lvlAlarmTxt[] PROGMEM = "Nivel bajo";
 const char lvlAlarmTxt1[] PROGMEM = "Rellene depo";
-const char pumpAlarmTxt[] PROGMEM = "Nivel critico!";
-const char pumpAlarmTxt1[] PROGMEM = "NO se regara!";
+const char pumpAlarmTxt[] PROGMEM = "Nivel CRITICO";
+const char pumpAlarmTxt1[] PROGMEM = "bomba apagada";
 
 class WinMainScreen: public Window {
 	

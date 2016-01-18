@@ -1,10 +1,10 @@
 // #############################################################################
 // 
 // # Name       : GUI
-// # Version    : 0.5
+// # Version    : 0.6
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 7.12.2015
+// # Date       : 18.01.2016
 // 
 // # Description: Library for controlling Huertomato's GUI
 // # Contains window and manages its transition and button presses
@@ -34,6 +34,7 @@
 #include "WinMainScreen.h"
 #include "WinTime.h"
 #include "WinWater.h"
+#include "WinNutrient.h"
 #include <LiquidCrystal.h>
 
 extern const uint8_t lcdA0;
