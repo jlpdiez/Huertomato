@@ -48,8 +48,7 @@ Settings::Settings(const Settings &other) {
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
-	_nutChangeDay = other._nutChangeDay;
-	_nutChangeHour = other._nutChangeHour;
+	_nutChangeElapsed = other._nutChangeElapsed;
 }
 
 Settings& Settings::operator=(const Settings &other) {
@@ -88,8 +87,7 @@ Settings& Settings::operator=(const Settings &other) {
 	_serialDebug = other._serialDebug;
 	_reservoirModule = other._reservoirModule;
 	
-	_nutChangeDay = other._nutChangeDay;
-	_nutChangeHour = other._nutChangeHour;
+	_nutChangeElapsed = other._nutChangeElapsed;
 	
 	return *this;
 }
@@ -124,8 +122,7 @@ void Settings::setEEPROMaddresses() {
 	_addressPumpProtection = EEPROM.getAddress(sizeof(byte));
 	_addressPumpProtectionLvl = EEPROM.getAddress(sizeof(byte));
 	_addressVersion = EEPROM.getAddress(sizeof(float));
-	_addressNutChangeDay = EEPROM.getAddress(sizeof(byte));
-	_addressNutChangeMonth = EEPROM.getAddress(sizeof(byte));
+	_addressNutChangeElapsed = EEPROM.getAddress(sizeof(int));
 }
 
 //Reads settings from EEPROM non-volatile memory and loads vars
@@ -155,8 +152,7 @@ void Settings::readEEPROMvars() {
 	_pumpProtection = EEPROM.readByte(_addressPumpProtection);
 	_pumpProtectionLvl = EEPROM.readByte(_addressPumpProtectionLvl);
 	_version = EEPROM.readFloat(_addressVersion);
-	_nutChangeDay = EEPROM.read(_addressNutChangeDay);
-	_nutChangeMonth = EEPROM.read(_addressNutChangeMonth);
+	_nutChangeElapsed = EEPROM.readInt(_addressNutChangeElapsed);
 }
 
 //Resets EEPROM data to defaults
@@ -191,8 +187,7 @@ void Settings::loadDefaults() {
 	EEPROM.updateByte(_addressPumpProtectionLvl,15);
 	//Saves current version number to EEPROM
 	EEPROM.updateFloat(_addressVersion,versionNumber);
-	EEPROM.updateByte(_addressNutChangeDay,day());
-	EEPROM.updateByte(_addressNutChangeMonth,month());
+	resetNutrientChangeDate();
 	readEEPROMvars();
 }
 
@@ -492,10 +487,8 @@ boolean Settings::getAlarmTriggered() const { return _alarmTriggered; }
 boolean Settings::getPumpProtected() const { return _pumpProtected; }
 
 float Settings::getVersion() const { return _version; }
-	
-uint8_t Settings::getNutChangeDay() const { return _nutChangeDay; }
 
-uint8_t Settings::getNutChangeMonth() const { return _nutChangeMonth; }
+int Settings::getNutChangeElapsed() const { return _nutChangeElapsed; }
 	
 boolean Settings::systemStateChanged() {
 	boolean res = _systemStateChanged;
@@ -548,21 +541,10 @@ void Settings::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo
 	RTC.set(time);
 }
 
-void Settings::resetNutrientChange() {
-	//Get time
-	time_t time = now();
-	//Get days since 1 JAN 1970
-	int daysNow = elapsedDays(time);
-	//Add 15days
-	daysNow += 15;
-	//Get time_t from days
-	time = daysToTime_t(daysNow);
-	EEPROM.updateByte(_addressNutChangeDay,day(time));
-	Serial.print("Final day: ");
-	Serial.println(day(time));
-	EEPROM.updateByte(_addressNutChangeMonth,month(time));
-	Serial.print("Final month: ");
-	Serial.println(month(time));
+//Gets days since 1 JAN 1970 and adds days for nutrient change
+void Settings::resetNutrientChangeDate() {
+	int futureElapsed = elapsedDays(now()) + daysNutrientChange;
+	EEPROM.updateInt(_addressNutChangeElapsed,futureElapsed);
 }
 
 /*
@@ -669,9 +651,9 @@ void Settings::debugEEPROM() {
 	Serial.print(_version);
 	Serial.print(" | ");
 	Serial. println(versionNumber);
-	Serial.print("_addressNutChangeDay: ");
-	Serial.print(_addressNutChangeDay);
+	Serial.print("_addressNutChangeElapsed: ");
+	Serial.print(_addressNutChangeElapsed);
 	Serial.print(" | ");
-	Serial.println(_nutChangeDay);
+	Serial.println(_nutChangeElapsed);
 }
 */

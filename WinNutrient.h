@@ -31,6 +31,7 @@
 
 const char cambioTxt[] PROGMEM = "Cambio deposito:";
 const char cambioTxt1[] PROGMEM = "dias";
+const char pasadoTxT[] PROGMEM = "necesario";
 
 class WinNutrient: public Window {
 	public:
@@ -42,15 +43,6 @@ class WinNutrient: public Window {
 		void draw();
 		void update();
 		Window::Screen processTouch(int);
-	
-	/*protected:
-		//Tracks position of cursor
-		uint8_t  _line, _column;
-		//Internal variables
-		//boolean _waterTimed;
-		uint8_t _waterHour, _waterMin, _floodMin;
-		//Tracks change to update settings or not
-		boolean _modified;*/
 };
 
 #endif

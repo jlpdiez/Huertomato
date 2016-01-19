@@ -18,28 +18,39 @@ Window::Screen WinNutrient::getType() const {
 	return Window::NutrientCounter;
 }
 
-//Draws entire screen Watering Cycle
+//Draws entire screen
 void WinNutrient::draw() {
 	_lcd->clear();
 	_lcd->setCursor(0,0);
 	_lcd->print(pmChar(cambioTxt));
-	_lcd->setCursor(5,1);
-	_lcd->print("12");
-	_lcd->setCursor(8,1);
-	_lcd->print(pmChar(cambioTxt1));
+	//Get days remanining for nutrient change
+	int days = 	_settings->getNutChangeElapsed() - elapsedDays(now());
+	if (days >= 0) {
+		_lcd->setCursor(5,1);
+		_lcd->print(days);
+		_lcd->setCursor(8,1);
+		_lcd->print(pmChar(cambioTxt1));
+	//Se ha pasado la fecha del cambio
+	} else {
+		_lcd->setCursor(4,1);
+		_lcd->print(pmChar(pasadoTxT));
+	}
 }
 
-//Redraws only water cycle numbers & text from inner temp vars
-//Used when +- signs are pressed
+
 void WinNutrient::update() {
-	
+	draw();
 }
 
 Window::Screen WinNutrient::processTouch(int but) {
-	//Select - Saves and changes screen
+	//Select - Changes screen
 	if (but == 5) {
 		_lcd->noCursor();
 		return MainScreen;
+	//Up, down, left or right resets counter again
+	} else if ((but == 1) || (but == 2) || (but == 3) || (but == 4)) {
+		_settings->resetNutrientChangeDate();
+		draw();	
 	}
 	return None;
 }

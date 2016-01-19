@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : Settings
-// # Version    : 1.7
+// # Version    : 1.8
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 18.01.2016
+// # Date       : 19.01.2016
 //
 // # Description: Settings class for Huertomato
 // # Stores all the system's current settings. Its in charge of reading and storing in EEPROM 
@@ -33,8 +33,10 @@
 #include <DS1307RTC.h>
 
 extern EEPROMClassEx EEPROM;
-
 extern const float versionNumber;
+
+//Days for a complete nutrient tank change
+const uint8_t daysNutrientChange = 15;
 
 // *********************************************
 class Settings {
@@ -157,11 +159,12 @@ class Settings {
     boolean getWateringPlants() const;
     boolean getAlarmTriggered() const;
 	boolean getPumpProtected() const;
+	
 	//Internal EEPROM version
 	float getVersion() const;
-	//Last nutrient change
-	uint8_t getNutChangeDay();
-	uint8_t getNutChangeMonth();
+	//Returns day nutrient change is needed (elapsed from 1 JAN 1970)
+	int getNutChangeElapsed() const;
+	
 	//These return value and go to false
 	boolean systemStateChanged();
 	boolean waterSettingsChanged();
@@ -175,6 +178,8 @@ class Settings {
 	//Needed for it to be called both by GUI and main .ino
 	void setRTCtime(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int);
        
+	void resetNutrientChangeDate();
+	
     //void debugEEPROM();
 
   private:
@@ -250,9 +255,8 @@ class Settings {
     //Version number
 	float _version;
 	
-	//Time of nutrient change
-	uint8_t _nutChangeDay;
-	uint8_t _nutChangeMonth;
+	//Day of nutrient change (elapsed from 1 JAN 1970)
+	int _nutChangeElapsed;
 	
     //EEPROM addresses for all settings
     int _addressWaterTimed;
@@ -281,8 +285,7 @@ class Settings {
 	int _addressPumpProtectionLvl;
 	int _addressPumpProtection;
 	int _addressVersion;
-	int _addressNutChangeDay;
-	int _addressNutChangeMonth;
+	int _addressNutChangeElapsed;
 };
 
 #endif
