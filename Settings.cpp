@@ -549,8 +549,20 @@ void Settings::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo
 }
 
 void Settings::resetNutrientChange() {
-	EEPROM.updateByte(_addressNutChangeDay,day());
-	EEPROM.updateByte(_addressNutChangeMonth,month());
+	//Get time
+	time_t time = now();
+	//Get days since 1 JAN 1970
+	int daysNow = elapsedDays(time);
+	//Add 15days
+	daysNow += 15;
+	//Get time_t from days
+	time = daysToTime_t(daysNow);
+	EEPROM.updateByte(_addressNutChangeDay,day(time));
+	Serial.print("Final day: ");
+	Serial.println(day(time));
+	EEPROM.updateByte(_addressNutChangeMonth,month(time));
+	Serial.print("Final month: ");
+	Serial.println(month(time));
 }
 
 /*
