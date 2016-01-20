@@ -28,7 +28,7 @@
 
 #include "Sensor.h"
 
-extern const uint8_t phPin;
+//extern const uint8_t phPin;
 const float offSet = 0.09;
 
 class SensorPH: public Sensor {

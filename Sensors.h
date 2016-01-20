@@ -41,6 +41,8 @@ extern const uint8_t humidIn;
 extern const uint8_t lightIn;
 extern const uint8_t waterEcho;
 extern const uint8_t waterTrigger;
+extern const uint8_t phPin;
+extern const uint8_t ecPin;
 
 //Contains all other instances of sensor classes
 class Sensors {

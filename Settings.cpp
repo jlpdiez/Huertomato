@@ -545,6 +545,7 @@ void Settings::setRTCtime(uint8_t h, uint8_t m, uint8_t s, uint8_t d, uint8_t mo
 void Settings::resetNutrientChangeDate() {
 	int futureElapsed = elapsedDays(now()) + daysNutrientChange;
 	EEPROM.updateInt(_addressNutChangeElapsed,futureElapsed);
+	readEEPROMvars();
 }
 
 /*

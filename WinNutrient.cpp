@@ -37,7 +37,6 @@ void WinNutrient::draw() {
 	}
 }
 
-
 void WinNutrient::update() {
 	draw();
 }

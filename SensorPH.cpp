@@ -32,7 +32,9 @@ Sensor::SensName SensorPH::getType() const {
 	return Sensor::Ph;
 }
 
-void SensorPH::init() {}
+void SensorPH::init() {
+	pinMode(_pin, INPUT);
+}
 
 void SensorPH::update() {
 	_phs[_iSample] = getRaw();
@@ -56,11 +58,17 @@ float SensorPH::get() const {
 
 //Returns a PH reading.
 float SensorPH::getRaw() const {
-	uint16_t raw = analogRead(phPin);
+	uint16_t raw = analogRead(_pin);
+	//Serial.print("pH -> raw: ");
+	//Serial.print(raw);
 	//Analog to mV
 	float phValue = (float)raw*5.0/1024;
+	//Serial.print(" | mV: ");
+	//Serial.print(phValue);
 	//mV to pH
 	phValue = phValue * 3.5 + offSet;
+	//Serial.print(" | pH: ");
+	//Serial.println(phValue);
 	//Return and make sure value is in range
 	return constrain(phValue,0.0,14.0);
 }
@@ -80,4 +88,6 @@ void SensorPH::smooth() {
 	float res = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) { res += _phs[i]; }
 	_ph = (float)(res / _numSamples);
+	//Serial.print("Smooth pH: ");
+	//Serial.println(_ph);
 }

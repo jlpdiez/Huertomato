@@ -2,7 +2,8 @@
 
 //Constructors
 Sensors::Sensors(Settings *settings) 
-: _settings(settings), _humidity(humidIn), _light(lightIn), _water(waterTrigger,waterEcho) {
+: _settings(settings), _humidity(humidIn), _light(lightIn), _water(waterTrigger,waterEcho),
+	_ec(ecPin), _ph(phPin) {
 	
 	//Init reservoir status
 	_reservoir = _settings->getReservoirModule();
@@ -22,7 +23,7 @@ Sensors::Sensors(Settings *settings)
 }
 
 Sensors::Sensors(const Sensors &other) 
-: _humidity(humidIn), _light(lightIn), _water(waterTrigger,waterEcho) {
+: _humidity(humidIn), _light(lightIn), _water(waterTrigger,waterEcho), _ec(ecPin), _ph(phPin) {
 	
 	_settings = other._settings;
 	_temp = other._temp;
@@ -159,7 +160,7 @@ void Sensors::fastUpdate() {
 	}
 }
 
-//Sends command to pH sensor to adjust readings to temperature only if sensor not being calibrated
+//Sends command to pH sensor to adjust readings to temperature
 void Sensors::adjustPHtemp() {
 	_ph.adjustTemp(temperature.getTempCByIndex(0));
 }

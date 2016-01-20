@@ -1,9 +1,9 @@
 // #############################################################################
 // #
 // # Name       : Huertomato
-// # Version    : 1.5.8
+// # Version    : 0.4.0
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 18.01.2016
+// # Date       : 19.01.2016
 // 
 // # Description:
 // # Implements an Arduino-based system for controlling hydroponics, aquaponics and the like
@@ -72,7 +72,7 @@
 #include <MemoryFree.h>
 #include <string.h>
 
-const float versionNumber = 0.3;
+const float versionNumber = 0.4;
 
 // *********************************************
 // TEXTS STORED IN FLASH MEMORY
@@ -118,6 +118,8 @@ const uint8_t lightIn = A2;
 const uint8_t tempIn = A0;
 const uint8_t waterEcho = 8;
 const uint8_t waterTrigger = 9;
+const uint8_t phPin = A4;
+const uint8_t ecPin = A5;
 //ACTUATORS
 const uint8_t buzzPin = 10;
 const uint8_t waterPump = A9;
@@ -129,9 +131,6 @@ const uint8_t lcdD1 = 23;
 const uint8_t lcdD2 = 24;
 const uint8_t lcdD3 = 25;
 const uint8_t lcdA0 = A3;
-//pH & EC
-const uint8_t phPin = A4;
-const uint8_t ecPin = A5;
 
 // *********************************************
 // OBJECT DECLARATIONS

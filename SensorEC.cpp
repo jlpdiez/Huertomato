@@ -34,7 +34,9 @@ Sensor::SensName SensorEC::getType() const {
 	return Sensor::Ec;
 }
 
-void SensorEC::init() {}
+void SensorEC::init() {
+	pinMode(_pin, INPUT);
+}
 
 void SensorEC::update() {
 	_ecs[_iSample] = getRaw();
@@ -58,9 +60,15 @@ float SensorEC::get() const {
 
 //Returns EC in mSiemens/cm.
 float SensorEC::getRaw() const {
-	uint16_t rawVolt = analogRead(ecPin)*(float)5000/1024;
+	uint16_t rawVolt = analogRead(_pin)*(float)5000/1024;
+	//Serial.print("EC -> rawVolt: ");
+	//Serial.print(rawVolt);
 	float tempCoef = 1.0 + 0.0185*(temperature.getTempCByIndex(0)-25.0);
+	//Serial.print(" | temp coef: ");
+	//Serial.print(tempCoef);
 	float voltCoef = (float)rawVolt/tempCoef;
+	//Serial.print(" | voltCoef: ");
+	//Serial.println(voltCoef);
 	
 	//No solution
 	if (voltCoef < 150) {

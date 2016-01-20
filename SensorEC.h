@@ -29,7 +29,7 @@
 
 #include "Sensor.h"
 
-extern const uint8_t ecPin;
+//extern const uint8_t ecPin;
 extern DallasTemperature temperature;
 
 class SensorEC: public Sensor {
