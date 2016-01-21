@@ -42,8 +42,6 @@ Sensor::SensName SensorEC::getType() const {
 void SensorEC::init() {
 	//Open communication
 	Serial1.begin(9600);
-	//This was a C,0 -> not needed?
-	//Serial1.print("E\r");
 	//Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
 	setContinuous();
 }
@@ -75,7 +73,8 @@ uint16_t SensorEC::getRaw() const {
 		if (Serial1.available() > 0) {
 			uint16_t res = Serial1.parseInt();
 			//Clear buffer of remaining messages
-			clearECbuffer();
+			while (Serial1.available() > 0)
+				Serial1.read();
 			return res;
 		}
 		//Buffer has been emptied before and circuit still hasn't put data into it again
