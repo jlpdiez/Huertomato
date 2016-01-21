@@ -1,12 +1,12 @@
 // #############################################################################
 //
 // # Name       : SensorPH
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.11.2015
+// # Date       : 21.01.2016
 //
-// # Description: Atlas scientific pH sensor class
+// # Description: Atlas scientific pH sensor class for EZO circuit
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by

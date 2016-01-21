@@ -1,12 +1,12 @@
 // #############################################################################
 //
 // # Name       : SensorEC
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 17.11.2015
+// # Date       : 21.01.2016
 //
-// # Description: Atlas Scientific EC sensor class
+// # Description: Atlas Scientific EC sensor class for EZO circuit
 //
 // #  This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -55,8 +55,8 @@ class SensorEC: public Sensor {
 		void setStandby();
 		void setProbeType();
 		void setDry();
-		void setTenThousand();
-		void setFortyThousand();
+		void setLowCalib();
+		void setHighCalib();
 		//Adjusts EC sensor readings to given temperature
 		void adjustTemp(float);
 	

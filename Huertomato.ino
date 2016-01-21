@@ -217,6 +217,7 @@ void setup() {
 	Alarm.delay(10);
 	sensors.fastUpdate();
 	gui.start();
+	//sensors.getPHinfo();
 }
 
 //Initiates system time from RTC

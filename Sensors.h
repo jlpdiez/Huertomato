@@ -110,8 +110,8 @@ class Sensors {
 	void setECstandby();
 	void setECprobeType();
 	void setECdry();
-	void setECtenThousand();
-	void setECfortyThousand();
+	void setEClowCalib();
+	void setEChighCalib();
 	//Adjusts EC sensor readings to temperature
 	void adjustECtemp();
 

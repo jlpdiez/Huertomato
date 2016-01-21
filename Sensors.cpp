@@ -242,12 +242,12 @@ void Sensors::setECdry() {
 	_ec.setDry();
 }
 
-void Sensors::setECfortyThousand() {
-	_ec.setFortyThousand();
+void Sensors::setEChighCalib() {
+	_ec.setHighCalib();
 }
 
-void Sensors::setECtenThousand() {
-	_ec.setTenThousand();
+void Sensors::setEClowCalib() {
+	_ec.setLowCalib();
 }
 
 //Sends command to EC sensor to adjust readings to temperature if not calibrating sensor

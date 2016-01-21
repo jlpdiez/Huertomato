@@ -37,9 +37,9 @@ Sensor::SensName SensorPH::getType() const {
 
 void SensorPH::init() {
 	//Open communication with PH sensor
-	Serial2.begin(38400);
+	Serial2.begin(9600);
 	//Set it into reading on-demand mode
-	Serial2.print("E\r");
+	setStandby();
 	//Make a reading or fastUpdate() won't work
 	Serial2.print("R\r");
 }
@@ -89,15 +89,17 @@ void SensorPH::calibrating(boolean c) {
 	_calibratingPh = c;	
 }
 
+//TODO: maybe its better just to reset calibration with "Cal,clear"?
 //pH circuit commands
 void SensorPH::reset() {
 	clearBuffer();
-	Serial2.print("X\r");
+	Serial2.print("Factory\r");
 	//Leave some time for circuit reset and for data to be received
 	delay(100);
 	phToSerial();	
 }
 
+//TODO: Add query status
 void SensorPH::getInfo() {
 	clearBuffer();
 	Serial2.print("I\r");
@@ -108,33 +110,33 @@ void SensorPH::getInfo() {
 
 void SensorPH::setLed(boolean state) {
 	if (state)
-		Serial2.print("L1\r");
+		Serial2.print("L,1\r");
 	else
-		Serial2.print("L0\r");	
+		Serial2.print("L,0\r");	
 }
 
 void SensorPH::setContinuous() {
-	Serial2.print("C\r");	
+	Serial2.print("C,1\r");	
 }
 
 void SensorPH::setStandby() {
-	Serial2.print("E\r");	
+	Serial2.print("C,0\r");	
 }
 
 void SensorPH::setFour() {
-	Serial2.print("F\r");
+	Serial2.print("Cal,low,4.00\r");
  	if (_serialDbg)
  		Serial.println(4.00);	
 }
 
 void SensorPH::setSeven() {
- 	Serial2.print("S\r");
+ 	Serial2.print("Cal,mid,7.00\r");
  	if (_serialDbg)
  		Serial.println(7.00);	
 }
 
 void SensorPH::setTen() {
-	Serial2.print("T\r");
+	Serial2.print("Cal,high,10.00\r");
  	if (_serialDbg)
  		Serial.println(10.00);	
 }
@@ -145,7 +147,7 @@ void SensorPH::adjustTemp(float tempt) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(tempt,4,2,tempArray);
-		String command = (String)tempArray + "\r";
+		String command = "T," + (String)tempArray + "\r";
 		Serial2.print(command);
 	}	
 }
