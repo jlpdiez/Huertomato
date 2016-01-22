@@ -44,7 +44,9 @@ void SensorEC::init() {
 	Serial1.begin(9600);
 	setResponse(false);
 	//Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
-	setContinuous();
+	//setContinuous();
+	setStandby();
+	Serial1.print("R\r");
 }
 
 void SensorEC::update() {
@@ -71,11 +73,13 @@ uint16_t SensorEC::get() const {
 uint16_t SensorEC::getRaw() const {
 	//If sensors being calibrated we return previous values
 	if (!_calibratingEc) {
+		Serial1.print("R\r");
 		if (Serial1.available() > 0) {
 			uint16_t res = Serial1.parseInt();
 			//Clear buffer of remaining messages
-			while (Serial1.available() > 0)
-				Serial1.read();
+			//while (Serial1.available() > 0)
+				//Serial1.read();
+			Serial1.read();
 			return res;
 		}
 		//Buffer has been emptied before and circuit still hasn't put data into it again
@@ -114,7 +118,7 @@ void SensorEC::getInfo() {
 
 void SensorEC::getStatus() {
 	clearECbuffer();
-	Serial2.print("STATUS\r");
+	Serial1.print("STATUS\r");
 	//Leave some time for data to be received
 	delay(100);
 	ecToSerial();

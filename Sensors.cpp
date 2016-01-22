@@ -177,7 +177,8 @@ void Sensors::calibratingEC(boolean c) {
 
 //pH circuit commands
 void Sensors::resetPH() {
-	_ph.resetToFactory();
+	//_ph.resetToFactory();
+	_ph.resetCalibration();
 }
 
 void Sensors::getPHinfo() {
@@ -216,7 +217,8 @@ void Sensors::adjustPHtemp() {
 
 //EC circuit commands
 void Sensors::resetEC() {
-	_ec.resetToFactory();
+	//_ec.resetToFactory();
+	_ec.resetCalibration();
 }
 
 void Sensors::getECinfo() {

@@ -69,7 +69,7 @@ void WinPhCalib::draw() {
 	print();
 	_buttons.drawButtons();
 	if (_actScreen == 0)
-			_sensors->getPHinfo();
+		_sensors->getPHinfo();
 }
 
 Window::Screen WinPhCalib::processTouch(const int x, const int y) {
