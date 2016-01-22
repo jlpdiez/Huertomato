@@ -177,11 +177,12 @@ void Sensors::calibratingEC(boolean c) {
 
 //pH circuit commands
 void Sensors::resetPH() {
-	_ph.reset();
+	_ph.resetToFactory();
 }
 
 void Sensors::getPHinfo() {
 	_ph.getInfo();
+	_ph.getStatus();
 }
 
 void Sensors::setPHled(boolean state) {
@@ -215,11 +216,12 @@ void Sensors::adjustPHtemp() {
 
 //EC circuit commands
 void Sensors::resetEC() {
-	_ec.reset();
+	_ec.resetToFactory();
 }
 
 void Sensors::getECinfo() {
 	_ec.getInfo();
+	_ec.getStatus();
 }
 
 void Sensors::setECled(boolean state) {

@@ -38,6 +38,7 @@ Sensor::SensName SensorPH::getType() const {
 void SensorPH::init() {
 	//Open communication with PH sensor
 	Serial2.begin(9600);
+	setResponse(false);
 	//Set it into reading on-demand mode
 	setStandby();
 	//Make a reading or fastUpdate() won't work
@@ -89,30 +90,42 @@ void SensorPH::calibrating(boolean c) {
 	_calibratingPh = c;	
 }
 
-//TODO: maybe its better just to reset calibration with "Cal,clear"?
 //pH circuit commands
-void SensorPH::reset() {
-	clearBuffer();
+void SensorPH::resetToFactory() {
+	clearPHbuffer();
 	Serial2.print("Factory\r");
 	//Leave some time for circuit reset and for data to be received
 	delay(100);
 	phToSerial();	
 }
 
-//TODO: Add query status
+//Reset calibration status
+void SensorPH::resetCalibration() {
+	Serial2.print("Cal,clear\r");	
+}
+
 void SensorPH::getInfo() {
-	clearBuffer();
+	clearPHbuffer();
 	Serial2.print("I\r");
 	//Leave some time for data to be received
-	delay(10);
+	delay(100);
 	phToSerial();
 }
 
-void SensorPH::setLed(boolean state) {
-	if (state)
-		Serial2.print("L,1\r");
-	else
-		Serial2.print("L,0\r");	
+void SensorPH::getStatus() {
+	clearPHbuffer();
+	Serial2.print("STATUS\r");
+	//Leave some time for data to be received
+	delay(100);
+	phToSerial();
+}
+
+void SensorPH::setLed(const boolean state) {
+	(state) ? Serial2.print("L,1\r") : Serial2.print("L,0\r");	
+}
+
+void SensorPH::setResponse(const boolean state) {
+	(state) ? Serial2.print("RESPONSE,1\r") : Serial2.print("RESPONSE,0\r");
 }
 
 void SensorPH::setContinuous() {
@@ -159,7 +172,7 @@ void SensorPH::smooth() {
 }
 
 //Clear incoming buffer
-void SensorPH::clearBuffer() {
+void SensorPH::clearPHbuffer() {
  	while (Serial2.available() > 0)
  		Serial2.read();
 }

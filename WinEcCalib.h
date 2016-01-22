@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinEcCalib
-// # Version    : 1.1
+// # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 14.01.2015
+// # Date       : 22.01.2016
 //
 // # Description: EC circuit calibration menu window
 //
@@ -36,11 +36,11 @@ const char ecText2[] PROGMEM = "Calibrating for a";
 const char ecText3[] PROGMEM = "dry condition";
 
 const char ecText4[] PROGMEM = "Submerge probe in";
-const char ecText5[] PROGMEM = "40,000uS liquid and";
+const char ecText5[] PROGMEM = "80,000uS liquid and";
 const char ecText6[] PROGMEM = "wait 5 mins.";
 
 const char ecText7[] PROGMEM = "Rinse & dry probe,";
-const char ecText8[] PROGMEM = "submerge in 10,500uS and";
+const char ecText8[] PROGMEM = "submerge in 12,880uS and";
 
 class WinEcCalib: public Window {
 	public:

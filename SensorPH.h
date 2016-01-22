@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : SensorPH
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 21.01.2016
+// # Date       : 22.01.2016
 //
 // # Description: Atlas scientific pH sensor class for EZO circuit
 //
@@ -47,9 +47,12 @@ class SensorPH: public Sensor {
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibrating(boolean c);
 		//pH circuit commands
-		void reset();
+		void resetToFactory();
+		void resetCalibration();
 		void getInfo();
-		void setLed(boolean);
+		void getStatus();
+		void setLed(const boolean);
+		void setResponse(const boolean);
 		void setContinuous();
 		void setStandby();
 		void setFour();
@@ -72,7 +75,7 @@ class SensorPH: public Sensor {
 		void smooth();
 		
 		//Clear incoming buffer
-		void clearBuffer();
+		void clearPHbuffer();
 		//Output pH circuit's response to serial
 		void phToSerial();
 };

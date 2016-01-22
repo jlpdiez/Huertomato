@@ -48,9 +48,12 @@ class SensorEC: public Sensor {
 		//This should be set while calibrating to prevent messing up circuits if update() called
 		void calibrating(boolean c);
 		//EC circuit commands
-		void reset();
+		void resetToFactory();
+		void resetCalibration();
 		void getInfo();
-		void setLed(boolean);
+		void getStatus();
+		void setLed(const boolean);
+		void setResponse(const boolean);
 		void setContinuous();
 		void setStandby();
 		void setProbeType();

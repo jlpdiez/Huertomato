@@ -42,6 +42,7 @@ Sensor::SensName SensorEC::getType() const {
 void SensorEC::init() {
 	//Open communication
 	Serial1.begin(9600);
+	setResponse(false);
 	//Set to continuous mode (needs 20-25 readings of 1000ms to stabilize reading)
 	setContinuous();
 }
@@ -92,8 +93,7 @@ void SensorEC::calibrating(boolean c) {
 	_calibratingEc = c;
 }
 
-//TODO: Replace with calibration clear instead when performing calibration?
-void SensorEC::reset() {
+void SensorEC::resetToFactory() {
 	clearECbuffer();
 	Serial1.print("Factory\r");
 	//Give time for reset
@@ -101,18 +101,31 @@ void SensorEC::reset() {
 	ecToSerial();
 }
 
+void SensorEC::resetCalibration() {
+	Serial2.print("Cal,clear\r");
+}
+
 void SensorEC::getInfo() {
 	clearECbuffer();
 	Serial1.print("I\r");
-	delay(1450);
+	delay(100);
 	ecToSerial();	
 }
 
-void SensorEC::setLed(boolean state) {
-	if (state)
-		Serial1.print("L,1\r");
-	else
-		Serial1.print("L,0\r");	
+void SensorEC::getStatus() {
+	clearECbuffer();
+	Serial2.print("STATUS\r");
+	//Leave some time for data to be received
+	delay(100);
+	ecToSerial();
+}
+
+void SensorEC::setLed(const boolean state) {
+	(state) ? Serial1.print("L,1\r") : Serial1.print("L,0\r");	
+}
+
+void SensorEC::setResponse(const boolean state) {
+	(state) ? Serial1.print("RESPONSE,1\r") : Serial2.print("RESPONSE,0\r");
 }
 
 void SensorEC::setContinuous() {
