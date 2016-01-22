@@ -76,10 +76,9 @@ uint16_t SensorEC::getRaw() const {
 		Serial1.print("R\r");
 		if (Serial1.available() > 0) {
 			uint16_t res = Serial1.parseInt();
-			//Clear buffer of remaining messages
-			//while (Serial1.available() > 0)
-				//Serial1.read();
-			Serial1.read();
+			//Clear buffer of remaining data
+			while (Serial1.available() > 0)
+				Serial1.read();
 			return res;
 		}
 		//Buffer has been emptied before and circuit still hasn't put data into it again
