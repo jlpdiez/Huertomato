@@ -169,6 +169,7 @@ void SensorPH::smooth() {
 	float res = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) { res += _phs[i]; }
 	_ph = (float)(res / _numSamples);
+	constrain(_ph,0.0,14.0);
 }
 
 //Clear incoming buffer

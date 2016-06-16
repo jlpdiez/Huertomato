@@ -4,7 +4,7 @@
 // # Version    : 1.2
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 16.06.2015
 //
 // # Description: pH circuit calibration menu window
 //
@@ -33,7 +33,7 @@ const char nameWinPhCalib[] PROGMEM = "pH Circuit";
 
 const char phText1[] PROGMEM = "Rinse & dry probe,";
 const char phText2[] PROGMEM = "submerge in pH   and";
-const char phText4[] PROGMEM = "wait 5 mins.";
+const char phText4[] PROGMEM = "wait 2 mins.";
 
 class WinPhCalib: public Window {
 	public:
