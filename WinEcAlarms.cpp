@@ -37,16 +37,19 @@ void WinEcAlarms::print() {
 	_lcd->print(pmChar(dEcLimit),_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen_P(uEcLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
-	_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
+	//_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
+	//_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
+	_lcd->printNumF(_ecAlarmMax,1,x,_yTwoLnsFirst,'.',4);
+	_lcd->printNumF(_ecAlarmMin,1,x,_yTwoLnsSecond,'.',4);
 	//Buttons
-	x += 1.5*_bigFontSize;
+	//x += 1.5*_bigFontSize;
+	x += 2*_bigFontSize;
 	//We have already created the flow buttons in positions 0.._nFlowButtons-1  of buttons array
 	_ecAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,plusStr,BUTTON_SYMBOL);
 	_ecAlarmsButtons[_nFlowButtons+1] = _buttons.addButton(x,_yTwoLnsFirst+_signSpacer,minusStr,BUTTON_SYMBOL);
 	_ecAlarmsButtons[_nFlowButtons+2] = _buttons.addButton(x,_yTwoLnsSecond-_signSpacer,plusStr,BUTTON_SYMBOL);
 	_ecAlarmsButtons[_nFlowButtons+3] = _buttons.addButton(x,_yTwoLnsSecond+_signSpacer,minusStr,BUTTON_SYMBOL);
-	//uS Text
+	//mS Text
 	x += 3.5*_bigFontSize;
 	_lcd->print(pmChar(unitEcS),x,_yTwoLnsFirst);
 	_lcd->print(pmChar(unitEcS),x,_yTwoLnsSecond);
@@ -65,8 +68,8 @@ void WinEcAlarms::draw() {
 void WinEcAlarms::update() {
 	_lcd->setFont(hallfetica_normal);
 	int x = (4+strlen_P(uEcLimit))*_bigFontSize;
-	_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
-	_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
+	_lcd->printNumF(_ecAlarmMax,1,x,_yTwoLnsFirst,'.',4);
+	_lcd->printNumF(_ecAlarmMin,1,x,_yTwoLnsSecond,'.',4);
 }
 
 Window::Screen WinEcAlarms::processTouch(const int x, const int y) {
@@ -84,19 +87,19 @@ Window::Screen WinEcAlarms::processTouch(const int x, const int y) {
 		
 	//Max up
 	else if(buttonIndex == _ecAlarmsButtons[3]) {
-		(_ecAlarmMax >= 9990) ? _ecAlarmMax=0 : _ecAlarmMax += 10;
+		(_ecAlarmMax >= 99.0) ? _ecAlarmMax = 0.0 : _ecAlarmMax += 1.0;
 		update();
 	//Max down
 	} else if(buttonIndex == _ecAlarmsButtons[4]) {
-		(_ecAlarmMax <= 0) ? _ecAlarmMax=9990 : _ecAlarmMax -= 10;
+		(_ecAlarmMax <= 0.0) ? _ecAlarmMax = 99.0 : _ecAlarmMax -= 1.0;
 		update();
 	//Min up
 	} else if(buttonIndex == _ecAlarmsButtons[5]) {
-		(_ecAlarmMin >= 9990) ? _ecAlarmMin=0 : _ecAlarmMin += 10;
+		(_ecAlarmMin >= 99.0) ? _ecAlarmMin = 0.0 : _ecAlarmMin += 1.0;
 		update();
 	//Min down
 	} else if(buttonIndex == _ecAlarmsButtons[6]) {
-		(_ecAlarmMin <= 0) ? _ecAlarmMin=9990 : _ecAlarmMin -= 10;
+		(_ecAlarmMin <= 0.0) ? _ecAlarmMin = 99.0 : _ecAlarmMin -= 1.0;
 		update();
 	}
 	return None;

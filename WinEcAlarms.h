@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinEcAlarms
-// # Version    : 1.2
+// # Version    : 1.3
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 13.01.2015
+// # Date       : 20.06.2019
 //
 // # Description: Ec alarms configuration window.
 //
@@ -31,7 +31,7 @@
 
 const char nameWinEcAlarms[] PROGMEM = "EC Alarms";
 
-const char unitEcS[] PROGMEM = "uS";
+const char unitEcS[] PROGMEM = "mS";
 const char uEcLimit[] PROGMEM = "Upper Limit:";
 const char dEcLimit[] PROGMEM = "Lower Limit:";
  
@@ -49,7 +49,7 @@ class WinEcAlarms: public Window {
 	protected:
 		static const uint8_t _nECalarmsButtons = _nFlowButtons + 4;
 		int8_t _ecAlarmsButtons[_nECalarmsButtons]; 
-		uint16_t _ecAlarmMax, _ecAlarmMin;
+		float _ecAlarmMax, _ecAlarmMin;
 		void print();
 };
 

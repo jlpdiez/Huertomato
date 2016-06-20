@@ -1,10 +1,10 @@
 // #############################################################################
 //
 // # Name       : WinMainScreen
-// # Version    : 1.3
+// # Version    : 1.4
 //
 // # Author     : Juan L. Perez Diez <ender.vs.melkor at gmail>
-// # Date       : 16.01.2015
+// # Date       : 20.06.2016
 //
 // # Description: Main idle screen window
 //
@@ -50,7 +50,7 @@ const char htmtTxt[] PROGMEM = "Huertomato";
 const char tempUnitC[] PROGMEM = "C";
 const char tempUnitF[] PROGMEM = "F";
 const char lightUnit[] PROGMEM = "Lux";
-const char ecUnit[] PROGMEM = "uS";
+const char ecUnit[] PROGMEM = "mS";
 //Status strings
 const char nextWater[] PROGMEM = "Next Watering @";
 const char noNight[] PROGMEM = "No Watering @ Night";

@@ -61,7 +61,7 @@ uint8_t Sensors::getHumidity() const {
 	return _humidity.get(); 
 }
 
-uint16_t Sensors::getEC() const { 
+float Sensors::getEC() const { 
 	return _ec.get(); 
 }
 

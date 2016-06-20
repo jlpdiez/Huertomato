@@ -110,13 +110,13 @@ void WinMainScreen::printInfoReservoir() {
 	//EC
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorTextStr4)+7));
 	y = ySpacer+(_bigFontSize+8)*4;
-	uint16_t ec = _sensors->getEC();
+	float ec = _sensors->getEC();
 	if (_sensors->ecOffRange())
 		_lcd->setColor(red[0],red[1],red[2]);
 	else
 		_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(pmChar(sensorTextStr4),x,y);
-	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
+	_lcd->printNumF(ec,2,xSpacer-_bigFontSize*7,y,'.',5);
 	_lcd->print(pmChar(ecUnit),xSpacer-_bigFontSize*2,y);
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorTextStr5)+4));
@@ -160,13 +160,13 @@ void WinMainScreen::updateInfoReservoir() {
 	//EC
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorTextStr4)+7));
 	y = ySpacer+(_bigFontSize+8)*4;
-	uint16_t ec = _sensors->getEC();
+	float ec = _sensors->getEC();
 	if (_sensors->ecOffRange())
 		_lcd->setColor(red[0],red[1],red[2]);
 	else
 		_lcd->setColor(grey[0], grey[1], grey[2]);
 	_lcd->print(pmChar(sensorTextStr4),x,y);
-	_lcd->printNumI(ec,xSpacer-_bigFontSize*7,y,5);
+	_lcd->printNumF(ec,2,xSpacer-_bigFontSize*7,y,'.',5);
 	_lcd->print(pmChar(ecUnit),xSpacer-_bigFontSize*2,y);	
 	//Deposit level
 	x = xSpacer-(_bigFontSize*(strlen_P(sensorTextStr5)+4));

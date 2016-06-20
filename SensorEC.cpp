@@ -58,28 +58,28 @@ void SensorEC::update() {
 }
 
 void SensorEC::fastUpdate() {
-	uint16_t e = getRaw();
+	float e = getRaw();
 	for (uint8_t i = 0; i < _numSamples; i++) {
 		_ecs[i] = e;
 	}
 	smooth();
 }
 
-uint16_t SensorEC::get() const {
+float SensorEC::get() const {
 	return _ec;
 }
 
-//Returns EC in uSiemens. Reading takes 1000ms
-uint16_t SensorEC::getRaw() const {
+//Returns EC in mSiemens. Reading takes 1000ms
+float SensorEC::getRaw() const {
 	//If sensors being calibrated we return previous values
 	if (!_calibratingEc) {
 		Serial1.print("R\r");
 		if (Serial1.available() > 0) {
-			uint16_t res = Serial1.parseInt();
+			uint32_t res = Serial1.parseInt();
 			//Clear buffer of remaining data
 			while (Serial1.available() > 0)
 				Serial1.read();
-			return res;
+			return (float)res/1000.0;
 		}
 		//Buffer has been emptied before and circuit still hasn't put data into it again
 		return 0;
@@ -165,19 +165,19 @@ void SensorEC::setHighCalib() {
 
 //Adjusts EC sensor readings to given temperature
 void SensorEC::adjustTemp(float tempt) {
-	if ((tempt != 0) && (!_calibratingEc)) {
+	/*if ((tempt != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(tempt,4,2,tempArray);
 		String command = "T," + (String)tempArray + "\r";
 		Serial1.print(command);
-	}
+	}*/
 }
 
 void SensorEC::smooth() {
-	uint16_t res = 0;
+	float res = 0;
 	for (uint8_t i = 0; i < _numSamples; i++) { res += _ecs[i]; }
-	_ec = (uint16_t)(res / _numSamples);
+	_ec = (float)(res / _numSamples);
 }
 
 
