@@ -37,12 +37,9 @@ void WinEcAlarms::print() {
 	_lcd->print(pmChar(dEcLimit),_xConfig,_yTwoLnsSecond);
 	//Numbers
 	int x = (4+strlen_P(uEcLimit))*_bigFontSize;
-	//_lcd->printNumI(_ecAlarmMax,x,_yTwoLnsFirst,4);
-	//_lcd->printNumI(_ecAlarmMin,x,_yTwoLnsSecond,4);
 	_lcd->printNumF(_ecAlarmMax,1,x,_yTwoLnsFirst,'.',4);
 	_lcd->printNumF(_ecAlarmMin,1,x,_yTwoLnsSecond,'.',4);
 	//Buttons
-	//x += 1.5*_bigFontSize;
 	x += 2*_bigFontSize;
 	//We have already created the flow buttons in positions 0.._nFlowButtons-1  of buttons array
 	_ecAlarmsButtons[_nFlowButtons] = _buttons.addButton(x,_yTwoLnsFirst-_signSpacer,plusStr,BUTTON_SYMBOL);

@@ -165,13 +165,13 @@ void SensorEC::setHighCalib() {
 
 //Adjusts EC sensor readings to given temperature
 void SensorEC::adjustTemp(float tempt) {
-	/*if ((tempt != 0) && (!_calibratingEc)) {
+	if ((tempt != 0) && (!_calibratingEc)) {
 		//Convert temp from float to char*
 		char tempArray[4];
 		dtostrf(tempt,4,2,tempArray);
 		String command = "T," + (String)tempArray + "\r";
 		Serial1.print(command);
-	}*/
+	}
 }
 
 void SensorEC::smooth() {
